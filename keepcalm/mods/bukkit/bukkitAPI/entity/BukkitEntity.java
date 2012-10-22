@@ -1,0 +1,377 @@
+package keepcalm.mods.bukkit.bukkitAPI.entity;
+
+import java.util.List;
+import java.util.UUID;
+
+import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
+
+import net.minecraft.src.*;
+
+import org.bukkit.EntityEffect;
+import org.bukkit.Location;
+import org.bukkit.Server;
+import org.bukkit.World;
+//import org.bukkit.entity.Entity;
+
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
+
+public abstract class BukkitEntity implements org.bukkit.entity.Entity {
+    protected final BukkitServer server;
+    protected Entity entity;
+    private EntityDamageEvent lastDamageEvent;
+
+    public BukkitEntity(final BukkitServer server, final Entity entity) {
+        this.server = server;
+        this.entity = entity;
+    }
+
+    public static BukkitEntity getEntity(BukkitServer server, Entity entity) {
+        /**
+         * Order is *EXTREMELY* important -- keep it right! =D
+         */
+        if (entity instanceof EntityLiving) {
+            // Players
+            if (entity instanceof EntityPlayer) {
+                if (entity instanceof EntityPlayerMP) { return new BukkitPlayer(server, (EntityPlayerMP) entity); }
+                else { return new BukkitEntityHuman(server, (EntityPlayerMP) entity); }
+            }
+            else if (entity instanceof EntityCreature) {
+                // Animals
+                if (entity instanceof EntityAnimal) {
+                    if (entity instanceof EntityChicken) { return new BukkitChicken(server, (EntityChicken) entity); }
+                    else if (entity instanceof EntityCow) {
+                        if (entity instanceof EntityMooshroom) { return new BukkitMushroomCow(server, (EntityMooshroom) entity); }
+                        else { return new BukkitCow(server, (EntityCow) entity); }
+                    }
+                    else if (entity instanceof EntityPig) { return new BukkitPig(server, (EntityPig) entity); }
+                    else if (entity instanceof EntityTameable) {
+                        if (entity instanceof EntityWolf) { return new BukkitWolf(server, (EntityWolf) entity); }
+                        else if (entity instanceof EntityOcelot) { return new BukkitOcelot(server, (EntityOcelot) entity); }
+                    }
+                    else if (entity instanceof EntitySheep) { return new BukkitSheep(server, (EntitySheep) entity); }
+                    else  { return new BukkitAnimals(server, (EntityAnimal) entity); }
+                }
+                // Monsters
+                else if (entity instanceof EntityMob) {
+                    if (entity instanceof EntityZombie) {
+                        if (entity instanceof EntityPigZombie) { return new BukkitPigZombie(server, (EntityPigZombie) entity); }
+                        else { return new BukkitZombie(server, (EntityZombie) entity); }
+                    }
+                    else if (entity instanceof EntityCreeper) { return new BukkitCreeper(server, (EntityCreeper) entity); }
+                    else if (entity instanceof EntityEnderman) { return new BukkitEnderman(server, (EntityEnderman) entity); }
+                    else if (entity instanceof EntitySilverfish) { return new BukkitSilverfish(server, (EntitySilverfish) entity); }
+                    else if (entity instanceof EntityGiantZombie) { return new BukkitGiant(server, (EntityGiantZombie) entity); }
+                    else if (entity instanceof EntitySkeleton) { return new BukkitSkeleton(server, (EntitySkeleton) entity); }
+                    else if (entity instanceof EntityBlaze) { return new BukkitBlaze(server, (EntityBlaze) entity); }
+                    else if (entity instanceof EntitySpider) {
+                        if (entity instanceof EntityCaveSpider) { return new BukkitCaveSpider(server, (EntityCaveSpider) entity); }
+                        else { return new BukkitSpider(server, (EntitySpider) entity); }
+                    }
+
+                    else  { return new BukkitMonster(server, (EntityMob) entity); }
+                }
+                // Water Animals
+                else if (entity instanceof EntityWaterMob) {
+                    if (entity instanceof EntitySquid) { return new BukkitSquid(server, (EntitySquid) entity); }
+                    else { return new BukkitWaterMob(server, (EntityWaterMob) entity); }
+                }
+                else if (entity instanceof EntityGolem) {
+                    if (entity instanceof EntitySnowman) { return new BukkitSnowman(server, (EntitySnowman) entity); }
+                    else if (entity instanceof EntityIronGolem) { return new BukkitIronGolem(server, (EntityIronGolem) entity); }
+                }
+                else if (entity instanceof EntityVillager) { return new BukkitVillager(server, (EntityVillager) entity); }
+                else { return new BukkitCreature(server, (EntityCreature) entity); }
+            }
+            // Slimes are a special (and broken) case
+            else if (entity instanceof EntitySlime) {
+                if (entity instanceof EntityMagmaCube) { return new BukkitMagmaCube(server, (EntityMagmaCube) entity); }
+                else { return new BukkitSlime(server, (EntitySlime) entity); }
+            }
+            // Flying
+            else if (entity instanceof EntityFlying) {
+                if (entity instanceof EntityGhast) { return new BukkitGhast(server, (EntityGhast) entity); }
+                else { return new BukkitFlying(server, (EntityFlying) entity); }
+            }
+            else if (entity instanceof EntityDragon) {
+                if (entity instanceof EntityDragon) { return new BukkitEnderDragon(server, (EntityDragon) entity); }
+            }
+            else  { return new BukkitLivingEntity(server, (EntityLiving) entity); }
+        }
+        else if (entity instanceof EntityDragonPart) {
+            EntityDragonPart part = (EntityDragonPart) entity;
+            if (part.entityDragonObj instanceof EntityDragonBase) { return new BukkitEnderDragonPart(server, (EntityDragonPart) entity); }
+            else { return new BukkitComplexPart(server, (EntityDragonPart) entity); }
+        }
+        else if (entity instanceof EntityXPOrb) { return new BukkitExperienceOrb(server, (EntityXPOrb) entity); }
+        else if (entity instanceof EntityArrow) { return new BukkitArrow(server, (EntityArrow) entity); }
+        else if (entity instanceof EntityBoat) { return new BukkitBoat(server, (EntityBoat) entity); }
+        else if (entity instanceof EntityThrowable) {
+            if (entity instanceof EntityEgg) { return new BukkitEgg(server, (EntityEgg) entity); }
+            else if (entity instanceof EntitySnowball) { return new BukkitSnowball(server, (EntitySnowball) entity); }
+            else if (entity instanceof EntityPotion) { return new BukkitThrownPotion(server, (EntityPotion) entity); }
+            else if (entity instanceof EntityEnderPearl) { return new BukkitEnderPearl(server, (EntityEnderPearl) entity); }
+            else if (entity instanceof EntityExpBottle) { return new BukkitThrownExpBottle(server, (EntityExpBottle) entity); }
+        }
+        else if (entity instanceof EntityFallingSand) { return new BukkitFallingSand(server, (EntityFallingSand) entity); }
+        else if (entity instanceof EntityFireball) {
+            if (entity instanceof EntitySmallFireball) { return new BukkitSmallFireball(server, (EntitySmallFireball) entity); }
+            else { return new BukkitFireball(server, (EntityFireball) entity); }
+        }
+        //else if (entity instanceof EntityEnderSignal) { return new BukkitEnderSignal(server, (EntityEnderSignal) entity); }
+        else if (entity instanceof EntityEnderCrystal) { return new BukkitEnderCrystal(server, (EntityEnderCrystal) entity); }
+        else if (entity instanceof EntityFishHook) { return new BukkitFish(server, (EntityFishHook) entity); }
+        else if (entity instanceof EntityItem) { return new BukkitItem(server, (EntityItem) entity); }
+        else if (entity instanceof EntityWeatherEffect) {
+            if (entity instanceof EntityLightningBolt) { return new BukkitLightningStrike(server, (EntityLightningBolt) entity); }
+            else { return new BukkitWeather(server, (EntityWeatherEffect) entity); }
+        }
+        else if (entity instanceof EntityMinecart) {
+            EntityMinecart mc = (EntityMinecart) entity;
+            if (mc.minecartType == BukkitMinecart.Type.StorageMinecart.getId()) { return new BukkitStorageMinecart(server, mc); }
+            else if (mc.minecartType == BukkitMinecart.Type.PoweredMinecart.getId()) { return new BukkitPoweredMinecart(server, mc); }
+            else { return new BukkitMinecart(server, mc); }
+        }
+        else if (entity instanceof EntityPainting) { return new BukkitPainting(server, (EntityPainting) entity); }
+        else if (entity instanceof EntityTNTPrimed) { return new BukkitTNTPrimed(server, (EntityTNTPrimed) entity); }
+
+        throw new IllegalArgumentException("Unknown entity");
+    }
+
+    public Location getLocation() {
+        return new Location(getWorld(), entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
+    }
+
+    public Vector getVelocity() {
+        return new Vector(entity.motionX, entity.motionY, entity.motionZ);
+    }
+
+    public void setVelocity(Vector vel) {
+        entity.motionX = vel.getX();
+        entity.motionY = vel.getY();
+        entity.motionZ = vel.getZ();
+        entity.velocityChanged = true;
+    }
+
+    public World getWorld() {
+        return (World) ((WorldServer) entity.worldObj);
+    }
+
+    public boolean teleport(Location location) {
+        return teleport(location, TeleportCause.PLUGIN);
+    }
+
+    public boolean teleport(Location location, TeleportCause cause) {
+        entity.worldObj = ((BukkitWorld) location.getWorld()).getHandle();
+        entity.setLocationAndAngles(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        // entity.setLocation() throws no event, and so cannot be cancelled
+        return true;
+    }
+
+    public boolean teleport(org.bukkit.entity.Entity destination) {
+        return teleport(destination.getLocation());
+    }
+
+    public boolean teleport(org.bukkit.entity.Entity destination, TeleportCause cause) {
+        return teleport(destination.getLocation(), cause);
+    }
+
+    public List<org.bukkit.entity.Entity> getNearbyEntities(double x, double y, double z) {
+        @SuppressWarnings("unchecked")
+        List<Entity> notchEntityList = entity.worldObj.getEntitiesWithinAABB(Entity.class, entity.boundingBox.addCoord(x, y, z));
+        List<org.bukkit.entity.Entity> bukkitEntityList = new java.util.ArrayList<org.bukkit.entity.Entity>(notchEntityList.size());
+
+        for (Entity e : notchEntityList) {
+            bukkitEntityList.add(this.getEntity(this.server, e));
+        }
+        return bukkitEntityList;
+    }
+
+    public int getEntityId() {
+        return entity.entityId;
+    }
+
+    public int getFireTicks() {
+        return entity.fire;
+    }
+
+    public int getMaxFireTicks() {
+        return 100000000;
+    }
+
+    public void setFireTicks(int ticks) {
+        entity.setFire(ticks / 20);
+    }
+
+    public void remove() {
+        entity.setDead();
+    }
+
+    public boolean isDead() {
+        return !entity.isEntityAlive();
+    }
+
+    public boolean isValid() {
+        return entity.isEntityAlive();
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public Vector getMomentum() {
+        return getVelocity();
+    }
+
+    public void setMomentum(Vector value) {
+        setVelocity(value);
+    }
+
+    public org.bukkit.entity.Entity getPassenger() {
+        if (isEmpty()) {
+        	return null;
+        }
+        else {
+        	return this.getEntity(this.server, getHandle().ridingEntity);
+        }
+    }
+
+    public boolean setPassenger(org.bukkit.entity.Entity passenger) {
+        if (passenger instanceof BukkitEntity) {
+            ((BukkitEntity) passenger).getHandle().ridingEntity = (getHandle());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isEmpty() {
+        return getHandle().riddenByEntity == null;
+    }
+
+    public boolean eject() {
+        if (getHandle().riddenByEntity == null) {
+            return false;
+        }
+
+        getHandle().riddenByEntity.ridingEntity = (null);
+        return true;
+    }
+
+    public float getFallDistance() {
+        return getHandle().fallDistance;
+    }
+
+    public void setFallDistance(float distance) {
+        getHandle().fallDistance = distance;
+    }
+
+    public void setLastDamageCause(EntityDamageEvent event) {
+        lastDamageEvent = event;
+    }
+
+    public EntityDamageEvent getLastDamageCause() {
+        return lastDamageEvent;
+    }
+
+    public UUID getUniqueId() {
+        return getHandle().getPersistentID();
+    }
+
+    public int getTicksLived() {
+        return getHandle().ticksExisted;
+    }
+
+    public void setTicksLived(int value) {
+        if (value <= 0) {
+            throw new IllegalArgumentException("Age must be at least 1 tick");
+        }
+        getHandle().ticksExisted = value;
+    }
+
+    public Entity getHandle() {
+        return entity;
+    }
+
+    public void playEffect(EntityEffect type) {
+        //this.getHandle().worldObj.(getHandle(), type.getData());
+    	// TODO
+    }
+
+    public void setHandle(final Entity entity) {
+        this.entity = entity;
+    }
+
+    @Override
+    public String toString() {
+        return "BukkitEntity{" + "id=" + getEntityId() + '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BukkitEntity other = (BukkitEntity) obj;
+        return (this.getEntityId() == other.getEntityId());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + this.getEntityId();
+        return hash;
+    }
+
+    public void setMetadata(String metadataKey, MetadataValue newMetadataValue) {
+        server.getEntityMetadata().setMetadata(this, metadataKey, newMetadataValue);
+    }
+
+    public List<MetadataValue> getMetadata(String metadataKey) {
+        return server.getEntityMetadata().getMetadata(this, metadataKey);
+    }
+
+    public boolean hasMetadata(String metadataKey) {
+        return server.getEntityMetadata().hasMetadata(this, metadataKey);
+    }
+
+    public void removeMetadata(String metadataKey, Plugin owningPlugin) {
+        server.getEntityMetadata().removeMetadata(this, metadataKey, owningPlugin);
+    }
+
+    public boolean isInsideVehicle() {
+        return getHandle().ridingEntity != null && getHandle().ridingEntity instanceof EntityMinecart;
+    }
+
+    public boolean leaveVehicle() {
+        if (getHandle().ridingEntity == null || !(getHandle().ridingEntity instanceof EntityMinecart)) {
+            return false;
+        }
+
+        getHandle().ridingEntity = (null);
+        return true;
+    }
+
+    public org.bukkit.entity.Entity getVehicle() {
+        if (getHandle().ridingEntity == null || !(getHandle().ridingEntity instanceof EntityMinecart)) {
+            return null;
+        }
+        BukkitEntity j = this.getEntity(this.server, getHandle().ridingEntity);
+        return j;
+    }
+
+	public boolean canSee(BukkitPlayer bukkitPlayer) {
+		EntityPlayerMP j = bukkitPlayer.getHandle();
+		if (j.canEntityBeSeen(getHandle())) {
+			return true;
+		}
+		return false;
+	}
+}
