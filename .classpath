@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="interfaces"/>
+	<classpathentry kind="src" path="configurations"/>
+	<classpathentry kind="lib" path="/Minecraft/bin" sourcepath="/Minecraft/src">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/simon/minecraftforge-javadoc-4.2.5.305.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/simon/minecraft/forge/lib/asm-all-4.0.jar"/>
+	<classpathentry kind="lib" path="/home/simon/minecraft/forge/lib/commons-lang-2.3.jar"/>
+	<classpathentry kind="lib" path="/home/simon/minecraft/forge/lib/argo-2.25.jar"/>
+	<classpathentry kind="lib" path="/home/simon/minecraft/forge/lib/ebean-2.8.1.jar"/>
+	<classpathentry kind="lib" path="/home/simon/minecraft/forge/lib/gson-2.2.2.jar"/>
+	<classpathentry kind="lib" path="/home/simon/minecraft/forge/lib/guava-12.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/simon/minecraft/forge/lib/snakeyaml-1.9.jar"/>
+	<classpathentry kind="lib" path="/home/simon/minecraft/forge/lib/sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry kind="lib" path="/home/simon/.m2/repository/jline/jline/2.6/jline-2.6.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="jline"/>
+			<attribute name="maven.artifactId" value="jline"/>
+			<attribute name="maven.version" value="2.6"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

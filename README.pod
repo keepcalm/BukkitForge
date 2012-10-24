@@ -1,0 +1,19 @@
+=pod
+
+=head1 Bukkit4Vanilla - a Minecraft mod that ports the Bukkit plugin API to minecraft.
+ 
+ This is very WIP. Since i started doing this, i was mostly aiming for a server that didn't crash.
+ It can load plugins, it can run (very simple) ones, but not much more.
+ I'm working on fixing compatibility - I have a roadmap of plugins to get working, in ROADMAP.
+
+ Most of this mod is a fairly straight port from Craftbukkit, but I've had to modify parts
+ (and i anticipate modifiying more).
+
+=head1 GETTING IT WORKING IN MCP:
+ 
+ After unzipping the forge source, copy bukkit_at.cfg to forge/accesstransformers (create the folder if it's not there).
+ decompile as usual. 
+
+=head1 LICENSE:
+ 
+ This mod is licensed under the LGPL, the same as Craftbukkit.
