@@ -1,0 +1,34 @@
+package keepcalm.mods.bukkit.forgeHandler.commands;
+
+import org.bukkit.Bukkit;
+
+import keepcalm.mods.bukkit.asm.BukkitContainer;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.CommandBase;
+import net.minecraft.src.ICommandSender;
+/**
+ * Shuts down the server in a bukkit-friendly way.
+ * @author keepcalm
+ *
+ */
+public class BukkitCommandStop extends CommandBase {
+
+	@Override
+	public String getCommandName() {
+		return "stop";
+	}
+	
+	public boolean canCommandSenderUseCommand(ICommandSender sender) {
+		if (Bukkit.getPlayerExact(sender.getCommandSenderName()).hasPermission("org.bukkit.stop") || false) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public void processCommand(ICommandSender var1, String[] var2) {
+		BukkitContainer.bServer.shutdown();
+		MinecraftServer.getServer().stopServer();
+	}
+
+}
