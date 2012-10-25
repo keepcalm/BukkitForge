@@ -24,7 +24,6 @@ public class BukkitAccessTransformer extends AccessTransformer {
 	      }
 		 this.readMapFile("bukkit_at.cfg");
 	    //mapFileList = null;
-		// TODO Auto-generated constructor stub
 	}
 	public static void addTransformerMap(String mapFile) {
 		if(instance == null) {

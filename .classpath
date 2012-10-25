@@ -40,5 +40,6 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/simon/Desktop/jansi-1.9.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

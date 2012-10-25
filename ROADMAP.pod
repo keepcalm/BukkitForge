@@ -5,12 +5,15 @@
 =over 4
 
 =item * Essentials
- Might be complicated - it has it's own OfflinePlayer, i may have to start an independent port. We'll see...
+ 
+Might be complicated - it has it's own OfflinePlayer, i may have to start an independent port. We'll see...
 
 =item * MultiVerse
- Might also be complicated - uses aliases a fair bit. Working on it
+ 
+Might also be complicated - uses aliases a fair bit. Working on it
 
 =item * MobDisguise
- Not sure. Haven't tested it yet
+ 
+Not sure. Haven't tested it yet
 
 =back

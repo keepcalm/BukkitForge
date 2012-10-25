@@ -16,21 +16,32 @@ import net.minecraftforge.common.Property;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.discovery.ASMDataTable;
+import cpw.mods.fml.common.discovery.DirectoryDiscoverer;
+import cpw.mods.fml.common.discovery.ModCandidate;
+import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLLoadEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
+import cpw.mods.fml.relauncher.FMLCorePlugin;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.RelaunchClassLoader;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
 @TransformerExclusions
-public class BukkitContainer extends DummyModContainer {
+public class BukkitContainer extends BukkitModContainerBase {
 	public static BukkitServer bServer;
 	public File myConfigurationFile;
 	public boolean allowAnsi;
@@ -51,12 +62,14 @@ public class BukkitContainer extends DummyModContainer {
 		meta.description = "An implementation Bukkit API for vanilla Minecraft.";
 		if (FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER) {
 			super.setEnabledState(false);
-			meta.description = "An implementation Bukkit API for vanilla Minecraft - SMP ONLY";
+			meta.modId = null;
+			meta = null;
+			//meta.description = "An implementation Bukkit API for vanilla Minecraft - SMP ONLY";
 			return;
 		}
 		//meta.url = "http://www.minecraftforum.net/topic/909223-";
 	}
-
+	
 	public boolean registerBus(EventBus bus, LoadController controller) {
 		bus.register(this);
 		return true;
