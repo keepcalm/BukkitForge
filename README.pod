@@ -9,6 +9,8 @@ I'm working on fixing compatibility - I have a roadmap of plugins to get working
 Most of this mod is a fairly straight port from Craftbukkit, but I've had to modify parts
 (and i anticipate modifiying more).
 
+This is being ported to 1.4
+
 =head1 GETTING IT WORKING IN MCP:
  
 After unzipping the forge source, copy bukkit_at.cfg to forge/accesstransformers (create the folder if it's not there).
