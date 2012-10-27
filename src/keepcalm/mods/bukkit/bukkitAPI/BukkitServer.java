@@ -33,7 +33,7 @@ import net.minecraft.src.AnvilSaveConverter;
 import net.minecraft.src.AnvilSaveHandler;
 import net.minecraft.src.BanEntry;
 import net.minecraft.src.ChunkCoordinates;
-import net.minecraft.src.ConvertProgressUpdater;
+import net.minecraft.src.ConvertingProgressUpdate;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.DedicatedServer;
 import net.minecraft.src.EntityPlayer;
@@ -485,7 +485,7 @@ public class BukkitServer implements Server {
         AnvilSaveConverter converter = new AnvilSaveConverter(getWorldContainer());
         if (converter.isOldMapFormat(name)) {
             getLogger().info("Converting world '" + name + "'");
-            converter.convertMapFormat(name, new ConvertProgressUpdater(theServer));
+            converter.convertMapFormat(name, new ConvertingProgressUpdate(theServer));
         }
 
         int dimension = 10 + theServer.worldServers.length;
@@ -1006,12 +1006,12 @@ public class BukkitServer implements Server {
 	@Override
 	public int getSpawnRadius() {
 		
-		return theServer.spawnProtectionSize;
+		return theServer.settings.getIntProperty("spawn-protection", 2);
 	}
 
 	@Override
 	public void setSpawnRadius(int value) {
-		theServer.spawnProtectionSize = value;
+		theServer.settings.setProperty("spawn-protection", value);
 
 	}
 

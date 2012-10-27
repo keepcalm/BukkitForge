@@ -565,7 +565,7 @@ public class BukkitWorld implements World {
     }
 
     public void setFullTime(long time) {
-        world.setTime(time);
+        world.setWorldTime(time);
 
         // Forces the client to update to the new time immediately
         for (Player p : getPlayers()) {
@@ -581,7 +581,7 @@ public class BukkitWorld implements World {
     }
 
     public boolean createExplosion(double x, double y, double z, float power, boolean setFire) {
-    	Explosion boom = world.newExplosion(null, x, y, z, power, setFire);
+    	Explosion boom = world.createExplosion(null, x, y, z, power, setFire);
     	return true;
  
     	
@@ -901,7 +901,7 @@ public class BukkitWorld implements World {
         Validate.notNull(effect, "Effect cannot be null");
         Validate.notNull(location.getWorld(), "World cannot be null");
         int packetData = effect.getId();
-        Packet61DoorChange packet = new Packet61DoorChange(packetData, location.getBlockX(), location.getBlockY(), location.getBlockZ(), data);
+        Packet61DoorChange packet = new Packet61DoorChange(packetData, location.getBlockX(), location.getBlockY(), location.getBlockZ(), data, false);
         int distance;
         radius *= radius;
 
@@ -977,10 +977,7 @@ public class BukkitWorld implements World {
                 entity = new EntityExpBottle(world);
                 entity.setPositionAndRotation(x, y, z, 0, 0);
             } else if (Fireball.class.isAssignableFrom(clazz)) {
-                if (SmallFireball.class.isAssignableFrom(clazz)) {
                     entity = new EntitySmallFireball(world);
-                } else {
-                    entity = new EntityFireball(world);
                 }
                 ((EntityFireball) entity).setPositionAndRotation(x, y, z, yaw, pitch);
                 Vector direction = location.getDirection().multiply(10);
@@ -989,7 +986,6 @@ public class BukkitWorld implements World {
                 ((EntityFireball) entity).accelerationZ = direction.getZ();
                 
                 //(direction.getX(), direction.getY(), direction.getZ());
-            }
         } else if (Minecart.class.isAssignableFrom(clazz)) {
             if (PoweredMinecart.class.isAssignableFrom(clazz)) {
                 entity = new EntityMinecart(world, x, y, z, BukkitMinecart.Type.PoweredMinecart.getId());

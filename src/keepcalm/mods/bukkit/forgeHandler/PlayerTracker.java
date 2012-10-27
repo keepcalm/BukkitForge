@@ -8,7 +8,7 @@ import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.DedicatedServer;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.NetworkManager;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.TcpConnection;
 
 import org.bukkit.Bukkit;

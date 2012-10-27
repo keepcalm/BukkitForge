@@ -35,11 +35,11 @@ public class BukkitPainting extends BukkitEntity implements Painting {
         EntityPainting painting = this.getHandle();
         EnumArt oldArt = painting.art;
         painting.art = BukkitArt.BukkitToNotch(art);
-        painting.setDirection(painting.direction);
+        
         if (!force && painting.isDead) {
             // Revert painting since it doesn't fit
             painting.art = oldArt;
-            painting.setDirection(painting.direction);
+        //    painting.setDirection(painting.direction);
             return false;
         }
         this.update();
@@ -57,23 +57,23 @@ public class BukkitPainting extends BukkitEntity implements Painting {
     public boolean setFacingDirection(BlockFace face, boolean force) {
         Block block = getLocation().getBlock().getRelative(getAttachedFace()).getRelative(face.getOppositeFace()).getRelative(getFacing());
         EntityPainting painting = getHandle();
-        int x = (int) Math.round(painting.posX), y = (int) Math.round(painting.posY), z = (int) Math.round(painting.posZ), dir = painting.direction;
+        int x = (int) Math.round(painting.posX), y = (int) Math.round(painting.posY), z = (int) Math.round(painting.posZ), dir = painting.field_82332_a;
         painting.posX = block.getX();
         painting.posY = block.getY();
         painting.posZ = block.getZ();
         switch (face) {
         case EAST:
         default:
-            getHandle().setDirection(0);
+            getHandle().func_82328_a(0);
             break;
         case NORTH:
-            getHandle().setDirection(1);
+            getHandle().func_82328_a(1);
             break;
         case WEST:
-            getHandle().setDirection(2);
+            getHandle().func_82328_a(2);
             break;
         case SOUTH:
-            getHandle().setDirection(3);
+            getHandle().func_82328_a(3);
             break;
         }
         if (!force && painting.isDead) {
@@ -81,7 +81,7 @@ public class BukkitPainting extends BukkitEntity implements Painting {
             painting.posX = x;
             painting.posY = y;
             painting.posZ = z;
-            painting.setDirection(dir);
+            painting.func_82328_a(dir);
             return false;
         }
         this.update();
@@ -89,7 +89,7 @@ public class BukkitPainting extends BukkitEntity implements Painting {
     }
 
     public BlockFace getFacing() {
-        switch (this.getHandle().direction) {
+        switch (this.getHandle().field_82332_a) {
         case 0:
         default:
             return BlockFace.EAST;
@@ -109,7 +109,7 @@ public class BukkitPainting extends BukkitEntity implements Painting {
         painting.posY = getHandle().posY;
         painting.posZ = getHandle().posZ;
         painting.art = getHandle().art;
-        painting.setDirection(getHandle().direction);
+        painting.func_82328_a(getHandle().field_82332_a);
         getHandle().setDead();
         getHandle().velocityChanged = true; // because this occurs when the painting is broken, so it might be important
         world.spawnEntityInWorld(painting);

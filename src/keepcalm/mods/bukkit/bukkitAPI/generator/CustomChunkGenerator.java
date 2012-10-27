@@ -13,7 +13,10 @@ import net.minecraft.src.EnumCreatureType;
 import net.minecraft.src.ExtendedBlockStorage;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.IProgressUpdate;
+import net.minecraft.src.MapGenMineshaft;
+import net.minecraft.src.MapGenScatteredFeature;
 import net.minecraft.src.MapGenStronghold;
+import net.minecraft.src.MapGenVillage;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldProvider;
 import net.minecraft.src.WorldServer;
@@ -31,6 +34,9 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     private final Random random;
     private HashMap<int[],net.minecraft.src.Chunk> loadedChunks = new HashMap();
     private final MapGenStronghold strongholdGen = new MapGenStronghold();
+    private final MapGenVillage villageGen = new MapGenVillage();
+    private final MapGenScatteredFeature scatteredGen = new MapGenScatteredFeature();
+    private final MapGenMineshaft mineshaftGen = new MapGenMineshaft();
 
     private static class CustomBiomeGrid implements BiomeGrid {
         BiomeGenBase[] biome;
@@ -282,5 +288,21 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
 	@Override
 	public boolean unload100OldestChunks() {
 		return this.unloadChunks();
+	}
+
+
+
+	@Override
+	/**
+	 * Generate structure
+	 * @param x
+	 * @param y
+	 */
+	public void func_82695_e(int arg0, int arg1) {
+		
+		this.strongholdGen.generate(this, this.world, arg0, arg1, (byte[])null);
+		this.mineshaftGen.generate(this, this.world, arg0, arg1, (byte[])null);
+		this.scatteredGen.generate(this, this.world, arg0, arg1, (byte[])null);
+		this.villageGen.generate(this, this.world, arg0, arg1, (byte[])null);
 	}
 }

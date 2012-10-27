@@ -324,7 +324,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player {
         if (getHandle().playerNetServerHandler == null) return;
 
         int packetData = effect.getId();
-        Packet61DoorChange packet = new Packet61DoorChange(packetData, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), data);
+        Packet61DoorChange packet = new Packet61DoorChange(packetData, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), data, false);
         getHandle().playerNetServerHandler.sendPacketToPlayer(packet);
     }
 
@@ -661,7 +661,8 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player {
     }
 
     public void setBedSpawnLocation(Location location) {
-        getHandle().setSpawnChunk(new ChunkCoordinates(location.getBlockX(), location.getBlockY(), location.getBlockZ()));
+    	/* what does spawnForced mean? */
+        getHandle().setSpawnChunk(new ChunkCoordinates(location.getBlockX(), location.getBlockY(), location.getBlockZ()), false);
         //getHandle().spawnWorld = location.getWorld().getName();
     }
 
@@ -900,7 +901,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player {
      */
     public boolean setWindowProperty(Property prop, int value) {
         Container container = getHandle().craftingInventory;
-        /*if (container.get() != prop.getType()) {
+        /*if (container.updateCraftingResults()() != prop.getType()) {
             return false;
         }
         getHandle().send(container, prop.getId(), value);*/

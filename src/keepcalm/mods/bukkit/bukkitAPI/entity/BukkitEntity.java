@@ -104,7 +104,7 @@ public abstract class BukkitEntity implements org.bukkit.entity.Entity {
         }
         else if (entity instanceof EntityDragonPart) {
             EntityDragonPart part = (EntityDragonPart) entity;
-            if (part.entityDragonObj instanceof EntityDragonBase) { return new BukkitEnderDragonPart(server, (EntityDragonPart) entity); }
+            if (part.entityDragonObj instanceof EntityDragonPart) { return new BukkitEnderDragonPart(server, (EntityDragonPart) entity); }
             else { return new BukkitComplexPart(server, (EntityDragonPart) entity); }
         }
         else if (entity instanceof EntityXPOrb) { return new BukkitExperienceOrb(server, (EntityXPOrb) entity); }

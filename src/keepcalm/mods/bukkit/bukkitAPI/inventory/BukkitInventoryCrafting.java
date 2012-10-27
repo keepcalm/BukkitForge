@@ -1,5 +1,6 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntityHuman;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.IInventory;
@@ -165,7 +166,10 @@ public class BukkitInventoryCrafting extends BukkitInventory implements Crafting
     			width++;
     		}
     	}
-    	net.minecraft.src.ItemStack recipe = CraftingManager.getInstance().findMatchingRecipe((InventoryCrafting) getInventory());
+    	if (getViewers().isEmpty()) {
+    		return null;
+    	}
+    	net.minecraft.src.ItemStack recipe = CraftingManager.getInstance().func_82787_a((InventoryCrafting) getInventory(), ((BukkitEntityHuman) this.getViewers().get(0)).getHandle().worldObj);
     	if (recipe == null) {
     		return null;
     	}

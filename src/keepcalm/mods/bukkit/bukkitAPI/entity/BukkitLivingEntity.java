@@ -279,11 +279,8 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
         } else if (Arrow.class.isAssignableFrom(projectile)) {
             launch = new EntityArrow(world, getHandle(), 1);
         } else if (Fireball.class.isAssignableFrom(projectile)) {
-            if (SmallFireball.class.isAssignableFrom(projectile)) {
+            //if (SmallFireball.class.isAssignableFrom(projectile)) {
                 launch = new EntitySmallFireball(world);
-            } else {
-                launch = new EntityFireball(world);
-            }
 
             Location location = getEyeLocation();
             Vector direction = location.getDirection().multiply(10);

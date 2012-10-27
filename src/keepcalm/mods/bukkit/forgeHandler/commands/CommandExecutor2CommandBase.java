@@ -30,7 +30,6 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	 * 
 	 * @param theBukkitExecer - the command that this instance will handle
 	 * @param name - the name of the command
-	 * @param wantedPerms - the permissions this command requires to run
 	 */
 	public CommandExecutor2CommandBase(Command cmd, String name) {
 		/*this.name = name;

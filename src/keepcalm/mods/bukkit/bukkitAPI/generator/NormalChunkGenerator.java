@@ -124,4 +124,9 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
 	public boolean unload100OldestChunks() {
 		return this.unloadChunks();
 	}
+
+	@Override
+	public void func_82695_e(int arg0, int arg1) {
+		this.provider.func_82695_e(arg0, arg1);
+	}
 }
