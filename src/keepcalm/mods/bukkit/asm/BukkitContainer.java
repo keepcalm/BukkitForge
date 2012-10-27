@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.ServerGUI;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
@@ -54,6 +56,8 @@ public class BukkitContainer extends DummyModContainer {
 		super(new ModMetadata());
 		
 		instance = this;
+		BukkitContainer.bukkitLogger = Logger.getLogger("BukkitAPI");
+		LogManager.getLogManager().addLogger(BukkitContainer.bukkitLogger);
 		ModMetadata meta = this.getMetadata();
 		meta.modId = "Bukkit4Vanilla";
 		meta.name = "Bukkit For Vanilla";
@@ -67,6 +71,8 @@ public class BukkitContainer extends DummyModContainer {
 			//meta.description = "An implementation Bukkit API for vanilla Minecraft - SMP ONLY";
 			return;
 		}
+		ServerGUI.logger = bukkitLogger;
+		MinecraftServer.logger.setParent(bukkitLogger);
 		//meta.url = "http://www.minecraftforum.net/topic/909223-";
 	}
 	
@@ -124,13 +130,13 @@ public class BukkitContainer extends DummyModContainer {
 		System.out.println("[Bukkit API]: Complete! Registering handlers...");
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		// FIXME: For some reason this bugs forge...
-		/*try {
+		try {
 			MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
 		}
 		catch (Throwable e) {
 			FMLCommonHandler.instance().getFMLLogger().severe("[Bukkit API]: FAILED to add event handers:");
 			//e.printStackTrace();
-		}*/
+		}
 		System.out.println("Done!");
 	}
 	@Subscribe
@@ -141,9 +147,7 @@ public class BukkitContainer extends DummyModContainer {
 		}
 		System.out.println("[Bukkit API]: Starting the API, implementing Bukkit API version " + BukkitServer.version);
 		//bServer = new BukkitServer(ev.getServer(), ev.getServer().getConfigurationManager());
-		Logger globalLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-		this.bukkitLogger = Logger.getLogger("BukkitAPI");
-		LogManager.getLogManager().addLogger(bukkitLogger);
+		
 		Thread bukkitThread = new Thread(new ThreadGroup("Bukkit4Vanilla"), new BukkitStarter(), "BukkitCoreAPI-0");
 		bukkitThread.setDaemon(true);
 		bukkitThread.start();
