@@ -1,8 +1,10 @@
 package keepcalm.mods.bukkit.asm;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -10,6 +12,7 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.DedicatedServer;
 import net.minecraft.src.ServerGUI;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,27 +21,17 @@ import net.minecraftforge.common.Property;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.discovery.ASMDataTable;
-import cpw.mods.fml.common.discovery.DirectoryDiscoverer;
-import cpw.mods.fml.common.discovery.ModCandidate;
-import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLLoadEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.FMLInjectionData;
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
-import cpw.mods.fml.relauncher.FMLCorePlugin;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.RelaunchClassLoader;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
@@ -48,34 +41,51 @@ public class BukkitContainer extends DummyModContainer {
 	public File myConfigurationFile;
 	public boolean allowAnsi;
 	public String pluginFolder;
+	public static boolean showAllLogs;
 	public static String serverUUID;
 	public static Logger bukkitLogger ;//.getLogger("[Bukkit API]");
 	private static BukkitContainer instance;
+	private static ThreadGroup theThreadGroup;
 	
 	public BukkitContainer() {
 		super(new ModMetadata());
-		
+		if (MinecraftServer.getServer().getGuiEnabled())
+			FMLRelaunchLog.log.getLogger().addHandler(new BukkitLogHandler());
 		instance = this;
-		BukkitContainer.bukkitLogger = Logger.getLogger("BukkitAPI");
+		/*BukkitContainer.bukkitLogger = FMLRelaunchLog.log.getLogger();
+		if (bukkitLogger == null) {
+			bukkitLogger = FMLCommonHandler.instance().getFMLLogger();
+		}*/
+		bukkitLogger = Logger.getLogger("BukkitAPI");
 		LogManager.getLogManager().addLogger(BukkitContainer.bukkitLogger);
+		/*bukkitLogger.setParent(FMLRelaunchLog.log.getLogger());
+		Logger stdOut = Logger.getLogger("STDOUT");
+        stdOut.setParent(BukkitContainer.bukkitLogger);
+        stdOut.setUseParentHandlers(true);
+        Logger stdErr = Logger.getLogger("STDERR");
+        stdErr.setParent(BukkitContainer.bukkitLogger);
+        stdErr.setUseParentHandlers(true);*/
 		ModMetadata meta = this.getMetadata();
 		meta.modId = "Bukkit4Vanilla";
 		meta.name = "Bukkit For Vanilla";
-		meta.version = BukkitServer.version;
+		meta.version = BukkitServer.version + ", implementing Bukkit version " + BukkitServer.apiVer;
 		meta.authorList = Arrays.asList(new String[]{"KeepCalm"});
 		meta.description = "An implementation Bukkit API for vanilla Minecraft.";
 		if (FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER) {
 			super.setEnabledState(false);
 			meta.modId = null;
 			meta = null;
+			
 			//meta.description = "An implementation Bukkit API for vanilla Minecraft - SMP ONLY";
 			return;
 		}
+		
 		ServerGUI.logger = bukkitLogger;
-		MinecraftServer.logger.setParent(bukkitLogger);
+		
+		
+		
 		//meta.url = "http://www.minecraftforum.net/topic/909223-";
 	}
-	
 	public boolean registerBus(EventBus bus, LoadController controller) {
 		bus.register(this);
 		return true;
@@ -83,7 +93,9 @@ public class BukkitContainer extends DummyModContainer {
 	@Subscribe
 	public void preInit(FMLPreInitializationEvent ev) {
 		
-		
+		for (Handler i : MinecraftServer.logger.getHandlers()) {
+			System.out.println(i.getClass().getName());
+		}
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 			
 			FMLCommonHandler.instance().getFMLLogger().warning("Bukkit For Vanilla is currently only a server-side mod.");
@@ -93,21 +105,30 @@ public class BukkitContainer extends DummyModContainer {
 			FMLCommonHandler.instance().getFMLLogger().severe("The bukkit API as a forge mod on bukkit? *mind blown*");
 			return;
 		}
-		System.out.println("[Bukkit API]: Initializing configuration...");
+		this.bukkitLogger.info("Initializing configuration...");
 		myConfigurationFile = ev.getSuggestedConfigurationFile();
+		
 		Configuration config = new Configuration(myConfigurationFile);
 		config.addCustomCategoryComment("consoleConfig", "Configuration for the server console");
 		config.addCustomCategoryComment("dontTouchThis", "Things which are best left untouched");
-		Property colour = config.get("consoleConfig", "enablecolour", true);
+		
+		Property colour = config.get("consoleConfig", "enablecolour", DedicatedServer.getServer().getGuiEnabled() ? false : true);
 		colour.comment = "Enable coloured ANSI console output";
-		this.allowAnsi = colour.getBoolean(true);
+		this.allowAnsi = colour.getBoolean(false);
+		
 		Property plugins = config.get(Configuration.CATEGORY_GENERAL, "pluginDir", "plugins");
 		plugins.comment = "The folder to look for plugins in.";
 		this.pluginFolder = plugins.value;
+		
 		Property suuid = config.get("dontTouchThis", "serverUUID", this.genUUID());
 		System.out.println("[Bukkit API]: Set UUID to " + suuid.value);
 		suuid.comment = "The UUID of the server. Don't touch this or it might break your plugins.";
 		this.serverUUID = suuid.value;
+		
+		Property showAllLogs = config.get(Configuration.CATEGORY_GENERAL, "printForgeLogToGui", false);
+		showAllLogs.comment = "Print stuff that's outputted to the logs to the GUI as it happens.";
+		this.showAllLogs = showAllLogs.getBoolean(false);
+		
 		config.save();
 		
 		
@@ -129,9 +150,13 @@ public class BukkitContainer extends DummyModContainer {
 	public void init(FMLInitializationEvent ev) {
 		System.out.println("[Bukkit API]: Complete! Registering handlers...");
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
+		PrintStream oldErr = System.err;
 		// FIXME: For some reason this bugs forge...
 		try {
+			// get rid of those annoying messages!
+			System.setErr(null);
 			MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
+			System.setErr(oldErr);
 		}
 		catch (Throwable e) {
 			FMLCommonHandler.instance().getFMLLogger().severe("[Bukkit API]: FAILED to add event handers:");
@@ -146,12 +171,12 @@ public class BukkitContainer extends DummyModContainer {
 			return;
 		}
 		System.out.println("[Bukkit API]: Starting the API, implementing Bukkit API version " + BukkitServer.version);
-		//bServer = new BukkitServer(ev.getServer(), ev.getServer().getConfigurationManager());
-		
-		Thread bukkitThread = new Thread(new ThreadGroup("Bukkit4Vanilla"), new BukkitStarter(), "BukkitCoreAPI-0");
+		this.theThreadGroup = new ThreadGroup("Bukkit4Vanilla");
+		Thread bukkitThread = new Thread(theThreadGroup, new BukkitStarter(), "BukkitCoreAPI-0");
 		bukkitThread.setDaemon(true);
 		bukkitThread.start();
-		System.out.println("Hello!");
+		
+		//System.out.println("Hello!");
 		//bServer.resetRecipes();
 	}
 }

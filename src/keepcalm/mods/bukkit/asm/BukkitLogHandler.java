@@ -15,7 +15,7 @@ public class BukkitLogHandler extends Handler {
 
 	@Override
 	public void publish(LogRecord arg0) {
-		if (arg0.getLoggerName().equalsIgnoreCase("STDOUT") || arg0.getLoggerName().equalsIgnoreCase("STDERR")) {
+		if (arg0.getLoggerName().equalsIgnoreCase("STDOUT") || arg0.getLoggerName().equalsIgnoreCase("STDERR") || BukkitContainer.showAllLogs) {
 			MinecraftServer.logger.log(arg0.getLevel(), "[" + arg0.getLoggerName() + "] " + arg0.getMessage());
 		}
 	}

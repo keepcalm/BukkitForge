@@ -53,6 +53,9 @@ import net.minecraft.src.WorldManager;
 import net.minecraft.src.WorldServer;
 import net.minecraft.src.WorldSettings;
 import net.minecraft.src.WorldType;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -110,12 +113,16 @@ import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.FMLCorePlugin;
+import cpw.mods.fml.relauncher.FMLInjectionData;
 //import jline.console.ConsoleReader;
 
 
 public class BukkitServer implements Server {
-	public static final String version = "1.3.2-R1.1-SNAPSHOT";
+	public static final String apiVer = "1.3.2-R1.1-SNAPSHOT";
+	public static final String version = "1.4.2-0";
 	private static BukkitServer instance;
 	private DedicatedServer theServer;
 	//private BukkitServer bukkitServer;
@@ -249,13 +256,13 @@ public class BukkitServer implements Server {
 	@Override
 	public String getName() {
 		
-		return "Minecraft Vanilla Server, using the ForgeModLoader, MinecraftForge and BukkitForVanilla.";
+		return String.format("Minecraft Server %s, using FML %s, MinecraftForge %s, %s", new Object[] {theServer.getMinecraftVersion(), Loader.instance().getFMLVersionString(), ForgeVersion.getVersion(), Loader.instance().getMCPVersionString()});
 	}
 
 	@Override
 	public String getVersion() {
 		
-		return "Minecraft " + theServer.getMinecraftVersion() + ", implementing Bukkit API " + this.version;
+		return String.format("BukkitForVanilla %s", new Object[] {this.getBukkitVersion()});
 	}
 
 	@Override
