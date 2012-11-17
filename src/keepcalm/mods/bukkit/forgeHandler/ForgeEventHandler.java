@@ -111,11 +111,14 @@ public class ForgeEventHandler {
 	/*
 	@ForgeSubscribe
 	public void bonemeal(BonemealEvent ev) {
-	}*//*
-	@ForgeSubscribe
-	public void playerSaysHai(EntityInteractEvent ev) {
-		
 	}*/
+	@ForgeSubscribe
+	public void playerSaysHai(PlayerInteractEvent ev) {
+		if (ev.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK) {
+			
+		}
+	}
+
 	@ForgeSubscribe
 	public void pickUp(EntityItemPickupEvent ev) {
 		BukkitEventFactory.callItemDespawnEvent(ev.item);

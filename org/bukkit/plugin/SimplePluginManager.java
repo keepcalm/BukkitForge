@@ -117,13 +117,10 @@ public final class SimplePluginManager implements PluginManager {
 
         // This is where it figures out all possible plugins
         for (File file : directory.listFiles()) {
-        	System.out.println("File: " + file.getAbsolutePath());
             PluginLoader loader = null;
             for (Pattern filter : filters) {
-            	System.out.println("Filter: " + filter.pattern());
                 Matcher match = filter.matcher(file.getName());
                 if (match.find()) {
-                	System.out.println("Matched!");
                     loader = fileAssociations.get(filter);
                 }
             }
@@ -645,9 +642,6 @@ public final class SimplePluginManager implements PluginManager {
     }
 
     public Set<Permissible> getPermissionSubscriptions(String permission) {
-    	if (permission == null) {
-    		return ImmutableSet.of();
-    	}
         String name = permission.toLowerCase();
         Map<Permissible, Boolean> map = permSubs.get(name);
 

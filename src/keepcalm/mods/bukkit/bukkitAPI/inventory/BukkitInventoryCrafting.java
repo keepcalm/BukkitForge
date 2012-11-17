@@ -169,7 +169,7 @@ public class BukkitInventoryCrafting extends BukkitInventory implements Crafting
     	if (getViewers().isEmpty()) {
     		return null;
     	}
-    	net.minecraft.src.ItemStack recipe = CraftingManager.getInstance().func_82787_a((InventoryCrafting) getInventory(), ((BukkitEntityHuman) this.getViewers().get(0)).getHandle().worldObj);
+    	net.minecraft.src.ItemStack recipe = CraftingManager.getInstance().findMatchingRecipe((InventoryCrafting) getInventory(), ((BukkitEntityHuman) this.getViewers().get(0)).getHandle().worldObj);
     	if (recipe == null) {
     		return null;
     	}

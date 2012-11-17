@@ -194,7 +194,6 @@ public class YamlConfiguration extends FileConfiguration {
      * @throws IllegalArgumentException Thrown if stream is null
      */
     public static YamlConfiguration loadConfiguration(InputStream stream) {
-    	
         Validate.notNull(stream, "Stream cannot be null");
 
         YamlConfiguration config = new YamlConfiguration();

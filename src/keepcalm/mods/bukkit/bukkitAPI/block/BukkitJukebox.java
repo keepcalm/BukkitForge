@@ -2,6 +2,9 @@ package keepcalm.mods.bukkit.bukkitAPI.block;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import net.minecraft.src.BlockJukeBox;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemRecord;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntityRecordPlayer;
 
 import org.bukkit.Effect;
@@ -9,6 +12,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Jukebox;
 //import org.bukkit.craftbukkit.BukkitWorld;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class BukkitJukebox extends BukkitBlockState implements Jukebox {
     private final BukkitWorld world;
@@ -22,14 +27,16 @@ public class BukkitJukebox extends BukkitBlockState implements Jukebox {
     }
 
     public Material getPlaying() {
-        return Material.getMaterial(jukebox.record);
+        return Material.getMaterial(jukebox.record.itemID);
     }
 
     public void setPlaying(Material record) {
         if (record == null) {
             record = Material.AIR;
         }
-        jukebox.record = record.getId();
+        
+        
+        jukebox.record = new ItemStack(Item.itemsList[record.getId() - 256]);
         jukebox.updateEntity();
         if (record == Material.AIR) {
             world.getHandle().setBlockMetadata(getX(), getY(), getZ(), 0);
