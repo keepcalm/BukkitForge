@@ -992,4 +992,16 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player {
 		this.sendBlockChange(loc, material.getId(), data);
 		
 	}
+
+	@Override
+	public void giveExpLevels(int amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setBedSpawnLocation(Location location, boolean force) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -100,4 +100,9 @@ public class BukkitInventoryPlayer extends BukkitInventory implements org.bukkit
 		return realInv.currentItem;
 	}
 
+	@Override
+	public int clear(int id, int data) {
+		return realInv.clearInventory(id, data);
+	}
+
 }

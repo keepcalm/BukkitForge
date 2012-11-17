@@ -22,8 +22,8 @@ public class BukkitAccessTransformer extends AccessTransformer {
 	         String file = (String)var2.next();
 	         this.readMapFile(file);
 	      }
-		 if (System.getProperty("keepcalm.isMCPEnv", "potato") == "potato" ) {
-			 this.readMapFile("bukkit_at.cfg");
+		 if (!ObfuscationMappings.isObfuscated) {
+			 readMapFile("/bukkit_at.cfg");
 		 }
 	    //mapFileList = null;
 	}

@@ -178,7 +178,7 @@ public class BukkitWorld implements World {
     private int monsterSpawn = -1;
     private int animalSpawn = -1;
     private int waterAnimalSpawn = -1;
-
+    private int ambientSpawn = -1;
     private static final Random rand = new Random();
 
     public BukkitWorld(WorldServer world, ChunkGenerator gen, Environment env) {
@@ -1308,4 +1308,36 @@ public class BukkitWorld implements World {
         // TODO
         getHandle().playSound(x, y, z, BukkitSound.getSound(sound), volume, pitch);
     }
+
+	@Override
+	public int getAmbientSpawnLimit() {
+		// TODO Auto-generated method stub
+		return ambientSpawn;
+	}
+
+	@Override
+	public void setAmbientSpawnLimit(int limit) {
+		ambientSpawn = limit;
+	}
+
+	@Override
+	public String[] getGameRules() {
+		return world.getGameRules().getRules();
+	}
+
+	@Override
+	public String getGameRuleValue(String rule) {
+		return world.getGameRules().getGameRuleStringValue(rule);
+	}
+
+	@Override
+	public boolean setGameRuleValue(String rule, String value) {
+		world.getGameRules().addGameRule(rule, value);
+		return true;
+	}
+
+	@Override
+	public boolean isGameRule(String rule) {
+		return world.getGameRules().hasRule(rule);
+	}
 }

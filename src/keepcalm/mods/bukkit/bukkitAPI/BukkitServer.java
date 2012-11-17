@@ -1266,6 +1266,14 @@ public class BukkitServer implements Server {
 	public boolean isFauxSleeping(String username) {
 		return this.fauxSleeping.containsKey(username) ? this.fauxSleeping.get(username) : false;
 	}
+	@Override
+	public boolean isHardcore() {
+		return theServer.isHardcore();
+	}
+	@Override
+	public int getAmbientSpawnLimit() {
+		return -1;
+	}
 	
 
 }
