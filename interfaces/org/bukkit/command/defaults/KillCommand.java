@@ -1,9 +1,14 @@
 package org.bukkit.command.defaults;
 
+import java.util.List;
+
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+
+import com.google.common.collect.ImmutableList;
 
 public class KillCommand extends VanillaCommand {
     public KillCommand() {
@@ -25,7 +30,7 @@ public class KillCommand extends VanillaCommand {
             if (ede.isCancelled()) return true;
 
             ede.getEntity().setLastDamageCause(ede);
-            player.damage(ede.getDamage());
+            player.setHealth(0);
             sender.sendMessage("Ouch. That look like it hurt.");
         } else {
             sender.sendMessage("You can only perform this command as a player");
@@ -35,7 +40,11 @@ public class KillCommand extends VanillaCommand {
     }
 
     @Override
-    public boolean matches(String input) {
-        return input.equalsIgnoreCase("kill");
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+        Validate.notNull(sender, "Sender cannot be null");
+        Validate.notNull(args, "Arguments cannot be null");
+        Validate.notNull(alias, "Alias cannot be null");
+
+        return ImmutableList.of();
     }
 }

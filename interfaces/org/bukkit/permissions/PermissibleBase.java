@@ -85,9 +85,7 @@ public class PermissibleBase implements Permissible {
         if (perm == null) {
             throw new IllegalArgumentException("Permission cannot be null");
         }
-        if (perm.getName() == null) {
-        	throw new IllegalArgumentException("Permission name can't be null!");
-        }
+
         String name = perm.getName().toLowerCase();
 
         if (isPermissionSet(name)) {

@@ -476,6 +476,13 @@ public interface Server extends PluginMessageRecipient {
     public boolean getAllowFlight();
 
     /**
+     * Gets whether the server is in hardcore mode or not.
+     *
+     * @return Whether this server is in hardcore mode or not.
+     */
+    public boolean isHardcore();
+
+    /**
      * Gets whether to use vanilla (false) or exact behaviour (true).
      *
      * Vanilla behaviour: check for collisions and move the player if needed.
@@ -640,6 +647,12 @@ public interface Server extends PluginMessageRecipient {
      * @returns The water animal spawn limit
      */
     int getWaterAnimalSpawnLimit();
+
+    /**
+     * Gets user-specified limit for number of ambient mobs that can spawn in a chunk
+     * @returns The ambient spawn limit
+     */
+    int getAmbientSpawnLimit();
 
     /**
      * Returns true if the current {@link Thread} is the server's primary thread
