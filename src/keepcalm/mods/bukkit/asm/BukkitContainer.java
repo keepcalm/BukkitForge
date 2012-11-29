@@ -35,7 +35,6 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
-@TransformerExclusions
 public class BukkitContainer extends DummyModContainer {
 	public static BukkitServer bServer;
 	public File myConfigurationFile;
@@ -44,6 +43,8 @@ public class BukkitContainer extends DummyModContainer {
 	public static boolean showAllLogs;
 	public static String serverUUID;
 	public static Logger bukkitLogger ;//.getLogger("[Bukkit API]");
+	
+	
 	private static BukkitContainer instance;
 	private static ThreadGroup theThreadGroup;
 	
@@ -56,15 +57,8 @@ public class BukkitContainer extends DummyModContainer {
 		if (bukkitLogger == null) {
 			bukkitLogger = FMLCommonHandler.instance().getFMLLogger();
 		}*/
-		bukkitLogger = Logger.getLogger("BukkitAPI");
-		LogManager.getLogManager().addLogger(BukkitContainer.bukkitLogger);
-		/*bukkitLogger.setParent(FMLRelaunchLog.log.getLogger());
-		Logger stdOut = Logger.getLogger("STDOUT");
-        stdOut.setParent(BukkitContainer.bukkitLogger);
-        stdOut.setUseParentHandlers(true);
-        Logger stdErr = Logger.getLogger("STDERR");
-        stdErr.setParent(BukkitContainer.bukkitLogger);
-        stdErr.setUseParentHandlers(true);*/
+
+        
 		ModMetadata meta = this.getMetadata();
 		meta.modId = "Bukkit4Vanilla";
 		meta.name = "Bukkit For Vanilla";
@@ -80,7 +74,7 @@ public class BukkitContainer extends DummyModContainer {
 			return;
 		}
 		
-		ServerGUI.logger = bukkitLogger;
+		
 		
 		
 		
@@ -92,7 +86,9 @@ public class BukkitContainer extends DummyModContainer {
 	}
 	@Subscribe
 	public void preInit(FMLPreInitializationEvent ev) {
-		
+		bukkitLogger = ev.getModLog();
+		bukkitLogger.setParent(ServerGUI.logger);
+		//ServerGUI.logger = bukkitLogger;
 		for (Handler i : MinecraftServer.logger.getHandlers()) {
 			System.out.println(i.getClass().getName());
 		}

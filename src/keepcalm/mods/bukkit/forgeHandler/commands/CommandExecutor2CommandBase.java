@@ -11,6 +11,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
+
+import com.google.common.base.Joiner;
 /**
  * 
  * A basic Bukkit2ICommand command handler
@@ -44,7 +46,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	
 	public List<String> addTabCompletionOptions(ICommandSender who, String[] args) {
 		
-		return bukkitCommandInstance.tabComplete(new BukkitCommandSender(who), args);
+		return bukkitCommandInstance.tabComplete(new BukkitCommandSender(who),name , args);
 	}
 	
 	public List<String> getCommandAliases() {
@@ -53,7 +55,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	}
 	
 	public String getCommandUsage(ICommandSender who) {
-		return bukkitCommandInstance.getDescription();
+		return bukkitCommandInstance.getUsage();
 	}
 	
 	public boolean canCommandSenderUseCommand(ICommandSender who) {
@@ -72,10 +74,17 @@ public class CommandExecutor2CommandBase extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
-		bukkitCommandInstance.execute(new BukkitCommandSender(var1), this.name, var2);
+		try {
+			System.out.println("Begin execution: " + name + " " + Joiner.on(' ').join(var2));
+			bukkitCommandInstance.execute(new BukkitCommandSender(var1), this.name, var2);
+		}
+		catch (Throwable e) {
+			e.printStackTrace();
+		}
 
 	}
 	public void execute(CommandSender g, String usedName, String[] args) {
+		System.out.println("Begin execution: " + usedName + " " + Joiner.on(' ').join(args));
 		bukkitCommandInstance.execute(g, usedName, args);
 	}
 

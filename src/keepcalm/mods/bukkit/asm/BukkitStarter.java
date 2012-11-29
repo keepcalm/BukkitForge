@@ -1,10 +1,12 @@
 package keepcalm.mods.bukkit.asm;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.CrashReport;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
 public class BukkitStarter implements Runnable {
@@ -36,14 +38,8 @@ public class BukkitStarter implements Runnable {
 			BukkitContainer.bServer = new BukkitServer(MinecraftServer.getServer(), MinecraftServer.getServer().getConfigurationManager());
 		}
 		catch (Exception e) {
-			e.printStackTrace();
-			//MinecraftException ex = new MinecraftException("Failed to launch the Bukkit API!");
-			CrashReport c = new CrashReport("The mod Bukkit4Vanilla failed to launch", e);
-			//c.("Bukkit API Details", "Error encountered: " + e.getStackTrace());
-			c.saveToFile(c.getFile());
-			MinecraftServer.logger.severe(c.getCompleteReport());
-			MinecraftServer.logger.severe("You game will now be stopped. Please report this to the mod developer.");
 			
+			FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE, "Something real bad happened! The BukkitAPI will not be running for this Minecraft session.", e);
 //			MinecraftServer.getServer().stopServer();
 		}
 

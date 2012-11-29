@@ -121,8 +121,8 @@ import cpw.mods.fml.relauncher.FMLInjectionData;
 
 
 public class BukkitServer implements Server {
-	public static final String apiVer = "1.3.2-R1.1-SNAPSHOT";
-	public static final String version = "1.4.2-0";
+	public static final String apiVer = "1.4.2-R0.2-BETA";
+	public static final String version = "1.4.4-0";
 	private static BukkitServer instance;
 	private DedicatedServer theServer;
 	//private BukkitServer bukkitServer;
@@ -130,7 +130,7 @@ public class BukkitServer implements Server {
 	private YamlConfiguration bukkitConfig;
 	private Yaml yaml = new Yaml(new SafeConstructor());
 	
-	private BukkitLogHandler theLogger;
+	private Logger theLogger;
 	private ServicesManager servicesManager = new SimpleServicesManager();
 
 	private BukkitCommandMap commandMap = new BukkitCommandMap(this);
@@ -185,7 +185,7 @@ public class BukkitServer implements Server {
 		if (theServer.getGuiEnabled()) {
 			theServer.logInfo("Bukkit API for vanilla version " + this.version + " initialized");
 		}
-		this.theLogger = new BukkitLogHandler();
+		this.theLogger = BukkitContainer.bukkitLogger;
 		Bukkit.setServer(this);
 		
 		

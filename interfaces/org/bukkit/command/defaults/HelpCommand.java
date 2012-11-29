@@ -34,7 +34,7 @@ public class HelpCommand extends VanillaCommand {
     @Override
     public boolean execute(CommandSender sender, String currentAlias, String[] args) {
         if (!testPermission(sender)) return true;
-
+        System.out.println("This is the BUKKIT edition of /help!");
         String command;
         int pageNumber;
         int pageHeight;
