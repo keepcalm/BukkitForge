@@ -9,12 +9,26 @@ I'm working on fixing compatibility - I have a roadmap of plugins to get working
 Most of this mod is a fairly straight port from Craftbukkit, but I've had to modify parts
 (and i anticipate modifiying more).
 
-This is being ported to 1.4
+This is ported to 1.4, and works fine on 1.4.5
 
 =head1 GETTING IT WORKING IN MCP:
  
-After unzipping the forge source, copy bukkit_at.cfg to forge/accesstransformers (create the folder if it's not there).
+After unzipping the forge source, copy bukkit_at.cfg to forge/accesstransformers (create the folder if it's not there), and copy
+all the files in 'lib/' (excluding bukkitAPI.jar) into the lib folder in mcp.
 decompile as usual. 
+You will also need to add the files in the 'lib' folder (excluding bukkitAPI.jar) into the projects in eclipse.
+
+=head1 FOR BUKKIT DEVS WHO WANT TO ENSURE COMPATIBILITY
+
+If your mod does NOT use guava, you're fine, it should work.
+
+If your mod DOES use guava, you need to add 'guava10' before all of your guava imports.
+The reason this is required is FML uses guava 12 which is not compatible with guava 10.
+So Bukkit4Vanilla ships with guava 10 in 'guava10.com.google.xxx' rather than 'com.google.xxx'.
+
+=head1 OMG, LIKE, MAH PLGINS DNT LOAD!!!!!1111one!1eleven
+
+Speak english, and please, report it in issues!
 
 =head1 LICENSE:
  
