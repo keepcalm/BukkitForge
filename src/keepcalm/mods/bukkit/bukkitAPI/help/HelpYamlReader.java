@@ -34,7 +34,13 @@ public class HelpYamlReader {
 			}
         }
         catch (Exception e) {
-        	e.printStackTrace();
+        	try {
+        		e.printStackTrace();
+        	}
+        	catch (Exception ex) {
+        		// ...
+        		ex.printStackTrace();
+        	}
         }
         try {
             helpYaml = YamlConfiguration.loadConfiguration(helpYamlFile);

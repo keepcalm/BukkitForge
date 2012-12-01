@@ -1,6 +1,7 @@
 package keepcalm.mods.bukkit.asm;
 
 import java.io.File;
+import java.nio.CharBuffer;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Random;
@@ -60,7 +61,6 @@ public class BukkitContainer extends DummyModContainer {
 			bukkitLogger = FMLCommonHandler.instance().getFMLLogger();
 		}*/
 
-        
 		ModMetadata meta = this.getMetadata();
 		meta.modId = "Bukkit4Vanilla";
 		meta.name = "Bukkit For Vanilla";

@@ -28,6 +28,7 @@ import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCustom;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.EntityMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.PlayerMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.WorldMetadataStore;
+import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AnvilSaveConverter;
 import net.minecraft.src.AnvilSaveHandler;
@@ -129,7 +130,7 @@ public class BukkitServer implements Server {
 	private net.minecraft.src.ServerConfigurationManager configMan;
 	private YamlConfiguration bukkitConfig;
 	private Yaml yaml = new Yaml(new SafeConstructor());
-	
+	private B4VScheduler scheduler = new B4VScheduler();
 	private Logger theLogger;
 	private ServicesManager servicesManager = new SimpleServicesManager();
 
@@ -448,7 +449,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public BukkitScheduler getScheduler() {
-		return null;
+		return scheduler;
 	//	return null;
 	}
 
