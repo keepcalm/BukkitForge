@@ -23,7 +23,13 @@ public class BukkitAccessTransformer extends AccessTransformer {
 	         this.readMapFile(file);
 	      }
 		 if (!ObfuscationMappings.isObfuscated) {
-			 readMapFile("/bukkit_at.cfg");
+			 try {
+				 readMapFile("/bukkit_at.cfg");
+			 }
+			 catch (RuntimeException e) {
+				 e.printStackTrace();
+				 System.out.println("Assuming this is a development environment, continuing...");
+			 }
 		 }
 	    //mapFileList = null;
 	}

@@ -7,7 +7,7 @@ public class BukkitJSRDownload implements ILibrarySet {
 
 	@Override
 	public String[] getHashes() {
-		return new String[] {"e535b25d5c2bf5639eedd9ac407a0cf0039b5f41"};
+		return new String[] {"40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf"};
 	}
 
 	@Override
@@ -17,7 +17,7 @@ public class BukkitJSRDownload implements ILibrarySet {
 
 	@Override
 	public String getRootURL() {
-		return "http://repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/1.3.9/";
+		return "http://repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/1.3.9/%s";
 	}
 
 }

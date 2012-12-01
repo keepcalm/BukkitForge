@@ -2,6 +2,7 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import net.minecraft.src.CommandBase;
 import net.minecraft.src.ICommandSender;
@@ -55,7 +56,10 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	}
 	
 	public String getCommandUsage(ICommandSender who) {
-		return bukkitCommandInstance.getUsage();
+		String usage = bukkitCommandInstance.getUsage();
+		usage = usage.replace("<command>", name);
+		//System.out.println(usage);
+		return usage;
 	}
 	
 	public boolean canCommandSenderUseCommand(ICommandSender who) {
@@ -84,7 +88,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 
 	}
 	public void execute(CommandSender g, String usedName, String[] args) {
-		System.out.println("Begin execution: " + usedName + " " + Joiner.on(' ').join(args));
+		//System.out.println("Begin execution: " + usedName + " " + Joiner.on(' ').join(args));
 		bukkitCommandInstance.execute(g, usedName, args);
 	}
 

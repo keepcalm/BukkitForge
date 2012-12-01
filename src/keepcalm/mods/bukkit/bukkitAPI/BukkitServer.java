@@ -123,7 +123,7 @@ import cpw.mods.fml.relauncher.FMLInjectionData;
 
 public class BukkitServer implements Server {
 	public static final String apiVer = "1.4.2-R0.2-BETA";
-	public static final String version = "1.4.4-0";
+	public static final String version = "1.4.5-0";
 	private static BukkitServer instance;
 	private DedicatedServer theServer;
 	//private BukkitServer bukkitServer;
@@ -444,13 +444,11 @@ public class BukkitServer implements Server {
 	@Override
 	public PluginManager getPluginManager() {
 		return this.pluginManager;
-		//return null;
 	}
 
 	@Override
 	public BukkitScheduler getScheduler() {
 		return scheduler;
-	//	return null;
 	}
 
 	@Override
@@ -983,7 +981,6 @@ public class BukkitServer implements Server {
 	@Override
 	@SuppressWarnings("all")
 	public void resetRecipes() {
-		// TODO: Change CraftingManager.instance via at, NOT via base-edit.
 		CraftingManager.instance = new CraftingManager();
 
 	}

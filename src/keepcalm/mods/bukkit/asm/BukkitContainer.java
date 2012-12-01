@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -65,14 +66,14 @@ public class BukkitContainer extends DummyModContainer {
 		meta.modId = "Bukkit4Vanilla";
 		meta.name = "Bukkit For Vanilla";
 		meta.version = BukkitServer.version + ", implementing Bukkit version " + BukkitServer.apiVer;
-		meta.authorList = Arrays.asList(new String[]{"KeepCalm"});
+		meta.authorList = Arrays.asList(new String[]{"keepcalm"});
 		meta.description = "An implementation Bukkit API for vanilla Minecraft.";
 		if (FMLCommonHandler.instance().getEffectiveSide() != Side.SERVER) {
 			super.setEnabledState(false);
-			meta.modId = null;
-			meta = null;
+			meta.description = meta.description + " - \u00A74Only for dedicated servers!\u00A7r";
+			//meta.modId = null;
+			//meta = null;
 			
-			//meta.description = "An implementation Bukkit API for vanilla Minecraft - SMP ONLY";
 			return;
 		}
 		
@@ -80,7 +81,6 @@ public class BukkitContainer extends DummyModContainer {
 		
 		
 		
-		//meta.url = "http://www.minecraftforum.net/topic/909223-";
 	}
 	public boolean registerBus(EventBus bus, LoadController controller) {
 		bus.register(this);
@@ -151,7 +151,12 @@ public class BukkitContainer extends DummyModContainer {
 		PrintStream oldErr = System.err;
 		
 		if (Loader.isModLoaded("BlockBreak")) {
-			MinecraftForge.EVENT_BUS.register(new BlockBreakEventHandler()) ;
+			try {
+				MinecraftForge.EVENT_BUS.register(new BlockBreakEventHandler()) ;
+			}
+			catch (Exception e) {
+				bukkitLogger.log(Level.FINE, "BlockBreak is present, but not!", e);
+			}
 		}
 		
 		// FIXME: For some reason this bugs forge...
