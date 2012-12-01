@@ -19,7 +19,7 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
     private final IChunkProvider provider;
 
     public NormalChunkGenerator(World world, long seed) {
-        provider = world.provider.getChunkProvider();
+        provider = world.getChunkProvider();
     }
 
     public byte[] generate(org.bukkit.World world, Random random, int x, int z) {
@@ -126,7 +126,7 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
 	}
 
 	@Override
-	public void func_82695_e(int arg0, int arg1) {
-		this.provider.func_82695_e(arg0, arg1);
+	public void recreateStructures(int arg0, int arg1) {
+		this.provider.recreateStructures(arg0, arg1);
 	}
 }

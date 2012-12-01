@@ -1,19 +1,24 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
 //import org.bukkit.craftbukkit.entity.BukkitPlayer;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
-import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntityHuman;
+import java.util.List;
+import net.minecraft.src.InventoryRepair;
+
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
+import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Container;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.IInventory;
+import net.minecraft.src.IMerchant;
+import net.minecraft.src.InventoryMerchant;
+import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.Packet100OpenWindow;
 import net.minecraft.src.Slot;
+import net.minecraft.src.SlotMerchantResult;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -128,6 +133,7 @@ public class BukkitContainer extends Container {
             break; // TODO: This should be an error?
         case PLAYER:
         case CHEST:
+        case ENDER_CHEST:
             setupChest(top, bottom);
             break;
         case DISPENSER:
@@ -146,10 +152,56 @@ public class BukkitContainer extends Container {
         case BREWING:
             setupBrewing(top, bottom);
             break;
+        case MERCHANT:
+        	setupMerchant(top,bottom);
+        	break;
+        case ANVIL:
+        	setupAnvil(top,bottom);
+        	break;
+        default:
+        	break;	
         }
     }
 
-    private void setupChest(IInventory top, IInventory bottom) {
+    private void setupMerchant(IInventory top, IInventory bottom) {
+    	this.addSlotToContainer(new Slot(top, 0, 36, 53));
+        this.addSlotToContainer(new Slot(top, 1, 62, 53));
+        EntityPlayer player = ((InventoryPlayer)top).player;
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(player.posX - 5, player.posY - 5, player.posZ - 5, player.posX + 5, player.posY + 5, player.posZ + 5);
+        List<EntityLiving> els = ((InventoryPlayer) bottom).player.worldObj.getEntitiesWithinAABB(EntityLiving.class, aabb);
+        IMerchant chosen = null;
+        for (EntityLiving i : els) {
+        	if (i instanceof IMerchant && ((IMerchant) i).getCustomer().equals(player)) {
+        		chosen = (IMerchant) i;
+        		break;
+        	}
+        }
+        if (chosen == null) {
+        	keepcalm.mods.bukkit.asm.BukkitContainer.bukkitLogger.severe("No valid villagers found!");
+        }
+        this.addSlotToContainer(new SlotMerchantResult(((InventoryPlayer) bottom).player, chosen, (InventoryMerchant) top, 2, 120, 53));
+        int var4;
+
+        for (var4 = 0; var4 < 3; ++var4)
+        {
+            for (int var5 = 0; var5 < 9; ++var5)
+            {
+                this.addSlotToContainer(new Slot(bottom, var5 + var4 * 9 + 9, 8 + var5 * 18, 84 + var4 * 18));
+            }
+        }
+
+        for (var4 = 0; var4 < 9; ++var4)
+        {
+            this.addSlotToContainer(new Slot(bottom, var4, 8 + var4 * 18, 142));
+        }
+	}
+
+	private void setupAnvil(IInventory top, IInventory bottom) {
+		// TODO
+		
+	}
+
+	private void setupChest(IInventory top, IInventory bottom) {
         int rows = top.getSizeInventory() / 9;
         int row;
         int col;

@@ -183,7 +183,7 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		if(!(getHandle() instanceof EntityPlayer)) return null;
 		EntityPlayerMP player = (EntityPlayerMP) getHandle();
 		InventoryType type = inventory.getType();
-		Container formerContainer = getHandle().craftingInventory;
+		Container formerContainer = getHandle().openContainer;
 		// TODO: Should we check that it really IS a BukkitInventory first?
 		BukkitInventory craftinv = (BukkitInventory) inventory;
 		switch(type) {
@@ -224,11 +224,11 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		default:
 			throw new IllegalArgumentException("Can't open a " + type + " inventory!");
 		}
-		if (getHandle().craftingInventory == formerContainer) {
+		if (getHandle().openContainer == formerContainer) {
 			return null;
 		}
-		//getHandle().craftingInventory. = false;
-		return new BukkitInventoryView(this, this.inventory, getHandle().craftingInventory);
+		//getHandle().openContainer. = false;
+		return new BukkitInventoryView(this, this.inventory, getHandle().openContainer);
 	}
 
 	private void openCustomInventory(Inventory inventory, EntityPlayerMP player, int windowType) {
@@ -242,8 +242,8 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		int size = cont.getBukkitView().getTopInventory().getSize();
 
 		player.playerNetServerHandler.unexpectedPacket(new Packet100OpenWindow(container.windowId, windowType, title, size));
-		getHandle().craftingInventory = container;
-		getHandle().craftingInventory.setPlayerIsPresent(player, true);
+		getHandle().openContainer = container;
+		getHandle().openContainer.setPlayerIsPresent(player, true);
 	}
 
 	@SuppressWarnings("unused")
@@ -258,12 +258,12 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		if (location == null) {
 			location = getLocation();
 		}
-		Inventory workbench = new BukkitInventoryCrafting(new InventoryCrafting(getHandle().craftingInventory, 3, 3), getHandle().inventory);
+		Inventory workbench = new BukkitInventoryCrafting(new InventoryCrafting(getHandle().openContainer, 3, 3), getHandle().inventory);
 		getHandle().displayGUIWorkbench(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 		if (force) {
-			//getHandle().craftingInventory. = false;
+			//getHandle().openContainer. = false;
 		}
-		return new BukkitInventoryView(this, workbench, getHandle().craftingInventory);
+		return new BukkitInventoryView(this, workbench, getHandle().openContainer);
 	}
 
 	public InventoryView openEnchanting(Location location, boolean force) {
@@ -278,18 +278,18 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		}
 		getHandle().displayGUIEnchantment(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 		/*if (force) {
-			getHandle().craftingInventory. = false;
+			getHandle().openContainer. = false;
 		}*/
 		Inventory enchtable = new BukkitInventoryEnchanting(new InventoryBasic("Enchanting", 1));
-		return new BukkitInventoryView(this, enchtable, getHandle().craftingInventory);
+		return new BukkitInventoryView(this, enchtable, getHandle().openContainer);
 	}
 
 	public void openInventory(InventoryView inventory) {
 		if (!(getHandle() instanceof EntityPlayer)) return; // TODO: NPC support?
 				if (((EntityPlayerMP) getHandle()).playerNetServerHandler == null) return;
-		if (getHandle().craftingInventory != getHandle().inventorySlots) {
+		if (getHandle().openContainer != getHandle().inventoryContainer) {
 			// fire INVENTORY_CLOSE if one already open
-			((EntityPlayerMP)getHandle()).playerNetServerHandler.handleCloseWindow(new Packet101CloseWindow(getHandle().craftingInventory.windowId));
+			((EntityPlayerMP)getHandle()).playerNetServerHandler.handleCloseWindow(new Packet101CloseWindow(getHandle().openContainer.windowId));
 		}
 		EntityPlayerMP player = (EntityPlayerMP) getHandle();
 		Container container;
@@ -311,8 +311,8 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		String title = inventory.getTitle();
 		int size = inventory.getTopInventory().getSize();
 		player.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(container.windowId, windowType, title, size));
-		player.craftingInventory = container;
-		player.craftingInventory.setPlayerIsPresent(player, true);
+		player.openContainer = container;
+		player.openContainer.setPlayerIsPresent(player, true);
 	}
 
 	public void closeInventory() {

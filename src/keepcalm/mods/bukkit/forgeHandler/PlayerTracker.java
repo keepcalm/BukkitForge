@@ -28,25 +28,24 @@ public class PlayerTracker implements IPlayerTracker {
 		TcpConnection j = (TcpConnection) dude.playerNetServerHandler.netManager;
 		
 		PlayerLoginEvent x = new PlayerLoginEvent(new BukkitPlayer(dude), BukkitServer.instance().getServerName(), j.getSocket().getInetAddress(), Result.ALLOWED, "Some Bukkit plugin kicked you!!");
-
+		Bukkit.getPluginManager().callEvent(x);
 	}
 
 	@Override
-	public void onPlayerLogout(EntityPlayer player) {
-	}
+	public void onPlayerLogout(EntityPlayer player) {}
 
 	@Override
 	public void onPlayerChangedDimension(EntityPlayer player) {
 		EntityPlayerMP dude = (EntityPlayerMP) player;
 		PlayerChangedWorldEvent c = new PlayerChangedWorldEvent(new BukkitPlayer(dude), Bukkit.getWorld(dude.worldObj.getWorldInfo().getWorldName()));
-
+		Bukkit.getPluginManager().callEvent(c);
 	}
 
 	@Override
 	public void onPlayerRespawn(EntityPlayer player) {
-		ChunkCoordinates j = player.getSpawnChunk();
+		ChunkCoordinates j = player.getHomePosition();
 		PlayerRespawnEvent c = new PlayerRespawnEvent(new BukkitPlayer((EntityPlayerMP) player), new Location(Bukkit.getWorld(player.worldObj.getWorldInfo().getWorldName()), j.posX, j.posY, j.posZ), player.hasHome());
-
+		Bukkit.getPluginManager().callEvent(c);
 	}
 
 }

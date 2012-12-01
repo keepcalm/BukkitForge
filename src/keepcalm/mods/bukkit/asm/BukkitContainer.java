@@ -9,6 +9,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.forgeHandler.BlockBreakEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import net.minecraft.server.MinecraftServer;
@@ -24,6 +25,7 @@ import com.google.common.eventbus.Subscribe;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -147,6 +149,11 @@ public class BukkitContainer extends DummyModContainer {
 		System.out.println("[Bukkit API]: Complete! Registering handlers...");
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		PrintStream oldErr = System.err;
+		
+		if (Loader.isModLoaded("BlockBreak")) {
+			MinecraftForge.EVENT_BUS.register(new BlockBreakEventHandler()) ;
+		}
+		
 		// FIXME: For some reason this bugs forge...
 		try {
 			// get rid of those annoying messages!
@@ -166,7 +173,7 @@ public class BukkitContainer extends DummyModContainer {
 		if (ev.getServer().isDedicatedServer() == false) {
 			return;
 		}
-		System.out.println("[Bukkit API]: Starting the API, implementing Bukkit API version " + BukkitServer.version);
+		bukkitLogger.info("Starting the API, implementing Bukkit API version " + BukkitServer.version);
 		this.theThreadGroup = new ThreadGroup("Bukkit4Vanilla");
 		Thread bukkitThread = new Thread(theThreadGroup, new BukkitStarter(), "BukkitCoreAPI-0");
 		bukkitThread.setDaemon(true);

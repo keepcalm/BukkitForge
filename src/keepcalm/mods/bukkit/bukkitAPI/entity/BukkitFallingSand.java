@@ -38,8 +38,8 @@ public class BukkitFallingSand extends BukkitEntity implements FallingBlock {
     }
 
     public byte getBlockData() {
-    	// the block data
-        return (byte) getHandle().field_70285_b;
+    	// the block data - FIXME
+        return (byte) 0;
     }
 
     public boolean getDropItem() {

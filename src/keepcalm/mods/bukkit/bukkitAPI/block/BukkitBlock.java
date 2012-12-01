@@ -340,7 +340,7 @@ public class BukkitBlock implements Block {
     private boolean itemCausesDrops(ItemStack item) {
         net.minecraft.src.Block block = net.minecraft.src.Block.blocksList[this.getTypeId()];
         net.minecraft.src.Item itemType = item != null ? net.minecraft.src.Item.itemsList[item.getTypeId()] : null;
-        return block != null && (block.blockMaterial.isHarvestable() || (itemType != null && itemType.canHarvestBlock(block)));
+        return block != null && (block.blockMaterial.func_85157_q() || (itemType != null && itemType.canHarvestBlock(block)));
     }
 
     public boolean breakNaturally() {

@@ -65,14 +65,7 @@ public class ForgeEventHandler {
 	public void onLivingDeathEvent(LivingDeathEvent ev) {
 		BukkitEventFactory.callEntityDeathEvent(ev.entityLiving);
 	}
-	@ForgeSubscribe
-	public void onLivingDropsEvent(LivingDropsEvent ev) {
-		
-		for (EntityItem i : ev.drops) {
-			//BukkitEventFactory.callItemSpawnEvent(i);
-		
-		}
-	}
+	
 	/*@ForgeSubscribe
 	public void onLivingFall(LivingFallEvent ev) {
 		BukkitEventFactory.callE

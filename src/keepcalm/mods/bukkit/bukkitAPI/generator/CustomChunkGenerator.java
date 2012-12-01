@@ -298,11 +298,15 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
 	 * @param x
 	 * @param y
 	 */
-	public void func_82695_e(int arg0, int arg1) {
+	public void recreateStructures(int arg0, int arg1) {
 		
 		this.strongholdGen.generate(this, this.world, arg0, arg1, (byte[])null);
 		this.mineshaftGen.generate(this, this.world, arg0, arg1, (byte[])null);
 		this.scatteredGen.generate(this, this.world, arg0, arg1, (byte[])null);
 		this.villageGen.generate(this, this.world, arg0, arg1, (byte[])null);
 	}
+
+
+
+	
 }

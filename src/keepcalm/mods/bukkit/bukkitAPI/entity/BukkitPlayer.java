@@ -900,11 +900,8 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player {
      * TODO
      */
     public boolean setWindowProperty(Property prop, int value) {
-        Container container = getHandle().craftingInventory;
-        /*if (container.updateCraftingResults()() != prop.getType()) {
-            return false;
-        }
-        getHandle().send(container, prop.getId(), value);*/
+        Container container = getHandle().openContainer;
+       
         
         return true;
     }

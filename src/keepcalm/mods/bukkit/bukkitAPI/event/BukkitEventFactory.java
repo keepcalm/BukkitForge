@@ -205,6 +205,17 @@ public class BukkitEventFactory {
             case RIGHT_CLICK_BLOCK:
                 action = Action.RIGHT_CLICK_AIR;
                 break;
+			case LEFT_CLICK_AIR:
+				action = Action.LEFT_CLICK_AIR;
+				break;
+			case PHYSICAL:
+				action = Action.PHYSICAL;
+				break;
+			case RIGHT_CLICK_AIR:
+				action = Action.RIGHT_CLICK_AIR;
+				break;
+			default:
+				break;
             }
         }
 

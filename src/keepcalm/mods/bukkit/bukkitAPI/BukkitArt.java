@@ -32,6 +32,9 @@ public class BukkitArt {
             case BurningSkull: return Art.BURNINGSKULL;
             case Skeleton: return Art.SKELETON;
             case DonkeyKong: return Art.DONKEYKONG;
+            case Wither: return Art.WITHER;
+		default:
+			break;
         }
         return null;
     }
@@ -63,6 +66,7 @@ public class BukkitArt {
             case BURNINGSKULL: return EnumArt.BurningSkull;
             case SKELETON: return EnumArt.Skeleton;
             case DONKEYKONG: return EnumArt.DonkeyKong;
+            case WITHER: return EnumArt.Wither; 
         }
         return null;
     }

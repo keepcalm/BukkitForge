@@ -57,23 +57,23 @@ public class BukkitPainting extends BukkitEntity implements Painting {
     public boolean setFacingDirection(BlockFace face, boolean force) {
         Block block = getLocation().getBlock().getRelative(getAttachedFace()).getRelative(face.getOppositeFace()).getRelative(getFacing());
         EntityPainting painting = getHandle();
-        int x = (int) Math.round(painting.posX), y = (int) Math.round(painting.posY), z = (int) Math.round(painting.posZ), dir = painting.field_82332_a;
+        int x = (int) Math.round(painting.posX), y = (int) Math.round(painting.posY), z = (int) Math.round(painting.posZ), dir = painting.hangingDirection;
         painting.posX = block.getX();
         painting.posY = block.getY();
         painting.posZ = block.getZ();
         switch (face) {
         case EAST:
         default:
-            getHandle().func_82328_a(0);
+            getHandle().setDirection(0);
             break;
         case NORTH:
-            getHandle().func_82328_a(1);
+            getHandle().setDirection(1);
             break;
         case WEST:
-            getHandle().func_82328_a(2);
+            getHandle().setDirection(2);
             break;
         case SOUTH:
-            getHandle().func_82328_a(3);
+            getHandle().setDirection(3);
             break;
         }
         if (!force && painting.isDead) {
@@ -81,7 +81,7 @@ public class BukkitPainting extends BukkitEntity implements Painting {
             painting.posX = x;
             painting.posY = y;
             painting.posZ = z;
-            painting.func_82328_a(dir);
+            painting.setDirection(dir);
             return false;
         }
         this.update();
@@ -89,7 +89,7 @@ public class BukkitPainting extends BukkitEntity implements Painting {
     }
 
     public BlockFace getFacing() {
-        switch (this.getHandle().field_82332_a) {
+        switch (this.getHandle().hangingDirection) {
         case 0:
         default:
             return BlockFace.EAST;
@@ -109,7 +109,7 @@ public class BukkitPainting extends BukkitEntity implements Painting {
         painting.posY = getHandle().posY;
         painting.posZ = getHandle().posZ;
         painting.art = getHandle().art;
-        painting.func_82328_a(getHandle().field_82332_a);
+        painting.setDirection(getHandle().hangingDirection);
         getHandle().setDead();
         getHandle().velocityChanged = true; // because this occurs when the painting is broken, so it might be important
         world.spawnEntityInWorld(painting);

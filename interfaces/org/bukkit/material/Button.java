@@ -94,6 +94,8 @@ public class Button extends SimpleAttachableMaterialData implements Redstone {
         case EAST:
             data |= 0x4;
             break;
+        default:
+        	break;
         }
 
         setData(data);

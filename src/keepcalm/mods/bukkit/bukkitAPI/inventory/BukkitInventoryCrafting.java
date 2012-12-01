@@ -46,7 +46,7 @@ public class BukkitInventoryCrafting extends BukkitInventory implements Crafting
     @Override
     public ItemStack[] getContents() {
         ItemStack[] items = new ItemStack[getSize()];
-        net.minecraft.src.ItemStack[] mcResultItems = null;
+        net.minecraft.src.ItemStack[] mcResultItems = new net.minecraft.src.ItemStack[getSize()];
 
         int i = 0;
         for (i = 0; i < mcResultItems.length; i++ ) {
