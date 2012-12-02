@@ -11,7 +11,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 
 /**
- * Needs to be a seperate class in case
+ * Needs to be a separate class in case
  * BlockBreakEvent mod isn't installed
  * @author keepcalm
  *

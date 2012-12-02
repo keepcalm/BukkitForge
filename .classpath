@@ -6,8 +6,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="interfaces"/>
-	<classpathentry kind="src" path="configurations"/>
 	<classpathentry kind="lib" path="/Minecraft/bin" sourcepath="/Minecraft/src">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/simon/minecraftforge-javadoc-4.2.5.305.zip!/"/>

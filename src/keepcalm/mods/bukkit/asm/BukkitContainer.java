@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import keepcalm.mods.bukkit.DefferedTaskHandler;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.forgeHandler.BlockBreakEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
@@ -34,6 +35,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 //import net.minecraftforge.event.EventBus;
@@ -54,8 +56,14 @@ public class BukkitContainer extends DummyModContainer {
 	
 	public BukkitContainer() {
 		super(new ModMetadata());
-		if (MinecraftServer.getServer().getGuiEnabled())
-			FMLRelaunchLog.log.getLogger().addHandler(new BukkitLogHandler());
+		
+		
+		
+		/*if (MinecraftServer.getServer().getGuiEnabled())
+			FMLRelaunchLog.log.getLogger().addHandler(new BukkitLogHandler());*/
+		if (MinecraftServer.getServer().getGuiEnabled()) {
+			ServerGUI.logger.severe("Bukkit4Vanilla plugins may misbehave when using the gui! Run the server with 'nogui'!");
+		}
 		instance = this;
 		/*BukkitContainer.bukkitLogger = FMLRelaunchLog.log.getLogger();
 		if (bukkitLogger == null) {
@@ -79,21 +87,26 @@ public class BukkitContainer extends DummyModContainer {
 		
 		
 		
-		
+		System.out.println("CONTAINER - END");
 		
 	}
 	public boolean registerBus(EventBus bus, LoadController controller) {
+		System.out.println("RegisterBus");
 		bus.register(this);
 		return true;
 	}
 	@Subscribe
 	public void preInit(FMLPreInitializationEvent ev) {
 		bukkitLogger = ev.getModLog();
-		bukkitLogger.setParent(ServerGUI.logger);
+		bukkitLogger.setParent(FMLCommonHandler.instance().getFMLLogger());
+		
+		
+		bukkitLogger.info("Starting the API, implementing Bukkit API version " + BukkitServer.version);
+		this.theThreadGroup = new ThreadGroup("Bukkit4Vanilla");
+		Thread bukkitThread = new Thread(theThreadGroup, new BukkitStarter(), "BukkitCoreAPI-0");
+		bukkitThread.setDaemon(true);
+		bukkitThread.start();
 		//ServerGUI.logger = bukkitLogger;
-		for (Handler i : MinecraftServer.logger.getHandlers()) {
-			System.out.println(i.getClass().getName());
-		}
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 			
 			FMLCommonHandler.instance().getFMLLogger().warning("Bukkit For Vanilla is currently only a server-side mod.");
@@ -167,7 +180,7 @@ public class BukkitContainer extends DummyModContainer {
 			System.setErr(oldErr);
 		}
 		catch (Throwable e) {
-			FMLCommonHandler.instance().getFMLLogger().severe("[Bukkit API]: FAILED to add event handers:");
+			FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE,"[Bukkit API]: FAILED to add event handers:", e);
 			//e.printStackTrace();
 		}
 		System.out.println("Done!");
@@ -178,11 +191,13 @@ public class BukkitContainer extends DummyModContainer {
 		if (ev.getServer().isDedicatedServer() == false) {
 			return;
 		}
-		bukkitLogger.info("Starting the API, implementing Bukkit API version " + BukkitServer.version);
-		this.theThreadGroup = new ThreadGroup("Bukkit4Vanilla");
-		Thread bukkitThread = new Thread(theThreadGroup, new BukkitStarter(), "BukkitCoreAPI-0");
-		bukkitThread.setDaemon(true);
-		bukkitThread.start();
+		bServer.completeLoading(ev.getServer());
+		//TickRegistry.registerTickHandler(new DefferedTaskHandler(), Side.SERVER);
+		
+		/*bukkitLogger.info("Allowing the API to load, please wait a few seconds...");
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {}*/
 		
 		//System.out.println("Hello!");
 		//bServer.resetRecipes();

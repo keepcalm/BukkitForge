@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.bukkitAPI;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
+import keepcalm.mods.bukkit.asm.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import net.minecraft.src.BiomeGenBase;
@@ -42,7 +43,12 @@ public class BukkitChunk implements Chunk {
     }
 
     public World getWorld() {
-        return Bukkit.getServer().getWorld(worldServer.getWorldInfo().getWorldName());
+    	try {
+    		return BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getWorldName());
+    	}
+    	catch (NullPointerException e) {
+    		return BukkitContainer.bServer.worlds.get(getHandle().worldObj.getWorldInfo().getDimension());
+    	}
     }
 
     public BukkitWorld getBukkitWorld() {

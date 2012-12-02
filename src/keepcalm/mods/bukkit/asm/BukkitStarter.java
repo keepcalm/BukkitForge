@@ -6,36 +6,19 @@ import java.util.logging.Logger;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.CrashReport;
+import net.minecraftforge.event.world.ChunkDataEvent.Load;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
 public class BukkitStarter implements Runnable {
 
 	@Override
 	public void run() {
-		if (MinecraftServer.getServer().getGuiEnabled()) {
-			
-			
-			/*BukkitLoggingStream myLog = new BukkitLoggingStream(MinecraftServer.logger);
-			Logger out = Logger.getLogger("STDOUT");//
-			out.setParent(MinecraftServer.logger);
-			Logger err = Logger.getLogger("STDERR");
-			err.setParent(MinecraftServer.logger);
-			err.setUseParentHandlers(true);
-			out.setUseParentHandlers(true);*/
-			//System.setOut(new PrintStream(myLog));
-			//System.setErr(new PrintStream(myLog));
-			//DedicatedServer.logger.warning("[BukkitAPI] Trying to override loggers... Might fail!");
-			//DedicatedServer.logger = new BukkitMCLogger(BukkitContainer.bukkitLogger, "Minecraft");
-			//ServerGUI.logger = DedicatedServer.logger;
-			/*Logger stdOut = Logger.getLogger("STDOUT");
-	        stdOut.setParent(BukkitContainer.bukkitLogger);
-	        Logger stdErr = Logger.getLogger("STDERR");
-	        stdErr.setParent(BukkitContainer.bukkitLogger);*/
-		}
-		//FMLCommonHandler.instance().getFMLLogger().addHandler(new BukkitGuiForwarder());
 		try {
-			BukkitContainer.bServer = new BukkitServer(MinecraftServer.getServer(), MinecraftServer.getServer().getConfigurationManager());
+			
+			BukkitContainer.bServer = new BukkitServer();
 		}
 		catch (Exception e) {
 			

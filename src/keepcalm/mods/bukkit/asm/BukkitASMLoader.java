@@ -6,7 +6,6 @@ import java.util.Map;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
-@TransformerExclusions
 public class BukkitASMLoader implements IFMLLoadingPlugin {
 	@Override
 	public String[] getASMTransformerClass() {
@@ -14,7 +13,6 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 	}
 	@Override
 	public String[] getLibraryRequestClass() {
-		
 		return new String[] {"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitCommonsLangDownload", "keepcalm.mods.bukkit.asm.libraryHandlers.BukkitEbeanDownload", "keepcalm.mods.bukkit.asm.libraryHandlers.BukkitGSonDownload", "keepcalm.mods.bukkit.asm.libraryHandlers.BukkitSQLiteDownload", 
 				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitYAMLDownload", "keepcalm.mods.bukkit.asm.libraryHandlers.BukkitJANSIDownload"};//, "keepcalm.mods.bukkit.asm.libraryHandlers.BukkitJSRDownload"};
 	}

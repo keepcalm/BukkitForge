@@ -79,7 +79,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
 		try {
-			System.out.println("Begin execution: " + name + " " + Joiner.on(' ').join(var2));
+			//System.out.println("Begin execution: " + name + " " + Joiner.on(' ').join(var2));
 			bukkitCommandInstance.execute(new BukkitCommandSender(var1), this.name, var2);
 		}
 		catch (Throwable e) {

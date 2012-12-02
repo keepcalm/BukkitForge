@@ -139,7 +139,7 @@ public class BukkitServer implements Server {
 
 	//private BukkitScheduler scheduler = new BukkitScheduler();
 //	private ServicesManager servicesManager = new SimpleServicesManager();
-	private Map<Integer,BukkitWorld> worlds = new LinkedHashMap<Integer,BukkitWorld>();
+	public Map<Integer,BukkitWorld> worlds = new LinkedHashMap<Integer,BukkitWorld>();
 	private Map<String, OfflinePlayer> offlinePlayers;
 	private StandardMessenger theMessenger;
 	private SimpleHelpMap theHelpMap = new SimpleHelpMap(this);
@@ -155,13 +155,7 @@ public class BukkitServer implements Server {
 	private Map<String,Boolean> fauxSleeping = new HashMap();
 	
 	
-	public BukkitServer(MinecraftServer server,
-			ServerConfigurationManager configurationManager) {
-		System.out.println("Configuring...");
-		if (!server.isDedicatedServer()) {
-			FMLCommonHandler.instance().getFMLLogger().warning("Not for use in singleplayer! Giving up...");
-			return;
-		}
+	public BukkitServer() {
 		this.instance = this;
 		bukkitConfig = new YamlConfiguration();
 		YamlConfiguration yml = new YamlConfiguration();
@@ -179,32 +173,35 @@ public class BukkitServer implements Server {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		//bukkitConfig.addDefault(path, value)
-		this.configMan = configurationManager;
-		this.theServer = (DedicatedServer) server;
 		FMLCommonHandler.instance().getFMLLogger().info("Bukkit API for Vanilla, version " + this.version + " starting up...");
-		if (theServer.getGuiEnabled()) {
-			theServer.logInfo("Bukkit API for vanilla version " + this.version + " initialized");
-		}
+		
 		this.theLogger = BukkitContainer.bukkitLogger;
 		Bukkit.setServer(this);
-		
-		
 		this.theHelpMap = new SimpleHelpMap(this);
 		this.theMessenger = new StandardMessenger();
-		theLogger.info("Testing the bukkit Logger!");
-		this.theServer = (DedicatedServer) server;
+		//theLogger.info("Testing the bukkit Logger!");
 		this.entityMetadata = new EntityMetadataStore();
 		this.playerMetadata = new PlayerMetadataStore();
 		this.worldMetadata = new WorldMetadataStore();
 		this.warningState = Warning.WarningState.DEFAULT;
 		this.console = new BukkitConsoleCommandSender(this);
-		//this.theLogger = BukkitContainer.bukkitLogger;
+		
+	}
+	
+	public void completeLoading(MinecraftServer server) {
+		theLogger.info("Completing load...");
+		if (!server.isDedicatedServer()) {
+			FMLCommonHandler.instance().getFMLLogger().warning("Not for use in singleplayer! Giving up...");
+			return;
+		}
+		configMan = server.getConfigurationManager();
+		theServer = (DedicatedServer) server;
+		
 		loadPlugins();
 		enablePlugins(PluginLoadOrder.STARTUP);
 		for (int j = 0; j < theServer.worldServers.length; j++) {
 			WorldServer i = theServer.worldServers[j];
-			//ChunkGenerator cg = i.getWorldInfo().getDimension() == 0 ? new NormalChunkGenerator(i, i.getSeed()) : i.getWorldInfo().getDimension() == -1 ? new NetherChunkGenerator(i, i.getSeed()) : i.getWorldInfo().getDimension() == 1 ? new SkyLandsChunkGenerator(i, i.getSeed()) : new NormalChunkGenerator(i, i.getSeed());
+			//System.out.println("Register dimension " + j);
 			theLogger.info("Adding dimension " + i.getWorldInfo().getDimension() + " to worlds...");
 			this.worlds.put(i.getWorldInfo().getDimension(), new BukkitWorld(i, this.getGenerator(i.getWorldInfo().getWorldName()), Environment.getEnvironment(i.getWorldInfo().getDimension())));
 		}
@@ -215,10 +212,8 @@ public class BukkitServer implements Server {
 			System.out.println(i.getName() + "- Enabled: " +  i.isEnabled());
 		}
 		commandMap.doneLoadingPlugins((ServerCommandManager) theServer.getCommandManager());
-		//this.bukkitServer = this;
-		
-		//this.scheduler = 
 	}
+	
 	public DedicatedServer getHandle() {
 		return this.theServer;
 	}
@@ -257,7 +252,7 @@ public class BukkitServer implements Server {
 	@Override
 	public String getName() {
 		
-		return String.format("Minecraft Server %s, using FML %s, MinecraftForge %s, %s", new Object[] {theServer.getMinecraftVersion(), Loader.instance().getFMLVersionString(), ForgeVersion.getVersion(), Loader.instance().getMCPVersionString()});
+		return String.format("Minecraft Server %s, using FML %s, MinecraftForge %s, %s", new Object[] {Loader.instance().getMinecraftModContainer().getVersion(), Loader.instance().getFMLVersionString(), ForgeVersion.getVersion(), Loader.instance().getMCPVersionString()});
 	}
 
 	@Override
@@ -650,13 +645,19 @@ public class BukkitServer implements Server {
 
 	@Override
 	public World getWorld(String name) {
+		System.out.println("Get world: " + name);
 		for (WorldServer w : theServer.worldServers) {
+			System.out.println("NAME: " + w.getWorldInfo().getWorldName() + " WPNAME: " + w.getProviderName());
 			if (w.getWorldInfo().getWorldName().equals(name)) {
 				return (World) w;
 			}
 		}
 		
 		return null;
+	}
+	
+	public World getWorld(int dimID) {
+		return worlds.get(dimID);
 	}
 
 	@Override

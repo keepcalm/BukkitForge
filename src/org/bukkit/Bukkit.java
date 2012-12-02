@@ -164,6 +164,9 @@ public final class Bukkit {
     }
 
     public static World getWorld(String name) {
+    	if (server ==null) {
+    		System.out.println("Server is null!");
+    	}
         return server.getWorld(name);
     }
 
