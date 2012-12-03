@@ -15,8 +15,11 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.forgeHandler.BlockBreakEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
+import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandHelp;
+import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandMVFix;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.DedicatedServer;
+import net.minecraft.src.ServerCommandManager;
 import net.minecraft.src.ServerGUI;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -136,9 +139,9 @@ public class BukkitContainer extends DummyModContainer {
 		suuid.comment = "The UUID of the server. Don't touch this or it might break your plugins.";
 		this.serverUUID = suuid.value;
 		
-		Property showAllLogs = config.get(Configuration.CATEGORY_GENERAL, "printForgeLogToGui", false);
+		/*Property showAllLogs = config.get(Configuration.CATEGORY_GENERAL, "printForgeLogToGui", false);
 		showAllLogs.comment = "Print stuff that's outputted to the logs to the GUI as it happens.";
-		this.showAllLogs = showAllLogs.getBoolean(false);
+		this.showAllLogs = showAllLogs.getBoolean(false);*/
 		
 		config.save();
 		
@@ -191,6 +194,9 @@ public class BukkitContainer extends DummyModContainer {
 		if (ev.getServer().isDedicatedServer() == false) {
 			return;
 		}
+		ServerCommandManager scm = (ServerCommandManager) ev.getServer().getCommandManager();
+		scm.registerCommand(new BukkitCommandHelp());
+		scm.registerCommand(new BukkitCommandMVFix());
 		bServer.completeLoading(ev.getServer());
 		//TickRegistry.registerTickHandler(new DefferedTaskHandler(), Side.SERVER);
 		

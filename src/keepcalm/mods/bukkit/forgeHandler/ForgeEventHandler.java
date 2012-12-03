@@ -1,14 +1,24 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import keepcalm.mods.bukkit.DefferedTaskHandler;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
+import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventory;
+import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryView;
+import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
+import net.minecraft.src.Block;
+import net.minecraft.src.BlockContainer;
+import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.Item;
 import net.minecraft.src.MovingObjectPosition;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
@@ -25,13 +35,15 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
-
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 /**
  * 
  * @author keepcalm
@@ -113,18 +125,70 @@ public class ForgeEventHandler {
 	@ForgeSubscribe
 	public void playerSaysHai(PlayerInteractEvent ev) {
 		if (ev.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && ev.entityPlayer.inventory.getCurrentItem() != null) {
-			MovingObjectPosition mop = PlayerUtilities.getTargetBlock((EntityPlayerMP)ev.entityPlayer);
+			MovingObjectPosition mop = PlayerUtilities.getTargetBlock((EntityPlayerMP) ev.entityPlayer);
+			int x = mop.blockX;
+			int y = mop.blockY;
+			int z = mop.blockZ;
+
+			World playerWorld = ev.entityPlayer.worldObj;
+			BukkitBlock targ = new BukkitBlock(new BukkitChunk(playerWorld.getChunkFromBlockCoords(x,z)),x,y,z);
+
+			BlockDamageEvent ev2 = new BlockDamageEvent((Player) BukkitEntity.getEntity(BukkitServer.instance(), ev.entityPlayer), targ, new BukkitItemStack(ev.entityPlayer.inventory.getCurrentItem()), ev.entityPlayer.capabilities.isCreativeMode);
+			
+			Bukkit.getPluginManager().callEvent(ev2);
+			if (ev2.isCancelled())
+				ev.setCanceled(true);
+		}
+		else if (ev.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+			MovingObjectPosition mop = PlayerUtilities.getTargetBlock((EntityPlayerMP) ev.entityPlayer);
+			int x = mop.blockX;
+			int y = mop.blockY;
+			int z = mop.blockZ;
+			if (mop.sideHit == -1) {
+				return;
+			}
+			ForgeDirection fd = ForgeDirection.getOrientation(mop.sideHit);
+			x = x + fd.offsetX;
+			y = y + fd.offsetY;
+			z = z + fd.offsetZ;
+			World playerWorld = ev.entityPlayer.worldObj;
+			if (playerWorld.blockHasTileEntity(x, y, z) && !ev.entityPlayer.isSneaking()) {
+
+
+			}
+			else {
+
+				BukkitBlock targ = new BukkitBlock(new BukkitChunk(playerWorld.getChunkFromBlockCoords(x,z)),x,y,z);
+				BukkitBlock against = new BukkitBlock((BukkitChunk) targ.getChunk(), mop.blockX, mop.blockY, mop.blockZ);
+				int radius = BukkitServer.instance().getHandle().getSpawnProtectionSize();
+				ChunkCoordinates spawn = playerWorld.getSpawnPoint();
+
+				int minx = spawn.posX - radius;
+				int maxx = spawn.posX + radius;
+				int maxy = spawn.posY + radius;
+				int miny = spawn.posY - radius;
+				int minz = spawn.posZ - radius;
+				int maxz = spawn.posZ + radius;
+
+				boolean isPlaceAllowed = (x > minx && x < maxx) && (y > miny && y < miny) && (z > minz && z < minz);
+				BlockPlaceEvent ev2 = new BlockPlaceEvent(targ, targ.getState(), against, new BukkitItemStack(ev.entityPlayer.inventory.getCurrentItem()), (Player) BukkitEntity.getEntity(BukkitServer.instance(), ev.entityPlayer), isPlaceAllowed);
+				Bukkit.getPluginManager().callEvent(ev2);
+				if (ev2.isCancelled()) 
+					ev.setCanceled(true);
+			}
 		}
 	}
 
 	@ForgeSubscribe
 	public void pickUp(EntityItemPickupEvent ev) {
-		BukkitEventFactory.callItemDespawnEvent(ev.item);
+		if (BukkitEventFactory.callItemDespawnEvent(ev.item).isCancelled())
+			ev.setCanceled(true);
 	}
 
 	@ForgeSubscribe
 	public void fillBukkit(FillBucketEvent ev) {
-		BukkitEventFactory.callPlayerBucketFillEvent((EntityPlayerMP) ev.entityPlayer, ev.target.blockX, ev.target.blockY, ev.target.blockZ, ev.target.sideHit, ev.current,Item.itemsList[ev.result.itemID]);
+		if (BukkitEventFactory.callPlayerBucketFillEvent((EntityPlayerMP) ev.entityPlayer, ev.target.blockX, ev.target.blockY, ev.target.blockZ, ev.target.sideHit, ev.current,Item.itemsList[ev.result.itemID]).isCancelled())
+			ev.setCanceled(true);
 	}
 
 	@ForgeSubscribe
@@ -140,17 +204,17 @@ public class ForgeEventHandler {
 	@ForgeSubscribe
 	public void chunkLoadEvent(ChunkEvent.Load ev) {
 		final org.bukkit.event.world.ChunkLoadEvent c = new org.bukkit.event.world.ChunkLoadEvent(new BukkitChunk(ev.getChunk()), false);
-		
+
+		try {
+			BukkitServer.instance().getWorld(0);
+		}
+		catch (NullPointerException e) {
 			try {
-				BukkitServer.instance().getWorld(0);
-			}
-			catch (NullPointerException e) {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e1) {}
-				
-			}
-			Bukkit.getPluginManager().callEvent(c);
+				Thread.sleep(5000);
+			} catch (InterruptedException e1) {}
+
+		}
+		Bukkit.getPluginManager().callEvent(c);
 	}
 
 	@ForgeSubscribe
