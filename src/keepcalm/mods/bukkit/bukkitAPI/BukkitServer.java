@@ -207,9 +207,9 @@ public class BukkitServer implements Server {
 		}
 		theLogger.info("Loading PostWorld plugins...");
 		enablePlugins(PluginLoadOrder.POSTWORLD);
-		System.out.println("Loaded plugins: ");
+		theLogger.info("Loaded plugins: ");
 		for (Plugin i : pluginManager.getPlugins()) {
-			System.out.println(i.getName() + "- Enabled: " +  i.isEnabled());
+			theLogger.info(i.getName() + "- Enabled: " +  i.isEnabled());
 		}
 		commandMap.doneLoadingPlugins((ServerCommandManager) theServer.getCommandManager());
 	}
@@ -645,9 +645,9 @@ public class BukkitServer implements Server {
 
 	@Override
 	public World getWorld(String name) {
-		System.out.println("Get world: " + name);
+		//System.out.println("Get world: " + name);
 		for (WorldServer w : theServer.worldServers) {
-			System.out.println("NAME: " + w.getWorldInfo().getWorldName() + " WPNAME: " + w.getProviderName());
+			//System.out.println("NAME: " + w.getWorldInfo().getWorldName() + " WPNAME: " + w.getProviderName());
 			if (w.getWorldInfo().getWorldName().equals(name)) {
 				return (World) w;
 			}

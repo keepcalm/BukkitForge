@@ -5,18 +5,16 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
-import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventory;
-import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryView;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockContainer;
 import net.minecraft.src.ChunkCoordinates;
+import net.minecraft.src.DamageSource;
+import net.minecraft.src.EntityCreeper;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.EntityTNTPrimed;
 import net.minecraft.src.Item;
 import net.minecraft.src.MovingObjectPosition;
-import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -35,7 +33,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockDamageEvent;
@@ -43,7 +40,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 /**
  * 
  * @author keepcalm
@@ -88,7 +84,49 @@ public class ForgeEventHandler {
 		BukkitEventFactory.callE
 	}*/
 	@ForgeSubscribe
+	/**
+	 * Needs fixing - field_blah is EntityExplosion or not?
+	 * @param ev
+	 */
 	public void onLivingDamage(LivingHurtEvent ev) {
+		DamageCause dc;
+		DamageSource ds = ev.source;
+		if (ds == ds.anvil)
+			dc = DamageCause.CUSTOM;
+		else if (ds == ds.cactus)
+			dc = DamageCause.CONTACT;
+		else if (ds == ds.drown)
+			dc = DamageCause.DROWNING;
+		// TODO fix this!
+		else if (ds == ds.explosion)
+			dc = DamageCause.BLOCK_EXPLOSION;
+		else if (ds == ds.fall)
+			dc = DamageCause.FALL;
+		else if (ds == ds.fallingBlock)
+			dc = DamageCause.FALL;
+		else if (ds == ds.field_76375_l)
+			dc = DamageCause.ENTITY_EXPLOSION;
+		else if (ds == ds.generic)
+			dc = DamageCause.CUSTOM;
+		else if (ds == ds.inFire)
+			dc = DamageCause.FIRE;
+		else if (ds == ds.inWall)
+			dc = DamageCause.SUFFOCATION;
+		else if (ds == ds.lava)
+			dc = DamageCause.LAVA;
+		else if (ds == ds.magic)
+			dc = DamageCause.MAGIC;
+		else if (ds == ds.onFire)
+			dc = DamageCause.FIRE_TICK;
+		else if (ds == ds.outOfWorld)
+			dc = DamageCause.VOID;
+		else if (ds == ds.starve)
+			dc = DamageCause.STARVATION;
+		else if (ds == ds.wither)
+			dc = DamageCause.WITHER;
+		else
+			dc = DamageCause.CUSTOM;
+			
 		BukkitEventFactory.callEntityDamageEvent(ev.source.getEntity(), ev.entity, DamageCause.valueOf(ev.source.getDamageType()), ev.ammount);
 	}
 	@ForgeSubscribe

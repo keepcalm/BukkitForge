@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import keepcalm.mods.bukkit.DefferedTaskHandler;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.forgeHandler.BlockBreakEventHandler;
+import keepcalm.mods.bukkit.forgeHandler.BukkitCrashCallable;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandHelp;
@@ -162,6 +163,7 @@ public class BukkitContainer extends DummyModContainer {
 	}
 	@Subscribe
 	public void init(FMLInitializationEvent ev) {
+		FMLCommonHandler.instance().registerCrashCallable(new BukkitCrashCallable());
 		System.out.println("[Bukkit API]: Complete! Registering handlers...");
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		PrintStream oldErr = System.err;
