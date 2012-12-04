@@ -1,24 +1,24 @@
 package keepcalm.mods.bukkit.asm;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.CrashReport;
-import net.minecraftforge.event.world.ChunkDataEvent.Load;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.LoaderState;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import cpw.mods.fml.relauncher.FMLRelauncher;
+import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 public class BukkitStarter implements Runnable {
 
 	@Override
 	public void run() {
 		try {
-			
-			BukkitContainer.bServer = new BukkitServer();
+			URL[] urls = ((URLClassLoader)getClass().getClassLoader()).getURLs();
+			BukkitClassLoader newCL = new BukkitClassLoader(urls, getClass().getClassLoader());
+			newCL.loadClass("keepcalm.mods.bukkit.bukkitAPI.BukkitServer").getMethod("bukkitReEntry").invoke(null);
+			// hopefully this works...
 		}
 		catch (Exception e) {
 			

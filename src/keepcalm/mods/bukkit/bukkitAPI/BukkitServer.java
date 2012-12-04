@@ -113,7 +113,7 @@ import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.collect.ImmutableList;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+//import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.FMLCorePlugin;
@@ -154,9 +154,15 @@ public class BukkitServer implements Server {
 	private PlayerMetadataStore playerMetadata;
 	private Map<String,Boolean> fauxSleeping = new HashMap();
 	
+	public static void bukkitReEntry() {
+		BukkitContainer.bServer = new BukkitServer();
+	}
 	
 	public BukkitServer() {
+		System.out.println("My classloader is " + getClass().getClassLoader().getClass().getCanonicalName());
 		this.instance = this;
+		// testing
+		Loader.instance().getActiveModList();
 		bukkitConfig = new YamlConfiguration();
 		YamlConfiguration yml = new YamlConfiguration();
 		try {
@@ -173,9 +179,11 @@ public class BukkitServer implements Server {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		FMLCommonHandler.instance().getFMLLogger().info("Bukkit API for Vanilla, version " + this.version + " starting up...");
+		
 		
 		this.theLogger = BukkitContainer.bukkitLogger;
+		System.out.println(theLogger);
+		theLogger.info("Bukkit API for Vanilla, version " + version + " starting up...");
 		Bukkit.setServer(this);
 		this.theHelpMap = new SimpleHelpMap(this);
 		this.theMessenger = new StandardMessenger();
@@ -191,7 +199,7 @@ public class BukkitServer implements Server {
 	public void completeLoading(MinecraftServer server) {
 		theLogger.info("Completing load...");
 		if (!server.isDedicatedServer()) {
-			FMLCommonHandler.instance().getFMLLogger().warning("Not for use in singleplayer! Giving up...");
+			theLogger.warning("Not for use in singleplayer! Giving up...");
 			return;
 		}
 		configMan = server.getConfigurationManager();
