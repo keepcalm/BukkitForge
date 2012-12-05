@@ -39,7 +39,7 @@ public class PluginClassLoader extends URLClassLoader {
     }
 
     protected Class<?> findClass(String name, boolean checkGlobal) throws ClassNotFoundException {
-    	if (!name.contains("mchange"))
+    	/*if (!name.contains("mchange"))
     	System.out.println("PluginClassLoader says HELLO, loading class " + name);
         if (name.startsWith("org.bukkit.") || name.startsWith("net.minecraft.")) {
             throw new ClassNotFoundException(name);
@@ -72,7 +72,7 @@ public class PluginClassLoader extends URLClassLoader {
 			guava10Classes.put(name, clazz);
 			return clazz;
 			
-		}
+		}*/
         Class<?> result = classes.get(name);
 
         if (result == null) {

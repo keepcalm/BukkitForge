@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 /**
  * Redirects plugin access from guava 12 to guava 10
+ * abandoned for the moment
  * @author keepcalm
  *
  */

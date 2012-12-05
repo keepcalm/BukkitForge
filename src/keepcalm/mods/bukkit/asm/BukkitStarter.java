@@ -15,9 +15,10 @@ public class BukkitStarter implements Runnable {
 	@Override
 	public void run() {
 		try {
-			URL[] urls = ((URLClassLoader)getClass().getClassLoader()).getURLs();
-			BukkitClassLoader newCL = new BukkitClassLoader(urls, getClass().getClassLoader());
-			newCL.loadClass("keepcalm.mods.bukkit.bukkitAPI.BukkitServer").getMethod("bukkitReEntry").invoke(null);
+			//URL[] urls = ((URLClassLoader)getClass().getClassLoader()).getURLs();
+			//BukkitClassLoader newCL = new BukkitClassLoader(urls, getClass().getClassLoader());
+			//newCL.loadClass("keepcalm.mods.bukkit.bukkitAPI.BukkitServer").getMethod("bukkitReEntry").invoke(null);
+			BukkitServer.bukkitReEntry();
 			// hopefully this works...
 		}
 		catch (Exception e) {
