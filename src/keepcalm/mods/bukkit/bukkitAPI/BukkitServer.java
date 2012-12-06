@@ -1,5 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI;
 
+import guava10.com.google.common.base.Joiner;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,15 +22,14 @@ import java.util.logging.Logger;
 import keepcalm.mods.bukkit.asm.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.command.BukkitCommandMap;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
-import keepcalm.mods.bukkit.bukkitAPI.generator.NetherChunkGenerator;
-import keepcalm.mods.bukkit.bukkitAPI.generator.NormalChunkGenerator;
-import keepcalm.mods.bukkit.bukkitAPI.generator.SkyLandsChunkGenerator;
+import keepcalm.mods.bukkit.bukkitAPI.help.CommandHelpTopic;
 import keepcalm.mods.bukkit.bukkitAPI.help.SimpleHelpMap;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCustom;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.EntityMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.PlayerMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.WorldMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
+import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AnvilSaveConverter;
 import net.minecraft.src.AnvilSaveHandler;
@@ -48,15 +49,13 @@ import net.minecraft.src.ItemMap;
 import net.minecraft.src.MapData;
 import net.minecraft.src.PropertyManager;
 import net.minecraft.src.ServerCommandManager;
-import net.minecraft.src.ServerConfigurationManager;
 import net.minecraft.src.ShapedRecipes;
 import net.minecraft.src.WorldManager;
 import net.minecraft.src.WorldServer;
 import net.minecraft.src.WorldSettings;
 import net.minecraft.src.WorldType;
-import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -84,6 +83,7 @@ import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
+import org.bukkit.help.HelpTopic;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -113,11 +113,10 @@ import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.collect.ImmutableList;
 
-//import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.FMLCorePlugin;
-import cpw.mods.fml.relauncher.FMLInjectionData;
+//import cpw.mods.fml.common.FMLCommonHandler;
 //import jline.console.ConsoleReader;
 
 
@@ -154,15 +153,35 @@ public class BukkitServer implements Server {
 	private PlayerMetadataStore playerMetadata;
 	private Map<String,Boolean> fauxSleeping = new HashMap();
 	
-	public static void bukkitReEntry() {
-		BukkitContainer.bServer = new BukkitServer();
-	}
+	/*public void setServer(MinecraftServer server) {
+		if (server == null) {
+			throw new RuntimeException("Server must be set before continuing!");
+		}
+		if (!server.isDedicatedServer()) {
+			theLogger.warning("Not for use in singleplayer! Giving up...");
+			return;
+		}
+		configMan = server.getConfigurationManager();
+		theServer = (DedicatedServer) server;
+	}*/
 	
-	public BukkitServer() {
+	public BukkitServer(MinecraftServer server) {
 		System.out.println("My classloader is " + getClass().getClassLoader().getClass().getCanonicalName());
 		this.instance = this;
 		// testing
-		Loader.instance().getActiveModList();
+		if (server == null) {
+			throw new RuntimeException("Server must be set before continuing!");
+		}
+		if (!server.isDedicatedServer()) {
+			theLogger.warning("Not for use in singleplayer! Giving up...");
+			return;
+		}
+		configMan = server.getConfigurationManager();
+		theServer = (DedicatedServer) server;
+		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());
+		System.out.println("IDs: " + Joiner.on(", ").join(ids));
+		Iterator<Integer> _ = ids.iterator();
+		
 		bukkitConfig = new YamlConfiguration();
 		YamlConfiguration yml = new YamlConfiguration();
 		try {
@@ -180,7 +199,15 @@ public class BukkitServer implements Server {
 			e.printStackTrace();
 		}
 		
-		
+		while(_.hasNext()) {
+			int i = _.next();
+			System.out.println("loop: " + i);
+			WorldServer x = theServer.worldServerForDimension(i);
+			System.out.println("got worldserver: " + x);
+			//System.out.print("Registering dimension " + i + " Provider: " + DimensionManager.getProvider(i).getDimensionName());
+			worlds.put(i, new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getWorldName()), this.wtToEnv(x)));
+			//System.out.println("... Done!");
+		}
 		this.theLogger = BukkitContainer.bukkitLogger;
 		System.out.println(theLogger);
 		theLogger.info("Bukkit API for Vanilla, version " + version + " starting up...");
@@ -193,35 +220,53 @@ public class BukkitServer implements Server {
 		this.worldMetadata = new WorldMetadataStore();
 		this.warningState = Warning.WarningState.DEFAULT;
 		this.console = new BukkitConsoleCommandSender(this);
+		// wait until server start
 		
-	}
-	
-	public void completeLoading(MinecraftServer server) {
+		/*try {
+			Thread.currentThread().wait();
+		} catch (InterruptedException e) {
+			theLogger.log(Level.FINE, "The server was interrupted, it might explode!", e);
+		}*/
 		theLogger.info("Completing load...");
-		if (!server.isDedicatedServer()) {
-			theLogger.warning("Not for use in singleplayer! Giving up...");
-			return;
-		}
-		configMan = server.getConfigurationManager();
-		theServer = (DedicatedServer) server;
 		
+		//configMan = theServer.getConfigurationManager();
+		//theServer = (DedicatedServer) server;
+		HelpTopic myHelp = new CommandHelpTopic("bexec", "Run a command forcibly bukkit aliases", "", "");
+		Bukkit.getServer().getHelpMap().addTopic(myHelp);
 		loadPlugins();
 		enablePlugins(PluginLoadOrder.STARTUP);
-		for (int j = 0; j < theServer.worldServers.length; j++) {
-			WorldServer i = theServer.worldServers[j];
-			//System.out.println("Register dimension " + j);
-			theLogger.info("Adding dimension " + i.getWorldInfo().getDimension() + " to worlds...");
-			this.worlds.put(i.getWorldInfo().getDimension(), new BukkitWorld(i, this.getGenerator(i.getWorldInfo().getWorldName()), Environment.getEnvironment(i.getWorldInfo().getDimension())));
-		}
+		System.out.println("Hi!");
+		System.out.println("Thread: " + Thread.currentThread().getName());
+		
 		theLogger.info("Loading PostWorld plugins...");
 		enablePlugins(PluginLoadOrder.POSTWORLD);
 		theLogger.info("Loaded plugins: ");
 		for (Plugin i : pluginManager.getPlugins()) {
 			theLogger.info(i.getName() + "- Enabled: " +  i.isEnabled());
 		}
+		ForgeEventHandler.ready = true;
 		commandMap.doneLoadingPlugins((ServerCommandManager) theServer.getCommandManager());
 	}
 	
+	private Environment wtToEnv(WorldServer x) {
+		// TODO
+		
+		int dim = x.getWorldInfo().getDimension();
+		
+		if (dim == 1 || dim == 0 || dim == -1) {
+			switch (dim) {
+			case -1:
+				return Environment.NETHER;
+			case 0:
+				return Environment.NORMAL;
+			case 1: 
+				return Environment.THE_END;
+			}
+		}
+		
+		return Environment.NORMAL;
+	}
+
 	public DedicatedServer getHandle() {
 		return this.theServer;
 	}

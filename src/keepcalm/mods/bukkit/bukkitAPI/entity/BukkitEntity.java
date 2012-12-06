@@ -8,6 +8,7 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 
 import net.minecraft.src.*;
 
+import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -158,7 +159,8 @@ public abstract class BukkitEntity implements org.bukkit.entity.Entity {
     }
 
     public World getWorld() {
-        return (World) ((WorldServer) entity.worldObj);
+    	return Bukkit.getWorld(entity.worldObj.getWorldInfo().getWorldName());
+        //return (World) ((WorldServer) entity.worldObj);
     }
 
     public boolean teleport(Location location) {

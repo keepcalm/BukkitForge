@@ -16,13 +16,16 @@ import net.minecraft.src.ICommandSender;
  */
 public class BukkitCommandMVFix extends BukkitCommandBase {
 	
+	private boolean hasBeenAdded = false;
+	
 	public BukkitCommandMVFix() {
-		HelpTopic myHelp = new CommandHelpTopic("bexec", "Run a command forcibly bukkit aliases", "", "");
-		Bukkit.getServer().getHelpMap().addTopic(myHelp);
+		
+		
 	}
 	
 	@Override
 	public String getCommandName() {
+		
 		return "bexec";
 	}
 	

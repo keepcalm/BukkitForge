@@ -33,10 +33,12 @@ import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -56,8 +58,7 @@ public class BukkitContainer extends DummyModContainer {
 	
 	
 	private static BukkitContainer instance;
-	private static ThreadGroup theThreadGroup;
-	
+	private static Thread bThread;
 	public BukkitContainer() {
 		super(new ModMetadata());
 		
@@ -105,11 +106,7 @@ public class BukkitContainer extends DummyModContainer {
 		bukkitLogger.setParent(FMLCommonHandler.instance().getFMLLogger());
 		
 		
-		bukkitLogger.info("Starting the API, implementing Bukkit API version " + BukkitServer.version);
-		this.theThreadGroup = new ThreadGroup("Bukkit4Vanilla");
-		Thread bukkitThread = new Thread(theThreadGroup, new BukkitStarter(), "BukkitCoreAPI-0");
-		bukkitThread.setDaemon(true);
-		bukkitThread.start();
+		
 		//ServerGUI.logger = bukkitLogger;
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 			
@@ -166,8 +163,6 @@ public class BukkitContainer extends DummyModContainer {
 		FMLCommonHandler.instance().registerCrashCallable(new BukkitCrashCallable());
 		System.out.println("[Bukkit API]: Complete! Registering handlers...");
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
-		PrintStream oldErr = System.err;
-		
 		if (Loader.isModLoaded("BlockBreak")) {
 			try {
 				MinecraftForge.EVENT_BUS.register(new BlockBreakEventHandler()) ;
@@ -177,12 +172,8 @@ public class BukkitContainer extends DummyModContainer {
 			}
 		}
 		
-		// FIXME: For some reason this bugs forge...
 		try {
-			// get rid of those annoying messages!
-			System.setErr(null);
 			MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
-			System.setErr(oldErr);
 		}
 		catch (Throwable e) {
 			FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE,"[Bukkit API]: FAILED to add event handers:", e);
@@ -193,13 +184,19 @@ public class BukkitContainer extends DummyModContainer {
 	@Subscribe
 	//@SideOnly(Side.SERVER)
 	public void serverStarting(FMLServerStartingEvent ev) {
+		System.out.println("Starting!");
 		if (ev.getServer().isDedicatedServer() == false) {
 			return;
 		}
-		ServerCommandManager scm = (ServerCommandManager) ev.getServer().getCommandManager();
-		scm.registerCommand(new BukkitCommandHelp());
-		scm.registerCommand(new BukkitCommandMVFix());
-		bServer.completeLoading(ev.getServer());
+		ThreadGroup theThreadGroup = new ThreadGroup("Bukkit4Vanilla");
+		this.bThread = new Thread(theThreadGroup, new BukkitStarter(ev.getServer()), "BukkitCoreAPI-0");
+		//bThread.setDaemon(false);
+		bThread.start();
+		System.out.println("Done!");
+		
+		//ForgeEventHandler.ready = true;
+		
+		
 		//TickRegistry.registerTickHandler(new DefferedTaskHandler(), Side.SERVER);
 		
 		/*bukkitLogger.info("Allowing the API to load, please wait a few seconds...");
@@ -210,4 +207,5 @@ public class BukkitContainer extends DummyModContainer {
 		//System.out.println("Hello!");
 		//bServer.resetRecipes();
 	}
+	
 }

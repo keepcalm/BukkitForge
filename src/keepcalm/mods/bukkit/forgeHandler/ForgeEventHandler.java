@@ -48,49 +48,11 @@ import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
  *
  */
 public class ForgeEventHandler {
-	@ForgeSubscribe
-	/**
-	 * Can't cancel this
-	 */
-	public void onEntityJoinWorld(EntityJoinWorldEvent ev) {
-
-		if (ev.entity instanceof EntityLiving && !(ev.entity instanceof EntityPlayer)) {// || ev.entity instanceof EntityPlayerMP) {
-
-			BukkitEventFactory.callCreatureSpawnEvent((EntityLiving) ev.entity, SpawnReason.DEFAULT);
-		}
-	}
-	@ForgeSubscribe
-	public void onItemExpire(ItemExpireEvent ev) {
-		BukkitEventFactory.callItemDespawnEvent(ev.entityItem);
-	}
-	@ForgeSubscribe
-	public void onItemTossEvent(ItemTossEvent ev) {
-		BukkitEventFactory.callItemSpawnEvent(ev.entityItem);
-	}
-	@ForgeSubscribe
-	public void onLivingAttack(LivingAttackEvent ev) {
-		if (BukkitEventFactory.callEntityDamageEvent(ev.source.getEntity(), ev.entity, DamageCause.valueOf(ev.source.getDamageType()), ev.ammount) == null) {
-
-			ev.setCanceled(ev.isCancelable() ? true : false);
-		}
-	}
-	@ForgeSubscribe
-	public void onLivingDeathEvent(LivingDeathEvent ev) {
-		BukkitEventFactory.callEntityDeathEvent(ev.entityLiving);
-	}
-
-	/*@ForgeSubscribe
-	public void onLivingFall(LivingFallEvent ev) {
-		BukkitEventFactory.callE
-	}*/
-	@ForgeSubscribe
-	/**
-	 * Needs fixing - field_blah is EntityExplosion or not?
-	 * @param ev
-	 */
-	public void onLivingDamage(LivingHurtEvent ev) {
+	
+	public static boolean ready = false;
+	
+	public static DamageCause getDamageCause(DamageSource ds) {
 		DamageCause dc;
-		DamageSource ds = ev.source;
 		if (ds == ds.anvil)
 			dc = DamageCause.CUSTOM;
 		else if (ds == ds.cactus)
@@ -126,11 +88,70 @@ public class ForgeEventHandler {
 			dc = DamageCause.WITHER;
 		else
 			dc = DamageCause.CUSTOM;
+		return dc;
+	}
+	
+	@ForgeSubscribe
+	/**
+	 * Can't cancel this
+	 */
+	public void onEntityJoinWorld(EntityJoinWorldEvent ev) {
+		if (!ready)
+			return;
+		if (ev.entity instanceof EntityLiving && !(ev.entity instanceof EntityPlayer)) {// || ev.entity instanceof EntityPlayerMP) {
+
+			BukkitEventFactory.callCreatureSpawnEvent((EntityLiving) ev.entity, SpawnReason.DEFAULT);
+		}
+	}
+	@ForgeSubscribe
+	public void onItemExpire(ItemExpireEvent ev) {
+		if (!ready)
+			return;
+		BukkitEventFactory.callItemDespawnEvent(ev.entityItem);
+	}
+	@ForgeSubscribe
+	public void onItemTossEvent(ItemTossEvent ev) {
+		if (!ready)
+			return;
+		BukkitEventFactory.callItemSpawnEvent(ev.entityItem);
+	}
+	@ForgeSubscribe
+	public void onLivingAttack(LivingAttackEvent ev) {
+		if (!ready)
+			return;
+		if (BukkitEventFactory.callEntityDamageEvent(ev.source.getEntity(), ev.entity, getDamageCause(ev.source), ev.ammount).isCancelled()) {
+
+			ev.setCanceled(true);
+		}
+	}
+	@ForgeSubscribe
+	public void onLivingDeathEvent(LivingDeathEvent ev) {
+		if (!ready)
+			return;
+		BukkitEventFactory.callEntityDeathEvent(ev.entityLiving);
+	}
+
+	/*@ForgeSubscribe
+	public void onLivingFall(LivingFallEvent ev) {
+		BukkitEventFactory.callE
+	}*/
+	@ForgeSubscribe
+	/**
+	 * Needs fixing - field_blah is EntityExplosion or not?
+	 * @param ev
+	 */
+	public void onLivingDamage(LivingHurtEvent ev) {
+		if (!ready)
+			return;
+		DamageCause dc = getDamageCause(ev.source);
+		
 			
 		BukkitEventFactory.callEntityDamageEvent(ev.source.getEntity(), ev.entity, DamageCause.valueOf(ev.source.getDamageType()), ev.ammount);
 	}
 	@ForgeSubscribe
 	public void onTarget(LivingSetAttackTargetEvent ev) {
+		if (!ready)
+			return;
 		BukkitEventFactory.callEntityTargetEvent(ev.entity, ev.target, TargetReason.CUSTOM);
 	}
 	/*@ForgeSubscribe
@@ -149,11 +170,15 @@ public class ForgeEventHandler {
 	 * @param ev
 	 */
 	public void bowFire(ArrowLooseEvent ev) {
+		if (!ready)
+			return;
 		BukkitEventFactory.callEntityShootBowEvent(ev.entityPlayer, ev.bow, null, ev.charge);
 	}
 
 	@ForgeSubscribe
 	public void playerVEntity(AttackEntityEvent ev) {
+		if (!ready)
+			return;
 		BukkitEventFactory.callEntityDamageEvent(ev.entityPlayer, ev.target, DamageCause.ENTITY_ATTACK, ev.entityPlayer.inventory.getDamageVsEntity(ev.target));
 	}
 	/*
@@ -162,6 +187,8 @@ public class ForgeEventHandler {
 	}*/
 	@ForgeSubscribe
 	public void playerSaysHai(PlayerInteractEvent ev) {
+		if (!ready)
+			return;
 		if (ev.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && ev.entityPlayer.inventory.getCurrentItem() != null) {
 			MovingObjectPosition mop = PlayerUtilities.getTargetBlock((EntityPlayerMP) ev.entityPlayer);
 			int x = mop.blockX;
@@ -219,18 +246,24 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void pickUp(EntityItemPickupEvent ev) {
+		if (!ready)
+			return;
 		if (BukkitEventFactory.callItemDespawnEvent(ev.item).isCancelled())
 			ev.setCanceled(true);
 	}
 
 	@ForgeSubscribe
 	public void fillBukkit(FillBucketEvent ev) {
+		if (!ready)
+			return;
 		if (BukkitEventFactory.callPlayerBucketFillEvent((EntityPlayerMP) ev.entityPlayer, ev.target.blockX, ev.target.blockY, ev.target.blockZ, ev.target.sideHit, ev.current,Item.itemsList[ev.result.itemID]).isCancelled())
 			ev.setCanceled(true);
 	}
 
 	@ForgeSubscribe
 	public void interactEvent(PlayerInteractEvent ev) {
+		if (!ready)
+			return;
 		BukkitEventFactory.callPlayerInteractEvent((EntityPlayerMP) ev.entityPlayer, Action.valueOf(ev.action.toString()), ev.entityPlayer.inventory.getCurrentItem());
 	}
 	/*
@@ -241,6 +274,8 @@ public class ForgeEventHandler {
 	// BROKEN - FIXME TODO etc
 	@ForgeSubscribe
 	public void chunkLoadEvent(ChunkEvent.Load ev) {
+		if (!ready)
+			return;
 		final org.bukkit.event.world.ChunkLoadEvent c = new org.bukkit.event.world.ChunkLoadEvent(new BukkitChunk(ev.getChunk()), false);
 
 		try {
@@ -257,6 +292,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void chunkUnloadEvent(ChunkEvent.Unload ev) {
+		if (!ready)
+			return;
 		org.bukkit.event.world.ChunkUnloadEvent c = new org.bukkit.event.world.ChunkUnloadEvent(new BukkitChunk(ev.getChunk()));
 		Bukkit.getPluginManager().callEvent(c);
 	}

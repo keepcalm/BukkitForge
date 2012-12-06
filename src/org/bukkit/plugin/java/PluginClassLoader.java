@@ -1,6 +1,6 @@
 package org.bukkit.plugin.java;
 
-import guava10.com.google.common.primitives.Bytes;
+//import guava10.com.google.common.primitives.Bytes;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

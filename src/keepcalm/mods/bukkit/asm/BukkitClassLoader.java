@@ -1,6 +1,6 @@
 package keepcalm.mods.bukkit.asm;
 
-import guava10.com.google.common.primitives.Bytes;
+import com.google.common.primitives.Bytes;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
