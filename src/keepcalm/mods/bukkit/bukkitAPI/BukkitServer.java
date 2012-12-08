@@ -35,11 +35,14 @@ import net.minecraft.src.AnvilSaveConverter;
 import net.minecraft.src.AnvilSaveHandler;
 import net.minecraft.src.BanEntry;
 import net.minecraft.src.ChunkCoordinates;
+import net.minecraft.src.ChunkProviderEnd;
+import net.minecraft.src.ChunkProviderHell;
 import net.minecraft.src.ConvertingProgressUpdate;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.DedicatedServer;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumGameType;
+import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.ICommandSender;
 import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.IRecipe;
@@ -114,7 +117,6 @@ import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.registry.GameRegistry;
 //import cpw.mods.fml.common.FMLCommonHandler;
 //import jline.console.ConsoleReader;
@@ -251,20 +253,18 @@ public class BukkitServer implements Server {
 	private Environment wtToEnv(WorldServer x) {
 		// TODO
 		
-		int dim = x.getWorldInfo().getDimension();
+		IChunkProvider wp = x.theChunkProviderServer.currentChunkProvider;
 		
-		if (dim == 1 || dim == 0 || dim == -1) {
-			switch (dim) {
-			case -1:
-				return Environment.NETHER;
-			case 0:
-				return Environment.NORMAL;
-			case 1: 
-				return Environment.THE_END;
-			}
+		if (wp instanceof ChunkProviderEnd) {
+			return Environment.THE_END;
+		}
+		else if (wp instanceof ChunkProviderHell) {
+			return Environment.NETHER;
+		}
+		else {
+			return Environment.NORMAL;
 		}
 		
-		return Environment.NORMAL;
 	}
 
 	public DedicatedServer getHandle() {
@@ -399,10 +399,17 @@ public class BukkitServer implements Server {
 
 	@Override
 	public Set<OfflinePlayer> getWhitelistedPlayers() {
-		Set<OfflinePlayer> d = (Set<OfflinePlayer>) configMan.getWhiteListedPlayers();
+		Set<OfflinePlayer> ret = new HashSet<OfflinePlayer>();
+		// strings
+		for (Object i : configMan.getWhiteListedPlayers()) {
+			String name = (String) i;
+			ret.add(new BukkitOfflinePlayer(this, name));
+		}
+		
+		//Set<OfflinePlayer> d = (Set<OfflinePlayer>) configMan.getWhiteListedPlayers();
 		//Set<OfflinePlayer> j = (Set<OfflinePlayer>) new ArrayList<OfflinePlayer>();
 		
-		return d;
+		return ret;
 	}
 
 	@Override
@@ -702,7 +709,7 @@ public class BukkitServer implements Server {
 		for (WorldServer w : theServer.worldServers) {
 			//System.out.println("NAME: " + w.getWorldInfo().getWorldName() + " WPNAME: " + w.getProviderName());
 			if (w.getWorldInfo().getWorldName().equals(name)) {
-				return (World) w;
+				return this.getWorld(w.getWorldInfo().getDimension());
 			}
 		}
 		

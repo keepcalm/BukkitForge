@@ -1,19 +1,19 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
+import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.CommandBase;
+import net.minecraft.src.DedicatedServer;
+import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.ICommandSender;
+import net.minecraft.src.IntegratedServer;
+import net.minecraft.src.RConConsoleSource;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.permissions.Permission;
-
-import com.google.common.base.Joiner;
 /**
  * 
  * A basic Bukkit2ICommand command handler
@@ -63,8 +63,14 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	}
 	
 	public boolean canCommandSenderUseCommand(ICommandSender who) {
-		BukkitCommandSender j = new BukkitCommandSender(who);
-		if ((bukkitCommandInstance.testPermissionSilent(j))) {
+		CommandSender sender;
+		try {
+			sender = new BukkitCommandSender(who);
+		}
+		catch (ClassCastException e) {
+			sender = BukkitServer.instance().getConsoleSender();
+		}
+		if ((bukkitCommandInstance.testPermissionSilent(sender))) {
 			return true;
 		}
 		return false;
@@ -80,7 +86,15 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	public void processCommand(ICommandSender var1, String[] var2) {
 		try {
 			//System.out.println("Begin execution: " + name + " " + Joiner.on(' ').join(var2));
-			bukkitCommandInstance.execute(new BukkitCommandSender(var1), this.name, var2);
+			CommandSender sender;
+			try {
+				sender = new BukkitCommandSender(var1);
+				System.out.println("NOT a console!");
+			}
+			catch (ClassCastException e) {
+				sender = BukkitServer.instance().getConsoleSender();
+			}
+			bukkitCommandInstance.execute(sender, this.name, var2);
 		}
 		catch (Throwable e) {
 			e.printStackTrace();

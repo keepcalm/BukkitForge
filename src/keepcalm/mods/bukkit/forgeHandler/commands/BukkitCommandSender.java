@@ -23,13 +23,7 @@ public class BukkitCommandSender implements CommandSender {
 	private ConsoleCommandSender cons;
 	private boolean isConsole = false;
 	public BukkitCommandSender(ICommandSender guy) {
-		if (guy instanceof DedicatedServer) {
-			this.cons = Bukkit.getServer().getConsoleSender();
-			isConsole = true;
-		}
-		else {
-			this.realPlayer =  new BukkitPlayer((EntityPlayerMP) guy);
-		}
+		this.realPlayer = new BukkitPlayer((EntityPlayerMP) guy);
 	}
 	@Override
 	public boolean isPermissionSet(String name) {

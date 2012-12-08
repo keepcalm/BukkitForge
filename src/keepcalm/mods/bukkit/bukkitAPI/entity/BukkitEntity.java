@@ -139,7 +139,17 @@ public abstract class BukkitEntity implements org.bukkit.entity.Entity {
         }
         else if (entity instanceof EntityPainting) { return new BukkitPainting(server, (EntityPainting) entity); }
         else if (entity instanceof EntityTNTPrimed) { return new BukkitTNTPrimed(server, (EntityTNTPrimed) entity); }
-
+        else if (entity instanceof EntityWitch) { return new BukkitWitch(server, (EntityWitch) entity); }
+        else if (entity instanceof EntityWitherSkull) { return new BukkitWitherSkull(server, (EntityWitherSkull) entity); }
+        else if (entity instanceof EntityWither) { return new BukkitWither(server, (EntityWither) entity); }
+        else if (entity instanceof EntityItemFrame) { return new BukkitItemFrame(server, (EntityItemFrame) entity); }
+        else if (entity instanceof EntityAmbientCreature) {
+        	if (entity instanceof EntityBat) {
+        		return new BukkitBat(server, (EntityBat) entity);
+        	}
+        	return new BukkitAmbient(server, (EntityBat) entity);
+        	
+        }
         throw new IllegalArgumentException("Unknown entity");
     }
 

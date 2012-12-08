@@ -413,10 +413,7 @@ public class BukkitEventFactory {
 
         callEvent(event);
 
-        if (!event.isCancelled()) {
-            //event.getEntity().setLastDamageCause(event);
-        	return null;
-        }
+
 
         return event;
     }

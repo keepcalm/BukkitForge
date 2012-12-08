@@ -119,7 +119,11 @@ public class ForgeEventHandler {
 	public void onLivingAttack(LivingAttackEvent ev) {
 		if (!ready)
 			return;
-		if (BukkitEventFactory.callEntityDamageEvent(ev.source.getEntity(), ev.entity, getDamageCause(ev.source), ev.ammount).isCancelled()) {
+		if (BukkitEventFactory.callEntityDamageEvent(ev.entityLiving.getLastAttackingEntity(),
+				ev.entity, 
+				getDamageCause(ev.source), 
+				ev.ammount)
+				.isCancelled()) {
 
 			ev.setCanceled(true);
 		}
@@ -146,7 +150,7 @@ public class ForgeEventHandler {
 		DamageCause dc = getDamageCause(ev.source);
 		
 			
-		BukkitEventFactory.callEntityDamageEvent(ev.source.getEntity(), ev.entity, DamageCause.valueOf(ev.source.getDamageType()), ev.ammount);
+		BukkitEventFactory.callEntityDamageEvent(ev.source.getEntity(), ev.entity, dc, ev.ammount);
 	}
 	@ForgeSubscribe
 	public void onTarget(LivingSetAttackTargetEvent ev) {
