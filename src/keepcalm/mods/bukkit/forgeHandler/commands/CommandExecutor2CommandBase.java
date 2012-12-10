@@ -5,6 +5,7 @@ import java.util.List;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import keepcalm.mods.bukkit.forgeHandler.commands.CommandRequirementRegistry.Level;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.CommandBase;
@@ -25,10 +26,10 @@ import org.bukkit.command.CommandSender;
  *
  */
 public class CommandExecutor2CommandBase extends CommandBase {
-	private String name;
+	public final String name;
 	//private Permission requiredPerms;
 	//private final CommandExecutor myExec;
-	private final Command bukkitCommandInstance;
+	public final Command bukkitCommandInstance;
 	/**
 	 * Initialises a new instance of a forge-friendly bukkit command handler.
 	 * 
@@ -40,6 +41,12 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		/*this.name = name;
 		this.requiredPerm = permissionWanted;*/
 		this.bukkitCommandInstance = cmd;
+		if (cmd.getPermission() == null) {
+			CommandRequirementRegistry.setDefaultRequirement(cmd.getClass().getName(), Level.ALL);
+		}
+		else {
+			CommandRequirementRegistry.setDefaultRequirement(cmd.getClass().getName(), Level.OP);
+		}
 		//this.myExec = cmd.
 		this.name =name;
 		//this.requiredPerms = wantedPerms;
@@ -64,8 +71,11 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		return usage;
 	}
 	
+	@SuppressWarnings("all")
 	public boolean canCommandSenderUseCommand(ICommandSender who) {
-		CommandSender sender;
+		return CommandRequirementRegistry.doesCommandSenderHaveLevel(who, bukkitCommandInstance.getClass().getName());
+		
+		/*CommandSender sender;
 		if (who instanceof EntityPlayerMP) {
 			sender = new BukkitPlayer((EntityPlayerMP) who);
 		}
@@ -76,7 +86,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 			return true;
 		}
 		System.out.println("NO! For " + name);
-		return false;
+		return false;*/
 		
 	}
 	

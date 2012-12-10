@@ -29,6 +29,7 @@ import keepcalm.mods.bukkit.bukkitAPI.metadata.PlayerMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.WorldMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
+import keepcalm.mods.bukkit.forgeHandler.commands.CommandRequirementRegistry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AnvilSaveConverter;
 import net.minecraft.src.AnvilSaveHandler;
@@ -212,7 +213,6 @@ public class BukkitServer implements Server {
 			//System.out.println("... Done!");
 		}
 		this.theLogger = BukkitContainer.bukkitLogger;
-		System.out.println(theLogger);
 		theLogger.info("Bukkit API for Vanilla, version " + version + " starting up...");
 		Bukkit.setServer(this);
 		this.theHelpMap = new SimpleHelpMap(this);
