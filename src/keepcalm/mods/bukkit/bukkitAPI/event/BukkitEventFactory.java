@@ -181,7 +181,7 @@ public class BukkitEventFactory {
      */
     public static PlayerInteractEvent callPlayerInteractEvent(EntityPlayerMP who, Action action, ItemStack itemstack) {
         if (action != Action.LEFT_CLICK_AIR && action != Action.RIGHT_CLICK_AIR) {
-            throw new IllegalArgumentException();
+            return null;
         }
         return callPlayerInteractEvent(who, action, 0, 256, 0, 0, itemstack);
     }

@@ -549,19 +549,19 @@ public class BukkitWorld implements World {
     }
 
     public long getTime() {
-        long time = getFullTime() % 24000;
-        if (time < 0) time += 24000;
-        return time;
+        return world.getWorldInfo().getWorldTime();
     }
 
     public void setTime(long time) {
-        long margin = (time - getFullTime()) % 24000;
-        if (margin < 0) margin += 24000;
-        setFullTime(getFullTime() + margin);
+    	System.out.println("Setting time: " + time);
+        world.getWorldInfo().setWorldTime(time);
+        for (Object i : world.playerEntities) {
+        	server.getHandle().getDedicatedPlayerList().updateTimeAndWeatherForPlayer((EntityPlayerMP) i, world);
+        }
     }
 
     public long getFullTime() {
-        return world.getWorldTime();
+        return world.getWorldInfo().getWorldTotalTime();
     }
 
     public void setFullTime(long time) {
@@ -1155,7 +1155,6 @@ public class BukkitWorld implements World {
      * FIXME - broken
      */
     public void setKeepSpawnInMemory(boolean keepLoaded) {
-        //return true;
     }
 
     @Override
@@ -1230,7 +1229,6 @@ public class BukkitWorld implements World {
 
     /**
      * FIXME
-     * @deprecated
      */
     public void setTicksPerAnimalSpawns(int ticksPerAnimalSpawns) {
         //
@@ -1305,7 +1303,6 @@ public class BukkitWorld implements World {
         double x = loc.getX();
         double y = loc.getY();
         double z = loc.getZ();
-        // TODO
         getHandle().playSound(x, y, z, BukkitSound.getSound(sound), volume, pitch);
     }
 

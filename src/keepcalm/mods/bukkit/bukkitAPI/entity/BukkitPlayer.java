@@ -23,6 +23,7 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.map.BukkitMapView;
 import keepcalm.mods.bukkit.bukkitAPI.map.RenderData;
+import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import net.minecraft.src.BanEntry;
 import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.Container;
@@ -64,6 +65,7 @@ import org.bukkit.Sound;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -88,6 +90,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.map.MapView;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -101,7 +104,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.MapMaker;
 
 @DelegateDeserialization(BukkitOfflinePlayer.class)
-public class BukkitPlayer extends BukkitEntityHuman implements Player {
+public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSender, Permissible {
     private long firstPlayed = 0;
     private long lastPlayed = 0;
     private boolean hasPlayedBefore = false;
@@ -199,11 +202,12 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player {
     }
 
     public String getDisplayName() {
-        return getHandle().username;
+        return ForgeEventHandler.playerDisplayNames.containsKey(getName()) ? ForgeEventHandler.playerDisplayNames.get(getName()) : getName();
     }
 
     public void setDisplayName(final String name) {
-        getHandle().username = name;
+    	System.out.println("New name: " + name);
+    	ForgeEventHandler.playerDisplayNames.put(getName(), name);
     }
 
     public String getPlayerListName() {

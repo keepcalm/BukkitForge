@@ -2,7 +2,9 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 
 import java.util.List;
 
+import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.CommandBase;
@@ -64,15 +66,16 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	
 	public boolean canCommandSenderUseCommand(ICommandSender who) {
 		CommandSender sender;
-		try {
-			sender = new BukkitCommandSender(who);
+		if (who instanceof EntityPlayerMP) {
+			sender = new BukkitPlayer((EntityPlayerMP) who);
 		}
-		catch (ClassCastException e) {
-			sender = BukkitServer.instance().getConsoleSender();
+		else {
+			sender = BukkitConsoleCommandSender.getInstance();
 		}
-		if ((bukkitCommandInstance.testPermissionSilent(sender))) {
+		if ((bukkitCommandInstance.testPermissionSilent(sender)) || sender.hasPermission(bukkitCommandInstance.getPermission()) || sender.isOp()) {
 			return true;
 		}
+		System.out.println("NO! For " + name);
 		return false;
 		
 	}
@@ -87,12 +90,11 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		try {
 			//System.out.println("Begin execution: " + name + " " + Joiner.on(' ').join(var2));
 			CommandSender sender;
-			try {
-				sender = new BukkitCommandSender(var1);
-				System.out.println("NOT a console!");
+			if (var1 instanceof EntityPlayerMP) {
+				sender = new BukkitPlayer((EntityPlayerMP) var1);
 			}
-			catch (ClassCastException e) {
-				sender = BukkitServer.instance().getConsoleSender();
+			else {
+				sender = BukkitConsoleCommandSender.getInstance();
 			}
 			bukkitCommandInstance.execute(sender, this.name, var2);
 		}

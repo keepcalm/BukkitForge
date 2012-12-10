@@ -18,6 +18,7 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 
+@Deprecated
 public class BukkitCommandSender implements CommandSender {
 	private BukkitPlayer realPlayer;
 	private ConsoleCommandSender cons;

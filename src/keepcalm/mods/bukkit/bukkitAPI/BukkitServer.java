@@ -1,7 +1,5 @@
 package keepcalm.mods.bukkit.bukkitAPI;
 
-import guava10.com.google.common.base.Joiner;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,6 +20,7 @@ import java.util.logging.Logger;
 import keepcalm.mods.bukkit.asm.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.command.BukkitCommandMap;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.help.CommandHelpTopic;
 import keepcalm.mods.bukkit.bukkitAPI.help.SimpleHelpMap;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCustom;
@@ -41,6 +40,7 @@ import net.minecraft.src.ConvertingProgressUpdate;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.DedicatedServer;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.ICommandSender;
@@ -114,6 +114,7 @@ import com.avaje.ebean.config.DataSourceConfig;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.Loader;
@@ -322,8 +323,11 @@ public class BukkitServer implements Server {
 
 	@Override
 	public Player[] getOnlinePlayers() {
-		
-		return (Player[]) theServer.getConfigurationManager().playerEntityList.toArray(new Player[0]);
+		List<Player> players= new ArrayList<Player>();
+		for (Object i : theServer.getConfigurationManager().playerEntityList) {
+			players.add(new BukkitPlayer((EntityPlayerMP) i));
+		}
+		return players.toArray(new Player[0]);
 	}
 
 	@Override

@@ -1,9 +1,13 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
+import java.util.HashMap;
+
+import guava10.com.google.common.collect.Sets;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
 import net.minecraft.src.ChunkCoordinates;
@@ -18,6 +22,7 @@ import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -40,6 +45,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 /**
  * 
  * @author keepcalm
@@ -48,6 +54,8 @@ import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
  *
  */
 public class ForgeEventHandler {
+	
+	public static HashMap<String, String> playerDisplayNames = new HashMap<String, String>();
 	
 	public static boolean ready = false;
 	
@@ -275,7 +283,6 @@ public class ForgeEventHandler {
 	public void goToSleep(PlayerSleepInBedEvent ev) {
 
 	}*/
-	// BROKEN - FIXME TODO etc
 	@ForgeSubscribe
 	public void chunkLoadEvent(ChunkEvent.Load ev) {
 		if (!ready)
@@ -300,6 +307,23 @@ public class ForgeEventHandler {
 			return;
 		org.bukkit.event.world.ChunkUnloadEvent c = new org.bukkit.event.world.ChunkUnloadEvent(new BukkitChunk(ev.getChunk()));
 		Bukkit.getPluginManager().callEvent(c);
+	}
+	
+	@ForgeSubscribe
+	public void serverChat(ServerChatEvent ev) {
+		if (!ready)
+			return;
+		String newName = ev.player.username;
+		if (playerDisplayNames.containsKey(newName)) {
+			newName = playerDisplayNames.get(newName);
+		}
+		System.out.println(newName);
+		BukkitPlayer whom = new BukkitPlayer(ev.player);
+		
+		AsyncPlayerChatEvent ev1 = new AsyncPlayerChatEvent(false, whom, ev.message, Sets.newHashSet(BukkitServer.instance().getOnlinePlayers()));
+		ev1 = BukkitEventFactory.callEvent(ev1);
+		ev.line = ev.line.replace(ev.message, ev1.getMessage());
+		String newLine = String.format(ev1.getFormat(),new Object[] {newName, ev1.getMessage()});
 	}
 
 }

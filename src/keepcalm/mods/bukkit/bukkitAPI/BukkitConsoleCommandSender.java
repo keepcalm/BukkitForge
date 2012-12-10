@@ -26,8 +26,10 @@ public class BukkitConsoleCommandSender implements ConsoleCommandSender {
 	private final PermissibleBase perms = new PermissibleBase(this);
 	protected final BukkitConversationTracker convo = new BukkitConversationTracker();
 	
-	public ConsoleCommandSender getInstance() {
-		return this.instance;
+	public static ConsoleCommandSender getInstance() {
+		if (instance == null)
+			instance = new BukkitConsoleCommandSender(BukkitServer.instance());
+		return instance;
 	}
 	
 	public BukkitConsoleCommandSender(BukkitServer server) {
@@ -37,7 +39,8 @@ public class BukkitConsoleCommandSender implements ConsoleCommandSender {
 			this.instance = this;
 		}
 		else {
-			throw new IllegalArgumentException("Only one instance of ConsoleCommandSender is allowed at a time!");
+			// ignore
+			return;
 		}
 		
 	}
