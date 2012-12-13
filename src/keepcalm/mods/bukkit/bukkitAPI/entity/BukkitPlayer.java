@@ -215,7 +215,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public void setPlayerListName(String name) {
-        String oldName = getHandle().getEntityName();
+       /* String oldName = getHandle().getEntityName();
 
         if (name == null) {
             name = getName();
@@ -249,7 +249,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
                 EntityPlayerMP.playerNetServerHandler.sendPacketToPlayer(oldpacket);
                 ((NetServerHandler) EntityPlayerMP.playerNetServerHandler).sendPacketToPlayer(packet);
             }
-        }
+        }*/
     }
 
     @Override

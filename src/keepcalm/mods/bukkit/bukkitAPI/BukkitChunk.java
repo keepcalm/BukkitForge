@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import keepcalm.mods.bukkit.asm.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
+import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlockState;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.ChunkPosition;
@@ -46,7 +47,7 @@ public class BukkitChunk implements Chunk {
     	try {
     		return BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getWorldName());
     	}
-    	catch (NullPointerException e) {
+    	catch (Exception e) {
     		return BukkitContainer.bServer.worlds.get(getHandle().worldObj.getWorldInfo().getDimension());
     	}
     }
@@ -124,7 +125,7 @@ public class BukkitChunk implements Chunk {
             }
 
             ChunkPosition position = (ChunkPosition) obj;
-            entities[index++] = (BlockState) worldServer.getBlockTileEntity(position.x + (chunk.xPosition << 4), position.y, position.z + (chunk.zPosition << 4));
+            entities[index++] = new BukkitBlockState(getBlock(position.x, position.y, position.z));
         }
         return entities;
     }

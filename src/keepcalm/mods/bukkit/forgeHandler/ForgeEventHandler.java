@@ -287,17 +287,9 @@ public class ForgeEventHandler {
 	public void chunkLoadEvent(ChunkEvent.Load ev) {
 		if (!ready)
 			return;
+		
 		final org.bukkit.event.world.ChunkLoadEvent c = new org.bukkit.event.world.ChunkLoadEvent(new BukkitChunk(ev.getChunk()), false);
 
-		try {
-			BukkitServer.instance().getWorld(0);
-		}
-		catch (NullPointerException e) {
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e1) {}
-
-		}
 		Bukkit.getPluginManager().callEvent(c);
 	}
 

@@ -170,7 +170,7 @@ public class BukkitServer implements Server {
 	}*/
 	
 	public BukkitServer(MinecraftServer server) {
-		System.out.println("My classloader is " + getClass().getClassLoader().getClass().getCanonicalName());
+		//System.out.println("My classloader is " + getClass().getClassLoader().getClass().getCanonicalName());
 		this.instance = this;
 		// testing
 		if (server == null) {
