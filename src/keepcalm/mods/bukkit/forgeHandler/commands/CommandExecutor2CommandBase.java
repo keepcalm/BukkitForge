@@ -15,6 +15,7 @@ import net.minecraft.src.ICommandSender;
 import net.minecraft.src.IntegratedServer;
 import net.minecraft.src.RConConsoleSource;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 /**
@@ -41,12 +42,6 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		/*this.name = name;
 		this.requiredPerm = permissionWanted;*/
 		this.bukkitCommandInstance = cmd;
-		if (cmd.getPermission() == null) {
-			CommandRequirementRegistry.setDefaultRequirement(cmd.getClass().getName(), Level.ALL);
-		}
-		else {
-			CommandRequirementRegistry.setDefaultRequirement(cmd.getClass().getName(), Level.OP);
-		}
 		//this.myExec = cmd.
 		this.name =name;
 		//this.requiredPerms = wantedPerms;
@@ -73,20 +68,20 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	
 	@SuppressWarnings("all")
 	public boolean canCommandSenderUseCommand(ICommandSender who) {
-		return CommandRequirementRegistry.doesCommandSenderHaveLevel(who, bukkitCommandInstance.getClass().getName());
 		
-		/*CommandSender sender;
+		CommandSender sender;
 		if (who instanceof EntityPlayerMP) {
 			sender = new BukkitPlayer((EntityPlayerMP) who);
 		}
 		else {
 			sender = BukkitConsoleCommandSender.getInstance();
 		}
-		if ((bukkitCommandInstance.testPermissionSilent(sender)) || sender.hasPermission(bukkitCommandInstance.getPermission()) || sender.isOp()) {
+		
+		if ((bukkitCommandInstance.testPermissionSilent(sender)) || sender.hasPermission(bukkitCommandInstance.getPermission()) || sender.isOp() || bukkitCommandInstance.getPermission() == null || bukkitCommandInstance.getPermission().isEmpty()) {
 			return true;
 		}
-		System.out.println("NO! For " + name);
-		return false;*/
+		//System.out.println("NO! For " + name);
+		return false;
 		
 	}
 	
