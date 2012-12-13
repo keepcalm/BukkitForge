@@ -1,10 +1,9 @@
 =pod
 
-=head1 Bukkit4Vanilla - a Minecraft mod that ports the Bukkit plugin API to minecraft.
+=head1 BukkitForge - a Minecraft mod that ports the Bukkit plugin API to minecraft.
  
 This is very WIP. Since i started doing this, i was mostly aiming for a server that didn't crash.
-It can load plugins, it can run (very simple) ones, but not much more.
-I'm working on fixing compatibility - I have a roadmap of plugins to get working, in ROADMAP.
+It can load plugins, commands work, lots of things work, permissions *should* work, etc.
 
 Most of this mod is a fairly straight port from Craftbukkit, but I've had to modify parts
 (and i anticipate modifiying more).
@@ -24,7 +23,7 @@ If your mod does NOT use guava, you're fine, it should work.
 
 If your mod DOES use guava, you need to add 'guava10' before all of your guava imports.
 The reason this is required is FML uses guava 12 which is not compatible with guava 10.
-So Bukkit4Vanilla ships with guava 10 in 'guava10.com.google.xxx' rather than 'com.google.xxx'.
+So BukkitForge ships with guava 10 in 'guava10.com.google.xxx' rather than 'com.google.xxx'.
 
 =head1 OMG, LIKE, MAH PLGINS DNT LOAD!!!!!1111one!1eleven
 
