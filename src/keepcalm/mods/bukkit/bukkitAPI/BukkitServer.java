@@ -205,9 +205,9 @@ public class BukkitServer implements Server {
 		
 		while(_.hasNext()) {
 			int i = _.next();
-			System.out.println("loop: " + i);
+			//System.out.println("loop: " + i);
 			WorldServer x = theServer.worldServerForDimension(i);
-			System.out.println("got worldserver: " + x);
+			//System.out.println("got worldserver: " + x);
 			//System.out.print("Registering dimension " + i + " Provider: " + DimensionManager.getProvider(i).getDimensionName());
 			worlds.put(i, new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getWorldName()), this.wtToEnv(x)));
 			//System.out.println("... Done!");
@@ -530,7 +530,7 @@ public class BukkitServer implements Server {
 
         String name = creator.name();
         ChunkGenerator generator = creator.generator();
-        File folder = new File(getWorldContainer(), name);
+        File folder = new File(getWorldContainer().getParentFile(), name);
         World world = getWorld(name);
         WorldType type = WorldType.parseWorldType(creator.type().getName());
         boolean generateStructures = creator.generateStructures();
@@ -566,9 +566,9 @@ public class BukkitServer implements Server {
         } while(used);
         boolean hardcore = false;
 
-        WorldServer internal = new WorldServer(theServer, new AnvilSaveHandler(getWorldContainer(), name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, hardcore, type), theServer.theProfiler);
+        WorldServer internal = new WorldServer(theServer, new AnvilSaveHandler(getWorldContainer().getParentFile(), name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, hardcore, type), theServer.theProfiler);
         
-        if (!(worlds.containsKey(name.toLowerCase()))) {
+        if (!(worlds.containsKey(dimension))) {
             return null;
         }
 
@@ -578,16 +578,17 @@ public class BukkitServer implements Server {
         internal.addWorldAccess((IWorldAccess) new WorldManager(theServer, internal));
         internal.difficultySetting = 1;
         //internal.(true, true);
-        theServer.worldServers[theServer.worldServers.length] = internal;
-
+        //theServer.worldServers[theServer.worldServers.length] = internal;
+        DimensionManager.setWorld(dimension, internal);
+        this.worlds.put(dimension, new BukkitWorld(internal, creator.generator(), creator.environment()));
         if (generator != null) {
-            ((World) internal).getPopulators().addAll(generator.getDefaultPopulators((World) internal));
+            (worlds.get(dimension)).getPopulators().addAll(generator.getDefaultPopulators(worlds.get(dimension)));
         }
-
+        
         pluginManager.callEvent(new WorldInitEvent(((World)internal)));
         System.out.print("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
 
-        if (((World) internal).getKeepSpawnInMemory()) {
+        if (DimensionManager.shouldLoadSpawn(dimension)) {
             short short1 = 196;
             long i = System.currentTimeMillis();
             for (int j = -short1; j <= short1; j += 16) {
@@ -615,7 +616,7 @@ public class BukkitServer implements Server {
                 }
             }
         pluginManager.callEvent( new WorldLoadEvent( (World) internal));
-		return (World) internal;
+		return worlds.get(dimension);
 	}
 
 	private ChunkGenerator getGenerator(String world) {
