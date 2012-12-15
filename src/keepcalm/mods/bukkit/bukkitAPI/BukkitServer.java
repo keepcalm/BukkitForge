@@ -125,7 +125,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 
 public class BukkitServer implements Server {
-	public static final String apiVer = "1.4.2-R0.2-BETA";
+	public static final String apiVer = "1.4.5-R0.2";
 	public static final String version = "1.4.5-1";
 	private static BukkitServer instance;
 	private DedicatedServer theServer;
@@ -313,7 +313,7 @@ public class BukkitServer implements Server {
 	@Override
 	public String getBukkitVersion() {
 		
-		return this.version;
+		return this.apiVer;
 	}
 
 	@Override
