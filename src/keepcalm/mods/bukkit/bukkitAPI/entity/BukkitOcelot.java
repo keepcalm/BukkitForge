@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityOcelot;
+import net.minecraft.entity.passive.EntityOcelot;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.entity.EntityType;

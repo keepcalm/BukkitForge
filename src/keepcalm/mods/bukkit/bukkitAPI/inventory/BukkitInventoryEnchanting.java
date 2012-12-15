@@ -1,8 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
-import net.minecraft.src.ContainerEnchantment;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.InventoryBasic;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryBasic;
 
 import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.ItemStack;

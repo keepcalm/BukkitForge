@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityBat;
+import net.minecraft.entity.passive.EntityBat;
 
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.EntityType;

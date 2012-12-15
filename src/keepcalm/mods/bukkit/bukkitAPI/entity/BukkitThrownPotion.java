@@ -3,7 +3,7 @@ package keepcalm.mods.bukkit.bukkitAPI.entity;
 import java.util.Collection;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityPotion;
+import net.minecraft.entity.projectile.EntityPotion;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ThrownPotion;

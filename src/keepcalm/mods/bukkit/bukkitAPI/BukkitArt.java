@@ -1,6 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI;
 
-import net.minecraft.src.EnumArt;
+import net.minecraft.util.EnumArt;
+
 import org.bukkit.Art;
 
 // Safety class, will break if either side changes

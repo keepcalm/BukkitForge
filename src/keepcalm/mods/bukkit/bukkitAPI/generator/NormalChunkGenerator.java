@@ -5,12 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
-import net.minecraft.src.Chunk;
-import net.minecraft.src.ChunkPosition;
-import net.minecraft.src.EnumCreatureType;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.IProgressUpdate;
-import net.minecraft.src.World;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.util.IProgressUpdate;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.chunk.IChunkProvider;
 
 import org.bukkit.generator.BlockPopulator;
 //import org.bukkit.craftbukkit.BukkitWorld;

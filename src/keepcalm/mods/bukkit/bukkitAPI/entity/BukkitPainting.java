@@ -1,20 +1,20 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
+import keepcalm.mods.bukkit.bukkitAPI.BukkitArt;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitArt;
-import net.minecraft.src.EntityPainting;
-import net.minecraft.src.EnumArt;
-import net.minecraft.src.WorldServer;
+import net.minecraft.entity.item.EntityPainting;
+import net.minecraft.util.EnumArt;
+import net.minecraft.world.WorldServer;
 
 import org.bukkit.Art;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Painting;
 //import org.bukkit.craftbukkit.BukkitArt;
 //import org.bukkit.craftbukkit.BukkitServer;
 //import org.bukkit.craftbukkit.BukkitWorld;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Painting;
 
 public class BukkitPainting extends BukkitEntity implements Painting {
 

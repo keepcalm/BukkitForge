@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityTameable;
+import net.minecraft.entity.passive.EntityTameable;
 
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Creature;

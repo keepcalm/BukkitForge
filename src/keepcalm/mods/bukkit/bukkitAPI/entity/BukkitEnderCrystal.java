@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityEnderCrystal;
+import net.minecraft.entity.item.EntityEnderCrystal;
 
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EntityType;

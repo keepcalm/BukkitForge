@@ -1,13 +1,13 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import org.bukkit.Bukkit;
-
-import keepcalm.mods.blockbreak.BlockBreakEvent;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
-import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.ForgeSubscribe;
+
+import org.bukkit.Bukkit;
+import org.bukkit.event.block.BlockBreakEvent;
 
 
 /**

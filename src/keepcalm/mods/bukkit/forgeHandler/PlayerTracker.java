@@ -1,15 +1,11 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import java.net.InetAddress;
-
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
-import net.minecraft.src.ChunkCoordinates;
-import net.minecraft.src.DedicatedServer;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.INetworkManager;
-import net.minecraft.src.TcpConnection;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.TcpConnection;
+import net.minecraft.util.ChunkCoordinates;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

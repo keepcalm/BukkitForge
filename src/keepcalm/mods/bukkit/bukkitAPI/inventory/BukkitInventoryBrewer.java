@@ -1,8 +1,8 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBrewingStand;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.TileEntityBrewingStand;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntityBrewingStand;
 
 import org.bukkit.block.BrewingStand;
 import org.bukkit.inventory.BrewerInventory;

@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//import cpw.mods.fml.relauncher.FMLLogFormatter;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+//import cpw.mods.fml.relauncher.FMLLogFormatter;
 
 public class BukkitLoggingStream extends ByteArrayOutputStream {
         private Logger log;

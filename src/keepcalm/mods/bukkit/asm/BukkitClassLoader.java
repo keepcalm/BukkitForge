@@ -1,7 +1,5 @@
 package keepcalm.mods.bukkit.asm;
 
-import com.google.common.primitives.Bytes;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import com.google.common.primitives.Bytes;
 
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
 

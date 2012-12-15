@@ -1,8 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.map;
 
-import net.minecraft.src.MapCoord;
-import net.minecraft.src.MapData;
-import net.minecraft.src.MapColor;
+import net.minecraft.world.storage.MapCoord;
+import net.minecraft.world.storage.MapData;
 
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;

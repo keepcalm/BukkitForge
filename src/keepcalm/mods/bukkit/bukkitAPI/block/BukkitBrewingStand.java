@@ -3,11 +3,8 @@ package keepcalm.mods.bukkit.bukkitAPI.block;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryBrewer;
-import net.minecraft.src.BlockBrewingStand;
-import net.minecraft.src.ExtendedBlockStorage;
-import net.minecraft.src.TileEntityBrewingStand;
-import net.minecraft.src.World;
-import net.minecraft.src.WrongUsageException;
+import net.minecraft.command.WrongUsageException;
+import net.minecraft.tileentity.TileEntityBrewingStand;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;

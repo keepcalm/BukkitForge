@@ -1,6 +1,5 @@
 package keepcalm.mods.bukkit.bukkitAPI.generator;
 
-import net.minecraft.src.World;
 
 /**
  * This class is useless. Just fyi.

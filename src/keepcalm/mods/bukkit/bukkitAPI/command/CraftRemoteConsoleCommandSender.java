@@ -1,6 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.command;
 
-import net.minecraft.src.RConConsoleSource;
+import net.minecraft.network.rcon.RConConsoleSource;
+
 import org.bukkit.command.RemoteConsoleCommandSender;
 
 public class CraftRemoteConsoleCommandSender extends ServerCommandSender implements RemoteConsoleCommandSender {

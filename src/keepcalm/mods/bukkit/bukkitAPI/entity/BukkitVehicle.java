@@ -2,8 +2,8 @@ package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 
-//import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Vehicle;
+//import org.bukkit.craftbukkit.CraftServer;
 
 public abstract class BukkitVehicle extends BukkitEntity implements Vehicle {
     public BukkitVehicle(BukkitServer server, net.minecraft.src.Entity entity) {

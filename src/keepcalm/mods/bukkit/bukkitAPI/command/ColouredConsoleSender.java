@@ -3,19 +3,16 @@ package keepcalm.mods.bukkit.bukkitAPI.command;
 import java.util.EnumMap;
 import java.util.Map;
 
-//import jline.Terminal;
-//import jline.console.ConsoleReader;
 import keepcalm.mods.bukkit.asm.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 
-import net.minecraft.src.DedicatedServer;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.ConsoleCommandSender;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
+//import jline.Terminal;
+//import jline.console.ConsoleReader;
 //import org.bukkit.craftbukkit.BukkitServer;
 
 public class ColouredConsoleSender extends BukkitConsoleCommandSender {

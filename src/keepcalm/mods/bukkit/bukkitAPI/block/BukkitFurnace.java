@@ -3,8 +3,7 @@ package keepcalm.mods.bukkit.bukkitAPI.block;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryFurnace;
-import net.minecraft.src.TileEntityFurnace;
-import net.minecraft.src.World;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;

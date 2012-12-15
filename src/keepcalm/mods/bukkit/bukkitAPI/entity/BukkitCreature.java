@@ -1,11 +1,12 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityCreature;
-import net.minecraft.src.EntityLiving;
-//import org.bukkit.craftbukkit.BukkitServer;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
+
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
+//import org.bukkit.craftbukkit.BukkitServer;
 
 public class BukkitCreature extends BukkitLivingEntity implements Creature {
     public BukkitCreature(BukkitServer server, EntityCreature entity) {

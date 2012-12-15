@@ -16,8 +16,8 @@
 
 package keepcalm.mods.bukkit.bukkitAPI.utils;
 
-import java.util.Iterator;
 import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class LongHashSet {

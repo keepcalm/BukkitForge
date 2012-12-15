@@ -15,74 +15,69 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitLightningStrike;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitMinecart;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
-import keepcalm.mods.bukkit.bukkitAPI.generator.CustomChunkGenerator;
-import keepcalm.mods.bukkit.bukkitAPI.generator.NetherChunkGenerator;
-import keepcalm.mods.bukkit.bukkitAPI.generator.NormalChunkGenerator;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.BlockMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.utils.LongHash;
-import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.BlockWood;
-import net.minecraft.src.ChunkCoordIntPair;
-import net.minecraft.src.ChunkCoordinates;
-import net.minecraft.src.EmptyChunk;
-import net.minecraft.src.EntityArrow;
-import net.minecraft.src.EntityBlaze;
-import net.minecraft.src.EntityBoat;
-import net.minecraft.src.EntityCaveSpider;
-import net.minecraft.src.EntityChicken;
-import net.minecraft.src.EntityCow;
-import net.minecraft.src.EntityCreeper;
-import net.minecraft.src.EntityDragon;
-import net.minecraft.src.EntityEgg;
-import net.minecraft.src.EntityEnderCrystal;
-import net.minecraft.src.EntityEnderman;
-import net.minecraft.src.EntityExpBottle;
-import net.minecraft.src.EntityFallingSand;
-import net.minecraft.src.EntityFireball;
-import net.minecraft.src.EntityFishHook;
-import net.minecraft.src.EntityGhast;
-import net.minecraft.src.EntityGiantZombie;
-import net.minecraft.src.EntityIronGolem;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityLightningBolt;
-import net.minecraft.src.EntityMagmaCube;
-import net.minecraft.src.EntityMinecart;
-import net.minecraft.src.EntityMooshroom;
-import net.minecraft.src.EntityOcelot;
-import net.minecraft.src.EntityPainting;
-import net.minecraft.src.EntityPig;
-import net.minecraft.src.EntityPigZombie;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.EntitySheep;
-import net.minecraft.src.EntitySilverfish;
-import net.minecraft.src.EntitySkeleton;
-import net.minecraft.src.EntitySlime;
-import net.minecraft.src.EntitySmallFireball;
-import net.minecraft.src.EntitySnowball;
-import net.minecraft.src.EntitySnowman;
-import net.minecraft.src.EntitySpider;
-import net.minecraft.src.EntitySquid;
-import net.minecraft.src.EntityTNTPrimed;
-import net.minecraft.src.EntityVillager;
-import net.minecraft.src.EntityWolf;
-import net.minecraft.src.EntityXPOrb;
-import net.minecraft.src.EntityZombie;
-import net.minecraft.src.Explosion;
-import net.minecraft.src.Packet4UpdateTime;
-import net.minecraft.src.Packet61DoorChange;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.WorldGenBigMushroom;
-import net.minecraft.src.WorldGenBigTree;
-import net.minecraft.src.WorldGenForest;
-import net.minecraft.src.WorldGenHugeTrees;
-import net.minecraft.src.WorldGenShrub;
-import net.minecraft.src.WorldGenTaiga1;
-import net.minecraft.src.WorldGenTaiga2;
-import net.minecraft.src.WorldGenTrees;
-import net.minecraft.src.WorldGenerator;
-import net.minecraft.src.WorldProvider;
-import net.minecraft.src.WorldServer;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityBoat;
+import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.entity.item.EntityExpBottle;
+import net.minecraft.entity.item.EntityFallingSand;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.EntityPainting;
+import net.minecraft.entity.item.EntityTNTPrimed;
+import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityCaveSpider;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityGiantZombie;
+import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.entity.monster.EntityMagmaCube;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySilverfish;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.EntitySnowman;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityEgg;
+import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.entity.projectile.EntityFishHook;
+import net.minecraft.entity.projectile.EntitySmallFireball;
+import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.network.packet.Packet61DoorChange;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.EmptyChunk;
+import net.minecraft.world.gen.feature.WorldGenBigMushroom;
+import net.minecraft.world.gen.feature.WorldGenBigTree;
+import net.minecraft.world.gen.feature.WorldGenForest;
+import net.minecraft.world.gen.feature.WorldGenHugeTrees;
+import net.minecraft.world.gen.feature.WorldGenShrub;
+import net.minecraft.world.gen.feature.WorldGenTaiga1;
+import net.minecraft.world.gen.feature.WorldGenTaiga2;
+import net.minecraft.world.gen.feature.WorldGenTrees;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.DimensionManager;
 
 import org.apache.commons.lang.Validate;
@@ -138,7 +133,6 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Silverfish;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
-import org.bukkit.entity.SmallFireball;
 import org.bukkit.entity.Snowball;
 import org.bukkit.entity.Snowman;
 import org.bukkit.entity.Spider;
@@ -237,7 +231,7 @@ public class BukkitWorld implements World {
 
     public boolean isChunkLoaded(int x, int z) {
     	world.theChunkProviderServer.loadChunkOnProvideRequest = false;
-    	net.minecraft.src.Chunk c = world.theChunkProviderServer.provideChunk(x, z);
+    	net.minecraft.world.chunk.Chunk c = world.theChunkProviderServer.provideChunk(x, z);
     	world.theChunkProviderServer.loadChunkOnProvideRequest = true;
     	if (c instanceof EmptyChunk) {
     		
@@ -251,7 +245,7 @@ public class BukkitWorld implements World {
         org.bukkit.Chunk[] craftChunks = new BukkitChunk[chunks.length];
 
         for (int i = 0; i < chunks.length; i++) {
-            net.minecraft.src.Chunk chunk = (net.minecraft.src.Chunk) chunks[i];
+            net.minecraft.world.chunk.Chunk chunk = (net.minecraft.world.chunk.Chunk) chunks[i];
             craftChunks[i] = new BukkitChunk(chunk);
         }
 
@@ -293,7 +287,7 @@ public class BukkitWorld implements World {
             return false;
         }
 
-        net.minecraft.src.Chunk chunk = world.theChunkProviderServer.provideChunk(x, z);
+        net.minecraft.world.chunk.Chunk chunk = world.theChunkProviderServer.provideChunk(x, z);
         if (chunk.isModified) {   // If chunk had previously been queued to save, must do save to avoid loss of that data
             save = true;
         }
@@ -316,7 +310,7 @@ public class BukkitWorld implements World {
 
         world.theChunkProviderServer.chunksToUnload.remove(ChunkCoordIntPair.chunkXZ2Int(x,z));
 
-        net.minecraft.src.Chunk chunk = null;
+        net.minecraft.world.chunk.Chunk chunk = null;
 
         if (world.theChunkProviderServer.currentChunkProvider == null) {
             chunk = world.theChunkProviderServer.defaultEmptyChunk;
@@ -365,7 +359,7 @@ public class BukkitWorld implements World {
         }
 
         world.theChunkProviderServer.chunksToUnload.remove(ChunkCoordIntPair.chunkXZ2Int(x,z));
-        net.minecraft.src.Chunk chunk = (net.minecraft.src.Chunk) world.theChunkProviderServer.loadedChunkHashMap.getValueByKey(LongHash.toLong(x, z));
+        net.minecraft.world.chunk.Chunk chunk = (net.minecraft.world.chunk.Chunk) world.theChunkProviderServer.loadedChunkHashMap.getValueByKey(LongHash.toLong(x, z));
 
         if (chunk == null) {
             chunk = world.theChunkProviderServer.loadChunk(x, z);
@@ -376,7 +370,7 @@ public class BukkitWorld implements World {
     }
 
     @SuppressWarnings("unchecked")
-    private void chunkLoadPostProcess(net.minecraft.src.Chunk chunk, int x, int z) {
+    private void chunkLoadPostProcess(net.minecraft.world.chunk.Chunk chunk, int x, int z) {
         if (chunk != null) {
             world.theChunkProviderServer.loadedChunkHashMap.add(LongHash.toLong(x, z), chunk);
 
@@ -647,7 +641,7 @@ public class BukkitWorld implements World {
     public void setBiome(int x, int z, Biome bio) {
         BiomeGenBase bb = BukkitBlock.biomeToBiomeGenBase(bio);
         if (this.world.theChunkProviderServer.chunkExists(x, z)) {
-            net.minecraft.src.Chunk chunk = this.world.getChunkFromChunkCoords(x, z);
+            net.minecraft.world.chunk.Chunk chunk = this.world.getChunkFromChunkCoords(x, z);
 
             if (chunk != null) {
                 byte[] biomevals = chunk.getBiomeArray();

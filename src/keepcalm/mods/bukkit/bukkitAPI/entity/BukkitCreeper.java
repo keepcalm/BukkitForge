@@ -1,8 +1,8 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityCreeper;
-import net.minecraft.src.NBTTagCompound;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.nbt.NBTTagCompound;
 
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;

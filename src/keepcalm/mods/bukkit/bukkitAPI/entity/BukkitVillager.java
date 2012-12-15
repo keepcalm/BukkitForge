@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityVillager;
+import net.minecraft.entity.passive.EntityVillager;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.entity.EntityType;

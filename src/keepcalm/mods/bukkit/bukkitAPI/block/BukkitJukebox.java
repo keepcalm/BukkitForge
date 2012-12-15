@@ -1,19 +1,14 @@
 package keepcalm.mods.bukkit.bukkitAPI.block;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
-import net.minecraft.src.BlockJukeBox;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemRecord;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.TileEntityRecordPlayer;
+import net.minecraft.block.BlockJukeBox;
+import net.minecraft.block.TileEntityRecordPlayer;
 
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Jukebox;
 //import org.bukkit.craftbukkit.BukkitWorld;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class BukkitJukebox extends BukkitBlockState implements Jukebox {
     private final BukkitWorld world;

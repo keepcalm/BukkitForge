@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityDragon;
+import net.minecraft.entity.boss.EntityDragon;
 
 import org.bukkit.entity.ComplexLivingEntity;
 //import org.bukkit.craftbukkit.CraftServer;

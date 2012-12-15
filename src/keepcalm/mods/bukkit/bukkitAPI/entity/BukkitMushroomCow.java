@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityMooshroom;
+import net.minecraft.entity.passive.EntityMooshroom;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.MushroomCow;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
-import net.minecraft.src.World;
 
 import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Bukkit;

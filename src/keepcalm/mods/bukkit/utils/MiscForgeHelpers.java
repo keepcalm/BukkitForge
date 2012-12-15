@@ -1,10 +1,10 @@
 package keepcalm.mods.bukkit.utils;
 
-import net.minecraft.src.ChunkPosition;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.EnumMovingObjectType;
-import net.minecraft.src.MovingObjectPosition;
-import net.minecraft.src.Vec3;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.EnumMovingObjectType;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.ChunkPosition;
 
 public class MiscForgeHelpers {
 	/**

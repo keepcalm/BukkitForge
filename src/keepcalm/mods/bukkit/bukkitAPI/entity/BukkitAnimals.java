@@ -1,9 +1,10 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityAnimal;
-//import org.bukkit.craftbukkit.CraftServer;
+import net.minecraft.entity.passive.EntityAnimal;
+
 import org.bukkit.entity.Animals;
+//import org.bukkit.craftbukkit.CraftServer;
 
 public class BukkitAnimals extends BukkitAgeable implements Animals {
 

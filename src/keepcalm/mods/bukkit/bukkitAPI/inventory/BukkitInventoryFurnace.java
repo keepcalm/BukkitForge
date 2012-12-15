@@ -1,12 +1,11 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitFurnace;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 import org.bukkit.block.Furnace;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.ItemStack;
-
-import net.minecraft.src.TileEntityFurnace;
 
 public class BukkitInventoryFurnace extends BukkitInventory implements FurnaceInventory {
 	private Furnace owner;

@@ -1,9 +1,6 @@
 package keepcalm.mods.bukkit.bukkitAPI.utils;
 
-import java.io.IOException;
 import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 //import jline.console.ConsoleReader;
 //import org.bukkit.craftbukkit.Main;
 

@@ -1,12 +1,12 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityArrow;
+import net.minecraft.entity.projectile.EntityArrow;
 
-//import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+//import org.bukkit.craftbukkit.CraftServer;
 
 public class BukkitArrow extends AbstractProjectile implements Arrow {
 

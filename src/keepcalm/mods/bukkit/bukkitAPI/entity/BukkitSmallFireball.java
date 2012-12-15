@@ -1,10 +1,11 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntitySmallFireball;
-//import org.bukkit.craftbukkit.BukkitServer;
+import net.minecraft.entity.projectile.EntitySmallFireball;
+
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.SmallFireball;
+//import org.bukkit.craftbukkit.BukkitServer;
 
 public class BukkitSmallFireball extends BukkitFireball implements SmallFireball {
     public BukkitSmallFireball(BukkitServer server, EntitySmallFireball entity) {

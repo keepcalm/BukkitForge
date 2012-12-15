@@ -2,10 +2,10 @@ package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntityHuman;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
-import net.minecraft.src.CraftingManager;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.InventoryCrafting;
-import net.minecraft.src.ShapedRecipes;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.ShapedRecipes;
 
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;

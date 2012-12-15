@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityFallingSand;
+import net.minecraft.entity.item.EntityFallingSand;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;

@@ -1,11 +1,9 @@
 package keepcalm.mods.bukkit.bukkitAPI.block;
 
-import java.util.Random;
-
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventory;
-import net.minecraft.src.BlockDispenser;
-import net.minecraft.src.TileEntityDispenser;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.tileentity.TileEntityDispenser;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;

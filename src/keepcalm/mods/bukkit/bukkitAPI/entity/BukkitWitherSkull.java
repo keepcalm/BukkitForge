@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityWitherSkull;
+import net.minecraft.entity.projectile.EntityWitherSkull;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.WitherSkull;

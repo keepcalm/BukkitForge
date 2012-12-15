@@ -3,11 +3,7 @@ package keepcalm.mods.bukkit.bukkitAPI;
 import java.util.logging.Logger;
 
 import keepcalm.mods.bukkit.asm.BukkitContainer;
-
-import net.minecraft.src.DedicatedServer;
-
-import org.bukkit.Bukkit;
-
+import net.minecraft.server.dedicated.DedicatedServer;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class BukkitLogHandler extends Logger {

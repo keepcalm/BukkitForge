@@ -1,9 +1,9 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.MovingObjectPosition;
-import net.minecraft.src.Vec3;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 
 public class PlayerUtilities {
 	private EntityPlayerMP thePlayer;

@@ -6,17 +6,8 @@ import java.util.ListIterator;
 
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
 import keepcalm.mods.bukkit.bukkitAPI.item.InventoryIterator;
-
-import net.minecraft.src.ContainerEnchantment;
-import net.minecraft.src.InventoryCrafting;
-import net.minecraft.src.InventoryEnderChest;
-import net.minecraft.src.InventoryMerchant;
-import net.minecraft.src.ContainerPlayer;
-import net.minecraft.src.TileEntityBrewingStand;
-import net.minecraft.src.TileEntityDispenser;
-import net.minecraft.src.TileEntityFurnace;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.WrongUsageException;
+import net.minecraft.command.WrongUsageException;
+import net.minecraft.inventory.IInventory;
 
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -26,7 +17,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.server.FMLServerHandler;
 
 public class BukkitInventory implements Inventory {
 

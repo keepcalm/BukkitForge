@@ -37,7 +37,7 @@ public class BukkitBlockState implements BlockState {
         createData(block.getData());
     }
 
-    public static BukkitBlockState getBlockState(net.minecraft.src.World world, int x, int y, int z) {
+    public static BukkitBlockState getBlockState(net.minecraft.world.World world, int x, int y, int z) {
     	/* A bit overcomplicated... */
         return new BukkitBlockState(new BukkitBlock(new BukkitChunk(world.getChunkFromBlockCoords(x, z)), x, y, z));
     }

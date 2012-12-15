@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntitySnowman;
+import net.minecraft.entity.monster.EntitySnowman;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Snowman;

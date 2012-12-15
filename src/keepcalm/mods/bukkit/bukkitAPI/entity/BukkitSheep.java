@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntitySheep;
+import net.minecraft.entity.passive.EntitySheep;
 
 import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;

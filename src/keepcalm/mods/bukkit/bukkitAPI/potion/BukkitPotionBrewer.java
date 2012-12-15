@@ -5,13 +5,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-//import net.minecraft.src.PotionEffect;
-
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionBrewer;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.google.common.collect.Maps;
+//import net.minecraft.src.PotionEffect;
 
 public class BukkitPotionBrewer implements PotionBrewer {
     private static final Map<Integer, Collection<PotionEffect>> cache = Maps.newHashMap();

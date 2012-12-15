@@ -7,8 +7,6 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.DedicatedServer;
-import net.minecraft.src.PropertyManager;
 //import joptsimple.OptionException;
 //import joptsimple.OptionSet;
 /**

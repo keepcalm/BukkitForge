@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityTNTPrimed;
+import net.minecraft.entity.item.EntityTNTPrimed;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;

@@ -1,13 +1,13 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityFishHook;
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityFishHook;
 
-//import org.bukkit.craftbukkit.BukkitServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fish;
 import org.bukkit.entity.LivingEntity;
+//import org.bukkit.craftbukkit.BukkitServer;
 
 public class BukkitFish extends AbstractProjectile implements Fish {
     public BukkitFish(BukkitServer server, EntityFishHook entity) {

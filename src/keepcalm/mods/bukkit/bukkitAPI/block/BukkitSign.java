@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.block;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
-import net.minecraft.src.TileEntitySign;
+import net.minecraft.tileentity.TileEntitySign;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;

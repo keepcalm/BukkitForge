@@ -8,8 +8,7 @@ import java.util.Map;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
-
-import net.minecraft.src.MapData;
+import net.minecraft.world.storage.MapData;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

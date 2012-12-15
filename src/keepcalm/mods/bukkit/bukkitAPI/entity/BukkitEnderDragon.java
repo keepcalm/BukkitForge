@@ -3,8 +3,8 @@ package keepcalm.mods.bukkit.bukkitAPI.entity;
 import java.util.Set;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityDragon;
-import net.minecraft.src.EntityDragonPart;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityDragonPart;
 
 import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.EnderDragon;

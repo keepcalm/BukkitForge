@@ -1,8 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-
-import net.minecraft.src.EntityXPOrb;
+import net.minecraft.entity.item.EntityXPOrb;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;

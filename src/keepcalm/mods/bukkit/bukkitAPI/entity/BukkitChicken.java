@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityChicken;
+import net.minecraft.entity.passive.EntityChicken;
 
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.EntityType;

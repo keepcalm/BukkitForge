@@ -1,22 +1,31 @@
 package keepcalm.mods.bukkit.bukkitAPI.command;
 
-import net.minecraft.src.ServerCommandManager;
+import static org.bukkit.util.Java15Compat.Arrays_copyOfRange;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import keepcalm.mods.bukkit.forgeHandler.commands.CommandExecutor2CommandBase;
+import net.minecraft.command.ServerCommandManager;
+
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.MultipleCommandAlias;
 import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.command.defaults.*;
-import org.bukkit.permissions.Permission;
-
-import java.util.*;
-
-import keepcalm.mods.bukkit.forgeHandler.commands.CommandExecutor2CommandBase;
-
-import org.bukkit.Server;
-import static org.bukkit.util.Java15Compat.Arrays_copyOfRange;
+import org.bukkit.command.defaults.PluginsCommand;
+import org.bukkit.command.defaults.ReloadCommand;
+import org.bukkit.command.defaults.TimingsCommand;
+import org.bukkit.command.defaults.VanillaCommand;
+import org.bukkit.command.defaults.VersionCommand;
 /**
  * Adds net.minecraft.src compatibility to commands, by adding hooks into CommandExecutor2CommandBase.
  * It will need some interesting hackery to make this compatible with some plugins (esp. ones that try and get other plugin's commands manually...)

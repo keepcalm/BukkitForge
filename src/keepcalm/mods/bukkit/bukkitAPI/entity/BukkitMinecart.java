@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityMinecart;
+import net.minecraft.entity.item.EntityMinecart;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Minecart;

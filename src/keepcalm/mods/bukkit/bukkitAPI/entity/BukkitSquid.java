@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntitySquid;
+import net.minecraft.entity.passive.EntitySquid;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Squid;

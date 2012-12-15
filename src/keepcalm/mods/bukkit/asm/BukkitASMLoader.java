@@ -2,9 +2,7 @@ package keepcalm.mods.bukkit.asm;
 
 import java.util.Map;
 
-
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
 public class BukkitASMLoader implements IFMLLoadingPlugin {
 	@Override

@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityAmbientCreature;
+import net.minecraft.entity.passive.EntityAmbientCreature;
 
 import org.bukkit.entity.Ambient;
 import org.bukkit.entity.EntityType;

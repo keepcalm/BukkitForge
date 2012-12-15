@@ -1,6 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.map;
 
 import java.util.ArrayList;
+
 import org.bukkit.map.MapCursor;
 
 public class RenderData {

@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI;
 
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
-import net.minecraft.src.BiomeGenBase;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.block.Biome;

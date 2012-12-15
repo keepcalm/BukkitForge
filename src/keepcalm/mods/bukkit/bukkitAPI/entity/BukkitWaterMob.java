@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityWaterMob;
+import net.minecraft.entity.passive.EntityWaterMob;
 
 import org.bukkit.entity.WaterMob;
 //import org.bukkit.craftbukkit.BukkitServer;

@@ -2,9 +2,7 @@ package keepcalm.mods.bukkit.bukkitAPI;
 
 import java.util.Set;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.ConsoleLogManager;
-import net.minecraft.src.DedicatedServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -16,8 +14,6 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class BukkitConsoleCommandSender implements ConsoleCommandSender {
 	private static BukkitConsoleCommandSender instance = null;

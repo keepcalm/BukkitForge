@@ -5,10 +5,8 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import cpw.mods.fml.common.asm.transformers.AccessTransformer;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 public class BukkitAccessTransformer extends AccessTransformer {
 	private static BukkitAccessTransformer instance;

@@ -3,9 +3,8 @@ package keepcalm.mods.bukkit.bukkitAPI.inventory;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.InventoryPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;

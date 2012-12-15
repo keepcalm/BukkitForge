@@ -2,17 +2,15 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 
 import keepcalm.mods.bukkit.asm.BukkitContainer;
-
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.ICommandSender;
 
 public class CommandRequirementRegistry {
 	public static enum Level {

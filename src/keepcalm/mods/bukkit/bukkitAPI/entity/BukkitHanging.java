@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityHanging;
+import net.minecraft.entity.EntityHanging;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

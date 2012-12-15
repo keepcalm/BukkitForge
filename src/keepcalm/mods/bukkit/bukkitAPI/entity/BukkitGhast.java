@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityGhast;
+import net.minecraft.entity.monster.EntityGhast;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ghast;

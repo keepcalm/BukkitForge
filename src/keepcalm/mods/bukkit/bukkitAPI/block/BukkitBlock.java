@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.List;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
-import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.BlockRedstoneWire;
-import net.minecraft.src.EnumSkyBlock;
+import net.minecraft.block.BlockRedstoneWire;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -310,8 +310,8 @@ public class BukkitBlock implements Block {
 
     public int getBlockPower(BlockFace face) {
         int power = 0;
-        BlockRedstoneWire wire = (BlockRedstoneWire) net.minecraft.src.Block.redstoneWire;
-        net.minecraft.src.World world = chunk.getHandle().worldObj;
+        BlockRedstoneWire wire = (BlockRedstoneWire) net.minecraft.block.Block.redstoneWire;
+        net.minecraft.world.World world = chunk.getHandle().worldObj;
         /*if ((face == BlockFace.DOWN || face == BlockFace.SELF) && world.isBlockFacePowered(x, y - 1, z, 0)) power = wire(world, x, y - 1, z, power);
         if ((face == BlockFace.UP || face == BlockFace.SELF) && world.isBlockFacePowered(x, y + 1, z, 1)) power = wire.getPower(world, x, y + 1, z, power);
         if ((face == BlockFace.EAST || face == BlockFace.SELF) && world.isBlockFacePowered(x, y, z - 1, 2)) power = wire.getPower(world, x, y, z - 1, power);
@@ -334,17 +334,17 @@ public class BukkitBlock implements Block {
     }
 
     public PistonMoveReaction getPistonMoveReaction() {
-        return PistonMoveReaction.getById(net.minecraft.src.Block.blocksList[this.getTypeId()].blockMaterial.getMaterialMobility());
+        return PistonMoveReaction.getById(net.minecraft.block.Block.blocksList[this.getTypeId()].blockMaterial.getMaterialMobility());
     }
 
     private boolean itemCausesDrops(ItemStack item) {
-        net.minecraft.src.Block block = net.minecraft.src.Block.blocksList[this.getTypeId()];
-        net.minecraft.src.Item itemType = item != null ? net.minecraft.src.Item.itemsList[item.getTypeId()] : null;
+        net.minecraft.block.Block block = net.minecraft.block.Block.blocksList[this.getTypeId()];
+        net.minecraft.item.Item itemType = item != null ? net.minecraft.item.Item.itemsList[item.getTypeId()] : null;
         return block != null && (block.blockMaterial.func_85157_q() || (itemType != null && itemType.canHarvestBlock(block)));
     }
 
     public boolean breakNaturally() {
-        net.minecraft.src.Block block = net.minecraft.src.Block.blocksList[this.getTypeId()];
+        net.minecraft.block.Block block = net.minecraft.block.Block.blocksList[this.getTypeId()];
         byte data = getData();
 
         setTypeId(Material.AIR.getId());
@@ -366,7 +366,7 @@ public class BukkitBlock implements Block {
     public Collection<ItemStack> getDrops() {
         List<ItemStack> drops = new ArrayList<ItemStack>();
 
-        net.minecraft.src.Block block = net.minecraft.src.Block.blocksList[this.getTypeId()];
+        net.minecraft.block.Block block = net.minecraft.block.Block.blocksList[this.getTypeId()];
         if (block != null) {
             byte data = getData();
             // based on nms.Block.dropNaturally

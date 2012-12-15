@@ -1,11 +1,11 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
-import org.bukkit.Bukkit;
-
 import keepcalm.mods.bukkit.asm.BukkitContainer;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.CommandBase;
-import net.minecraft.src.ICommandSender;
+
+import org.bukkit.Bukkit;
 /**
  * Shuts down the server in a bukkit-friendly way.
  * @author keepcalm

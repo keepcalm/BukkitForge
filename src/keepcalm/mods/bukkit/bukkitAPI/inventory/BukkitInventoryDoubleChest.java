@@ -1,6 +1,6 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
-import net.minecraft.src.InventoryLargeChest;
+import net.minecraft.inventory.InventoryLargeChest;
 
 import org.bukkit.block.DoubleChest;
 import org.bukkit.inventory.DoubleChestInventory;

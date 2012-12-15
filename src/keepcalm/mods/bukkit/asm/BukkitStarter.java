@@ -1,11 +1,6 @@
 package keepcalm.mods.bukkit.asm;
 
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.logging.Level;
-
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.ServerCommandManager;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
@@ -13,10 +8,9 @@ import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandHelp;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandMVFix;
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandRequirementRegistry;
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandSetLevel;
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraft.command.ServerCommandManager;
+import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.FMLRelauncher;
-import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 public class BukkitStarter implements Runnable {
 	private MinecraftServer server;

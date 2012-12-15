@@ -29,35 +29,35 @@ import keepcalm.mods.bukkit.bukkitAPI.metadata.PlayerMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.WorldMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
-import keepcalm.mods.bukkit.forgeHandler.commands.CommandRequirementRegistry;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.ServerCommandManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemMap;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.server.ConvertingProgressUpdate;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.AnvilSaveConverter;
-import net.minecraft.src.AnvilSaveHandler;
-import net.minecraft.src.BanEntry;
-import net.minecraft.src.ChunkCoordinates;
-import net.minecraft.src.ChunkProviderEnd;
-import net.minecraft.src.ChunkProviderHell;
-import net.minecraft.src.ConvertingProgressUpdate;
-import net.minecraft.src.CraftingManager;
-import net.minecraft.src.DedicatedServer;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.EnumGameType;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.ICommandSender;
-import net.minecraft.src.IProgressUpdate;
-import net.minecraft.src.IRecipe;
-import net.minecraft.src.IWorldAccess;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemMap;
-import net.minecraft.src.MapData;
-import net.minecraft.src.PropertyManager;
-import net.minecraft.src.ServerCommandManager;
-import net.minecraft.src.ShapedRecipes;
-import net.minecraft.src.WorldManager;
-import net.minecraft.src.WorldServer;
-import net.minecraft.src.WorldSettings;
-import net.minecraft.src.WorldType;
+import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.server.dedicated.PropertyManager;
+import net.minecraft.server.management.BanEntry;
+import net.minecraft.server.management.ServerConfigurationManager;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.IProgressUpdate;
+import net.minecraft.world.EnumGameType;
+import net.minecraft.world.IWorldAccess;
+import net.minecraft.world.WorldManager;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.WorldType;
+import net.minecraft.world.WorldSettings;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.storage.AnvilSaveConverter;
+import net.minecraft.world.chunk.storage.AnvilSaveHandler;
+import net.minecraft.world.gen.ChunkProviderEnd;
+import net.minecraft.world.gen.ChunkProviderHell;
+import net.minecraft.world.storage.MapData;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeVersion;
 
@@ -115,7 +115,6 @@ import com.avaje.ebean.config.DataSourceConfig;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
-import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.Loader;
@@ -130,7 +129,7 @@ public class BukkitServer implements Server {
 	private static BukkitServer instance;
 	private DedicatedServer theServer;
 	//private BukkitServer bukkitServer;
-	private net.minecraft.src.ServerConfigurationManager configMan;
+	private ServerConfigurationManager configMan;
 	private YamlConfiguration bukkitConfig;
 	private Yaml yaml = new Yaml(new SafeConstructor());
 	private B4VScheduler scheduler = new B4VScheduler();
@@ -755,16 +754,16 @@ public class BukkitServer implements Server {
 	 * @return the map of that ID in that world.
 	 */
 	private MapView getMap(short id, World world) {
-		MapData d = ItemMap.getMPMapData(id, (net.minecraft.src.World) world);
+		MapData d = ItemMap.getMPMapData(id, (net.minecraft.world.World) world);
 		return (MapView) d;
 	}
 	
 	@Override
 	public MapView createMap(World world) {
-		net.minecraft.src.ItemStack stack = new net.minecraft.src.ItemStack(Item.map, 1, -1);
+		net.minecraft.item.ItemStack stack = new net.minecraft.item.ItemStack(Item.map, 1, -1);
 		
 		
-        MapData worldmap = Item.map.getMPMapData((short) stack.getItemDamage(), (net.minecraft.src.World) world);
+        MapData worldmap = Item.map.getMPMapData((short) stack.getItemDamage(), ((BukkitWorld)world).getHandle());
         return (MapView) worldmap;
 	}
 
@@ -1016,7 +1015,7 @@ public class BukkitServer implements Server {
 	public List<Recipe> getRecipesFor(ItemStack result) {
 		//net.minecraft.src.ItemStack realStack = (net.minecraft.src.ItemStack) result;
 		List<Recipe> res = new ArrayList<Recipe> ();
-		net.minecraft.src.ItemStack stack = new net.minecraft.src.ItemStack(result.getTypeId(), result.getAmount(), result.getDurability());
+		net.minecraft.item.ItemStack stack = new net.minecraft.item.ItemStack(result.getTypeId(), result.getAmount(), result.getDurability());
 		ShapedRecipes[] recipes = (ShapedRecipes[]) CraftingManager.getInstance().getRecipeList().toArray();
 		for (ShapedRecipes i : recipes) {
 			if (i.getRecipeOutput() == stack) {

@@ -1,10 +1,11 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityBoat;
-//import org.bukkit.craftbukkit.CraftServer;
+import net.minecraft.entity.item.EntityBoat;
+
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
+//import org.bukkit.craftbukkit.CraftServer;
 
 public class BukkitBoat extends BukkitVehicle implements Boat {
 	private double speed = 0.2;

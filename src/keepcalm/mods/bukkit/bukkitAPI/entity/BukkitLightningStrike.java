@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityLightningBolt;
+import net.minecraft.entity.effect.EntityLightningBolt;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LightningStrike;

@@ -1,8 +1,8 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
-import net.minecraft.src.ShapedRecipes;
-import net.minecraft.src.ShapelessRecipes;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;

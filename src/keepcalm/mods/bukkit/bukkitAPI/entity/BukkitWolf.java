@@ -1,10 +1,11 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityWolf;
-//import org.bukkit.craftbukkit.CraftServer;
+import net.minecraft.entity.passive.EntityWolf;
+
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Wolf;
+//import org.bukkit.craftbukkit.CraftServer;
 
 public class BukkitWolf extends BukkitTameableAnimal implements Wolf {
     public BukkitWolf(BukkitServer server, EntityWolf wolf) {

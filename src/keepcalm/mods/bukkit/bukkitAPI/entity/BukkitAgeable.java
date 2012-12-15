@@ -1,10 +1,10 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityAgeable;
+import net.minecraft.entity.EntityAgeable;
 
-//import org.bukkit.craftbukkit.BukkitServer;
 import org.bukkit.entity.Ageable;
+//import org.bukkit.craftbukkit.BukkitServer;
 
 public class BukkitAgeable extends BukkitCreature implements Ageable {
     public BukkitAgeable(BukkitServer server, EntityAgeable entity) {

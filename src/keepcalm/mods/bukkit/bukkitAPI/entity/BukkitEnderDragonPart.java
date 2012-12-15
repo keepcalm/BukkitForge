@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityDragonPart;
+import net.minecraft.entity.boss.EntityDragonPart;
 
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.EnderDragonPart;

@@ -1,6 +1,5 @@
 package keepcalm.mods.bukkit.bukkitAPI.enchantment;
 
-import net.minecraft.src.Item;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.enchantments.EnchantmentWrapper;

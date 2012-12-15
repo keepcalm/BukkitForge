@@ -1,11 +1,11 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityCaveSpider;
+import net.minecraft.entity.monster.EntityCaveSpider;
 
-//import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.CaveSpider;
 import org.bukkit.entity.EntityType;
+//import org.bukkit.craftbukkit.CraftServer;
 
 public class BukkitCaveSpider extends BukkitSpider implements CaveSpider {
     public BukkitCaveSpider(BukkitServer server, EntityCaveSpider entity) {

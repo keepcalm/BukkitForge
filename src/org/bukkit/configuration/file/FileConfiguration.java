@@ -1,9 +1,5 @@
 package org.bukkit.configuration.file;
 
-import com.google.common.io.Files;
-
-import org.apache.commons.lang.Validate;
-import org.bukkit.configuration.InvalidConfigurationException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,8 +8,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
+
+import com.google.common.io.Files;
 
 /**
  * This is a base class for all File based implementations of {@link Configuration}

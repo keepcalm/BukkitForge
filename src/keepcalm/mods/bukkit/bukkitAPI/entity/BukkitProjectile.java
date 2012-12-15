@@ -1,8 +1,8 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityThrowable;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.projectile.EntityThrowable;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;

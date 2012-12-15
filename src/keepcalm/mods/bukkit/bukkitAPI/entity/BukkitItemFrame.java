@@ -2,8 +2,7 @@ package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
-import net.minecraft.src.EntityItemFrame;
-import net.minecraft.src.ItemStack;
+import net.minecraft.entity.item.EntityItemFrame;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;

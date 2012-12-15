@@ -2,6 +2,7 @@ package keepcalm.mods.bukkit.bukkitAPI.map;
 
 import java.awt.Image;
 import java.util.Arrays;
+
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapCursorCollection;
 import org.bukkit.map.MapFont;

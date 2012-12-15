@@ -3,7 +3,8 @@ package keepcalm.mods.bukkit.asm;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-import net.minecraft.src.DedicatedServer;
+import net.minecraft.server.dedicated.DedicatedServer;
+
 
 public class BukkitGuiForwarder extends Handler {
 

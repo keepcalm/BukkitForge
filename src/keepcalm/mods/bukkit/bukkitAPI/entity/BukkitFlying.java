@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityFlying;
+import net.minecraft.entity.EntityFlying;
 
 import org.bukkit.entity.Flying;
 //import org.bukkit.craftbukkit.BukkitServer;

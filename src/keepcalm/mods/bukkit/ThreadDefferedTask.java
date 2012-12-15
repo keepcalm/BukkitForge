@@ -1,6 +1,9 @@
 package keepcalm.mods.bukkit;
 
-import static keepcalm.mods.bukkit.DefferedTaskHandler.*;
+import static keepcalm.mods.bukkit.DefferedTaskHandler.repeatingTasks;
+import static keepcalm.mods.bukkit.DefferedTaskHandler.repeatingTasksWait;
+import static keepcalm.mods.bukkit.DefferedTaskHandler.tasks;
+import static keepcalm.mods.bukkit.DefferedTaskHandler.tasksToRun;
 
 public class ThreadDefferedTask implements Runnable {
 

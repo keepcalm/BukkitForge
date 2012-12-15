@@ -1,7 +1,5 @@
 package keepcalm.mods.bukkit.bukkitAPI.potion;
 
-import net.minecraft.src.PotionEffect;
-
 import org.bukkit.potion.PotionEffectType;
 
 public class CraftPotionEffectType extends PotionEffectType {

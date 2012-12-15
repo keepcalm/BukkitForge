@@ -5,11 +5,9 @@ import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.src.AnvilSaveHandler;
-import net.minecraft.src.CompressedStreamTools;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IPlayerFileData;
-import net.minecraft.src.NBTTagCompound;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.chunk.storage.AnvilSaveHandler;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;

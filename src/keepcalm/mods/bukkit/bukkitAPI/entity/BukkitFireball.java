@@ -1,14 +1,14 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityFireball;
-import net.minecraft.src.EntityLiving;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.projectile.EntityFireball;
 
-//import org.bukkit.craftbukkit.BukkitServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
+//import org.bukkit.craftbukkit.BukkitServer;
 
 public class BukkitFireball extends AbstractProjectile implements Fireball {
 	// FIXME: Implement these for real!

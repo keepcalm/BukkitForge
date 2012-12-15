@@ -3,16 +3,12 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 import java.util.Set;
 
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
 
-import net.minecraft.src.DedicatedServer;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.ICommandSender;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;

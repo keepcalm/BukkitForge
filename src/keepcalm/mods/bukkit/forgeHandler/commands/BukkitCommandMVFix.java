@@ -1,15 +1,7 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
-import java.util.Collections;
-
-import org.bukkit.Bukkit;
-import org.bukkit.help.HelpTopic;
-import org.bukkit.help.IndexHelpTopic;
-
 import keepcalm.mods.bukkit.asm.BukkitContainer;
-import keepcalm.mods.bukkit.bukkitAPI.help.CommandHelpTopic;
-import net.minecraft.src.CommandBase;
-import net.minecraft.src.ICommandSender;
+import net.minecraft.command.ICommandSender;
 /**
  * A command to fix compatibility issues with plugins like MultiVerse - which i __suspect__ use 
  * aliases.

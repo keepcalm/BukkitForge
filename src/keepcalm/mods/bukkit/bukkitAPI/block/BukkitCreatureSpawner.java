@@ -1,13 +1,13 @@
 package keepcalm.mods.bukkit.bukkitAPI.block;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
-import net.minecraft.src.TileEntityMobSpawner;
+import net.minecraft.tileentity.TileEntityMobSpawner;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
-//import org.bukkit.craftbukkit.BukkitWorld;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.EntityType;
+//import org.bukkit.craftbukkit.BukkitWorld;
 
 public class BukkitCreatureSpawner extends BukkitBlockState implements CreatureSpawner {
     private final BukkitWorld world;

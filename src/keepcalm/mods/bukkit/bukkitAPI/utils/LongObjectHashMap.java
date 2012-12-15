@@ -1,5 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.utils;
 
+import static keepcalm.mods.bukkit.bukkitAPI.utils.Java15Compat.Arrays_copyOf;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,8 +16,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
-import static keepcalm.mods.bukkit.bukkitAPI.utils.Java15Compat.Arrays_copyOf;
 
 @SuppressWarnings("unchecked")
 public class LongObjectHashMap<V> implements Cloneable, Serializable {

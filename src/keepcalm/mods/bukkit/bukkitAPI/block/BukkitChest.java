@@ -3,7 +3,7 @@ package keepcalm.mods.bukkit.bukkitAPI.block;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventory;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryDoubleChest;
-import net.minecraft.src.TileEntityChest;
+import net.minecraft.tileentity.TileEntityChest;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;

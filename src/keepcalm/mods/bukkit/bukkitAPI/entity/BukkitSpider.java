@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntitySpider;
+import net.minecraft.entity.monster.EntitySpider;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Spider;

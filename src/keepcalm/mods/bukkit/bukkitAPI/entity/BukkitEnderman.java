@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityEnderman;
+import net.minecraft.entity.monster.EntityEnderman;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Enderman;

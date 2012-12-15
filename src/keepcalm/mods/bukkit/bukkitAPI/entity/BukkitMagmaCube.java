@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityMagmaCube;
+import net.minecraft.entity.monster.EntityMagmaCube;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.MagmaCube;

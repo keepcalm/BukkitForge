@@ -1,10 +1,10 @@
 package keepcalm.mods.bukkit.bukkitAPI;
 
+import java.util.LinkedList;
+
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
-
-import java.util.LinkedList;
 
 /*
  * @author CraftBukkit

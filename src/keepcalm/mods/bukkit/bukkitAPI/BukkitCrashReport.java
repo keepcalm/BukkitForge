@@ -6,11 +6,11 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import net.minecraft.server.MinecraftServer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-
-import net.minecraft.server.MinecraftServer;
 
 public class BukkitCrashReport implements Callable {
 

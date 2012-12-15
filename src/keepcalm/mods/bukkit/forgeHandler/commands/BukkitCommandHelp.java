@@ -1,17 +1,19 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
+import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.help.SimpleHelpMap;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.CommandBase;
-import net.minecraft.src.ICommandSender;
-import net.minecraft.src.MathHelper;
+import net.minecraft.util.MathHelper;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpTopic;
-
-import cpw.mods.fml.common.toposort.TopologicalSort;
 
 public class BukkitCommandHelp extends CommandBase {
 	// TODO allow configuration
@@ -31,7 +33,7 @@ public class BukkitCommandHelp extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
 		SimpleHelpMap hm = (SimpleHelpMap) BukkitServer.instance().getHelpMap();
-		CommandSender pcs = new BukkitCommandSender(var1);
+		CommandSender pcs = var1 instanceof EntityPlayer ? new BukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) var1) : BukkitConsoleCommandSender.getInstance();
 		int total = hm.getHelpTopics().size();
 		// round up
 		int totalPages = MathHelper.ceiling_float_int(total / entries_per_page);

@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntityHuman;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.ItemStack;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;

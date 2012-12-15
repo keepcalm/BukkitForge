@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
-import net.minecraft.src.CommandBase;
-import net.minecraft.src.ICommandSender;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
 
 public abstract class BukkitCommandBase extends CommandBase {
 	

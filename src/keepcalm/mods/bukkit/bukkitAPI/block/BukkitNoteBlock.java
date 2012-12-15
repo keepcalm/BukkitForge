@@ -1,8 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.block;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
-import net.minecraft.src.BlockNote;
-import net.minecraft.src.TileEntityNote;
+import net.minecraft.tileentity.TileEntityNote;
 
 import org.bukkit.Instrument;
 import org.bukkit.Material;

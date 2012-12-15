@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.entity;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.src.EntityZombie;
+import net.minecraft.entity.monster.EntityZombie;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Zombie;

@@ -2,22 +2,20 @@ package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
 //import org.bukkit.craftbukkit.entity.BukkitPlayer;
 import java.util.List;
-import net.minecraft.src.InventoryRepair;
 
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Container;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.IMerchant;
-import net.minecraft.src.InventoryMerchant;
-import net.minecraft.src.InventoryPlayer;
-import net.minecraft.src.Packet100OpenWindow;
-import net.minecraft.src.Slot;
-import net.minecraft.src.SlotMerchantResult;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.IMerchant;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryMerchant;
+import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotMerchantResult;
+import net.minecraft.network.packet.Packet100OpenWindow;
+import net.minecraft.util.AxisAlignedBB;
 
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
