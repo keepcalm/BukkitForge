@@ -25,7 +25,7 @@ public class BukkitAccessTransformer extends AccessTransformer {
 			while(var2.hasNext()) {
 				
 				String file = (String)var2.next();
-				System.out.println("Running var2.hasNext(): " + file);
+				//System.out.println("Running var2.hasNext(): " + file);
 				this.readMapFile(file);
 			}
 			

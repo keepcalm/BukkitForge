@@ -126,7 +126,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BukkitServer implements Server {
 	public static final String apiVer = "1.4.2-R0.2-BETA";
-	public static final String version = "1.4.5-0";
+	public static final String version = "1.4.5-1";
 	private static BukkitServer instance;
 	private DedicatedServer theServer;
 	//private BukkitServer bukkitServer;
@@ -183,7 +183,7 @@ public class BukkitServer implements Server {
 		configMan = server.getConfigurationManager();
 		theServer = (DedicatedServer) server;
 		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());
-		System.out.println("IDs: " + Joiner.on(", ").join(ids));
+		//System.out.println("IDs: " + Joiner.on(", ").join(ids));
 		Iterator<Integer> _ = ids.iterator();
 		
 		bukkitConfig = new YamlConfiguration();
@@ -205,12 +205,8 @@ public class BukkitServer implements Server {
 		
 		while(_.hasNext()) {
 			int i = _.next();
-			//System.out.println("loop: " + i);
 			WorldServer x = theServer.worldServerForDimension(i);
-			//System.out.println("got worldserver: " + x);
-			//System.out.print("Registering dimension " + i + " Provider: " + DimensionManager.getProvider(i).getDimensionName());
 			worlds.put(i, new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getWorldName()), this.wtToEnv(x)));
-			//System.out.println("... Done!");
 		}
 		this.theLogger = BukkitContainer.bukkitLogger;
 		theLogger.info("Bukkit API for Vanilla, version " + version + " starting up...");
@@ -238,8 +234,8 @@ public class BukkitServer implements Server {
 		Bukkit.getServer().getHelpMap().addTopic(myHelp);
 		loadPlugins();
 		enablePlugins(PluginLoadOrder.STARTUP);
-		System.out.println("Hi!");
-		System.out.println("Thread: " + Thread.currentThread().getName());
+		//System.out.println("Hi!");
+		//System.out.println("Thread: " + Thread.currentThread().getName());
 		
 		theLogger.info("Loading PostWorld plugins...");
 		enablePlugins(PluginLoadOrder.POSTWORLD);
@@ -252,7 +248,6 @@ public class BukkitServer implements Server {
 	}
 	
 	private Environment wtToEnv(WorldServer x) {
-		// TODO
 		
 		IChunkProvider wp = x.theChunkProviderServer.currentChunkProvider;
 		
@@ -917,7 +912,7 @@ public class BukkitServer implements Server {
 	}
 	@SuppressWarnings("finally")
 	public void loadCustomPermissions() {
-		System.out.println("Going to load perms file: " + bukkitConfig.getString("settings.permissions-file", "permissions.yml"));
+		theLogger.info("Going to load perms file: " + bukkitConfig.getString("settings.permissions-file", "permissions.yml"));
 		File file = new File(bukkitConfig.getString("settings.permissions-file", "permissions.yml"));
 		FileInputStream stream;
 

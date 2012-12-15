@@ -17,7 +17,7 @@ public class BukkitCrashCallable implements ICrashCallable {
 			int len = BukkitServer.instance().getPluginManager().getPlugins().length;
 			int j = 0;
 			for (Plugin i : BukkitServer.instance().getPluginManager().getPlugins()){
-				String name = i.getDescription().getMain() + "(" + i.getDescription().getFullName() + ")";
+				String name = i.getDescription().getMain() + "(" + i.getDescription().getFullName() + ": " + (i.isEnabled() ? "Enabled" : "Disabled") + ")";
 				if (j == 0) {
 					plugins += name;
 				}
@@ -37,12 +37,12 @@ public class BukkitCrashCallable implements ICrashCallable {
 		else {
 			endMsg = versionINFO + "[No plugins loaded yet]";
 		}
-		return null;
+		return endMsg;
 	}
 
 	@Override
 	public String getLabel() {
-		return "Bukkit4Vanilla Details";
+		return "BukkitForge Details";
 	}
 
 }

@@ -393,36 +393,59 @@ public class BukkitBlock implements Block {
     static {
         BIOME_MAPPING = new Biome[BiomeGenBase.biomeList.length];
         BIOMEBASE_MAPPING = new BiomeGenBase[Biome.values().length];
-        BIOME_MAPPING[BiomeGenBase.swampland.biomeID] = Biome.SWAMPLAND;
-        BIOME_MAPPING[BiomeGenBase.forest.biomeID] = Biome.FOREST;
-        BIOME_MAPPING[BiomeGenBase.taiga.biomeID] = Biome.TAIGA;
-        BIOME_MAPPING[BiomeGenBase.desert.biomeID] = Biome.DESERT;
-        BIOME_MAPPING[BiomeGenBase.plains.biomeID] = Biome.PLAINS;
-        BIOME_MAPPING[BiomeGenBase.hell.biomeID] = Biome.HELL;
-        BIOME_MAPPING[BiomeGenBase.sky.biomeID] = Biome.SKY;
-        BIOME_MAPPING[BiomeGenBase.river.biomeID] = Biome.RIVER;
-        BIOME_MAPPING[BiomeGenBase.extremeHills.biomeID] = Biome.EXTREME_HILLS;
-        BIOME_MAPPING[BiomeGenBase.ocean.biomeID] = Biome.OCEAN;
-        BIOME_MAPPING[BiomeGenBase.frozenOcean.biomeID] = Biome.FROZEN_OCEAN;
-        BIOME_MAPPING[BiomeGenBase.frozenRiver.biomeID] = Biome.FROZEN_RIVER;
-        BIOME_MAPPING[BiomeGenBase.icePlains.biomeID] = Biome.ICE_PLAINS;
-        BIOME_MAPPING[BiomeGenBase.iceMountains.biomeID] = Biome.ICE_MOUNTAINS;
-        BIOME_MAPPING[BiomeGenBase.mushroomIsland.biomeID] = Biome.MUSHROOM_ISLAND;
-        BIOME_MAPPING[BiomeGenBase.mushroomIslandShore.biomeID] = Biome.MUSHROOM_SHORE;
         BIOME_MAPPING[BiomeGenBase.beach.biomeID] = Biome.BEACH;
+        
+        BIOME_MAPPING[BiomeGenBase.swampland.biomeID] = Biome.SWAMPLAND;
+        
+        BIOME_MAPPING[BiomeGenBase.forest.biomeID] = Biome.FOREST;
+        
+        BIOME_MAPPING[BiomeGenBase.taiga.biomeID] = Biome.TAIGA;
+        
+        BIOME_MAPPING[BiomeGenBase.desert.biomeID] = Biome.DESERT;
+        
+        BIOME_MAPPING[BiomeGenBase.plains.biomeID] = Biome.PLAINS;
+        
+        BIOME_MAPPING[BiomeGenBase.hell.biomeID] = Biome.HELL;
+        
+        BIOME_MAPPING[BiomeGenBase.sky.biomeID] = Biome.SKY;
+        
+        BIOME_MAPPING[BiomeGenBase.river.biomeID] = Biome.RIVER;
+        
+        BIOME_MAPPING[BiomeGenBase.extremeHills.biomeID] = Biome.EXTREME_HILLS;
+        
+        BIOME_MAPPING[BiomeGenBase.ocean.biomeID] = Biome.OCEAN;
+        
+        BIOME_MAPPING[BiomeGenBase.frozenOcean.biomeID] = Biome.FROZEN_OCEAN;
+        
+        BIOME_MAPPING[BiomeGenBase.frozenRiver.biomeID] = Biome.FROZEN_RIVER;
+        
+        BIOME_MAPPING[BiomeGenBase.icePlains.biomeID] = Biome.ICE_PLAINS;
+        
+        BIOME_MAPPING[BiomeGenBase.iceMountains.biomeID] = Biome.ICE_MOUNTAINS;
+        
+        BIOME_MAPPING[BiomeGenBase.mushroomIsland.biomeID] = Biome.MUSHROOM_ISLAND;
+        
+        BIOME_MAPPING[BiomeGenBase.mushroomIslandShore.biomeID] = Biome.MUSHROOM_SHORE;
+        
         BIOME_MAPPING[BiomeGenBase.desertHills.biomeID] = Biome.DESERT_HILLS;
+        
         BIOME_MAPPING[BiomeGenBase.forestHills.biomeID] = Biome.FOREST_HILLS;
+        
         BIOME_MAPPING[BiomeGenBase.taigaHills.biomeID] = Biome.TAIGA_HILLS;
+        
         //BIOME_MAPPING[BiomeGenBase.mo.biomeID] = Biome.SMALL_MOUNTAINS;
+        
         BIOME_MAPPING[BiomeGenBase.jungle.biomeID] = Biome.JUNGLE;
+        
         BIOME_MAPPING[BiomeGenBase.jungleHills.biomeID] = Biome.JUNGLE_HILLS;
+        
         /* Sanity check - we should have a record for each record in the BiomeGenBase.a table */
         /* Helps avoid missed biomes when we upgrade bukkit to new code with new biomes */
         boolean setSmallMountains = false;
         for (int i = 0; i < BIOME_MAPPING.length; i++) {
         	
             if ((BiomeGenBase.biomeList[i] != null) && (BIOME_MAPPING[i] == null) && setSmallMountains) {
-                throw new IllegalArgumentException("Missing Biome mapping for BiomeGenBase[" + i + "]");
+                throw new IllegalArgumentException("Missing Biome mapping for BiomeGenBase[" + i + "] - The Biome missing is " + BiomeGenBase.biomeList[i].biomeName);
             }
             else if ((BiomeGenBase.biomeList[i] != null) && (BIOME_MAPPING[i] == null) && !setSmallMountains) {
             	BIOME_MAPPING[i] = Biome.SMALL_MOUNTAINS;

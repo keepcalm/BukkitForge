@@ -202,12 +202,12 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public String getDisplayName() {
-        return ForgeEventHandler.playerDisplayNames.containsKey(getName()) ? ForgeEventHandler.playerDisplayNames.get(getName()) : getName();
+        return ForgeEventHandler.playerDisplayNames.containsKey(getHandle().username) ? ForgeEventHandler.playerDisplayNames.get(getHandle().username) : getHandle().username;
     }
 
     public void setDisplayName(final String name) {
-    	System.out.println("New name: " + name);
-    	ForgeEventHandler.playerDisplayNames.put(getName(), name);
+    	//System.out.println("New name: " + name);
+    	ForgeEventHandler.playerDisplayNames.put(getHandle().username, name);
     }
 
     public String getPlayerListName() {

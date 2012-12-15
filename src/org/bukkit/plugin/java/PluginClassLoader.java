@@ -14,6 +14,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import keepcalm.mods.bukkit.asm.BukkitContainer;
+
 /**
  * A ClassLoader for plugins, to allow shared classes across multiple plugins
  */
@@ -39,40 +41,10 @@ public class PluginClassLoader extends URLClassLoader {
     }
 
     protected Class<?> findClass(String name, boolean checkGlobal) throws ClassNotFoundException {
-    	/*if (!name.contains("mchange"))
-    	System.out.println("PluginClassLoader says HELLO, loading class " + name);
-        if (name.startsWith("org.bukkit.") || name.startsWith("net.minecraft.")) {
-            throw new ClassNotFoundException(name);
-        }
-        
-        if (name.startsWith("com.google")) {
-			System.out.println("Intercepting guava class: " + name);
-			// guava
-			
-			
-			if (guava10Classes .containsKey(name)) {
-				return guava10Classes.get(name);
-			}
-			
-			InputStream is = super.getResourceAsStream("/guava10/" + name.replace('.', '/'));
-			BufferedInputStream bis = new BufferedInputStream(is);
-			List<Byte> bytes = new ArrayList<Byte>();
-			
-			// room for error
-			int last;
-			try {
-				while ((last = bis.read()) != -1) {
-					bytes.add((byte) last);
-				}
-			} catch (IOException e) {
-				return super.loadClass(name);
-			}
-			
-			Class<?> clazz = this.defineClass(name, Bytes.toArray(bytes), 0, bytes.size());
-			guava10Classes.put(name, clazz);
-			return clazz;
-			
-		}*/
+    	if (name.startsWith("net.minecraft.server")) {
+    		BukkitContainer.bukkitLogger.severe("A plugin is trying to access a minecraft class, this WILL crash the server. Please report this error message at github:");
+    		throw new ClassNotFoundException(name);
+    	}
         Class<?> result = classes.get(name);
 
         if (result == null) {

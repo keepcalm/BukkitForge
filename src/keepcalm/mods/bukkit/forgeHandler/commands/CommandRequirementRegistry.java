@@ -72,7 +72,7 @@ public class CommandRequirementRegistry {
 		
 			try {
 				targFile.createNewFile();
-				thePermissionsFile.store(new FileOutputStream(targFile), "Command permissions for Bukkit4Vanilla.\nFormat is class name -> OP, ALL, NOBODY or OWNER");
+				thePermissionsFile.store(new FileOutputStream(targFile), "Command permissions for BukkitForge.\nFormat is class name -> OP, ALL, NOBODY or OWNER");
 			} catch (IOException e) {
 				BukkitContainer.bukkitLogger.log(java.util.logging.Level.WARNING, "FAILED to save command permissions!", e);
 			}

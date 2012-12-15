@@ -553,7 +553,7 @@ public class BukkitWorld implements World {
     }
 
     public void setTime(long time) {
-    	System.out.println("Setting time: " + time);
+    	//System.out.println("Setting time: " + time);
         world.getWorldInfo().setWorldTime(time);
         for (Object i : world.playerEntities) {
         	server.getHandle().getDedicatedPlayerList().updateTimeAndWeatherForPlayer((EntityPlayerMP) i, world);

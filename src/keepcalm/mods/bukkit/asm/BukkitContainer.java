@@ -67,7 +67,7 @@ public class BukkitContainer extends DummyModContainer {
 		/*if (MinecraftServer.getServer().getGuiEnabled())
 			FMLRelaunchLog.log.getLogger().addHandler(new BukkitLogHandler());*/
 		if (MinecraftServer.getServer().getGuiEnabled()) {
-			ServerGUI.logger.severe("Bukkit4Vanilla plugins may misbehave when using the gui! Run the server with 'nogui'!");
+			ServerGUI.logger.severe("BukkitForge plugins may misbehave when using the gui! Run the server with 'nogui'!");
 		}
 		instance = this;
 		/*BukkitContainer.bukkitLogger = FMLRelaunchLog.log.getLogger();
@@ -76,7 +76,7 @@ public class BukkitContainer extends DummyModContainer {
 		}*/
 
 		ModMetadata meta = this.getMetadata();
-		meta.modId = "Bukkit4Vanilla";
+		meta.modId = "BukkitForge";
 		meta.name = "Bukkit For Vanilla";
 		meta.version = BukkitServer.version + ", implementing Bukkit version " + BukkitServer.apiVer;
 		meta.authorList = Arrays.asList(new String[]{"keepcalm"});
@@ -92,11 +92,11 @@ public class BukkitContainer extends DummyModContainer {
 		
 		
 		
-		System.out.println("CONTAINER - END");
+		//ystem.out.println("CONTAINER - END");
 		
 	}
 	public boolean registerBus(EventBus bus, LoadController controller) {
-		System.out.println("RegisterBus");
+		//System.out.println("RegisterBus");
 		bus.register(this);
 		return true;
 	}
@@ -133,7 +133,7 @@ public class BukkitContainer extends DummyModContainer {
 		this.pluginFolder = plugins.value;
 		
 		Property suuid = config.get("dontTouchThis", "serverUUID", this.genUUID());
-		System.out.println("[Bukkit API]: Set UUID to " + suuid.value);
+		bukkitLogger.info("Set UUID to " + suuid.value);
 		suuid.comment = "The UUID of the server. Don't touch this or it might break your plugins.";
 		this.serverUUID = suuid.value;
 		
@@ -161,7 +161,7 @@ public class BukkitContainer extends DummyModContainer {
 	@Subscribe
 	public void init(FMLInitializationEvent ev) {
 		FMLCommonHandler.instance().registerCrashCallable(new BukkitCrashCallable());
-		System.out.println("[Bukkit API]: Complete! Registering handlers...");
+		bukkitLogger.info("Complete! Registering handlers...");
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		if (Loader.isModLoaded("BlockBreak")) {
 			try {
@@ -179,20 +179,20 @@ public class BukkitContainer extends DummyModContainer {
 			FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE,"[Bukkit API]: FAILED to add event handers:", e);
 			//e.printStackTrace();
 		}
-		System.out.println("Done!");
+		bukkitLogger.info("Done!");
 	}
 	@Subscribe
 	//@SideOnly(Side.SERVER)
 	public void serverStarting(FMLServerStartingEvent ev) {
-		System.out.println("Starting!");
+		//System.out.println("Starting!");
 		if (ev.getServer().isDedicatedServer() == false) {
 			return;
 		}
-		ThreadGroup theThreadGroup = new ThreadGroup("Bukkit4Vanilla");
+		ThreadGroup theThreadGroup = new ThreadGroup("BukkitForge");
 		this.bThread = new Thread(theThreadGroup, new BukkitStarter(ev.getServer()), "BukkitCoreAPI-0");
 		//bThread.setDaemon(false);
 		bThread.start();
-		System.out.println("Done!");
+		//System.out.println("Done!");
 		
 		//ForgeEventHandler.ready = true;
 		

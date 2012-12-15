@@ -8,6 +8,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.ServerCommandManager;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandHelp;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandMVFix;
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandRequirementRegistry;
@@ -36,16 +37,16 @@ public class BukkitStarter implements Runnable {
 			scm.registerCommand(new CommandSetLevel());
 			BukkitContainer.bukkitLogger.info("Starting the API, implementing Bukkit API version " + BukkitServer.version);
 			
-			System.out.println("Starting the API...");
+			//System.out.println("Starting the API...");
 			BukkitContainer.bServer = new BukkitServer(MinecraftServer.getServer());
-		//	BukkitContainer.bServer.setServer(MinecraftServer.getServer());
+			//BukkitContainer.bServer.setServer(MinecraftServer.getServer());
 			//BukkitContainer.bServer.continueLoad();
 			// hopefully this works...
 		}
 		catch (Exception e) {
-			
+			// disable nicely
+			ForgeEventHandler.ready = false;
 			FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE, "Something real bad happened! The BukkitAPI will not be running for this Minecraft session.", e);
-//			MinecraftServer.getServer().stopServer();
 		}
 
 	}
