@@ -3,6 +3,8 @@ package keepcalm.mods.bukkit.bukkitAPI.inventory;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntityHuman;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
 
+import net.minecraft.inventory.Container;
+
 import org.bukkit.GameMode;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
@@ -52,7 +54,7 @@ public class BukkitInventoryView extends InventoryView {
 
     @Override
     public void setItem(int slot, ItemStack item) {
-        net.minecraft.src.ItemStack stack = BukkitItemStack.createNMSItemStack(item);
+        net.minecraft.item.ItemStack stack = BukkitItemStack.createNMSItemStack(item);
         if (slot != -999) {
             container.getSlot(slot).putStack(stack);
         } else {

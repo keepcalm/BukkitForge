@@ -17,19 +17,24 @@ import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventory;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCrafting;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryView;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityPotion;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 import org.bukkit.Bukkit;
@@ -93,7 +98,7 @@ import org.bukkit.inventory.InventoryView;
 
 public class BukkitEventFactory {
     // helper methods
-	private static BukkitEntity getBukkitEntity(net.minecraft.src.Entity entity) {
+	private static BukkitEntity getBukkitEntity(net.minecraft.entity.Entity entity) {
 		return BukkitEntity.getEntity((BukkitServer) Bukkit.getServer(), entity);
 	}
     private static boolean canBuild(BukkitWorld world, Player player, int x, int z) {
@@ -142,11 +147,11 @@ public class BukkitEventFactory {
         return (PlayerBucketEmptyEvent) getPlayerBucketEvent(false, who, clickedX, clickedY, clickedZ, clickedFace, itemInHand, Item.bucketEmpty);
     }
 
-    public static PlayerBucketFillEvent callPlayerBucketFillEvent(EntityPlayerMP who, int clickedX, int clickedY, int clickedZ, int clickedFace, ItemStack itemInHand, net.minecraft.src.Item bucket) {
+    public static PlayerBucketFillEvent callPlayerBucketFillEvent(EntityPlayerMP who, int clickedX, int clickedY, int clickedZ, int clickedFace, ItemStack itemInHand, net.minecraft.item.Item bucket) {
         return (PlayerBucketFillEvent) getPlayerBucketEvent(true, who, clickedX, clickedY, clickedZ, clickedFace, itemInHand, bucket);
     }
 
-    private static PlayerEvent getPlayerBucketEvent(boolean isFilling, EntityPlayerMP who, int clickedX, int clickedY, int clickedZ, int clickedFace, ItemStack itemstack, net.minecraft.src.Item item) {
+    private static PlayerEvent getPlayerBucketEvent(boolean isFilling, EntityPlayerMP who, int clickedX, int clickedY, int clickedZ, int clickedFace, ItemStack itemstack, net.minecraft.item.Item item) {
         Player player = (who == null) ? null : (Player) BukkitEntity.getEntity((BukkitServer) Bukkit.getServer(), who);
         BukkitItemStack itemInHand = new BukkitItemStack(new ItemStack(item));
         Material bucket = Material.getMaterial(itemstack.itemID);
@@ -539,7 +544,7 @@ public class BukkitEventFactory {
         int i = 0;
         InventoryBasic inv = new InventoryBasic("", container.getInventory().size());
         for (Object j : container.inventoryItemStacks) {
-        	net.minecraft.src.ItemStack v = (net.minecraft.src.ItemStack) j;
+        	net.minecraft.item.ItemStack v = (net.minecraft.item.ItemStack) j;
         	inv.setInventorySlotContents(i, v);
         	i++;
         }

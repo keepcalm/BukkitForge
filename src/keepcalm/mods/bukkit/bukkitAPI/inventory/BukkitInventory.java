@@ -40,13 +40,13 @@ public class BukkitInventory implements Inventory {
     }
 
     public ItemStack getItem(int index) {
-        net.minecraft.src.ItemStack item = getInventory().getStackInSlot(index);
+        net.minecraft.item.ItemStack item = getInventory().getStackInSlot(index);
         return item == null ? null : new BukkitItemStack(item);
     }
 
     public ItemStack[] getContents() {
         ItemStack[] items = new ItemStack[getSize()];
-        net.minecraft.src.ItemStack[] mcItems = new net.minecraft.src.ItemStack[getSize()];
+        net.minecraft.item.ItemStack[] mcItems = new net.minecraft.item.ItemStack[getSize()];
 
         for (int i = 0; i < mcItems.length; i++) {
             items[i] = this.inventory.getStackInSlot(i) == null ? null : new BukkitItemStack(mcItems[i]);
@@ -54,8 +54,8 @@ public class BukkitInventory implements Inventory {
 
         return items;
     }
-    protected net.minecraft.src.ItemStack[] getMCContents() {
-    	net.minecraft.src.ItemStack[] mcItems = new net.minecraft.src.ItemStack[getSize()];
+    protected net.minecraft.item.ItemStack[] getMCContents() {
+    	net.minecraft.item.ItemStack[] mcItems = new net.minecraft.item.ItemStack[getSize()];
     	for (int i = 0; i < mcItems.length; i++) {
     		mcItems[i] = inventory.getStackInSlot(i);
     	}
@@ -66,7 +66,7 @@ public class BukkitInventory implements Inventory {
             throw new IllegalArgumentException("Invalid inventory size; expected " + getContents().length + " or less");
         }
 
-        net.minecraft.src.ItemStack[] mcItems = getMCContents();
+        net.minecraft.item.ItemStack[] mcItems = getMCContents();
 
         for (int i = 0; i < mcItems.length; i++) {
             if (i >= items.length) {

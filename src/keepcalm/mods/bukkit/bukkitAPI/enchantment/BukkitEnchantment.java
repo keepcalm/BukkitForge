@@ -1,14 +1,16 @@
 package keepcalm.mods.bukkit.bukkitAPI.enchantment;
 
+import net.minecraft.item.Item;
+
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
 
 public class BukkitEnchantment extends Enchantment {
-    private final net.minecraft.src.Enchantment target;
+    private final net.minecraft.enchantment.Enchantment target;
 
-    public BukkitEnchantment(net.minecraft.src.Enchantment target) {
+    public BukkitEnchantment(net.minecraft.enchantment.Enchantment target) {
         super(target.effectId);
         this.target = target;
     }
@@ -51,7 +53,7 @@ public class BukkitEnchantment extends Enchantment {
 
     @Override
     public boolean canEnchantItem(ItemStack item) {
-        return target.canEnchantItem(new net.minecraft.src.ItemStack(Item.itemsList[item.getTypeId()]));
+        return target.canEnchantItem(new net.minecraft.item.ItemStack(Item.itemsList[item.getTypeId()]));
     }
 
     @Override
@@ -104,7 +106,7 @@ public class BukkitEnchantment extends Enchantment {
         }
     }
 
-    public static net.minecraft.src.Enchantment getRaw(Enchantment enchantment) {
+    public static net.minecraft.enchantment.Enchantment getRaw(Enchantment enchantment) {
         if (enchantment instanceof EnchantmentWrapper) {
             enchantment = ((EnchantmentWrapper) enchantment).getEnchantment();
         }

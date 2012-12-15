@@ -32,7 +32,7 @@ public class BukkitDispenser extends BukkitBlockState implements Dispenser {
 
         synchronized (block) {
             if (block.getType() == Material.DISPENSER) {
-                BlockDispenser dispense = (BlockDispenser) net.minecraft.src.Block.dispenser;
+                BlockDispenser dispense = (BlockDispenser) net.minecraft.block.Block.dispenser;
 
                 dispense.dispense(world.getHandle(), getX(), getY(), getZ());
                 return true;

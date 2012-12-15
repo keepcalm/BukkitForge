@@ -107,7 +107,7 @@ public class BukkitChunk implements Chunk {
                     continue;
                 }
 
-                entities[index++] = BukkitEntity.getEntity((BukkitServer) Bukkit.getServer(), (net.minecraft.src.Entity) obj);
+                entities[index++] = BukkitEntity.getEntity((BukkitServer) Bukkit.getServer(), (net.minecraft.entity.Entity) obj);
             }
         }
 

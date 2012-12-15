@@ -9,7 +9,7 @@ public abstract class AbstractProjectile extends BukkitEntity implements Project
 
     private boolean doesBounce;
 
-    public AbstractProjectile(BukkitServer server, net.minecraft.src.Entity entity) {
+    public AbstractProjectile(BukkitServer server, net.minecraft.entity.Entity entity) {
         super(server, entity);
         doesBounce = false;
     }

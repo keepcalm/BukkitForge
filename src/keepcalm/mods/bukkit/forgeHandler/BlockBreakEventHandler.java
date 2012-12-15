@@ -5,9 +5,9 @@ import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.ForgeSubscribe;
+import keepcalm.mods.blockbreak.BlockBreakEvent;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.block.BlockBreakEvent;
 
 
 /**

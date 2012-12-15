@@ -23,7 +23,7 @@ public class BukkitEnderDragon extends BukkitComplexLivingEntity implements Ende
     public Set<ComplexEntityPart> getParts() {
         Builder<ComplexEntityPart> builder = ImmutableSet.builder();
 
-        for (net.minecraft.src.Entity p : getHandle().getParts()) {
+        for (net.minecraft.entity.Entity p : getHandle().getParts()) {
         	EntityDragonPart part = (EntityDragonPart) p;
             builder.add((ComplexEntityPart) this.getEntity(this.server ,part));
         }

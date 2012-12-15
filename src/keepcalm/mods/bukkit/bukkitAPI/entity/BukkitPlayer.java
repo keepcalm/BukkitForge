@@ -18,12 +18,24 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitOfflinePlayer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitSound;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
+import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.map.BukkitMapView;
 import keepcalm.mods.bukkit.bukkitAPI.map.RenderData;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerBeacon;
+import net.minecraft.inventory.ContainerBrewingStand;
+import net.minecraft.inventory.ContainerChest;
+import net.minecraft.inventory.ContainerDispenser;
+import net.minecraft.inventory.ContainerEnchantment;
+import net.minecraft.inventory.ContainerFurnace;
+import net.minecraft.inventory.ContainerMerchant;
+import net.minecraft.inventory.ContainerPlayer;
+import net.minecraft.inventory.ContainerRepair;
+import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet131MapData;
 import net.minecraft.network.packet.Packet200Statistic;
@@ -64,6 +76,7 @@ import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerRegisterChannelEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -876,13 +889,53 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
 
     @Override
     /**
-     * TODO
+     * TODO - Involes making lots of tileEntityxxxs in Containers public
      */
     public boolean setWindowProperty(Property prop, int value) {
+    	
         Container container = getHandle().openContainer;
-       
-        
-        return true;
+        InventoryType type;
+        if (container instanceof ContainerRepair) {
+        	type = InventoryType.ANVIL;
+        	// nothing to do
+        	return true;
+        }
+        else if (container instanceof ContainerBeacon) {
+        	type = InventoryType.BEACON;
+        	return true;
+        }
+        else if (container instanceof ContainerBrewingStand) {
+        	type = InventoryType.BREWING;
+        	ContainerBrewingStand brew = (ContainerBrewingStand) container;
+        	
+        }
+        else if (container instanceof ContainerChest) {
+        	type = InventoryType.CHEST;
+        }
+        else if (container instanceof ContainerDispenser) {
+        	type = InventoryType.DISPENSER;
+        }
+        else if (container instanceof ContainerEnchantment) {
+        	type = InventoryType.ENCHANTING;
+        }
+        else if (container instanceof ContainerFurnace) {
+        	type = InventoryType.FURNACE;
+        }
+        else if (container instanceof ContainerMerchant) {
+        	type = InventoryType.MERCHANT;
+        }
+        else if (container instanceof ContainerPlayer) {
+        	type = InventoryType.PLAYER;
+        }
+        else if (container instanceof ContainerWorkbench) {
+        	type = InventoryType.WORKBENCH;
+        }
+        else {
+        	
+        	// fail
+        	return true;
+        }
+       return true;
     }
 
     public void disconnect(String reason) {

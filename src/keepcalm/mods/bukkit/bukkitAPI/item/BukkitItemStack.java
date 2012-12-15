@@ -7,9 +7,9 @@ import org.bukkit.inventory.ItemStack;
 // it might be important...
 @DelegateDeserialization(ItemStack.class)
 public class BukkitItemStack extends ItemStack {
-	protected net.minecraft.src.ItemStack item;
+	protected net.minecraft.item.ItemStack item;
 
-    public BukkitItemStack(net.minecraft.src.ItemStack item) {
+    public BukkitItemStack(net.minecraft.item.ItemStack item) {
         super(
             item != null ? item.itemID: 0,
             item != null ? item.stackSize : 0,
@@ -53,9 +53,9 @@ public class BukkitItemStack extends ItemStack {
     }
 
     public BukkitItemStack(int type, int amount, short damage, Byte data) {
-        this(new net.minecraft.src.ItemStack(type, amount, data != null ? data : damage));
+        this(new net.minecraft.item.ItemStack(type, amount, data != null ? data : damage));
     }
-    public static net.minecraft.src.ItemStack createNMSItemStack(ItemStack original) {
+    public static net.minecraft.item.ItemStack createNMSItemStack(ItemStack original) {
         if (original == null || original.getTypeId() <= 0) {
             return null;
         } else if (original instanceof BukkitItemStack) {
@@ -63,7 +63,7 @@ public class BukkitItemStack extends ItemStack {
         }
         return new BukkitItemStack(original).getHandle();
     }
-    public net.minecraft.src.ItemStack getHandle() {
+    public net.minecraft.item.ItemStack getHandle() {
     	return this.item;
     }
 }

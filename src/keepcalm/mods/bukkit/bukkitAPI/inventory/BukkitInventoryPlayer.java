@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.bukkitAPI.inventory;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -23,7 +24,7 @@ public class BukkitInventoryPlayer extends BukkitInventory implements org.bukkit
 	public ItemStack[] getArmorContents() {
 		ItemStack[] armorContents = new ItemStack[realInv.armorInventory.length];
 		int i = 0;
-		for (net.minecraft.src.ItemStack j : realInv.armorInventory) {
+		for (net.minecraft.item.ItemStack j : realInv.armorInventory) {
 			armorContents[i] = new BukkitItemStack(j);
 		}
 		return armorContents;

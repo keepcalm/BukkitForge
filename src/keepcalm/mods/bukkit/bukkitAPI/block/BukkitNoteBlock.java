@@ -81,19 +81,19 @@ public class BukkitNoteBlock extends BukkitBlockState implements NoteBlock {
             	TileEntityNote t = (TileEntityNote) ((BukkitWorld) block.getWorld()).getTileEntityAt(getX(), getY(), getZ());
             	byte oldNote = t.note;
             	t.note = note.getId();
-            	net.minecraft.src.Block targ;
+            	net.minecraft.block.Block targ;
             	switch(instrument.getType()) {
             	case 1:
-                    targ = net.minecraft.src.Block.stone;
+                    targ = net.minecraft.block.Block.stone;
                     break;
             	case 2:
-            		targ = net.minecraft.src.Block.sand;
+            		targ = net.minecraft.block.Block.sand;
             		break;
             	case 4:
-            		targ = net.minecraft.src.Block.wood;
+            		targ = net.minecraft.block.Block.wood;
             		break;
             	case 3:
-            		targ = net.minecraft.src.Block.glass;
+            		targ = net.minecraft.block.Block.glass;
             		break;
             	default:
             		throw new IllegalArgumentException("Invalid instrument: " + instrument.getType());

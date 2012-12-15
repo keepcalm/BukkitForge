@@ -6,7 +6,7 @@ import org.bukkit.entity.Vehicle;
 //import org.bukkit.craftbukkit.CraftServer;
 
 public abstract class BukkitVehicle extends BukkitEntity implements Vehicle {
-    public BukkitVehicle(BukkitServer server, net.minecraft.src.Entity entity) {
+    public BukkitVehicle(BukkitServer server, net.minecraft.entity.Entity entity) {
         super(server, entity);
     }
 

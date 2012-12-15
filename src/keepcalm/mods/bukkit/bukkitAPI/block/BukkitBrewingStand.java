@@ -24,11 +24,11 @@ public class BukkitBrewingStand extends BukkitBlockState implements BrewingStand
         brewingStand = (TileEntityBrewingStand) world.getTileEntityAt(getX(), getY(), getZ());
     }
 
-    public BukkitBrewingStand(int xCoord, int yCoord, int zCoord, net.minecraft.src.World world) {
+    public BukkitBrewingStand(int xCoord, int yCoord, int zCoord, net.minecraft.world.World world) {
     	
     	super(new BukkitBlock(new BukkitChunk(world.getChunkFromBlockCoords(xCoord, zCoord)), xCoord, yCoord, zCoord));
     	
-        if (world.getBlockId(xCoord, yCoord, zCoord) != net.minecraft.src.Block.brewingStand.blockID) {
+        if (world.getBlockId(xCoord, yCoord, zCoord) != net.minecraft.block.Block.brewingStand.blockID) {
         	throw new WrongUsageException(String.format("No brewing stand at %s,%s,%s!", new Object[] {xCoord, yCoord, zCoord})) ;
         }
         

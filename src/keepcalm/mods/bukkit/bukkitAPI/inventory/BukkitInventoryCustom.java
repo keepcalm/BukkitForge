@@ -6,6 +6,7 @@ import java.util.List;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntityHuman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;

@@ -9,7 +9,7 @@ import org.bukkit.entity.Projectile;
 //import org.bukkit.craftbukkit.CraftServer;
 
 public abstract class BukkitProjectile extends AbstractProjectile implements Projectile {
-    public BukkitProjectile(BukkitServer server, net.minecraft.src.Entity entity) {
+    public BukkitProjectile(BukkitServer server, net.minecraft.entity.Entity entity) {
         super(server, entity);
     }
 

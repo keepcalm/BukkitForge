@@ -473,7 +473,7 @@ public class BukkitWorld implements World {
     }
 
     public boolean generateTree(Location loc, TreeType type, World delegate) {
-    	net.minecraft.src.World world = ((BukkitWorld) delegate).getHandle();
+    	net.minecraft.world.World world = ((BukkitWorld) delegate).getHandle();
         WorldGenerator gen;
         switch (type) {
         case BIG_TREE:
@@ -662,8 +662,8 @@ public class BukkitWorld implements World {
         List<Entity> list = new ArrayList<Entity>();
 
         for (Object o : world.loadedEntityList) {
-            if (o instanceof net.minecraft.src.Entity) {
-                net.minecraft.src.Entity mcEnt = (net.minecraft.src.Entity) o;
+            if (o instanceof net.minecraft.entity.Entity) {
+                net.minecraft.entity.Entity mcEnt = (net.minecraft.entity.Entity) o;
                 Entity bukkitEntity = BukkitEntity.getEntity(server, mcEnt);
 
                 // Assuming that bukkitEntity isn't null
@@ -680,8 +680,8 @@ public class BukkitWorld implements World {
         List<LivingEntity> list = new ArrayList<LivingEntity>();
 
         for (Object o : world.loadedEntityList) {
-            if (o instanceof net.minecraft.src.Entity) {
-                net.minecraft.src.Entity mcEnt = (net.minecraft.src.Entity) o;
+            if (o instanceof net.minecraft.entity.Entity) {
+                net.minecraft.entity.Entity mcEnt = (net.minecraft.entity.Entity) o;
                 Entity bukkitEntity = BukkitEntity.getEntity(server, mcEnt);
 
                 // Assuming that bukkitEntity isn't null
@@ -705,8 +705,8 @@ public class BukkitWorld implements World {
         Collection<T> list = new ArrayList<T>();
 
         for (Object entity: world.loadedEntityList) {
-            if (entity instanceof net.minecraft.src.Entity) {
-                Entity bukkitEntity = BukkitEntity.getEntity(server, (net.minecraft.src.Entity) entity);
+            if (entity instanceof net.minecraft.entity.Entity) {
+                Entity bukkitEntity = BukkitEntity.getEntity(server, (net.minecraft.entity.Entity) entity);
 
                 if (bukkitEntity == null) {
                     continue;
@@ -727,8 +727,8 @@ public class BukkitWorld implements World {
         Collection<Entity> list = new ArrayList<Entity>();
 
         for (Object entity: world.loadedEntityList) {
-            if (entity instanceof net.minecraft.src.Entity) {
-                Entity bukkitEntity = BukkitEntity.getEntity(server, (net.minecraft.src.Entity) entity);
+            if (entity instanceof net.minecraft.entity.Entity) {
+                Entity bukkitEntity = BukkitEntity.getEntity(server, (net.minecraft.entity.Entity) entity);
 
                 if (bukkitEntity == null) {
                     continue;
@@ -752,9 +752,9 @@ public class BukkitWorld implements World {
         List<Player> list = new ArrayList<Player>();
 
         for (Object o : world.loadedEntityList) {
-            if (o instanceof net.minecraft.src.Entity) {
-                net.minecraft.src.Entity mcEnt = (net.minecraft.src.Entity) o;
-                Entity bukkitEntity = BukkitEntity.getEntity(server, (net.minecraft.src.Entity) mcEnt);
+            if (o instanceof net.minecraft.entity.Entity) {
+                net.minecraft.entity.Entity mcEnt = (net.minecraft.entity.Entity) o;
+                Entity bukkitEntity = BukkitEntity.getEntity(server, (net.minecraft.entity.Entity) mcEnt);
 
                 if ((bukkitEntity != null) && (bukkitEntity instanceof Player)) {
                     list.add((Player) bukkitEntity);
@@ -940,7 +940,7 @@ public class BukkitWorld implements World {
             throw new IllegalArgumentException("Location or entity class cannot be null");
         }
 
-        net.minecraft.src.Entity entity = null;
+        net.minecraft.entity.Entity entity = null;
 
         double x = location.getX();
         double y = location.getY();
@@ -1184,11 +1184,11 @@ public class BukkitWorld implements World {
         int blockY = block.getY();
         int blockZ = block.getZ();
         // following code is lifted from Explosion.a(boolean), and modified
-        net.minecraft.src.Block.blocksList[blockId].dropBlockAsItemWithChance(this.world, blockX, blockY, blockZ, block.getData(), yield, 0);
+        net.minecraft.block.Block.blocksList[blockId].dropBlockAsItemWithChance(this.world, blockX, blockY, blockZ, block.getData(), yield, 0);
         block.setType(org.bukkit.Material.AIR);
         // not sure what this does, seems to have something to do with the 'base' material of a block.
         // For example, WOODEN_STAIRS does something with WOOD in this method
-        net.minecraft.src.Block.blocksList[blockId].onBlockDestroyedByExplosion(this.world, blockX, blockY, blockZ);//(this.world, blockX, blockY, blockZ);
+        net.minecraft.block.Block.blocksList[blockId].onBlockDestroyedByExplosion(this.world, blockX, blockY, blockZ);//(this.world, blockX, blockY, blockZ);
     }
 
     public void sendPluginMessage(Plugin source, String channel, byte[] message) {

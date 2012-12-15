@@ -19,15 +19,15 @@ public class BukkitPotionBrewer implements PotionBrewer {
         if (cache.containsKey(damage))
             return cache.get(damage);
 
-        List<?> mcEffects = net.minecraft.src.PotionHelper.getPotionEffects(damage, false);
+        List<?> mcEffects = net.minecraft.potion.PotionHelper.getPotionEffects(damage, false);
         List<PotionEffect> effects = new ArrayList<PotionEffect>();
         if (mcEffects == null)
             return effects;
 
         for (Object raw : mcEffects) {
-            if (raw == null || !(raw instanceof net.minecraft.src.PotionEffect))
+            if (raw == null || !(raw instanceof net.minecraft.potion.PotionEffect))
                 continue;
-            net.minecraft.src.PotionEffect mcEffect = (net.minecraft.src.PotionEffect) raw;
+            net.minecraft.potion.PotionEffect mcEffect = (net.minecraft.potion.PotionEffect) raw;
             PotionEffect effect = new PotionEffect(PotionEffectType.getById(mcEffect.getPotionID()),
                     mcEffect.getDuration(), mcEffect.getAmplifier());
             // Minecraft PotionBrewer applies duration modifiers automatically.

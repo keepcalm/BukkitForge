@@ -3,6 +3,8 @@ package keepcalm.mods.bukkit.bukkitAPI.block;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import net.minecraft.block.BlockJukeBox;
 import net.minecraft.block.TileEntityRecordPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -47,7 +49,7 @@ public class BukkitJukebox extends BukkitBlockState implements Jukebox {
 
     public boolean eject() {
         boolean result = isPlaying();
-        ((BlockJukeBox) net.minecraft.src.Block.jukebox).ejectRecord(world.getHandle(), getX(), getY(), getZ());
+        ((BlockJukeBox) net.minecraft.block.Block.jukebox).ejectRecord(world.getHandle(), getX(), getY(), getZ());
         return result;
     }
 }

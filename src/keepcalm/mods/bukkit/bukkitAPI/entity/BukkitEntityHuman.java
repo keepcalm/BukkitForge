@@ -15,6 +15,8 @@ import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.network.packet.Packet100OpenWindow;
@@ -48,7 +50,7 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 
 	public BukkitEntityHuman(BukkitServer server, EntityLiving entity) {
 		super(server, entity);
-		this.inventory = new BukkitInventoryPlayer(new net.minecraft.src.InventoryPlayer((EntityPlayer) entity));
+		this.inventory = new BukkitInventoryPlayer(new InventoryPlayer((EntityPlayer) entity));
 		this.enderChest = null;
 	}
 	public String getName() {
