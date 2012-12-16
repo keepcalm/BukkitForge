@@ -10,6 +10,7 @@ import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.biome.BiomeGenBase;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,6 +24,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BlockVector;
+
+import cpw.mods.fml.common.Loader;
 //import org.bukkit.craftbukkit.BukkitChunk;
 
 public class BukkitBlock implements Block {
@@ -439,13 +442,15 @@ public class BukkitBlock implements Block {
         
         BIOME_MAPPING[BiomeGenBase.jungleHills.biomeID] = Biome.JUNGLE_HILLS;
         
+        
+        
         /* Sanity check - we should have a record for each record in the BiomeGenBase.a table */
         /* Helps avoid missed biomes when we upgrade bukkit to new code with new biomes */
-        boolean setSmallMountains = false;
+        boolean setSmallMountains = true;
         for (int i = 0; i < BIOME_MAPPING.length; i++) {
         	
             if ((BiomeGenBase.biomeList[i] != null) && (BIOME_MAPPING[i] == null) && setSmallMountains) {
-                throw new IllegalArgumentException("Missing Biome mapping for BiomeGenBase[" + i + "] - The Biome missing is " + BiomeGenBase.biomeList[i].biomeName);
+                Bukkit.getLogger().warning("Missing Biome mapping for BiomeGenBase[" + i + "] - The Biome missing is " + BiomeGenBase.biomeList[i].biomeName);
             }
             else if ((BiomeGenBase.biomeList[i] != null) && (BIOME_MAPPING[i] == null) && !setSmallMountains) {
             	BIOME_MAPPING[i] = Biome.SMALL_MOUNTAINS;

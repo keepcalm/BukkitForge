@@ -197,7 +197,7 @@ public class ForgeEventHandler {
 	public void bonemeal(BonemealEvent ev) {
 	}*/
 	@ForgeSubscribe
-	public void playerSaysHai(PlayerInteractEvent ev) {
+	public void onPlayerInteraction(PlayerInteractEvent ev) {
 		if (!ready)
 			return;
 		if (ev.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && ev.entityPlayer.inventory.getCurrentItem() != null) {
@@ -233,9 +233,9 @@ public class ForgeEventHandler {
 
 			}
 			else {
-
-				BukkitBlock targ = new BukkitBlock(new BukkitChunk(playerWorld.getChunkFromBlockCoords(x,z)),x,y,z);
-				BukkitBlock against = new BukkitBlock((BukkitChunk) targ.getChunk(), mop.blockX, mop.blockY, mop.blockZ);
+				BukkitChunk theChunk = new BukkitChunk(playerWorld.getChunkFromBlockCoords(x,z));
+				BukkitBlock targ = new BukkitBlock(theChunk,x,y,z);
+				BukkitBlock against = new BukkitBlock(theChunk, mop.blockX, mop.blockY, mop.blockZ);
 				int radius = BukkitServer.instance().getHandle().getSpawnProtectionSize();
 				ChunkCoordinates spawn = playerWorld.getSpawnPoint();
 
