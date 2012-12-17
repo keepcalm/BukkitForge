@@ -206,6 +206,9 @@ public class ForgeEventHandler {
 			return;
 		if (ev.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && ev.entityPlayer.inventory.getCurrentItem() != null) {
 			MovingObjectPosition mop = PlayerUtilities.getTargetBlock((EntityPlayerMP) ev.entityPlayer);
+			if (mop == null) {
+				return;
+			}
 			int x = mop.blockX;
 			int y = mop.blockY;
 			int z = mop.blockZ;
