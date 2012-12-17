@@ -1,6 +1,8 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import guava10.com.google.common.collect.Sets;
+import com.google.common.collect.Sets;
+
+import cpw.mods.fml.common.Side;
 
 import java.util.HashMap;
 
@@ -19,6 +21,8 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeCache;
+import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.ServerChatEvent;
@@ -103,7 +107,7 @@ public class ForgeEventHandler {
 	 * Can't cancel this
 	 */
 	public void onEntityJoinWorld(EntityJoinWorldEvent ev) {
-		if (!ready)
+		if (!ready || Side.CLIENT.isClient())
 			return;
 		if (ev.entity instanceof EntityLiving && !(ev.entity instanceof EntityPlayer)) {// || ev.entity instanceof EntityPlayerMP) {
 
@@ -112,19 +116,19 @@ public class ForgeEventHandler {
 	}
 	@ForgeSubscribe
 	public void onItemExpire(ItemExpireEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		BukkitEventFactory.callItemDespawnEvent(ev.entityItem);
 	}
 	@ForgeSubscribe
 	public void onItemTossEvent(ItemTossEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		BukkitEventFactory.callItemSpawnEvent(ev.entityItem);
 	}
 	@ForgeSubscribe
 	public void onLivingAttack(LivingAttackEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		if (BukkitEventFactory.callEntityDamageEvent(ev.entityLiving.getLastAttackingEntity(),
 				ev.entity, 
@@ -137,7 +141,7 @@ public class ForgeEventHandler {
 	}
 	@ForgeSubscribe
 	public void onLivingDeathEvent(LivingDeathEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		BukkitEventFactory.callEntityDeathEvent(ev.entityLiving);
 	}
@@ -152,7 +156,7 @@ public class ForgeEventHandler {
 	 * @param ev
 	 */
 	public void onLivingDamage(LivingHurtEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		DamageCause dc = getDamageCause(ev.source);
 		
@@ -161,7 +165,7 @@ public class ForgeEventHandler {
 	}
 	@ForgeSubscribe
 	public void onTarget(LivingSetAttackTargetEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		BukkitEventFactory.callEntityTargetEvent(ev.entity, ev.target, TargetReason.CUSTOM);
 	}
@@ -181,14 +185,14 @@ public class ForgeEventHandler {
 	 * @param ev
 	 */
 	public void bowFire(ArrowLooseEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		BukkitEventFactory.callEntityShootBowEvent(ev.entityPlayer, ev.bow, null, ev.charge);
 	}
 
 	@ForgeSubscribe
 	public void playerVEntity(AttackEntityEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		BukkitEventFactory.callEntityDamageEvent(ev.entityPlayer, ev.target, DamageCause.ENTITY_ATTACK, ev.entityPlayer.inventory.getDamageVsEntity(ev.target));
 	}
@@ -198,7 +202,7 @@ public class ForgeEventHandler {
 	}*/
 	@ForgeSubscribe
 	public void onPlayerInteraction(PlayerInteractEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		if (ev.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && ev.entityPlayer.inventory.getCurrentItem() != null) {
 			MovingObjectPosition mop = PlayerUtilities.getTargetBlock((EntityPlayerMP) ev.entityPlayer);
@@ -257,7 +261,7 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void pickUp(EntityItemPickupEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		if (BukkitEventFactory.callItemDespawnEvent(ev.item).isCancelled())
 			ev.setCanceled(true);
@@ -265,7 +269,7 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void fillBukkit(FillBucketEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		if (BukkitEventFactory.callPlayerBucketFillEvent((EntityPlayerMP) ev.entityPlayer, ev.target.blockX, ev.target.blockY, ev.target.blockZ, ev.target.sideHit, ev.current,Item.itemsList[ev.result.itemID]).isCancelled())
 			ev.setCanceled(true);
@@ -273,7 +277,7 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void interactEvent(PlayerInteractEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		BukkitEventFactory.callPlayerInteractEvent((EntityPlayerMP) ev.entityPlayer, Action.valueOf(ev.action.toString()), ev.entityPlayer.inventory.getCurrentItem());
 	}
@@ -284,7 +288,7 @@ public class ForgeEventHandler {
 	}*/
 	@ForgeSubscribe
 	public void chunkLoadEvent(ChunkEvent.Load ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		
 		final org.bukkit.event.world.ChunkLoadEvent c = new org.bukkit.event.world.ChunkLoadEvent(new BukkitChunk(ev.getChunk()), false);
@@ -294,7 +298,7 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void chunkUnloadEvent(ChunkEvent.Unload ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		org.bukkit.event.world.ChunkUnloadEvent c = new org.bukkit.event.world.ChunkUnloadEvent(new BukkitChunk(ev.getChunk()));
 		Bukkit.getPluginManager().callEvent(c);
@@ -302,7 +306,7 @@ public class ForgeEventHandler {
 	
 	@ForgeSubscribe
 	public void serverChat(ServerChatEvent ev) {
-		if (!ready)
+		if (!ready|| Side.CLIENT.isClient())
 			return;
 		String newName = ev.player.username;
 		if (playerDisplayNames.containsKey(newName)) {

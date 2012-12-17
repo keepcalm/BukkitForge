@@ -176,7 +176,7 @@ public class BukkitContainer extends Container {
         	}
         }
         if (chosen == null) {
-        	keepcalm.mods.bukkit.asm.BukkitContainer.bukkitLogger.severe("No valid villagers found!");
+        	keepcalm.mods.bukkit.BukkitContainer.bukkitLogger.severe("No valid villagers found!");
         }
         this.addSlotToContainer(new SlotMerchantResult(((InventoryPlayer) bottom).player, chosen, (InventoryMerchant) top, 2, 120, 53));
         int var4;

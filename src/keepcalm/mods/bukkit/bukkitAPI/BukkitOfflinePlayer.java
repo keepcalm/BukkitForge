@@ -1,165 +1,216 @@
 package keepcalm.mods.bukkit.bukkitAPI;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import net.minecraft.nbt.CompressedStreamTools;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
+
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.management.BanEntry;
 import net.minecraft.world.chunk.storage.AnvilSaveHandler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.MetadataValue;
 
-public class BukkitOfflinePlayer implements OfflinePlayer {
-	private BukkitServer theBServer;
-	private String name;
-	private boolean isOp = false;
-	private boolean isOnline = false;
-	private boolean banned = false;
-	private boolean whitelisted = true;
-	private boolean isFirstTime = false;
-	private long firstLoginTime;
-	private long lastLoginTime;
-	private static AnvilSaveHandler playerNBTManager;
-	public static HashMap<String,BukkitOfflinePlayer> instances = new HashMap<String,BukkitOfflinePlayer>();
-	
-	
-	public BukkitOfflinePlayer(BukkitServer server, String name) {
-		this.theBServer = server;
-		if (getPlayerDats().containsKey(name)) {
-			// player dat exists...
-			if (theBServer.getHandle().getDedicatedPlayerList().getPlayerForUsername(name) != null) {
-				this.isOnline = true;
-				this.name = name;
-				this.isOp = theBServer.getHandle().getConfigurationManager().getOps().contains(name.toLowerCase());
-				this.whitelisted = theBServer.getHandle().getConfigurationManager().getWhiteListedPlayers().contains(name.toLowerCase());
-			}
-			else {
-				NBTTagCompound playerNBT;
-				try
-		        {
-		            File var2 = new File(theBServer.getWorldContainer(), "players/" + name.toLowerCase() + ".dat");
+@SerializableAs("Player")
+public class BukkitOfflinePlayer implements OfflinePlayer, ConfigurationSerializable {
+    private final String name;
+    private final BukkitServer server;
+    private final AnvilSaveHandler storage;
 
-		            if (var2.exists())
-		            {
-		                 playerNBT = CompressedStreamTools.readCompressed(new FileInputStream(var2));
-		            }
-		            else {
-		            	emergencyRegisterUnknownPlayer(name);
-		            	return;
-		            }
-		        }
-		        catch (Exception var3)
-		        {
-		            theBServer.getLogger().warning("Failed to load player data for " + name);
-		        }
-				
-			}
-		}
-	}
+    protected BukkitOfflinePlayer(BukkitServer server, String name) {
+        this.server = server;
+        this.name = name;
+        this.storage = (AnvilSaveHandler) server.getHandle().getConfigurationManager().playerNBTManagerObj;
+    }
 
-	private void emergencyRegisterUnknownPlayer(String name2) {
-		// TODO Auto-generated method stub
-		
-	}
+    public boolean isOnline() {
+        return getPlayer() != null;
+    }
 
-	protected HashMap<String,File> getPlayerDats() {
-		String[] files = new File(theBServer.getWorldContainer(), "/players").list(new keepcalm.mods.bukkit.utils.DatFileFilter());
-		HashMap<String,File> dats = new HashMap<String,File>();
-		String prepend = theBServer.getWorldContainer().getAbsolutePath() + "/players";
-		for (String fileName : files) {
-			dats.put(fileName.substring(0, (fileName.length() - 4)), new File(prepend, fileName));
-		}
-		return dats;
-	}
-	@Override
-	public boolean isOp() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	@Override
-	public void setOp(boolean value) {
-		// TODO Auto-generated method stub
+    public String getName() {
+        return name;
+    }
 
-	}
+    public Server getServer() {
+        return server;
+    }
 
-	@Override
-	public Map<String, Object> serialize() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public boolean isOp() {
+        return server.getHandle().getConfigurationManager().getOps().contains(getName().toLowerCase());
+    }
 
-	public void setOnline(boolean isOnline) {
-		this.isOnline = isOnline;
-	}
-	@Override
-	public boolean isOnline() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public void setOp(boolean value) {
+        if (value == isOp()) return;
 
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return name;
-	}
+        if (value) {
+            server.getHandle().getConfigurationManager().addOp(getName().toLowerCase());
+        } else {
+            server.getHandle().getConfigurationManager().removeOp(getName().toLowerCase());
+        }
+    }
 
-	@Override
-	public boolean isBanned() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public boolean isBanned() {
+        return server.getHandle().getConfigurationManager().getBannedPlayers().isBanned(name.toLowerCase());
+    }
 
-	@Override
-	public void setBanned(boolean banned) {
-		// TODO Auto-generated method stub
+    public void setBanned(boolean value) {
+        if (value) {
+            BanEntry entry = new BanEntry(name.toLowerCase());
+            server.getHandle().getConfigurationManager().getBannedPlayers().put(entry);
+        } else {
+            server.getHandle().getConfigurationManager().getBannedPlayers().remove(name.toLowerCase());
+        }
 
-	}
+        server.getHandle().getConfigurationManager().getBannedPlayers().saveToFileWithHeader();
+    }
 
-	@Override
-	public boolean isWhitelisted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public boolean isWhitelisted() {
+        return server.getHandle().getConfigurationManager().getWhiteListedPlayers().contains(name.toLowerCase());
+    }
 
-	@Override
-	public void setWhitelisted(boolean value) {
-		// TODO Auto-generated method stub
+    public void setWhitelisted(boolean value) {
+        if (value) {
+            server.getHandle().getConfigurationManager().addToWhiteList(name.toLowerCase());
+        } else {
+            server.getHandle().getConfigurationManager().removeFromWhitelist(name.toLowerCase());
+        }
+    }
 
-	}
+    public Map<String, Object> serialize() {
+        Map<String, Object> result = new LinkedHashMap<String, Object>();
 
-	@Override
-	public Player getPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        result.put("name", name);
 
-	@Override
-	public long getFirstPlayed() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+        return result;
+    }
 
-	@Override
-	public long getLastPlayed() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    public static OfflinePlayer deserialize(Map<String, Object> args) {
+        return Bukkit.getServer().getOfflinePlayer((String) args.get("name"));
+    }
 
-	@Override
-	public boolean hasPlayedBefore() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[name=" + name + "]";
+    }
 
-	@Override
-	public Location getBedSpawnLocation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Player getPlayer() {
+        for (Object obj : server.getHandle().getConfigurationManager().playerEntityList) {
+            EntityPlayerMP player = (EntityPlayerMP) obj;
+            if (player.username.equalsIgnoreCase(getName())) {
+                return (Player) ((player.playerNetServerHandler != null) ? BukkitEntity.getEntity(server, player) : null);
+            }
+        }
 
+        return null;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof OfflinePlayer)) {
+            return false;
+        }
+        OfflinePlayer other = (OfflinePlayer) obj;
+        if ((this.getName() == null) || (other.getName() == null)) {
+            return false;
+        }
+        return this.getName().equalsIgnoreCase(other.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + (this.getName() != null ? this.getName().toLowerCase().hashCode() : 0);
+        return hash;
+    }
+
+    private NBTTagCompound getData() {
+        return storage.getPlayerData(getName());
+    }
+
+    private NBTTagCompound getBukkitData() {
+        NBTTagCompound result = getData();
+
+        if (result != null) {
+            if (!result.hasKey("bukkit")) {
+                result.setCompoundTag("bukkit", new NBTTagCompound());
+            }
+            result = result.getCompoundTag("bukkit");
+        }
+
+        return result;
+    }
+
+    private File getDataFile() {
+        return new File(storage.getSaveDirectoryName() + (storage.getSaveDirectoryName().endsWith("/") ? "" : "/") + "players", name + ".dat");
+    }
+
+    public long getFirstPlayed() {
+        Player player = getPlayer();
+        if (player != null) return player.getFirstPlayed();
+
+        NBTTagCompound data = getBukkitData();
+
+        if (data != null) {
+            if (data.hasKey("firstPlayed")) {
+                return data.getLong("firstPlayed");
+            } else {
+                File file = getDataFile();
+                return file.lastModified();
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    public long getLastPlayed() {
+        Player player = getPlayer();
+        if (player != null) return player.getLastPlayed();
+
+        NBTTagCompound data = getBukkitData();
+
+        if (data != null) {
+            if (data.hasKey("lastPlayed")) {
+                return data.getLong("lastPlayed");
+            } else {
+                File file = getDataFile();
+                return file.lastModified();
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    public boolean hasPlayedBefore() {
+        return getData() != null;
+    }
+
+    public Location getBedSpawnLocation() {
+        NBTTagCompound data = getData();
+        if (data == null) return null;
+
+        if (data.hasKey("SpawnX") && data.hasKey("SpawnY") && data.hasKey("SpawnZ")) {
+            String spawnWorld = data.getString("SpawnWorld");
+            if (spawnWorld.equals("")) {
+                spawnWorld = server.getWorlds().get(0).getName();
+            }
+            return new Location(server.getWorld(spawnWorld), data.getInteger("SpawnX"), data.getInteger("SpawnY"), data.getInteger("SpawnZ"));
+        }
+        return null;
+    }
+
+    public void setMetadata(String metadataKey, MetadataValue metadataValue) {
+        server.getPlayerMetadata().setMetadata(this, metadataKey, metadataValue);
+    }
 }

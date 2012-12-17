@@ -550,7 +550,7 @@ public class BukkitWorld implements World {
     	//System.out.println("Setting time: " + time);
         world.getWorldInfo().setWorldTime(time);
         for (Object i : world.playerEntities) {
-        	server.getHandle().getDedicatedPlayerList().updateTimeAndWeatherForPlayer((EntityPlayerMP) i, world);
+        	server.getHandle().getConfigurationManager().updateTimeAndWeatherForPlayer((EntityPlayerMP) i, world);
         }
     }
 
@@ -566,7 +566,7 @@ public class BukkitWorld implements World {
             BukkitPlayer cp = (BukkitPlayer) p;
             if (cp.getHandle().playerNetServerHandler == null) continue;
 
-            (server).getHandle().getDedicatedPlayerList().updateTimeAndWeatherForPlayer(cp.getHandle(), world);
+            (server).getHandle().getConfigurationManager().updateTimeAndWeatherForPlayer(cp.getHandle(), world);
         }
     }
 

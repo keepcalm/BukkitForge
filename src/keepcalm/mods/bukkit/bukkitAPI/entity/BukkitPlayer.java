@@ -218,8 +218,8 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
         }
 
         // Collisions will make for invisible people
-        for (int i = 0; i < server.getHandle().getDedicatedPlayerList().playerEntityList.size(); ++i) {
-            if (((EntityPlayerMP) server.getHandle().getDedicatedPlayerList().playerEntityList.get(i)).getEntityName().equals(name)) {
+        for (int i = 0; i < server.getHandle().getConfigurationManager().playerEntityList.size(); ++i) {
+            if (((EntityPlayerMP) server.getHandle().getConfigurationManager().playerEntityList.get(i)).getEntityName().equals(name)) {
                 throw new IllegalArgumentException(name + " is already assigned as a player list name for someone");
             }
         }
@@ -229,8 +229,8 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
         // Change the name on the client side
         Packet201PlayerInfo oldpacket = new Packet201PlayerInfo(oldName, false, 9999);
         Packet201PlayerInfo packet = new Packet201PlayerInfo(name, true, getHandle().ping);
-        for (int i = 0; i < server.getHandle().getDedicatedPlayerList().playerEntityList.size(); ++i) {
-            EntityPlayerMP EntityPlayerMP = (EntityPlayerMP) server.getHandle().getDedicatedPlayerList().playerEntityList.get(i);
+        for (int i = 0; i < server.getHandle().getConfigurationManager().playerEntityList.size(); ++i) {
+            EntityPlayerMP EntityPlayerMP = (EntityPlayerMP) server.getHandle().getConfigurationManager().playerEntityList.get(i);
             if (EntityPlayerMP.playerNetServerHandler == null) continue;
 
             if (this.getEntity(server, EntityPlayerMP).canSee(this)) {
@@ -426,7 +426,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
             //if (getHandle().craftingInventory != getHandle().){
                 getHandle().closeInventory();
             //}
-            server.getHandle().getDedicatedPlayerList().transferPlayerToDimension(entity, toWorld.getWorldInfo().getDimension());
+            server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getWorldInfo().getDimension());
         }
         return true;
     }
@@ -448,11 +448,11 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public void loadData() {
-        server.getHandle().getDedicatedPlayerList().playerNBTManagerObj.readPlayerData(getHandle());
+        server.getHandle().getConfigurationManager().playerNBTManagerObj.readPlayerData(getHandle());
     }
 
     public void saveData() {
-        server.getHandle().getDedicatedPlayerList().playerNBTManagerObj.writePlayerData(getHandle());
+        server.getHandle().getConfigurationManager().playerNBTManagerObj.writePlayerData(getHandle());
     }
 
     public void updateInventory() {
@@ -539,29 +539,29 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public boolean isBanned() {
-        return server.getHandle().getDedicatedPlayerList().getBannedPlayers().isBanned(getName().toLowerCase());
+        return server.getHandle().getConfigurationManager().getBannedPlayers().isBanned(getName().toLowerCase());
     }
 
     public void setBanned(boolean value) {
         if (value) {
             BanEntry entry = new BanEntry(getName().toLowerCase());
-            server.getHandle().getDedicatedPlayerList().getBannedPlayers().put(entry);
+            server.getHandle().getConfigurationManager().getBannedPlayers().put(entry);
         } else {
-            server.getHandle().getDedicatedPlayerList().getBannedPlayers().remove(getName().toLowerCase());
+            server.getHandle().getConfigurationManager().getBannedPlayers().remove(getName().toLowerCase());
         }
 
-        server.getHandle().getDedicatedPlayerList().getBannedPlayers().saveToFileWithHeader();
+        server.getHandle().getConfigurationManager().getBannedPlayers().saveToFileWithHeader();
     }
 
     public boolean isWhitelisted() {
-        return server.getHandle().getDedicatedPlayerList().getWhiteListedPlayers().contains(getName().toLowerCase());
+        return server.getHandle().getConfigurationManager().getWhiteListedPlayers().contains(getName().toLowerCase());
     }
 
     public void setWhitelisted(boolean value) {
         if (value) {
-            server.getHandle().getDedicatedPlayerList().addToWhiteList(getName().toLowerCase());
+            server.getHandle().getConfigurationManager().addToWhiteList(getName().toLowerCase());
         } else {
-            server.getHandle().getDedicatedPlayerList().removeFromWhitelist(getName().toLowerCase());
+            server.getHandle().getConfigurationManager().removeFromWhitelist(getName().toLowerCase());
         }
     }
 

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 
-import keepcalm.mods.bukkit.asm.BukkitContainer;
+import keepcalm.mods.bukkit.BukkitContainer;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;

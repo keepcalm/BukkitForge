@@ -17,7 +17,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import keepcalm.mods.bukkit.asm.BukkitContainer;
+import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkit.asm.BukkitLoggingStream;
 import keepcalm.mods.bukkit.bukkitAPI.command.BukkitCommandMap;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
@@ -60,7 +61,6 @@ import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeVersion;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -127,7 +127,7 @@ public class BukkitServer implements Server {
 	public static final String apiVer = "1.4.5-R0.2";
 	public static final String version = "1.4.5-1";
 	private static BukkitServer instance;
-	private DedicatedServer theServer;
+	private MinecraftServer theServer;
 	//private BukkitServer bukkitServer;
 	private ServerConfigurationManager configMan;
 	private YamlConfiguration bukkitConfig;
@@ -154,7 +154,7 @@ public class BukkitServer implements Server {
 	private EntityMetadataStore entityMetadata;
 	private WorldMetadataStore worldMetadata;
 	private PlayerMetadataStore playerMetadata;
-	private Map<String,Boolean> fauxSleeping = new HashMap();
+	private static Map<String,Boolean> fauxSleeping = new HashMap();
 	
 	/*public void setServer(MinecraftServer server) {
 		if (server == null) {
@@ -171,16 +171,8 @@ public class BukkitServer implements Server {
 	public BukkitServer(MinecraftServer server) {
 		//System.out.println("My classloader is " + getClass().getClassLoader().getClass().getCanonicalName());
 		this.instance = this;
-		// testing
-		if (server == null) {
-			throw new RuntimeException("Server must be set before continuing!");
-		}
-		if (!server.isDedicatedServer()) {
-			theLogger.warning("Not for use in singleplayer! Giving up...");
-			return;
-		}
 		configMan = server.getConfigurationManager();
-		theServer = (DedicatedServer) server;
+		theServer = server;
 		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());
 		//System.out.println("IDs: " + Joiner.on(", ").join(ids));
 		Iterator<Integer> _ = ids.iterator();
@@ -262,7 +254,7 @@ public class BukkitServer implements Server {
 		
 	}
 
-	public DedicatedServer getHandle() {
+	public MinecraftServer getHandle() {
 		return this.theServer;
 	}
 	@Override
@@ -374,7 +366,7 @@ public class BukkitServer implements Server {
 	@Override
 	public boolean getAllowEnd() {
 		// hardcoded?
-		return theServer.settings.getBooleanProperty("allow-end", true);
+		return true;
 	}
 
 	@Override
@@ -982,8 +974,15 @@ public class BukkitServer implements Server {
 	@Override
 	public boolean dispatchCommand(CommandSender sender, String commandLine)
 			throws CommandException {
+		if (sender instanceof BukkitConsoleCommandSender) {
+			theServer.executeCommand(commandLine);
+		}
 		
-		theServer.addPendingCommand(commandLine, (ICommandSender) sender);
+		else {
+			ICommandSender ics = ((BukkitPlayer) sender).getHandle();
+			theServer.getCommandManager().executeCommand(ics, commandLine);
+		}
+		
 		return true;
 	}
 
@@ -999,6 +998,9 @@ public class BukkitServer implements Server {
         if (ds.getDriver().contains("sqlite")) {
             config.setDatabasePlatform(new SQLitePlatform());
             config.getDatabasePlatform().getDbDdlSyntax().setIdentity("");
+        }
+        else if (ds.getDriver().contains("mysql")) {
+        	theLogger.warning("MySQL is presently unsupported for BukkitForge");
         }
 
         config.setDataSourceConfig(ds);
@@ -1071,12 +1073,17 @@ public class BukkitServer implements Server {
 	@Override
 	public int getSpawnRadius() {
 		
-		return theServer.settings.getIntProperty("spawn-protection", 2);
+		return theServer.getSpawnProtectionSize();
 	}
 
 	@Override
 	public void setSpawnRadius(int value) {
-		theServer.settings.setProperty("spawn-protection", value);
+		if (theServer instanceof DedicatedServer) {
+			((DedicatedServer) theServer).settings.setProperty("spawn-radius", value);
+		}
+		else {
+			theLogger.info("Can't set spawn protection radius on client!");
+		}
 
 	}
 
@@ -1317,8 +1324,8 @@ public class BukkitServer implements Server {
 		return instance;
 		
 	}
-	public void setPlayerFauxSleeping(String username, boolean b) {
-		this.fauxSleeping.put(username, b);
+	public static void setPlayerFauxSleeping(String username, boolean b) {
+		fauxSleeping.put(username, b);
 		
 	}
 	public boolean isFauxSleeping(String username) {

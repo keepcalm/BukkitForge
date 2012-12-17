@@ -9,6 +9,7 @@ import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
+import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
 
@@ -56,7 +57,7 @@ public class ConnectionHandler implements IConnectionHandler {
 		EntityPlayerMP guy = (EntityPlayerMP) player;
 		//this.serverHandlers.put(guy.username, netHandler);
 		this.netman = manager;
-		BukkitServer.instance().setPlayerFauxSleeping(guy.username, false);
+		BukkitServer.setPlayerFauxSleeping(guy.username, false);
 
 	}
 

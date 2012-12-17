@@ -16,7 +16,7 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 	}
 	@Override
 	public String getModContainerClass() {
-		return "keepcalm.mods.bukkit.asm.BukkitContainer";
+		return null;
 	}
 	@Override
 	public String getSetupClass() {

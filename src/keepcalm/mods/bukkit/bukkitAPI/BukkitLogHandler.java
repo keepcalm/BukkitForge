@@ -2,7 +2,7 @@ package keepcalm.mods.bukkit.bukkitAPI;
 
 import java.util.logging.Logger;
 
-import keepcalm.mods.bukkit.asm.BukkitContainer;
+import keepcalm.mods.bukkit.BukkitContainer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import cpw.mods.fml.common.FMLCommonHandler;
 

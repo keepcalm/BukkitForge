@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import keepcalm.mods.bukkit.asm.BukkitContainer;
+import keepcalm.mods.bukkit.BukkitContainer;
 
 /**
  * A ClassLoader for plugins, to allow shared classes across multiple plugins

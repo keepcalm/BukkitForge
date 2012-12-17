@@ -1,6 +1,6 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
-import keepcalm.mods.bukkit.asm.BukkitContainer;
+import keepcalm.mods.bukkit.BukkitContainer;
 import net.minecraft.command.ICommandSender;
 /**
  * A command to fix compatibility issues with plugins like MultiVerse - which i __suspect__ use 

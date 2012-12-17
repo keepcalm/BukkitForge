@@ -2,6 +2,7 @@ package keepcalm.mods.bukkit.bukkitAPI;
 
 import java.util.Set;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
 import org.bukkit.ChatColor;
@@ -17,7 +18,7 @@ import org.bukkit.plugin.Plugin;
 
 public class BukkitConsoleCommandSender implements ConsoleCommandSender {
 	private static BukkitConsoleCommandSender instance = null;
-	private DedicatedServer theServer;
+	private MinecraftServer theServer;
 	private BukkitServer bServer;
 	private final PermissibleBase perms = new PermissibleBase(this);
 	protected final BukkitConversationTracker convo = new BukkitConversationTracker();

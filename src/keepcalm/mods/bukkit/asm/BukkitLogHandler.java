@@ -3,6 +3,8 @@ package keepcalm.mods.bukkit.asm;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
+import keepcalm.mods.bukkit.BukkitContainer;
+
 import net.minecraft.server.MinecraftServer;
 
 public class BukkitLogHandler extends Handler {
