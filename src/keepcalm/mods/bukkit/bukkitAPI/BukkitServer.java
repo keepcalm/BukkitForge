@@ -60,6 +60,7 @@ import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.ForgeVersion;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;

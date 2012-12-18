@@ -1,5 +1,7 @@
 <project name="BukkitForge" default="install" basedir=".">
-	
+
+	<property environment="env" />
+
 	<property name="build.dir" value="build" />
 	<property name="classes.dir" value="${build.dir}/packaging" />
 	<property name="src.dir" value="src" />
@@ -12,10 +14,9 @@
 	
 	<property name="package.meta-inf" value="META-INF" />
 	<property name="package.at" value="bukkit_at.cfg" />
-	<property name="package.configs" value="configurations" />
-	<property name="build.number" value="" />
+	<property name="package.configs" value="${src.dir}/configurations" />
 	<property name="build.ver" value="1.4.5" />
-	
+	<property name="blockbreak.src" value="blockbreak/src/keepcalm/mods" />
 	<!--<property name="files.minecraft.dir" value="jars" />-->
 	<property name="dist.dir" value="${build.dir}/dist" />
 	
@@ -29,7 +30,9 @@
 	
 	   
 	
-	<available property="forge-exists" file="${download.dir}/minecraftforge-src-${forge.version}.zip" />
+    <available property="forge-exists" file="${download.dir}/minecraftforge-src-${forge.version}.zip" />
+    <available property="already-compiled" file="${classes.dir}/keepcalm" />
+    <available property="blockbreak-there" file="${blockbreak.src}" />
 	<condition property="should-download-ant-contrib">
 		<or>
 	        <available file="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
@@ -37,12 +40,24 @@
 	    </or>
 	 </condition>
 	
-	
-	<target name="install" depends="build">
-		<jar destfile="${dist.dir}/BukkitForge-${build.full-version}.jar" basedir="${classes.dir}"/>
+	<target name="check-blockbreak" unless="blockbreak-there">
+		<echo message="You must first run 'git submodules sync' or download the BlockBreak sources into the blockbreak folder!!"/>
+		<fail/>
+	</target>
+
+	 <target name="install" depends="check-blockbreak,build">
+		 <delete dir="${classes.dir}/keepcalm/mods/blockbreak" />
+		        <copy todir="${classes.dir}">
+				<fileset dir="src">
+					<include name="configurations" />
+					<exclude name="*" />
+				</fileset>
+		        	  <fileset file="${package.at}" />
+		        </copy>
+			<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="META-INF/MANIFEST.MF"/>
 	</target>
 	
-	<target name="build" depends="setup-forge">
+	<target name="build" depends="setup-forge" unless="already-compiled">
 		<!-- Recompile -->
 		        <exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
 		            <arg line="/c recompile.bat"/>
@@ -67,28 +82,23 @@
 		        </copy>
 
 		
-		        <copy todir="${classes.dir}">
-		        	  <fileset dir="${package.configs}" />
-		        	  <fileset file="${package.at}" />
-		        	  <fileset dir="${package.meta-inf}" />
-		        </copy>
 		        
 
 		       
 	</target>
 		
-	<target name="build-number-there" if="${env.BUILD_NUMBER}" >
+	<target name="build-number-there" if="env.BUILD_NUMBER" >
 	   <echo message="Using build number ${env.BUILD_NUMBER}..." />
 	   <property name="build.number" value="${env.BUILD_NUMBER}" />
 	</target>
 		
-	<target name="build-number-not-there" unless="${env.BUILD_NUMBER}" >
+	<target name="build-number-not-there" unless="env.BUILD_NUMBER" >
 	   <echo message="!! No build number set !!" />
-	   <property name="build.number" value="0" />
+	   <property name="build.number" value="CUSTOM_BUILD" />
 	</target>
-	<target name="setup-forge" depends="download-forge,build-number-there,build-number-not-there">
+	<target name="setup-forge" depends="download-forge,build-number-there,build-number-not-there" unless="already-compiled">
                  
-    		<property name="build.full-version" value="${build.ver}-${build.number}" />
+    		<property name="build.full" value="${build.ver}_${build.number}" />
 		        <unzip dest="${build.dir}">
 		            <fileset dir="${download.dir}">
 		                <include name="minecraftforge-src-${forge.version}.zip"/>
@@ -127,6 +137,9 @@
 		        <!-- Copy source -->
 		        <copy todir="${mcpsrc.dir}">
 				<fileset dir="${src.dir}/keepcalm"/>
+			</copy>
+			<copy todir="${mcpsrc.dir}/keepcalm/mods">
+				<fileset dir="${blockbreak.src}" />
 			</copy>
 			<copy todir="${mcpsrc.dir}">
 				<fileset dir="${src.dir}/javax" />

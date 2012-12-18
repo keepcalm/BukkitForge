@@ -17,6 +17,10 @@ all the files in 'lib/' (excluding bukkitAPI.jar) into the lib folder in mcp.
 decompile as usual. 
 You will also need to add the files in the 'lib' folder (excluding bukkitAPI.jar) into the projects in eclipse.
 
+=head1 COMPILING (to get all that good stuff)
+
+You need Apache Ant and the JDK. To build, simply type 'ant' in the folder with build.xml inside it.
+
 =head1 FOR BUKKIT DEVS WHO WANT TO ENSURE COMPATIBILITY
 
 If your mod does NOT use guava, you're fine, it should work.
