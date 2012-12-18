@@ -193,7 +193,11 @@
 	        <delete dir="${download.dir}/ant-contrib/docs"/>
 	        <delete dir="${download.dir}/tmp"/>
 
-	 </target>
+	</target>
+
+	<target name="clean" >
+		<delete dir="${build.dir}" />
+	</target>
 	
 	
 </project>
