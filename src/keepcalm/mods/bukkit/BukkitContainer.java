@@ -41,7 +41,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
-@Mod(modid="BukkitForge",name="BukkitForge",version="1.4.5-2")
+@Mod(modid="BukkitForge",name="BukkitForge",version="1.4.5-3")
 public class BukkitContainer {
 	public static BukkitServer bServer;
 	public File myConfigurationFile;

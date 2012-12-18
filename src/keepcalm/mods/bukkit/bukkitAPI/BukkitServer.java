@@ -125,7 +125,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BukkitServer implements Server {
 	public static final String apiVer = "1.4.5-R0.2";
-	public static final String version = "1.4.5-1";
+	public static final String version = "1.4.5-3";
 	private static BukkitServer instance;
 	private MinecraftServer theServer;
 	//private BukkitServer bukkitServer;

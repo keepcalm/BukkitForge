@@ -2,6 +2,8 @@ package keepcalm.mods.bukkit.bukkitAPI;
 
 import java.util.Set;
 
+import keepcalm.mods.bukkit.BukkitContainer;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
@@ -26,6 +28,7 @@ public class BukkitConsoleCommandSender implements ConsoleCommandSender {
 	public static ConsoleCommandSender getInstance() {
 		if (instance == null)
 			instance = new BukkitConsoleCommandSender(BukkitServer.instance());
+		
 		return instance;
 	}
 	
@@ -163,7 +166,7 @@ public class BukkitConsoleCommandSender implements ConsoleCommandSender {
 
 	@Override
 	public void sendRawMessage(String message) {
-		System.out.println(ChatColor.stripColor(message));
+		BukkitServer.instance().getLogger().info(ChatColor.stripColor(message));
 	}
 
 }
