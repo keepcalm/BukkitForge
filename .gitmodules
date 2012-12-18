@@ -1,0 +1,3 @@
+[submodule "blockbreak"]
+	path = blockbreak
+	url = git://github.com/keepcalm/BlockBreak

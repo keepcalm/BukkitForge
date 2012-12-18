@@ -37,11 +37,13 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
 @Mod(modid="BukkitForge",name="BukkitForge",version="1.4.5-3")
+@NetworkMod(clientSideRequired=false,serverSideRequired=false)
 public class BukkitContainer {
 	public static BukkitServer bServer;
 	public File myConfigurationFile;

@@ -88,7 +88,7 @@
 	</target>
 	<target name="setup-forge" depends="download-forge,build-number-there,build-number-not-there">
                  
-    <property name="build.full-version" value="${build.ver}-${build.number}" />
+    		<property name="build.full-version" value="${build.ver}-${build.number}" />
 		        <unzip dest="${build.dir}">
 		            <fileset dir="${download.dir}">
 		                <include name="minecraftforge-src-${forge.version}.zip"/>
@@ -131,10 +131,19 @@
 			<copy todir="${mcpsrc.dir}">
 				<fileset dir="${src.dir}/javax" />
 			</copy>
+			
 			<copy todir="${mcpsrc.dir}/org">
 				   <fileset dir="${src.dir}/org/bukkit" />
-	             	</copy>
-		            	
+			   </copy>
+
+			   <!-- Copy libraries -->
+			   <copy todir="${mcp.dir}/lib" >
+				   <fileset dir="lib" >
+					   <patternset includes="*.jar" />
+				   </fileset>
+			   
+			   </copy>
+
 	</target>
 		
 	<target name="download-forge" depends="download-ant-contrib" unless="forge-exists">
