@@ -429,9 +429,7 @@ public class BukkitInventory implements Inventory {
     }
 
     public InventoryHolder getHolder() {
-    	// TODO
-    	FMLCommonHandler.instance().getFMLLogger().severe("getHolder is unsupported on vanilla at present.");
-        return null;
+        return new BukkitInventoryHolder(this);
     }
 
     public int getMaxStackSize() {
@@ -439,6 +437,5 @@ public class BukkitInventory implements Inventory {
     }
 
     public void setMaxStackSize(int size) {
-        // TODO
     }
 }

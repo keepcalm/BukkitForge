@@ -5,18 +5,20 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 
 public class BukkitAccessTransformer extends AccessTransformer {
 	private static BukkitAccessTransformer instance;
 	private static List mapFileList = new LinkedList();
-	
+	public static boolean isObfuscated = isObfuscated();
 	
 	public BukkitAccessTransformer() throws IOException {
 		//super();
 		//this.readMapFile("/bukkit_at.cfg");
-		if (ObfuscationMappings.isObfuscated) {
+		if (isObfuscated) {
 			instance = this;
 			mapFileList.add("bukkit_at.cfg");
 			Iterator var2 = mapFileList.iterator();
@@ -24,7 +26,12 @@ public class BukkitAccessTransformer extends AccessTransformer {
 				
 				String file = (String)var2.next();
 				//System.out.println("Running var2.hasNext(): " + file);
-				this.readMapFile(file);
+				try {
+					this.readMapFile(file);
+				}
+				catch (Exception e) {
+					FMLCommonHandler.instance().getFMLLogger().log(Level.WARNING, "Failed to register map file, assuming you're an a development environment!", e);
+				}
 			}
 			
 		}
@@ -52,6 +59,10 @@ public class BukkitAccessTransformer extends AccessTransformer {
 		} catch (Exception var3) {
 			throw new RuntimeException(var3);
 		}
+	}
+	
+	private static boolean isObfuscated() {
+		return (ClassLoader.getSystemResourceAsStream("net/minecraft/src") == null) ? true : false;
 	}
 
 

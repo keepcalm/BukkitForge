@@ -50,7 +50,9 @@ public class BukkitContainer {
 	public boolean allowAnsi;
 	public String pluginFolder;
 	public static boolean showAllLogs;
+	public static boolean isDediServer;
 	public static String serverUUID;
+	public static boolean overrideVanillaCommands;
 	public static Logger bukkitLogger ;//.getLogger("[Bukkit API]");
 
 	private static boolean isGuiEnabled = false;
@@ -68,11 +70,14 @@ public class BukkitContainer {
 
 	public BukkitContainer() {
 		if (Side.SERVER.isServer()) {
+			isDediServer = true;
 			if (MinecraftServer.getServer() != null && MinecraftServer.getServer().getGuiEnabled()) {
 				isGuiEnabled = true;
 				ServerGUI.logger.severe("BukkitForge plugins may misbehave when using the gui! Run the server with 'nogui'!");
 			}
 		}
+		else
+			isDediServer = false;
 		instance = this;
 
 	}
@@ -101,6 +106,10 @@ public class BukkitContainer {
 		config.addCustomCategoryComment("consoleConfig", "Configuration for the server console");
 		config.addCustomCategoryComment("dontTouchThis", "Things which are best left untouched");
 
+		Property override = config.get(Configuration.CATEGORY_GENERAL, "overrideVanillaCommands", false);
+		override.comment = "Override vanilla commands (/me etc) with Bukkit defaults (won't stop plugins from overriding)";
+		this.overrideVanillaCommands = override.getBoolean(false);
+		
 		Property colour = config.get("consoleConfig", "enablecolour", isGuiEnabled ? false : true);
 		colour.comment = "Enable coloured ANSI console output";
 		this.allowAnsi = colour.getBoolean(false);

@@ -22,6 +22,7 @@ import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.map.BukkitMapView;
 import keepcalm.mods.bukkit.bukkitAPI.map.RenderData;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
+import keepcalm.mods.bukkit.forgeHandler.VanishUtils;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -36,7 +37,10 @@ import net.minecraft.inventory.ContainerMerchant;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.ContainerRepair;
 import net.minecraft.inventory.ContainerWorkbench;
+import net.minecraft.item.ItemInWorldManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet103SetSlot;
 import net.minecraft.network.packet.Packet131MapData;
 import net.minecraft.network.packet.Packet200Statistic;
 import net.minecraft.network.packet.Packet201PlayerInfo;
@@ -116,7 +120,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
 
 	@Override
     public boolean isOp() {
-        return server.getHandle().getConfigurationManager().getOps().contains(getName());
+        return server.getHandle().getConfigurationManager().getOps().contains(getName().toLowerCase());
     }
 
     @Override
@@ -124,9 +128,9 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
         if (value == isOp()) return;
 
         if (value) {
-            server.getHandle().getConfigurationManager().addOp(getName());
+            server.getHandle().getConfigurationManager().addOp(getName().toLowerCase());
         } else {
-            server.getHandle().getConfigurationManager().removeOp(getName());
+            server.getHandle().getConfigurationManager().removeOp(getName().toLowerCase());
         }
 
         perm.recalculatePermissions();
@@ -423,10 +427,10 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
             entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
         } else {
             // Close any foreign inventory
-            //if (getHandle().craftingInventory != getHandle().){
+        	if (getHandle().openContainer != getHandle().inventoryContainer)
                 getHandle().closeInventory();
-            //}
             server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getWorldInfo().getDimension());
+            entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
         }
         return true;
     }
@@ -456,7 +460,8 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public void updateInventory() {
-        //getHandle().updateInventory(getHandle().craftingInventory);
+        //getHandle().updateInventory(getHandle().craftingInventory);f
+    	getHandle().updateHeldItem();
     }
 
     public void setSleepingIgnored(boolean isSleeping) {
@@ -568,7 +573,6 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     @Override
     public void setGameMode(GameMode mode) {
         if (getHandle().playerNetServerHandler == null) return;
-
         if (mode == null) {
             throw new IllegalArgumentException("Mode cannot be null");
         }
@@ -669,10 +673,13 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
         EntityTracker tracker = ((WorldServer) entity.worldObj).getEntityTracker();
         EntityPlayerMP other = ((BukkitPlayer) player).getHandle();
         // TODO: Does this work?
-        EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntities.toArray()[other.entityId];
-        if (entry != null) {
+        EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntityIDs.lookup(getHandle().entityId);
+        entry.removePlayerFromTracker(other);
+        entry.removeFromWatchingList(other);
+        VanishUtils.setHidden(getHandle(), other);
+        /*if (entry != null) {
             entry.removePlayerFromTracker(getHandle());
-        }
+        }*/
 
         //remove the hidden player from this player user list
         getHandle().playerNetServerHandler.sendPacketToPlayer(new Packet201PlayerInfo(player.getPlayerListName(), false, 9999));
@@ -687,12 +694,13 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
 
         EntityTracker tracker = ((WorldServer) entity.worldObj).getEntityTracker();
         EntityPlayerMP other = ((BukkitPlayer) player).getHandle();
-        EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntities.toArray()[other.entityId];
+        EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntityIDs.lookup(getHandle().entityId);
         
         // FIXME: What does this do???
         //getHandle().player.remove(Integer.valueOf(other.entityId)); // Should be called destroyQueue
         if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
             entry.tryStartWachingThis(getHandle());
+            VanishUtils.setVisible(getHandle(), other);
         }
 
         getHandle().playerNetServerHandler.sendPacketToPlayer(new Packet201PlayerInfo(player.getPlayerListName(), true, getHandle().ping));
@@ -1024,13 +1032,11 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
 
 	@Override
 	public void giveExpLevels(int amount) {
-		// TODO Auto-generated method stub
-		
+		getHandle().experienceLevel += amount;
 	}
 
 	@Override
 	public void setBedSpawnLocation(Location location, boolean force) {
-		// TODO Auto-generated method stub
-		
+		getHandle().setSpawnChunk(new ChunkCoordinates(location.getBlockX(),  location.getBlockY(), location.getBlockZ()), force);
 	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -38,37 +39,6 @@ public class BukkitCommandMap extends SimpleCommandMap implements CommandMap  {
     //protected final Set<String> aliases = new HashSet<String>();
     protected final Map<String, CommandExecutor2CommandBase> cmdHandlers = new HashMap();
     private final Server server;
-    //protected static final Set<VanillaCommand> fallbackCommands = new HashSet<VanillaCommand>();
-    // TODO: Register the server commands as fallbackCommands.
-    /*static {
-        fallbackCommands.add(new ListCommand());
-        fallbackCommands.add(new StopCommand());
-        fallbackCommands.add(new SaveCommand());
-        fallbackCommands.add(new SaveOnCommand());
-        fallbackCommands.add(new SaveOffCommand());
-        fallbackCommands.add(new OpCommand());
-        fallbackCommands.add(new DeopCommand());
-        fallbackCommands.add(new BanIpCommand());
-        fallbackCommands.add(new PardonIpCommand());
-        fallbackCommands.add(new BanCommand());
-        fallbackCommands.add(new PardonCommand());
-        fallbackCommands.add(new KickCommand());
-        fallbackCommands.add(new TeleportCommand());
-        fallbackCommands.add(new GiveCommand());
-        fallbackCommands.add(new TimeCommand());
-        fallbackCommands.add(new SayCommand());
-        fallbackCommands.add(new WhitelistCommand());
-        fallbackCommands.add(new TellCommand());
-        fallbackCommands.add(new MeCommand());
-        fallbackCommands.add(new KillCommand());
-        fallbackCommands.add(new GameModeCommand());
-        fallbackCommands.add(new HelpCommand());
-        fallbackCommands.add(new ExpCommand());
-        fallbackCommands.add(new ToggleDownfallCommand());
-        fallbackCommands.add(new BanListCommand());
-        fallbackCommands.add(new DefaultGameModeCommand());
-        fallbackCommands.add(new SeedCommand());
-    }*/
 
     public BukkitCommandMap(final Server server) {
     	//super(server);

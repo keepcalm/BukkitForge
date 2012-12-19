@@ -15,7 +15,6 @@ import org.fusesource.jansi.Ansi.Attribute;
 //import jline.console.ConsoleReader;
 //import org.bukkit.craftbukkit.BukkitServer;
 
-// TODO implement properly.
 public class ColouredConsoleSender extends BukkitConsoleCommandSender {
     //private final ConsoleReader reader;
     //private final Terminal terminal;

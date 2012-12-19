@@ -68,6 +68,7 @@ import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.entity.projectile.EntityWitherSkull;
+import net.minecraft.network.packet.Packet61DoorChange;
 
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
@@ -371,7 +372,12 @@ public abstract class BukkitEntity implements org.bukkit.entity.Entity {
 
     public void playEffect(EntityEffect type) {
         //this.getHandle().worldObj.(getHandle(), type.getData());
-    	// TODO
+    	int posX = getHandle().serverPosX;
+    	int posY = getHandle().serverPosY;
+    	int posZ = getHandle().serverPosZ;
+    	
+    	Packet61DoorChange pack = new Packet61DoorChange(type.getData(), posX, posY, posZ, 0, false);
+    	BukkitServer.instance().getHandle().getConfigurationManager().sendToAllNear((double) posX, (double) posY, (double) posZ, 64.0D, getHandle().dimension, pack);
     }
 
     public void setHandle(final Entity entity) {

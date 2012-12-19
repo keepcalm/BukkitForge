@@ -20,7 +20,6 @@ public class BukkitInventoryView extends InventoryView {
     private final BukkitInventory viewing;
 
     public BukkitInventoryView(HumanEntity player, Inventory viewing, Container container) {
-        // TODO: Should we make sure it really IS a BukkitHumanEntity first? And a BukkitInventory?
         this.player = (BukkitEntityHuman) player;
         this.viewing = (BukkitInventory) viewing;
         this.container = container;

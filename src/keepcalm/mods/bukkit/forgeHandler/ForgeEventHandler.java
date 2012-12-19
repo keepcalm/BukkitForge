@@ -70,7 +70,6 @@ public class ForgeEventHandler {
 			dc = DamageCause.CONTACT;
 		else if (ds == ds.drown)
 			dc = DamageCause.DROWNING;
-		// TODO fix this!
 		else if (ds == ds.explosion)
 			dc = DamageCause.BLOCK_EXPLOSION;
 		else if (ds == ds.fall)

@@ -16,7 +16,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpTopic;
 
 public class BukkitCommandHelp extends CommandBase {
-	// TODO allow configuration
 	public static int entries_per_page = 5;
 	
 	

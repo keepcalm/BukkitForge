@@ -3,10 +3,14 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 import java.util.List;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -43,7 +47,13 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	
 	public List<String> addTabCompletionOptions(ICommandSender who, String[] args) {
 		
-		return bukkitCommandInstance.tabComplete(new BukkitCommandSender(who),name , args);
+		if (who instanceof MinecraftServer) {
+			return bukkitCommandInstance.tabComplete(BukkitConsoleCommandSender.getInstance() ,name , args);
+		}
+		else {
+			BukkitPlayer player = (BukkitPlayer) BukkitEntity.getEntity(BukkitServer.instance(), (EntityPlayer) who);
+			return bukkitCommandInstance.tabComplete(player, name, args);
+		}
 	}
 	
 	public List<String> getCommandAliases() {
@@ -68,7 +78,6 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		else {
 			sender = BukkitConsoleCommandSender.getInstance();
 		}
-		
 		if ((bukkitCommandInstance.testPermissionSilent(sender)) || sender.hasPermission(bukkitCommandInstance.getPermission()) || sender.isOp() || bukkitCommandInstance.getPermission() == null || bukkitCommandInstance.getPermission().isEmpty()) {
 			return true;
 		}

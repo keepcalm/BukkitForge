@@ -414,8 +414,6 @@ public class BukkitWorld implements World {
         EntityItem entity = new EntityItem(world, loc.getX(), loc.getY(), loc.getZ(), clone.getHandle());
         entity.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entity);
-        // TODO this is inconsistent with how Entity.getBukkitEntity() works.
-        // However, this entity is not at the moment backed by a server entity class so it may be left.
         return new BukkitItem((BukkitServer) Bukkit.getServer(), entity);
     }
 
@@ -1233,7 +1231,6 @@ public class BukkitWorld implements World {
     }
     /**
      * FIXME
-     * @deprecated
      */
     public void setTicksPerMonsterSpawns(int ticksPerMonsterSpawns) {
         //world.ticksPerMonsterSpawns = ticksPerMonsterSpawns;
@@ -1302,7 +1299,6 @@ public class BukkitWorld implements World {
 
 	@Override
 	public int getAmbientSpawnLimit() {
-		// TODO Auto-generated method stub
 		return ambientSpawn;
 	}
 

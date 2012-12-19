@@ -185,7 +185,10 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		EntityPlayerMP player = (EntityPlayerMP) getHandle();
 		InventoryType type = inventory.getType();
 		Container formerContainer = getHandle().openContainer;
-		// TODO: Should we check that it really IS a BukkitInventory first?
+		if (!(inventory instanceof BukkitInventory)) {
+			BukkitServer.instance().getLogger().warning("The inventory " + inventory + " is not an instance of BukkitInventory, ignoring open attempt...");
+			return null;
+		}
 		BukkitInventory craftinv = (BukkitInventory) inventory;
 		switch(type) {
 		case PLAYER:

@@ -5,9 +5,11 @@ import java.util.Map;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 public class BukkitASMLoader implements IFMLLoadingPlugin {
+	//public static final boolean isObfuscated = ClassLoader.getSystemClassLoader().getSystemResourceAsStream("net/minecraft/src") == null;
+	
 	@Override
 	public String[] getASMTransformerClass() {
-		return new String[] {"keepcalm.mods.bukkit.asm.BukkitAccessTransformer"};
+		return new String[] {"keepcalm.mods.bukkit.asm.BukkitAccessTransformer", "keepcalm.mods.bukkit.asm.BukkitVanishTransformer"};
 	}
 	@Override
 	public String[] getLibraryRequestClass() {
