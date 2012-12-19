@@ -29,6 +29,7 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import cpw.mods.fml.relauncher.IClassTransformer;
 
+// TODO - not working at present. No clue why.
 public class BukkitVanishTransformer implements IClassTransformer {
 
 	private HashMap<String,String> obfNames = new HashMap<String, String>();
@@ -113,6 +114,7 @@ public class BukkitVanishTransformer implements IClassTransformer {
 							entryName = j.name;
 							entryDesc = j.desc;
 							// save it!
+							System.out.println("Found: " + entryOwner + entryName + entryDesc);
 							entryPos = lastPlayerPos;
 						}
 					}

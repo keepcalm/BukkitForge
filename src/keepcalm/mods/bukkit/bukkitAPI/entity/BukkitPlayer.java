@@ -96,7 +96,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.MapMaker;
 
 @DelegateDeserialization(BukkitOfflinePlayer.class)
-public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSender, Permissible {
+public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSender {
     private long firstPlayed = 0;
     private long lastPlayed = 0;
     private boolean hasPlayedBefore = false;
@@ -110,17 +110,26 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
 
     public BukkitPlayer(BukkitServer server, EntityPlayerMP entity) {
         super(server, entity);
-
-        firstPlayed = System.currentTimeMillis();
+        perm.recalculatePermissions();
     }
 
     public BukkitPlayer(EntityPlayerMP player) {
 		this((BukkitServer) Bukkit.getServer(), player);
 	}
+    
+    @Override
+    public String getName() {
+    	return ((EntityPlayerMP) entity).username;
+    }
 
 	@Override
     public boolean isOp() {
-        return server.getHandle().getConfigurationManager().getOps().contains(getName().toLowerCase());
+		try {
+			return server.getHandle().getConfigurationManager().getOps().contains(getName().toLowerCase());
+		}
+		catch (NullPointerException e) {
+			return false;
+		}
     }
 
     @Override
