@@ -202,7 +202,7 @@ public class BukkitWorld implements World {
     }
 
     public Location getSpawnLocation() {
-        ChunkCoordinates spawn = world.getSpawnPoint();
+        ChunkCoordinates spawn = getHandle().getSpawnPoint();
         return new Location(this, spawn.posX, spawn.posY, spawn.posZ);
     }
 

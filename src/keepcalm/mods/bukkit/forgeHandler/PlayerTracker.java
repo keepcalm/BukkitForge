@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -28,7 +29,9 @@ public class PlayerTracker implements IPlayerTracker {
 	}
 
 	@Override
-	public void onPlayerLogout(EntityPlayer player) {}
+	public void onPlayerLogout(EntityPlayer player) {
+		
+	}
 
 	@Override
 	public void onPlayerChangedDimension(EntityPlayer player) {

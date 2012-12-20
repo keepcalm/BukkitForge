@@ -8,6 +8,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.integrated.IntegratedServer;
+
 import org.bukkit.Warning.WarningState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -55,7 +58,7 @@ public final class Bukkit {
      * @param server Server instance
      */
     public static void setServer(Server server) {
-        if (Bukkit.server != null) {
+        if (Bukkit.server != null && !(MinecraftServer.getServer() instanceof IntegratedServer)) {
             throw new UnsupportedOperationException("Cannot redefine singleton Server");
         }
 

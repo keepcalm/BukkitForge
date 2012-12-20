@@ -11,6 +11,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.integrated.IntegratedServer;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -78,7 +79,12 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		else {
 			sender = BukkitConsoleCommandSender.getInstance();
 		}
-		if ((bukkitCommandInstance.testPermissionSilent(sender)) || sender.hasPermission(bukkitCommandInstance.getPermission()) || sender.isOp() || bukkitCommandInstance.getPermission() == null || bukkitCommandInstance.getPermission().isEmpty()) {
+		if ((bukkitCommandInstance.testPermissionSilent(sender)) 
+				|| sender.hasPermission(bukkitCommandInstance.getPermission()) || sender.isOp() 
+				|| bukkitCommandInstance.getPermission() == null 
+				|| bukkitCommandInstance.getPermission().isEmpty() 
+				|| (MinecraftServer.getServer().getServerOwner().equalsIgnoreCase(sender.getName())) 
+				|| MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(sender.getName().toLowerCase())) {
 			return true;
 		}
 		//System.out.println("NO! For " + name);
