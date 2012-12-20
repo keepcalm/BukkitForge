@@ -6,6 +6,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.objectweb.asm.util.ASMifier;
+
 import keepcalm.mods.bukkit.asm.BukkitStarter;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.common.CommonProxy;
@@ -79,6 +81,11 @@ public class BukkitContainer {
 		else
 			isDediServer = false;
 		instance = this;
+		try {
+			//ASMifier.main(new String[] {"net.minecraft.item.ItemStack"});
+		} catch (Exception e) {
+			System.out.println("FAILED to ASMIfy. Oh well.");
+		}
 
 	}
 	public boolean registerBus(EventBus bus, LoadController controller) {

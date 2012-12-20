@@ -1,5 +1,6 @@
 package keepcalm.mods.bukkit;
 
+import cpw.mods.fml.common.Side;
 import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -9,7 +10,9 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ForgeEventHelper {
 	public static void onItemUse(ItemStack stack, EntityPlayer who, World world, int x, int y, int z, int blockFace) {
-		
+		if (Side.CLIENT.isClient())
+			// not on client
+			return;
 		System.out.println("Hello");
 		PlayerUseItemEvent ev = new PlayerUseItemEvent(stack, who, world, x, y, z, ForgeDirection.getOrientation(blockFace));
 		System.out.println("POSTing event: " + ev);
