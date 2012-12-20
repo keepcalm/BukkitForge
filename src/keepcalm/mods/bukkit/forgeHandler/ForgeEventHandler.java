@@ -13,13 +13,18 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
+import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeCache;
 import net.minecraftforge.common.BiomeManager;
@@ -43,6 +48,7 @@ import net.minecraftforge.event.world.ChunkEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -321,6 +327,28 @@ public class ForgeEventHandler {
 		ev1 = BukkitEventFactory.callEvent(ev1);
 		ev.line = ev.line.replace(ev.message, ev1.getMessage());
 		String newLine = String.format(ev1.getFormat(),new Object[] {newName, ev1.getMessage()});
+	}
+	
+	
+	// begin BukkitForge events
+	
+	
+	@ForgeSubscribe
+	public void tryPlaceBlock(PlayerUseItemEvent ev) {
+		if (ev.stack.getItem() instanceof ItemBlock) {
+			ItemBlock block = (ItemBlock) ev.stack.getItem();
+			BukkitChunk chunk = new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z));
+			ChunkCoordinates spawn = ev.world.getSpawnPoint();
+			int spawnRadius = BukkitServer.instance().getSpawnRadius();
+			boolean canBuild = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(spawn.posX, spawn.posY, spawn.posZ, spawn.posX + spawnRadius, spawn.posY + spawnRadius, spawn.posZ + spawnRadius).isVecInside(Vec3.createVectorHelper(ev.x, ev.y, ev.z));
+			BukkitBlock bblock = new BukkitBlock(chunk, ev.x, ev.y, ev.z);
+			BlockCanBuildEvent bukkitEv = new BlockCanBuildEvent(bblock, block.getBlockID(), canBuild);
+			if (!bukkitEv.isBuildable() && canBuild) {
+				// it was changed
+				// and since we were called from AFTER the actual placement, we can just break the block.
+				bblock.breakNaturally();
+			}
+		}
 	}
 
 }
