@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit.asm;
+package keepcalm.mods.bukkit.asm.transformers;
 
 import java.io.IOException;
 import java.lang.reflect.Method;

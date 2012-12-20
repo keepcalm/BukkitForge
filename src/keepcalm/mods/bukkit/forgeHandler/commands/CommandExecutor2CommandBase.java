@@ -83,8 +83,8 @@ public class CommandExecutor2CommandBase extends CommandBase {
 				|| sender.hasPermission(bukkitCommandInstance.getPermission()) || sender.isOp() 
 				|| bukkitCommandInstance.getPermission() == null 
 				|| bukkitCommandInstance.getPermission().isEmpty() 
-				|| (MinecraftServer.getServer().getServerOwner().equalsIgnoreCase(sender.getName())) 
-				|| MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(sender.getName().toLowerCase())) {
+				|| (MinecraftServer.getServer().getServerOwner().equalsIgnoreCase(who.getCommandSenderName())) 
+				|| MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(who.getCommandSenderName())) {
 			return true;
 		}
 		//System.out.println("NO! For " + name);

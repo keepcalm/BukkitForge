@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit.asm;
+package keepcalm.mods.bukkit.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.GETFIELD;
