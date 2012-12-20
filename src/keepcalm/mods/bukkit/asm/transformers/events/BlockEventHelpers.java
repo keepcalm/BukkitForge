@@ -1,13 +1,15 @@
 package keepcalm.mods.bukkit.asm.transformers.events;
 
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -84,6 +86,9 @@ public class BlockEventHelpers implements IClassTransformer {
 						System.out.println("Found IRETURN after ILOAD, inserting code before...");
 						index--;
 						InsnList toInject = new InsnList();
+						toInject.add(new FieldInsnNode(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"));
+						toInject.add(new LdcInsnNode("Hello, World from ItemStack!"));
+						toInject.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V"));
 						toInject.add(new VarInsnNode(Opcodes.ALOAD, 0));
 						toInject.add(new VarInsnNode(Opcodes.ALOAD, 1));
 						toInject.add(new VarInsnNode(Opcodes.ALOAD, 2));
@@ -91,7 +96,7 @@ public class BlockEventHelpers implements IClassTransformer {
 						toInject.add(new VarInsnNode(Opcodes.ILOAD, 4));
 						toInject.add(new VarInsnNode(Opcodes.ILOAD, 5));
 						toInject.add(new VarInsnNode(Opcodes.ILOAD, 6));
-						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm.mods.bukkit.ForgeEventHelper", "onItemUse", 
+						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper", "onItemUse", 
 								"(L" + names.get("itemStackClassName").replace('.', '/') + ";L" + names.get("entityPlayerClassName").replace('.', '/') + 
 								";L" + names.get("worldClassName").replace('.', '/') + ";IIII)V"));
 						m.instructions.insertBefore(m.instructions.get(index), toInject);
