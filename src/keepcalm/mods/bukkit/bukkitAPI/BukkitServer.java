@@ -218,7 +218,8 @@ public class BukkitServer implements Server {
 			theLogger.log(Level.FINE, "The server was interrupted, it might explode!", e);
 		}*/
 		theLogger.info("Completing load...");
-		
+		// fix for the 'mod recipes disappear' bug
+		BukkitModRecipeHelper.saveCraftingManagerRecipes();
 		//configMan = theServer.getConfigurationManager();
 		//theServer = (DedicatedServer) server;
 		HelpTopic myHelp = new CommandHelpTopic("bexec", "Run a command forcibly bukkit aliases", "", "");
@@ -762,7 +763,7 @@ public class BukkitServer implements Server {
 	@Override
 	public void reload() {
 			bukkitConfig = YamlConfiguration.loadConfiguration(new File("bukkit.yml"));
-	        PropertyManager config = new PropertyManager(new File("server.properties"));
+	        PropertyManager config = new PropertyManager(theServer.getFile("server.properties"));
 
 	        ((DedicatedServer) theServer).settings = config;
 
@@ -801,6 +802,7 @@ public class BukkitServer implements Server {
 
 	        pluginManager.clearPlugins();
 	        commandMap.clearCommands();
+	        // TODO - fix this so that we automatically re-register mod recipes.
 	        resetRecipes();
 
 	        int pollCount = 0;
@@ -1041,9 +1043,8 @@ public class BukkitServer implements Server {
 	}
 
 	@Override
-	@SuppressWarnings("all")
 	public void resetRecipes() {
-		CraftingManager.instance = new CraftingManager();
+		CraftingManager.instance = BukkitModRecipeHelper.getOriginalCraftingManager();
 
 	}
 
