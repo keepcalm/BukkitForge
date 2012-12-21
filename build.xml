@@ -134,8 +134,9 @@
 		        	                <chmod file="${mcp.dir}/reobfuscate.sh" perm="+x"/>
 		<chmod file="${mcp.dir}/runtime/bin/astyle-osx" perm="+x" />
 		                <chmod file="${mcp.dir}/runtime/bin/jad-osx" perm="+x" />
-		        <!-- Copy source -->
-		        <copy todir="${mcpsrc.dir}">
+				<!-- Copy source -->
+				<mkdir dir="${mcpsrc.dir}/keepcalm" />
+			<copy todir="${mcpsrc.dir}/keepcalm">
 				<fileset dir="${src.dir}/keepcalm"/>
 			</copy>
 			<copy todir="${mcpsrc.dir}/keepcalm/mods">
