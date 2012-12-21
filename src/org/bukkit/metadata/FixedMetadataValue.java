@@ -1,8 +1,8 @@
 package org.bukkit.metadata;
 
-import java.util.concurrent.Callable;
-
 import org.bukkit.plugin.Plugin;
+
+import java.util.concurrent.Callable;
 
 /**
  * A FixedMetadataValue is a special case metadata item that contains the same value forever after initialization.

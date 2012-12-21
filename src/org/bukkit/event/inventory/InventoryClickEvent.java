@@ -1,11 +1,11 @@
 package org.bukkit.event.inventory;
 
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryClickEvent extends InventoryEvent implements Cancellable {

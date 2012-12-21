@@ -1,7 +1,7 @@
 package org.bukkit.material;
 
-import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.Material;
 
 /**
  * Represents a lever
@@ -56,25 +56,25 @@ public class Lever extends SimpleAttachableMaterialData implements Redstone {
 
         switch (data) {
         case 0x1:
-            return BlockFace.NORTH;
+            return BlockFace.WEST;
 
         case 0x2:
-            return BlockFace.SOUTH;
-
-        case 0x3:
             return BlockFace.EAST;
 
+        case 0x3:
+            return BlockFace.NORTH;
+
         case 0x4:
-            return BlockFace.WEST;
+            return BlockFace.SOUTH;
 
         case 0x5:
         case 0x6:
             return BlockFace.DOWN;
-        
+
         case 0x0:
         case 0x7:
             return BlockFace.UP;
-            
+
         }
 
         return null;
@@ -86,52 +86,48 @@ public class Lever extends SimpleAttachableMaterialData implements Redstone {
     public void setFacingDirection(BlockFace face) {
         byte data = (byte) (getData() & 0x8);
         BlockFace attach = getAttachedFace();
-        
+
         if (attach == BlockFace.DOWN) {
             switch (face) {
-            case WEST:
-            case EAST:
+            case SOUTH:
+            case NORTH:
                 data |= 0x5;
                 break;
 
-            case SOUTH:
-            case NORTH:
+            case EAST:
+            case WEST:
                 data |= 0x6;
                 break;
             }
         } else if (attach == BlockFace.UP) {
             switch (face) {
-            case WEST:
-            case EAST:
+            case SOUTH:
+            case NORTH:
                 data |= 0x7;
                 break;
 
-            case SOUTH:
-            case NORTH:
+            case EAST:
+            case WEST:
                 data |= 0x0;
                 break;
-            default:
-            	break;
             }
         } else {
             switch (face) {
-            case SOUTH:
+            case EAST:
                 data |= 0x1;
                 break;
 
-            case NORTH:
+            case WEST:
                 data |= 0x2;
                 break;
 
-            case WEST:
+            case SOUTH:
                 data |= 0x3;
                 break;
 
-            case EAST:
+            case NORTH:
                 data |= 0x4;
                 break;
-            default:
-            	break;
             }
         }
         setData(data);

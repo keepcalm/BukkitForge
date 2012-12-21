@@ -1,7 +1,6 @@
 package org.bukkit.permissions;
 
 import java.util.Set;
-
 import org.bukkit.plugin.Plugin;
 
 /**

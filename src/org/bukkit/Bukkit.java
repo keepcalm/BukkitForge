@@ -8,9 +8,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.integrated.IntegratedServer;
-
 import org.bukkit.Warning.WarningState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -18,9 +15,9 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.help.HelpMap;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.PluginManager;
@@ -29,6 +26,7 @@ import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.avaje.ebean.config.ServerConfig;
+import org.bukkit.inventory.ItemFactory;
 
 /**
  * Represents the Bukkit core, for version and Server singleton handling
@@ -58,7 +56,7 @@ public final class Bukkit {
      * @param server Server instance
      */
     public static void setServer(Server server) {
-        if (Bukkit.server != null && !(MinecraftServer.getServer() instanceof IntegratedServer)) {
+        if (Bukkit.server != null) {
             throw new UnsupportedOperationException("Cannot redefine singleton Server");
         }
 
@@ -167,9 +165,6 @@ public final class Bukkit {
     }
 
     public static World getWorld(String name) {
-    	if (server ==null) {
-    		System.out.println("Server is null!");
-    	}
         return server.getWorld(name);
     }
 
@@ -389,7 +384,15 @@ public final class Bukkit {
         return server.getMotd();
     }
 
+    public static String getShutdownMessage() {
+        return server.getShutdownMessage();
+    }
+
     public static WarningState getWarningState() {
         return server.getWarningState();
+    }
+
+    public static ItemFactory getItemFactory() {
+        return server.getItemFactory();
     }
 }

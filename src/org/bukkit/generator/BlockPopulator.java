@@ -1,7 +1,6 @@
 package org.bukkit.generator;
 
 import java.util.Random;
-
 import org.bukkit.Chunk;
 import org.bukkit.World;
 

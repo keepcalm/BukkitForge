@@ -2,7 +2,6 @@ package org.bukkit.permissions;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.bukkit.plugin.Plugin;
 
 /**

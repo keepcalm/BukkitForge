@@ -3,6 +3,7 @@ package org.bukkit.enchantments;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.command.defaults.EnchantCommand;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -43,6 +44,11 @@ public abstract class Enchantment {
      * Increases the speed at which a player may mine underwater
      */
     public static final Enchantment WATER_WORKER = new EnchantmentWrapper(6);
+
+    /**
+     * Damages the attacker
+     */
+    public static final Enchantment THORNS = new EnchantmentWrapper(7);
 
     /**
      * Increases damage against all targets
@@ -234,6 +240,7 @@ public abstract class Enchantment {
      */
     public static void stopAcceptingRegistrations() {
         acceptingNew = false;
+        EnchantCommand.buildEnchantments();
     }
 
     /**

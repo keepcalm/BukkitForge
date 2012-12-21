@@ -3,9 +3,9 @@ package org.bukkit.block;
 import java.util.Collection;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.Metadatable;
 
@@ -136,6 +136,14 @@ public interface Block extends Metadatable {
      * @return Location of block
      */
     Location getLocation();
+
+    /**
+     * Stores the location of the block in the provided Location object.<br />
+     * If the provided Location is null this method does nothing and returns null.
+     *
+     * @return The Location object provided or null
+     */
+    Location getLocation(Location loc);
 
     /**
      * Gets the chunk which contains this block

@@ -1,16 +1,16 @@
 package org.bukkit.entity;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.bukkit.EntityEffect;
 import org.bukkit.Location;
+import org.bukkit.EntityEffect;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.metadata.Metadatable;
 import org.bukkit.util.Vector;
+
+import java.util.List;
+import java.util.UUID;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 /**
  * Represents a base entity in the world
@@ -23,6 +23,14 @@ public interface Entity extends Metadatable {
      * @return Location containing the position of this entity
      */
     public Location getLocation();
+
+    /**
+     * Stores the entity's current position in the provided Location object.<br />
+     * If the provided Location is null this method does nothing and returns null.
+     *
+     * @return The Location object provided or null
+     */
+    public Location getLocation(Location loc);
 
     /**
      * Sets this entity's velocity

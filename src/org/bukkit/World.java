@@ -1,6 +1,7 @@
 package org.bukkit;
 
 import java.io.File;
+import org.bukkit.generator.ChunkGenerator;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -9,17 +10,8 @@ import java.util.UUID;
 
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.CreatureType;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LightningStrike;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.Metadatable;
 import org.bukkit.plugin.messaging.PluginMessageRecipient;
@@ -567,6 +559,20 @@ public interface World extends PluginMessageRecipient, Metadatable {
      * @return false if explosion was canceled, otherwise true
      */
     public boolean createExplosion(double x, double y, double z, float power, boolean setFire);
+
+    /**
+     * Creates explosion at given coordinates with given power and optionally setting
+     * blocks on fire or breaking blocks.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param z Z coordinate
+     * @param power The power of explosion, where 4F is TNT
+     * @param setFire Whether or not to set blocks on fire
+     * @param breakBlocks Whether or not to have blocks be destroyed
+     * @return false if explosion was canceled, otherwise true
+     */
+    public boolean createExplosion(double x, double y, double z, float power, boolean setFire, boolean breakBlocks);
 
     /**
      * Creates explosion at given coordinates with given power

@@ -474,7 +474,6 @@ public final class SimplePluginManager implements PluginManager {
             }
 
             try {
-            	System.out.println("Sending event " + event.getEventName() + " to plugin " + registration.getPlugin().getName());
                 registration.callEvent(event);
             } catch (AuthorNagException ex) {
                 Plugin plugin = registration.getPlugin();
@@ -499,7 +498,7 @@ public final class SimplePluginManager implements PluginManager {
         if (!plugin.isEnabled()) {
             throw new IllegalPluginAccessException("Plugin attempted to register " + listener + " while not enabled");
         }
-        System.out.println("Plugin " + plugin.getDescription().getFullName() + " is registering event listener " + listener.getClass().getCanonicalName());
+
         for (Map.Entry<Class<? extends Event>, Set<RegisteredListener>> entry : plugin.getPluginLoader().createRegisteredListeners(listener, plugin).entrySet()) {
             getEventListeners(getRegistrationClass(entry.getKey())).registerAll(entry.getValue());
         }

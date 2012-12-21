@@ -1,16 +1,15 @@
 package org.bukkit.util;
 
-import static org.bukkit.util.NumberConversions.floor;
-import static org.bukkit.util.NumberConversions.round;
+import static org.bukkit.util.NumberConversions.*;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * This class performs ray tracing and iterates along blocks on a line
@@ -180,7 +179,7 @@ public class BlockIterator implements Iterator<Block> {
     }
 
     private BlockFace getXFace(Vector direction) {
-        return ((direction.getX() > 0) ? BlockFace.SOUTH : BlockFace.NORTH);
+        return ((direction.getX() > 0) ? BlockFace.EAST : BlockFace.WEST);
     }
 
     private BlockFace getYFace(Vector direction) {
@@ -188,7 +187,7 @@ public class BlockIterator implements Iterator<Block> {
     }
 
     private BlockFace getZFace(Vector direction) {
-        return ((direction.getZ() > 0) ? BlockFace.WEST : BlockFace.EAST);
+        return ((direction.getZ() > 0) ? BlockFace.SOUTH : BlockFace.NORTH);
     }
 
     private double getXLength(Vector direction) {
