@@ -6,6 +6,7 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
@@ -22,6 +23,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -36,6 +38,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 
 import org.bukkit.Bukkit;
@@ -48,6 +51,8 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import com.google.common.collect.Sets;
 
@@ -66,6 +71,7 @@ public class ForgeEventHandler {
 	public static boolean ready = false;
 	
 	public static DamageCause getDamageCause(DamageSource ds) {
+		
 		DamageCause dc;
 		if (ds == ds.anvil)
 			dc = DamageCause.CUSTOM;
@@ -268,8 +274,14 @@ public class ForgeEventHandler {
 	public void pickUp(EntityItemPickupEvent ev) {
 		if (!ready|| Side.CLIENT.isClient())
 			return;
-		if (BukkitEventFactory.callItemDespawnEvent(ev.item).isCancelled())
+		// assume all picked up at the same time
+		PlayerPickupItemEvent bev = new PlayerPickupItemEvent(new BukkitPlayer((EntityPlayerMP) ev.entityPlayer), new BukkitItem(BukkitServer.instance(), ev.item), 0);
+		bev.setCancelled(ev.entityLiving.captureDrops);
+		Bukkit.getPluginManager().callEvent(bev);
+		if (bev.isCancelled()) {
 			ev.setCanceled(true);
+			ev.setResult(Result.DENY);
+		}
 	}
 
 	@ForgeSubscribe
@@ -286,11 +298,14 @@ public class ForgeEventHandler {
 			return;
 		BukkitEventFactory.callPlayerInteractEvent((EntityPlayerMP) ev.entityPlayer, Action.valueOf(ev.action.toString()), ev.entityPlayer.inventory.getCurrentItem());
 	}
-	/*
+	
 	@ForgeSubscribe
-	public void goToSleep(PlayerSleepInBedEvent ev) {
-
-	}*/
+	public void playerGoToSleep(PlayerSleepInBedEvent ev) {
+		org.bukkit.event.player.PlayerBedEnterEvent bev = new PlayerBedEnterEvent(new BukkitPlayer((EntityPlayerMP) ev.entityPlayer), new BukkitBlock(new BukkitChunk(ev.entityPlayer.worldObj.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z));
+		
+		Bukkit.getPluginManager().callEvent(bev);
+		
+	}
 	@ForgeSubscribe
 	public void chunkLoadEvent(ChunkEvent.Load ev) {
 		if (!ready|| Side.CLIENT.isClient())
@@ -327,7 +342,7 @@ public class ForgeEventHandler {
 	}
 	
 	
-	// begin BukkitForge events
+	// begin BukkitForge-added events
 	
 	
 	@ForgeSubscribe

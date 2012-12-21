@@ -452,4 +452,13 @@ public abstract class BukkitEntity implements org.bukkit.entity.Entity {
 		}
 		return false;
 	}
+	
+	public Location getLocation(Location loc) {
+		if (loc == null) return null;
+		loc.setWorld(getWorld());
+		loc.setX(getHandle().posX);
+		loc.setY(getHandle().posY);
+		loc.setZ(getHandle().posZ);
+		return loc;
+	}
 }

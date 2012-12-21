@@ -211,4 +211,9 @@ public class BukkitBlockState implements BlockState {
     public void removeMetadata(String metadataKey, Plugin owningPlugin) {
         chunk.getBukkitWorld().getBlockMetadata().removeMetadata(getBlock(), metadataKey, owningPlugin);
     }
+
+	@Override
+	public Location getLocation(Location loc) {
+		return this.getBlock().getLocation();
+	}
 }

@@ -1,4 +1,4 @@
-package cpw.mods.fml.common;
+package org.bukkit;
 
 import java.util.Map;
 import java.util.regex.Pattern;

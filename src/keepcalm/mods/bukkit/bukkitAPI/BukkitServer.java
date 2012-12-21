@@ -90,6 +90,7 @@ import org.bukkit.help.HelpMap;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.map.MapView;
@@ -1339,6 +1340,17 @@ public class BukkitServer implements Server {
 	@Override
 	public int getAmbientSpawnLimit() {
 		return -1;
+	}
+
+	@Override
+	public String getShutdownMessage() {
+		return "The server is shutting down";
+	}
+
+	@Override
+	public ItemFactory getItemFactory() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.bukkitAPI.entity;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import net.minecraft.entity.passive.EntityWolf;
 
+import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Wolf;
 //import org.bukkit.craftbukkit.CraftServer;
@@ -29,4 +30,14 @@ public class BukkitWolf extends BukkitTameableAnimal implements Wolf {
     public EntityType getType() {
         return EntityType.WOLF;
     }
+
+	@Override
+	public DyeColor getCollarColor() {
+		return DyeColor.getByData((byte) getHandle().getCollarColor());
+	}
+
+	@Override
+	public void setCollarColor(DyeColor color) {
+		getHandle().setCollarColor(color.getData());
+	}
 }

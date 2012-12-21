@@ -26,4 +26,24 @@ public class BukkitZombie extends BukkitMonster implements Zombie {
     public EntityType getType() {
         return EntityType.ZOMBIE;
     }
+
+	@Override
+	public boolean isBaby() {
+		return getHandle().isChild();
+	}
+
+	@Override
+	public void setBaby(boolean flag) {
+		 getHandle().setChild(true);
+	}
+
+	@Override
+	public boolean isVillager() {
+		return getHandle().isVillager();
+	}
+
+	@Override
+	public void setVillager(boolean flag) {
+		getHandle().setIsVillager(true);
+	}
 }

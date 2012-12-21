@@ -62,6 +62,7 @@ import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.network.packet.Packet61DoorChange;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Explosion;
@@ -146,6 +147,7 @@ import org.bukkit.entity.Weather;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.SpawnChangeEvent;
@@ -1326,5 +1328,35 @@ public class BukkitWorld implements World {
 	@Override
 	public boolean isGameRule(String rule) {
 		return world.getGameRules().hasRule(rule);
+	}
+
+
+
+
+	@Override
+	public boolean createExplosion(double x, double y, double z, float power,
+			boolean setFire, boolean breakBlocks) {
+		Explosion exp = new Explosion(world, null, x, y, z, power);
+		exp.isFlaming = setFire;
+		ExplosionPrimeEvent ev = new ExplosionPrimeEvent(null, power, setFire);
+		Bukkit.getPluginManager().callEvent(ev);
+		if (ev.isCancelled()) {
+			return false;
+		}
+		if (breakBlocks) {
+			exp.doExplosionA();
+			exp.doExplosionB(true);
+		}
+		else {
+			exp.doExplosionB(true);
+			AxisAlignedBB affected = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(x, y, z, x + exp.explosionSize, y + exp.explosionSize, z + exp.explosionSize);
+			List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, affected);
+			// despawn - no blocks broken, no items dropped
+			for (EntityItem i : items) {
+				i.setDead();
+			}
+			
+		}
+		return true;
 	}
 }

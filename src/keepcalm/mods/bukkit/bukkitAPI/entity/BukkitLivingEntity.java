@@ -8,9 +8,12 @@ import java.util.List;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
+import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitEntityEquipment;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.item.EntityEnderPearl;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -38,6 +41,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.SmallFireball;
 import org.bukkit.entity.Snowball;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
@@ -309,5 +313,31 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 
 	public boolean hasLineOfSight(Entity other) {
 		return getHandle().getEntitySenses().canSee(((BukkitEntity) other).getHandle()); // am should be getEntitySenses
+	}
+
+	@Override
+	public boolean getRemoveWhenFarAway() {
+		return getHandle() instanceof EntityMob || getHandle() instanceof EntityBat;
+	}
+
+	@Override
+	public void setRemoveWhenFarAway(boolean remove) {
+		// unimplemented
+	}
+
+	@Override
+	public EntityEquipment getEquipment() {
+	
+		return new BukkitEntityEquipment(getHandle());
+	}
+
+	@Override
+	public void setCanPickupItems(boolean pickup) {
+		getHandle().captureDrops = pickup;
+	}
+
+	@Override
+	public boolean getCanPickupItems() {
+		return getHandle().captureDrops;//instanceof EntityPlayer;
 	}
 }

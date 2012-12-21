@@ -436,4 +436,16 @@ public class BukkitInventory implements Inventory {
 
     public void setMaxStackSize(int size) {
     }
+
+
+	@Override
+	public boolean containsAtLeast(ItemStack item, int amount) {
+		int totalFound = 0;
+		for (int i = 0; i < getSize(); i++) {
+			if (new BukkitItemStack(inventory.getStackInSlot(i)).isSimilar(item)) {
+				totalFound++;
+			}
+		}
+		return totalFound >= amount;
+	}
 }

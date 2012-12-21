@@ -475,4 +475,16 @@ public class BukkitBlock implements Block {
     public void removeMetadata(String metadataKey, Plugin owningPlugin) {
         chunk.getBukkitWorld().getBlockMetadata().removeMetadata(this, metadataKey, owningPlugin);
     }
+
+
+
+	@Override
+	public Location getLocation(Location loc) {
+		if (loc == null) return null;
+		loc.setX(x);
+		loc.setY(y);
+		loc.setZ(z);
+		loc.setWorld(getWorld());
+		return loc;
+	}
 }

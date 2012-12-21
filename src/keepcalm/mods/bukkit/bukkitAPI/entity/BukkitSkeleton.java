@@ -26,4 +26,14 @@ public class BukkitSkeleton extends BukkitMonster implements Skeleton {
     public EntityType getType() {
         return EntityType.SKELETON;
     }
+
+	@Override
+	public SkeletonType getSkeletonType() {
+		return SkeletonType.getType(getHandle().getSkeletonType());
+	}
+
+	@Override
+	public void setSkeletonType(SkeletonType type) {
+		getHandle().setSkeletonType(type.getId());
+	}
 }
