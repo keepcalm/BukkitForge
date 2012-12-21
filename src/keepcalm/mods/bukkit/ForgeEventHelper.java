@@ -17,9 +17,9 @@ public class ForgeEventHelper {
 		if (Side.CLIENT.isClient())
 			// not on client
 			return;
+		System.out.println("ItemUse!");
 		//System.out.println("Hello");
 		PlayerUseItemEvent ev = new PlayerUseItemEvent(stack, who, world, x, y, z, ForgeDirection.getOrientation(blockFace));
-		//System.out.println("POSTing event: " + ev);
 		MinecraftForge.EVENT_BUS.post(ev);
 	}
 	
@@ -46,7 +46,7 @@ public class ForgeEventHelper {
 	 */
 	public static boolean onDispenseItem(World world, int x, int y, int z, ItemStack itemToDispense) {
 		DispenseItemEvent ev = new DispenseItemEvent(x, y, z, world, itemToDispense);
-		
+		System.out.println("Dispense!");
 		MinecraftForge.EVENT_BUS.post(ev);
 		
 		if (ev.isCanceled()) {

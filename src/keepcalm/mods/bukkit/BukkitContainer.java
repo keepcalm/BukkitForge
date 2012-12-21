@@ -13,6 +13,7 @@ import keepcalm.mods.bukkit.forgeHandler.BlockBreakEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.BukkitCrashCallable;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
+import net.minecraft.item.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.gui.ServerGUI;
 import net.minecraftforge.common.Configuration;
@@ -150,6 +151,7 @@ public class BukkitContainer {
 
 	@Init
 	public void init(FMLInitializationEvent ev) {
+		ItemInWorldManager.class.desiredAssertionStatus();
 		FMLCommonHandler.instance().registerCrashCallable(new BukkitCrashCallable());
 		bukkitLogger.info("Complete! Registering handlers...");
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());

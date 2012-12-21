@@ -89,7 +89,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 			allowed = allowed || MinecraftServer.getServer().getServerOwner().equalsIgnoreCase(who.getCommandSenderName()) 
 					|| MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(who.getCommandSenderName().toLowerCase());
 		}
-		System.out.println(allowed ? "A" : "Not a" + "llowing user " + who.getCommandSenderName() + " to run command" + name);
+		System.out.println((allowed ? "A" : "Not a") + "llowing user " + who.getCommandSenderName() + " to run command" + name);
 		if (allowed) {
 			return true;
 		}
