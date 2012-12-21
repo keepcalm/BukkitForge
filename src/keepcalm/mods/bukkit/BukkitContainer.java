@@ -41,7 +41,7 @@ import cpw.mods.fml.relauncher.Side;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
-@Mod(modid="BukkitForge",name="BukkitForge",version="1.4.5-3")
+@Mod(modid="BukkitForge",name="BukkitForge",version="1.4.6-0")
 @NetworkMod(clientSideRequired=false,serverSideRequired=false)
 public class BukkitContainer {
 	public static BukkitServer bServer;
@@ -95,7 +95,7 @@ public class BukkitContainer {
 		bukkitLogger.setParent(FMLCommonHandler.instance().getFMLLogger());
 
 		meta.modId = "BukkitForge";
-		meta.name = "Bukkit For Vanilla";
+		meta.name = "BukkitForge";
 		meta.version = BukkitServer.version + ", implementing Bukkit version " + BukkitServer.apiVer;
 		meta.authorList = Arrays.asList(new String[]{"keepcalm"});
 		meta.description = "An implementation Bukkit API for vanilla Minecraft.";
