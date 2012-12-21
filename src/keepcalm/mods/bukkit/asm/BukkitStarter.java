@@ -7,6 +7,7 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandHelp;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandMVFix;
+import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandMods;
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandRequirementRegistry;
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandSetLevel;
 import net.minecraft.command.ServerCommandManager;
@@ -28,6 +29,7 @@ public class BukkitStarter implements Runnable {
 			ServerCommandManager scm = (ServerCommandManager) server.getCommandManager();
 			scm.registerCommand(new BukkitCommandHelp());
 			scm.registerCommand(new BukkitCommandMVFix());
+			scm.registerCommand(new BukkitCommandMods());
 			CommandRequirementRegistry.load();
 			scm.registerCommand(new CommandSetLevel());
 			BukkitContainer.bukkitLogger.info("Starting the API, implementing Bukkit API version " + BukkitServer.version);
