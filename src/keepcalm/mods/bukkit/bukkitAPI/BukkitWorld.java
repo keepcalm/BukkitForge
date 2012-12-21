@@ -1294,7 +1294,7 @@ public class BukkitWorld implements World {
         double x = loc.getX();
         double y = loc.getY();
         double z = loc.getZ();
-        getHandle().playSound(x, y, z, BukkitSound.getSound(sound), volume, pitch);
+        getHandle().playSound(x, y, z, BukkitSound.getSound(sound), volume, pitch, false);
     }
 
 	@Override

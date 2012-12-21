@@ -24,11 +24,11 @@ public class BukkitItem extends BukkitEntity implements Item {
     }
 
     public ItemStack getItemStack() {
-        return new BukkitItemStack(item.item);
+        return new BukkitItemStack(item.func_92014_d());
     }
 
     public void setItemStack(ItemStack stack) {
-        item.item = BukkitItemStack.createNMSItemStack(stack);
+        item.func_92013_a(BukkitItemStack.createNMSItemStack(stack));
     }
 
     public int getPickupDelay() {

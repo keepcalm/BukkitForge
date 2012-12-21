@@ -3,7 +3,6 @@ package keepcalm.mods.bukkit.bukkitAPI.entity;
 //import net.minecraft.src.EntityEnderSignal;
 //import org.bukkit.craftbukkit.CraftServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-
 import net.minecraft.entity.Entity;
 
 import org.bukkit.entity.EnderSignal;

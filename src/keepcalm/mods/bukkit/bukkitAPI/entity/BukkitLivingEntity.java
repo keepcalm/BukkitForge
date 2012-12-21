@@ -211,7 +211,7 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 
 	@Override
 	public String toString() {
-		return "CraftLivingEntity{" + "id=" + getEntityId() + '}';
+		return "BukkiyLivingEntity{" + "id=" + getEntityId() + '}';
 	}
 
 	public Player getKiller() {

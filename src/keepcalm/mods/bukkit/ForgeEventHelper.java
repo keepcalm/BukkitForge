@@ -1,12 +1,12 @@
 package keepcalm.mods.bukkit;
 
-import cpw.mods.fml.common.Side;
 import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.relauncher.Side;
 
 public class ForgeEventHelper {
 	public static void onItemUse(ItemStack stack, EntityPlayer who, World world, int x, int y, int z, int blockFace) {

@@ -16,8 +16,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-
 public class BukkitInventory implements Inventory {
 
 	protected IInventory inventory;

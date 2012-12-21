@@ -53,7 +53,7 @@ public class BukkitEnchantment extends Enchantment {
 
     @Override
     public boolean canEnchantItem(ItemStack item) {
-        return target.canEnchantItem(new net.minecraft.item.ItemStack(Item.itemsList[item.getTypeId()]));
+        return target.func_92037_a(new net.minecraft.item.ItemStack(Item.itemsList[item.getTypeId()]));
     }
 
     @Override

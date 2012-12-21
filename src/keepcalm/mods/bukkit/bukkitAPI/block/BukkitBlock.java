@@ -24,8 +24,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BlockVector;
-
-import cpw.mods.fml.common.Loader;
 //import org.bukkit.craftbukkit.BukkitChunk;
 
 public class BukkitBlock implements Block {

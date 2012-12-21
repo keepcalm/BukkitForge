@@ -10,7 +10,6 @@ Most of this mod is a fairly straight port from Craftbukkit, but I've had to mod
 
 This is ported to 1.4, and works fine on 1.4.5
 
-This is the code as at the release of 1.4.6
 
 =head1 GETTING IT WORKING IN MCP:
  

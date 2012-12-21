@@ -8,10 +8,8 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -34,13 +32,16 @@ public class BlockEventHelpers implements IClassTransformer {
 		obfNames = Maps.newHashMap();
 		
 		mcpNames.put("itemStackClassName", "net.minecraft.item.ItemStack");
-		obfNames.put("itemStackClassName", "um");
+		obfNames.put("itemStackClassName", "ur");
+		
+		mcpNames.put("itemInWorldManaerClassName", "net.minecraft.item.ItemInWorldManager");
+		mcpNames.put("itemInWorldManagerClassName", "ir");
 		
 		mcpNames.put("itemStackTryPlace", "tryPlaceItemIntoWorld");
 		obfNames.put("itemStackTryPlace", "a");
 		
 		mcpNames.put("worldClassName", "net.minecraft.world.World");
-		obfNames.put("worldClassName", "xv");
+		obfNames.put("worldClassName", "yc");
 		
 		mcpNames.put("entityPlayerClassName", "net.minecraft.entity.player.EntityPlayer");
 		obfNames.put("entityPlayerClassName", "qx");
@@ -49,10 +50,10 @@ public class BlockEventHelpers implements IClassTransformer {
 		obfNames.put("entityPlayerJavaName", "qx");
 		
 		mcpNames.put("worldJavaName", "net/minecraft/world/World");
-		obfNames.put("worldJavaName", "xv");
+		obfNames.put("worldJavaName", "yc");
 		
 		mcpNames.put("itemStackJavaName", "net/minecraft/item/ItemStack");
-		obfNames.put("itemStackJavaName", "um");
+		obfNames.put("itemStackJavaName", "ur");
 		
 	}
 	

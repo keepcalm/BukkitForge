@@ -1,9 +1,5 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import com.google.common.collect.Sets;
-
-import cpw.mods.fml.common.Side;
-
 import java.util.HashMap;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
@@ -14,7 +10,6 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
 import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,8 +21,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeCache;
-import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.ServerChatEvent;
@@ -55,6 +48,10 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import com.google.common.collect.Sets;
+
+import cpw.mods.fml.relauncher.Side;
 /**
  * 
  * @author keepcalm

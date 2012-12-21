@@ -1,17 +1,11 @@
 package keepcalm.mods.bukkit.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
-import keepcalm.mods.bukkit.forgeHandler.VanishUtils;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Label;

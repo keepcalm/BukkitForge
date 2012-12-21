@@ -1,13 +1,12 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
+
+import com.google.common.collect.Lists;
 
 public class VanishUtils {
 

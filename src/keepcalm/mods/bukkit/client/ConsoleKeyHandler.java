@@ -3,14 +3,9 @@ package keepcalm.mods.bukkit.client;
 import java.util.EnumSet;
 
 import keepcalm.mods.bukkit.BukkitContainer;
-
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.settings.EnumOptions;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
 

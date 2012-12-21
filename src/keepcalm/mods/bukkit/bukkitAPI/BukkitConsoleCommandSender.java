@@ -2,10 +2,7 @@ package keepcalm.mods.bukkit.bukkitAPI;
 
 import java.util.Set;
 
-import keepcalm.mods.bukkit.BukkitContainer;
-
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
