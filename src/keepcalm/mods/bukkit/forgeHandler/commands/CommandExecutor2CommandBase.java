@@ -10,8 +10,11 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.rcon.RConConsoleSource;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.integrated.IntegratedServer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 /**
@@ -31,7 +34,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	 * Initialises a new instance of a forge-friendly bukkit command handler.
 	 * 
 	 * 
-	 * @param theBukkitExecer - the command that this instance will handle
+	 * @param cmd - the command that this instance will handle
 	 * @param name - the name of the command
 	 */
 	public CommandExecutor2CommandBase(Command cmd, String name) {
@@ -47,7 +50,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	
 	public List<String> addTabCompletionOptions(ICommandSender who, String[] args) {
 		
-		if (who instanceof MinecraftServer) {
+		if (who instanceof MinecraftServer || who instanceof RConConsoleSource) {
 			return bukkitCommandInstance.tabComplete(BukkitConsoleCommandSender.getInstance() ,name , args);
 		}
 		else {
@@ -78,12 +81,16 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		else {
 			sender = BukkitConsoleCommandSender.getInstance();
 		}
-		if ((bukkitCommandInstance.testPermissionSilent(sender)) 
-				|| sender.hasPermission(bukkitCommandInstance.getPermission()) || sender.isOp() 
-				|| bukkitCommandInstance.getPermission() == null 
-				|| bukkitCommandInstance.getPermission().isEmpty() 
-				|| (MinecraftServer.getServer().getServerOwner().equalsIgnoreCase(who.getCommandSenderName())) 
-				|| MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(who.getCommandSenderName())) {
+		boolean allowed = bukkitCommandInstance.testPermissionSilent(sender) 
+				|| sender.hasPermission(bukkitCommandInstance.getPermission())
+				|| bukkitCommandInstance.getPermission().isEmpty();
+		
+		if (MinecraftServer.getServer() instanceof IntegratedServer) {
+			allowed = allowed || MinecraftServer.getServer().getServerOwner().equalsIgnoreCase(who.getCommandSenderName()) 
+					|| MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(who.getCommandSenderName().toLowerCase());
+		}
+		System.out.println(allowed ? "A" : "Not a" + "llowing user " + who.getCommandSenderName() + " to run command" + name);
+		if (allowed) {
 			return true;
 		}
 		//System.out.println("NO! For " + name);

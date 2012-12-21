@@ -8,7 +8,10 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -26,6 +29,8 @@ public class BlockEventHelpers implements IClassTransformer {
 	
 	private String itemStackTryPlaceDesc = "(L%s;L%s;IIIIFFF)Z";
 	
+	private static final String itemInWorldUpdateDamageDesc = "()V";
+	
 	public BlockEventHelpers() {
 		
 		mcpNames = Maps.newHashMap();
@@ -33,9 +38,6 @@ public class BlockEventHelpers implements IClassTransformer {
 		
 		mcpNames.put("itemStackClassName", "net.minecraft.item.ItemStack");
 		obfNames.put("itemStackClassName", "ur");
-		
-		mcpNames.put("itemInWorldManaerClassName", "net.minecraft.item.ItemInWorldManager");
-		mcpNames.put("itemInWorldManagerClassName", "ir");
 		
 		mcpNames.put("itemStackTryPlace", "tryPlaceItemIntoWorld");
 		obfNames.put("itemStackTryPlace", "a");
@@ -55,6 +57,31 @@ public class BlockEventHelpers implements IClassTransformer {
 		mcpNames.put("itemStackJavaName", "net/minecraft/item/ItemStack");
 		obfNames.put("itemStackJavaName", "ur");
 		
+		// item in world manager stuff
+		mcpNames.put("itemInWorldManagerClassName", "net.minecraft.item.ItemInWorldManager");
+		obfNames.put("itemInWorldManagerClassName", "ir");
+		
+		mcpNames.put("itemInWorldManagerJavaName", "net/minecraft/item/ItemInWorldManager");
+		mcpNames.put("itemInWorldManagerJavaName", "ir");
+		
+		mcpNames.put("IIWMTargFunc", "updateBlockRemoving");
+		obfNames.put("IIWMTargFunc", "a");
+		
+		// blockDispenser stuff
+		
+		mcpNames.put("blockDispenserClassName", "net.minecraft.block.BlockDispenser");
+		obfNames.put("blockDispenserClassName", "ajw");
+		
+		mcpNames.put("blockDispenserJavaName", "net/minecraft/block/BlockDispenser");
+		obfNames.put("blockDispenserJavaName", "ajw");
+		
+		mcpNames.put("dispenserDispenseFuncName", "dispense");
+		obfNames.put("dispenserDispenseFuncName", "n");
+		
+		mcpNames.put("dispenserDispenseDesc", "(Lnet/minecraft/world/World;III)V");
+		obfNames.put("dispenserDispenseDesc", "(Lyc;III)V");
+		
+		
 	}
 	
 	@Override
@@ -67,12 +94,70 @@ public class BlockEventHelpers implements IClassTransformer {
 			itemStackTryPlaceDesc = String.format(itemStackTryPlaceDesc, new Object[] { obfNames.get("entityPlayerClassName"), obfNames.get("worldClassName") });
 			return transformItemStack(bytes, obfNames);
 		}
-		
+		else if (name.equalsIgnoreCase(mcpNames.get("itemInWorldManagerClassName"))) {
+			return transformItemInWorldManager(bytes, mcpNames);
+		}
+		else if (name.equalsIgnoreCase(obfNames.get("itemInWorldManagerClassName"))) {
+			return transformItemInWorldManager(bytes, obfNames);
+		}
+		else if (name.equalsIgnoreCase(mcpNames.get("blockDispenserClassName"))) {
+			return transformDispenser(bytes, mcpNames);
+		}
+		else if (name.equalsIgnoreCase(obfNames.get("blockDispenserClassName"))) {
+			return transformDispenser(bytes, obfNames);
+		}
 		
 		
 		return bytes;
 	}
 	
+	private byte[] transformDispenser(byte[] bytes, HashMap<String, String> names) {
+		ClassNode cn = new ClassNode();
+		ClassReader cr = new ClassReader(bytes);
+		cr.accept(cn, 0);
+		
+		
+		Iterator<MethodNode> methods = cn.methods.iterator();
+		while (methods.hasNext()) {
+			MethodNode m = methods.next();
+			if (m.name.equals(names.get("dispenserDispenseFuncName")) && m.desc.equals(names.get("dispenserDispenseDesc"))) {
+				System.out.println("Found target method: " + m.name + m.desc + "! Looking for landmark...");
+				
+				Iterator<AbstractInsnNode> insns = m.instructions.iterator();
+				
+				while (insns.hasNext()) {
+					AbstractInsnNode i = insns.next();
+					
+					if (i.getOpcode() == Opcodes.GETSTATIC) {
+						FieldInsnNode f = (FieldInsnNode) i;
+						if (f.owner.equals(names.get("blockDispenserJavaName"))) {
+							System.out.println("Found landmark! Inserting code...");
+							InsnList toAdd = new InsnList();
+							// we want 1, 2, 3, 4, 8 - world, x, y, z, ItemStack
+							toAdd.add(new VarInsnNode(Opcodes.ALOAD, 1));
+							toAdd.add(new VarInsnNode(Opcodes.ILOAD, 2));
+							toAdd.add(new VarInsnNode(Opcodes.ILOAD, 3));
+							toAdd.add(new VarInsnNode(Opcodes.ILOAD, 4));
+							toAdd.add(new VarInsnNode(Opcodes.ALOAD, 8));
+							toAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper", "onDispenseItem", 
+									"(L" + names.get("worldJavaName") + ";IIIL" + names.get("itemStackJavaName") + ";)Z"));
+							
+							LabelNode label = new LabelNode(new Label());
+							toAdd.add(new JumpInsnNode(Opcodes.IFEQ, label)); // if the return value of ^ is true
+							// then return - it was cancelled - and so will not be run
+							toAdd.add(new InsnNode(Opcodes.RETURN));
+							toAdd.add(label); // otherwise, continue on
+						}
+					}
+				}
+			}
+		}
+		
+		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+		cn.accept(cw);
+		return cw.toByteArray();
+	}
+
 	private byte[] transformItemStack(byte[] bytes, HashMap<String,String> names) {
 		ClassNode cn = new ClassNode();
 		ClassReader cr = new ClassReader(bytes);
@@ -121,7 +206,7 @@ public class BlockEventHelpers implements IClassTransformer {
 						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper", "onItemUse", String.format("(L%s;L%s;L%s;IIII)V", new Object[] {names.get("itemStackJavaName"), names.get("entityPlayerJavaName"), names.get("worldJavaName")})));
 						toInject.add(lmmnode);
 						m.instructions.insertBefore(m.instructions.get(index), toInject);
-						System.out.println("Used desc: " + String.format("(L%s;L%s;L%s;IIII)V", new Object[] {names.get("itemStackJavaName"), names.get("entityPlayerJavaName"), names.get("worldJavaName")}));
+						//System.out.println("Used desc: " + String.format("(L%s;L%s;L%s;IIII)V", new Object[] {names.get("itemStackJavaName"), names.get("entityPlayerJavaName"), names.get("worldJavaName")}));
 						System.out.println("Finished patching ItemStack! - Inserted before " + index + ", toInject: " + toInject);
 						break;
 					}
@@ -136,6 +221,57 @@ public class BlockEventHelpers implements IClassTransformer {
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         cn.accept(writer);
         return writer.toByteArray();
+	}
+	
+	private byte[] transformItemInWorldManager(byte[] bytes, HashMap<String,String> names) {
+		ClassNode cn = new ClassNode();
+		ClassReader cr = new ClassReader(bytes);
+		cr.accept(cn, 0);
+		
+		String targ = names.get("IIWMTargFunc");
+		
+		Iterator<MethodNode> methods = cn.methods.iterator();
+		
+		while (methods.hasNext()) {
+			MethodNode m = methods.next();
+			
+			if (m.name.equals(targ) && m.desc.equals(itemInWorldUpdateDamageDesc)) {
+				System.out.println("Found target for ItemInWorldManager transformation: " + m.name + m.desc + "! Searching for landmarks...");
+				
+				
+				for (int index = 0; index < m.instructions.size(); index++) {
+					AbstractInsnNode i = m.instructions.get(index);
+					
+					if (i.getOpcode() == Opcodes.IF_ICMPEQ) {
+						System.out.println("Found landmark: IF_ICMPEQ, searching for next landmark...");
+						int ifloc = index;
+						while (m.instructions.get(index).getOpcode() != Opcodes.PUTFIELD) ;
+						System.out.println("Found PUTFIELD at offset " + index + " to IF_ICMPEQ. Inserting function call after this...");
+						
+						int loc = ifloc + index;
+						// after, not at the same location
+						loc += 1;
+						
+						InsnList toInject = new InsnList();
+						
+						// load 'this'
+						toInject.add(new VarInsnNode(Opcodes.ALOAD, 0));
+						// call the helper method
+						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper", "onBlockDamage", "(L" + names.get("itemInWorldManagerJavaName") + ";)V"));
+						
+						m.instructions.insertBefore(m.instructions.get(loc), toInject);
+					}
+					
+				}
+				
+				
+			}
+		}
+		
+		
+		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+		cn.accept(cw);
+		return cw.toByteArray();
 	}
 
 }
