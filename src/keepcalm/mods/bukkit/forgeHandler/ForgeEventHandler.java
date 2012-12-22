@@ -1,12 +1,11 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.dispenser.*;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
@@ -16,12 +15,14 @@ import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
 import keepcalm.mods.bukkit.events.DispenseItemEvent;
 import keepcalm.mods.bukkit.events.PlayerDamageBlockEvent;
 import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
+import net.minecraft.dispenser.IRegistry;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -47,9 +48,13 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.TreeType;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockCanBuildEvent;
@@ -62,6 +67,7 @@ import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.util.Vector;
 
 import com.google.common.collect.Sets;
@@ -349,6 +355,18 @@ public class ForgeEventHandler {
 		ev1 = BukkitEventFactory.callEvent(ev1);
 		ev.line = ev.line.replace(ev.message, ev1.getMessage());
 		String newLine = String.format(ev1.getFormat(),new Object[] {newName, ev1.getMessage()});
+	}
+	
+	@ForgeSubscribe
+	public void saplingGrow(SaplingGrowTreeEvent ev) {
+		int blockID = ev.world.getBlockId(ev.x, ev.y, ev.z);
+		int blockMeta = ev.world.getBlockMetadata(ev.x, ev.y, ev.z);
+		
+		if (Block.blocksList[blockID] == Block.sapling) {
+			TreeType type = TreeType.TREE;
+			
+			StructureGrowEvent bev = new StructureGrowEvent(new Location(BukkitServer.instance().getWorld(ev.world.getWorldInfo().getDimension()),ev.x,ev.y,ev.z), type, false, null, new ArrayList<BlockState>());
+		}
 	}
 	
 	

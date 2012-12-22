@@ -25,89 +25,28 @@ import cpw.mods.fml.relauncher.IClassTransformer;
 
 public class BlockEventHelpers implements IClassTransformer {
 
-	private HashMap<String,String> obfNames;
-	private HashMap<String,String> mcpNames;
+	private HashMap<String,String> names;
 
 	private String itemStackTryPlaceDesc = "(L%s;L%s;IIIIFFF)Z";
 
 	private static final String itemInWorldUpdateDamageDesc = "()V";
 
 	public BlockEventHelpers() {
-
-		mcpNames = Maps.newHashMap();
-		obfNames = Maps.newHashMap();
-
-		mcpNames.put("itemStackClassName", "net.minecraft.item.ItemStack");
-		obfNames.put("itemStackClassName", "ur");
-
-		mcpNames.put("itemStackTryPlace", "tryPlaceItemIntoWorld");
-		obfNames.put("itemStackTryPlace", "a");
-
-		mcpNames.put("worldClassName", "net.minecraft.world.World");
-		obfNames.put("worldClassName", "yc");
-
-		mcpNames.put("entityPlayerClassName", "net.minecraft.entity.player.EntityPlayer");
-		obfNames.put("entityPlayerClassName", "qx");
-
-		mcpNames.put("entityPlayerJavaName",  "net/minecraft/entity/player/EntityPlayer");
-		obfNames.put("entityPlayerJavaName",  "qx");
-
-		mcpNames.put("worldJavaName", "net/minecraft/world/World");
-		obfNames.put("worldJavaName", "yc");
-
-		mcpNames.put("itemStackJavaName", "net/minecraft/item/ItemStack");
-		obfNames.put("itemStackJavaName", "ur");
-
-		// item in world manager stuff
-		mcpNames.put("itemInWorldManagerClassName", "net.minecraft.item.ItemInWorldManager");
-		obfNames.put("itemInWorldManagerClassName", "ir");
-
-		mcpNames.put("itemInWorldManagerJavaName", "net/minecraft/item/ItemInWorldManager");
-		obfNames.put("itemInWorldManagerJavaName", "ir");
-
-		mcpNames.put("IIWMTargFunc", "updateBlockRemoving");
-		obfNames.put("IIWMTargFunc", "a");
-
-		// blockDispenser stuff
-
-		mcpNames.put("blockDispenserClassName", "net.minecraft.block.BlockDispenser");
-		obfNames.put("blockDispenserClassName", "ajw");
-
-		mcpNames.put("blockDispenserJavaName", "net/minecraft/block/BlockDispenser");
-		obfNames.put("blockDispenserJavaName", "ajw");
-
-		mcpNames.put("dispenserDispenseFuncName", "dispense");
-		obfNames.put("dispenserDispenseFuncName", "n");
-
-		mcpNames.put("dispenserDispenseDesc", "(Lnet/minecraft/world/World;III)V");
-		obfNames.put("dispenserDispenseDesc", "(Lyc;III)V");
-
+		names = ObfuscationHelper.getRelevantMappings();
 
 	}
 
 	@Override
 	public byte[] transform(String name, byte[] bytes) {
-		if (name.equalsIgnoreCase(mcpNames.get("itemStackClassName"))) {
-			itemStackTryPlaceDesc = String.format(itemStackTryPlaceDesc, new Object[] { mcpNames.get("entityPlayerClassName").replace('.', '/'), mcpNames.get("worldClassName").replace('.', '/') });
-			return transformItemStack(bytes, mcpNames);
+		if (name.equalsIgnoreCase(names.get("itemStackClassName"))) {
+			itemStackTryPlaceDesc = String.format(itemStackTryPlaceDesc, new Object[] { names.get("entityPlayerClassName").replace('.', '/'), names.get("worldClassName").replace('.', '/') });
+			return transformItemStack(bytes, names);
 		}
-		else if (name.equalsIgnoreCase(obfNames.get("itemStackClassName"))) {
-			itemStackTryPlaceDesc = String.format(itemStackTryPlaceDesc, new Object[] { obfNames.get("entityPlayerClassName"), obfNames.get("worldClassName") });
-			return transformItemStack(bytes, obfNames);
+		else if (name.equalsIgnoreCase(names.get("itemInWorldManagerClassName"))) {
+			return transformItemInWorldManager(bytes, names);
 		}
-		else if (name.equalsIgnoreCase(mcpNames.get("itemInWorldManagerClassName"))) {
-			return transformItemInWorldManager(bytes, mcpNames);
-		}
-		else if (name.equalsIgnoreCase(obfNames.get("itemInWorldManagerClassName"))) {
-			System.out.println("Name " + name + " matches " + obfNames.get("itemInWorldManagerClassName"));
-			//throw new ClassNotFoundException("Does this do anything?");
-			return transformItemInWorldManager(bytes, obfNames);
-		}
-		else if (name.equalsIgnoreCase(mcpNames.get("blockDispenserClassName"))) {
-			return transformDispenser(bytes, mcpNames);
-		}
-		else if (name.equalsIgnoreCase(obfNames.get("blockDispenserClassName"))) {
-			return transformDispenser(bytes, obfNames);
+		else if (name.equalsIgnoreCase(names.get("blockDispenserClassName"))) {
+			return transformDispenser(bytes, names);
 		}
 
 

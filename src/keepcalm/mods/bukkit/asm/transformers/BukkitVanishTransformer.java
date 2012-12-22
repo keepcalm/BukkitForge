@@ -8,6 +8,7 @@ import java.util.Iterator;
 import net.minecraft.entity.Entity;
 
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -146,8 +147,9 @@ public class BukkitVanishTransformer implements IClassTransformer {
 			}
 			
 		}
-		
-		return clazz;
+		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+		cn.accept(cw);
+		return cw.toByteArray();
 	}
 
 }
