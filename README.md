@@ -15,7 +15,7 @@ Jenkins? Jenkins? JENKINS!
 ==========================
 
 That's right, now we have an automated jenkins build-thingy.
-You may find it [here][http://build.aegisgaming.org/job/BukkitForge]
+You may find it [here](http://build.aegisgaming.org/job/BukkitForge/)
 
 [![Build status](http://build.aegisgaming.org/job/BukkitForge/badge/icon)](http://build.aegisgaming.org/job/BukkitForge)
 
