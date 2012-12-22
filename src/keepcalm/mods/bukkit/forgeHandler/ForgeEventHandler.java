@@ -14,6 +14,7 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
 import keepcalm.mods.bukkit.events.DispenseItemEvent;
+import keepcalm.mods.bukkit.events.PlayerDamageBlockEvent;
 import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.EntityLiving;
@@ -390,6 +391,16 @@ public class ForgeEventHandler {
 		else {
 			ev.setCanceled(false);
 		}
+	}
+	
+	@ForgeSubscribe
+	public void playerDamageBlock(PlayerDamageBlockEvent ev) {
+		BlockDamageEvent bev = new BlockDamageEvent(new BukkitPlayer((EntityPlayerMP) ev.entityPlayer), 
+				new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.blockX, ev.blockZ)), ev.blockX, ev.blockY, ev.blockZ),
+				new BukkitItemStack(ev.entityPlayer.inventory.getCurrentItem()), 
+				((EntityPlayerMP) ev.entityPlayer).capabilities.isCreativeMode);
+		Bukkit.getPluginManager().callEvent(bev);
+		// cancellation is misbehaving, TODO
 	}
 
 }
