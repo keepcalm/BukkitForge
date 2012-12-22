@@ -2,6 +2,9 @@ package keepcalm.mods.bukkit.forgeHandler;
 
 import java.util.HashMap;
 
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.dispenser.*;
+
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
@@ -10,12 +13,16 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
+import keepcalm.mods.bukkit.events.DispenseItemEvent;
 import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
+import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
@@ -46,6 +53,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -53,6 +61,7 @@ import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.util.Vector;
 
 import com.google.common.collect.Sets;
 
@@ -360,6 +369,26 @@ public class ForgeEventHandler {
 				// and since we were called from AFTER the actual placement, we can just break the block.
 				bblock.breakNaturally();
 			}
+		}
+	}
+	
+	@ForgeSubscribe
+	public void dispenseItem(DispenseItemEvent ev) {
+		ItemStack item = ev.stackToDispense.copy();
+		item.stackSize = 1;
+		
+		IRegistry dispenserRegistry = BlockDispenser.dispenseBehaviorRegistry;
+		IBehaviorDispenseItem theBehaviour = (IBehaviorDispenseItem) dispenserRegistry.func_82594_a(item.getItem());
+		BlockDispenseEvent bev = new BlockDispenseEvent(
+				new BukkitBlock(
+						new BukkitChunk(ev.blockWorld.getChunkFromBlockCoords(ev.blockX, ev.blockZ)),
+						ev.blockX, ev.blockY, ev.blockZ), new BukkitItemStack(item), new Vector());
+		Bukkit.getPluginManager().callEvent(bev);
+		if (bev.isCancelled()) {
+			ev.setCanceled(true);
+		}
+		else {
+			ev.setCanceled(false);
 		}
 	}
 

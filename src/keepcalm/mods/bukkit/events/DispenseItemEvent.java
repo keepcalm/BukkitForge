@@ -8,17 +8,17 @@ import net.minecraftforge.event.Event;
 @Cancelable
 public class DispenseItemEvent extends Event {
 
-	private final int blockX;
-	private final int blockZ;
-	private final int blockY;
+	public final int blockX;
+	public final int blockZ;
+	public final int blockY;
 	
-	private final World blockWorld;
+	public final World blockWorld;
 	
 	/**
 	 * The stack that the item will be taken from. After dispensing, the stack will have one
 	 * less than the current number of items in it.
 	 */
-	private final ItemStack stackToDispense;
+	public final ItemStack stackToDispense;
 	
 	public DispenseItemEvent(int x, int y, int z, World world, ItemStack stack) {
 		blockX = x;

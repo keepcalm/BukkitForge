@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import cpw.mods.fml.common.IPlayerTracker;
@@ -27,7 +28,8 @@ public class PlayerTracker implements IPlayerTracker {
 
 	@Override
 	public void onPlayerLogout(EntityPlayer player) {
-		
+		PlayerQuitEvent ev = new PlayerQuitEvent(new BukkitPlayer((EntityPlayerMP) player), player.username + " left the game");
+		Bukkit.getPluginManager().callEvent(ev);
 	}
 
 	@Override
