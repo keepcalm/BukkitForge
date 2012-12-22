@@ -48,9 +48,17 @@
 	 <target name="install" depends="check-blockbreak,build">
 		 <delete dir="${classes.dir}/keepcalm/mods/blockbreak" />
 		 <copy todir="${classes.dir}">
-			 <fileset file="${package.configs}" />
 		        	  <fileset file="${package.at}" />
-		        </copy>
+			  </copy>
+			  <mkdir dir="${classes.dir}/configurations" />
+			  <copy todir="${classes.dir}/configurations" >
+				  <fileset dir="${package.configs}" >
+					  <patternset>
+						  <include name="*.yml" />
+					  </patternset>
+				  </fileset>
+			  </copy>
+
 			<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="META-INF/MANIFEST.MF"/>
 	</target>
 	
@@ -95,7 +103,7 @@
 	</target>
 	<target name="setup-forge" depends="download-forge,build-number-there,build-number-not-there" unless="already-compiled">
                  
-    		<property name="build.full" value="${build.ver}_${build.number}" />
+    		<property name="build.full" value="${build.number}" />
 		        <unzip dest="${build.dir}">
 		            <fileset dir="${download.dir}">
 		                <include name="minecraftforge-src-${forge.version}.zip"/>

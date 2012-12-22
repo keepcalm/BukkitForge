@@ -49,8 +49,8 @@ public class BlockEventHelpers implements IClassTransformer {
 		mcpNames.put("entityPlayerClassName", "net.minecraft.entity.player.EntityPlayer");
 		obfNames.put("entityPlayerClassName", "qx");
 
-		mcpNames.put("entityPlayerJavaName", "net/minecraft/entity/player/EntityPlayer");
-		obfNames.put("entityPlayerJavaName", "qx");
+		mcpNames.put("entityPlayerJavaName",  "net/minecraft/entity/player/EntityPlayer");
+		obfNames.put("entityPlayerJavaName",  "qx");
 
 		mcpNames.put("worldJavaName", "net/minecraft/world/World");
 		obfNames.put("worldJavaName", "yc");
