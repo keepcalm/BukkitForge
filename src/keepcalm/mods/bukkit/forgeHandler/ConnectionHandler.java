@@ -1,26 +1,30 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import java.net.InetAddress;
 import java.util.HashMap;
+
+import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.NetLoginHandler;
+import net.minecraft.network.NetServerHandler;
+import net.minecraft.network.TcpConnection;
+import net.minecraft.network.packet.NetHandler;
+import net.minecraft.network.packet.Packet1Login;
+import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
+import org.bukkit.event.player.PlayerLoginEvent;
 
-import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.NetLoginHandler;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.packet.Packet1Login;
-import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
 
 public class ConnectionHandler implements IConnectionHandler {
 	public static HashMap<String,NetHandler> serverHandlers = new HashMap();
 	public static INetworkManager netman;
-	
+
 	@Override
 	public void clientLoggedIn(NetHandler clientHandler,
 			INetworkManager manager, Packet1Login login) {
@@ -29,7 +33,7 @@ public class ConnectionHandler implements IConnectionHandler {
 
 	@Override
 	public void connectionClosed(INetworkManager manager) {
-		
+
 	}
 
 	@Override
@@ -52,15 +56,15 @@ public class ConnectionHandler implements IConnectionHandler {
 		if (MinecraftServer.getServer().getConfigurationManager().isWhiteListEnabled())
 			whitelisted = MinecraftServer.getServer().getConfigurationManager().getWhiteListedPlayers().contains(netHandler.clientUsername.toLowerCase());
 		boolean shouldKick = MinecraftServer.getServer().getConfigurationManager().isAllowedToLogin(netHandler.clientUsername);
-		
+
 		boolean full = MinecraftServer.getServer().getMaxPlayers() <= MinecraftServer.getServer().getCurrentPlayerCount();
 		Result wanted = full ? Result.KICK_FULL : banned ? Result.KICK_BANNED : !whitelisted ? Result.KICK_WHITELIST : shouldKick ? Result.KICK_OTHER : Result.ALLOWED;
-		
+
 		AsyncPlayerPreLoginEvent ev = new AsyncPlayerPreLoginEvent(netHandler.clientUsername, netHandler.myTCPConnection.getSocket().getInetAddress());
 		ev.setLoginResult(wanted);
 		ev.setKickMessage("");
 		Bukkit.getPluginManager().callEvent(ev);
-		
+
 		if (ev.getLoginResult() != wanted) {
 			// something different to what we originally had
 			if (wanted == Result.ALLOWED) {
@@ -73,7 +77,7 @@ public class ConnectionHandler implements IConnectionHandler {
 				return null;
 			}
 		}
-		
+
 		if (ev.getLoginResult() == wanted) {
 			if (ev.getLoginResult() == Result.ALLOWED) {
 				return null;
@@ -89,7 +93,7 @@ public class ConnectionHandler implements IConnectionHandler {
 				}
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -98,9 +102,11 @@ public class ConnectionHandler implements IConnectionHandler {
 			INetworkManager manager) {
 		EntityPlayerMP guy = (EntityPlayerMP) player;
 		//this.serverHandlers.put(guy.username, netHandler);
-		this.netman = manager;
-		BukkitServer.setPlayerFauxSleeping(guy.username, false);
-
+		EntityPlayerMP dude = (EntityPlayerMP) player;
+		TcpConnection j = (TcpConnection) dude.playerNetServerHandler.netManager;
+		
+		PlayerLoginEvent x = new PlayerLoginEvent(new BukkitPlayer(dude), BukkitServer.instance().getServerName(), j.getSocket().getInetAddress());
+		Bukkit.getPluginManager().callEvent(x);
 	}
 
 }

@@ -300,7 +300,7 @@ public class BukkitServer implements Server {
 	@Override
 	public String getVersion() {
 		// towny fix?
-		return "git-Bukkit-1.4.5-R1.0-b3000jnks";
+		return "git-BukkitForge-1.4.5-R1.0-b3000jnks (Really: BukkitForge for MC " + version + ")";
 	}
 
 	@Override

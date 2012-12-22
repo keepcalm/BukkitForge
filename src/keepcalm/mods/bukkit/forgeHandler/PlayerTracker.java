@@ -10,6 +10,7 @@ import net.minecraft.util.ChunkCoordinates;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -20,11 +21,8 @@ public class PlayerTracker implements IPlayerTracker {
 
 	@Override
 	public void onPlayerLogin(EntityPlayer player) {
-		EntityPlayerMP dude = (EntityPlayerMP) player;
-		TcpConnection j = (TcpConnection) dude.playerNetServerHandler.netManager;
-		
-		PlayerLoginEvent x = new PlayerLoginEvent(new BukkitPlayer(dude), BukkitServer.instance().getServerName(), j.getSocket().getInetAddress(), Result.ALLOWED, "Some Bukkit plugin kicked you!!");
-		Bukkit.getPluginManager().callEvent(x);
+		PlayerJoinEvent ev = new PlayerJoinEvent(new BukkitPlayer((EntityPlayerMP) player), player.username + " joined the game");
+		Bukkit.getPluginManager().callEvent(ev);
 	}
 
 	@Override
