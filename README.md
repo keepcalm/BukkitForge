@@ -1,6 +1,6 @@
-=pod
+BukkitForge - a Minecraft mod that ports the Bukkit plugin API to minecraft.
+===================================
 
-=head1 BukkitForge - a Minecraft mod that ports the Bukkit plugin API to minecraft.
  
 This is very WIP. Since i started doing this, i was mostly aiming for a server that didn't crash.
 It can load plugins, commands work, lots of things work, permissions *should* work, etc.
@@ -11,18 +11,29 @@ Most of this mod is a fairly straight port from Craftbukkit, but I've had to mod
 This is ported to 1.4, and works fine on 1.4.5
 
 
-=head1 GETTING IT WORKING IN MCP:
+Jenkins? Jenkins? JENKINS!
+==========================
+
+That's right, now we have an automated jenkins build-thingy.
+You may find it [here][http://build.aegisgaming.org/job/BukkitForge]
+
+[![Build status](http://build.aegisgaming.org/job/BukkitForge/badge/icon)](http://build.aegisgaming.org/job/BukkitForge)
+
+GETTING IT WORKING IN MCP:
+=========================
  
-After unzipping the forge source, copy bukkit_at.cfg to forge/accesstransformers (create the folder if it's not there), and copy
+After unzipping the forge source, copy bukkit\_at.cfg to forge/accesstransformers (create the folder if it's not there), and copy
 all the files in 'lib/' (excluding bukkitAPI.jar) into the lib folder in mcp.
 decompile as usual. 
 You will also need to add the files in the 'lib' folder (excluding bukkitAPI.jar) into the projects in eclipse.
 
-=head1 COMPILING (to get all that good stuff)
+COMPILING (to get all that good stuff)
+=======================
 
 You need Apache Ant and the JDK. To build, simply type 'ant' in the folder with build.xml inside it.
 
-=head1 FOR BUKKIT DEVS WHO WANT TO ENSURE COMPATIBILITY
+FOR BUKKIT DEVS WHO WANT TO ENSURE COMPATIBILITY
+===============================================
 
 If your mod does NOT use guava, you're fine, it should work.
 
@@ -30,10 +41,13 @@ If your mod DOES use guava, you need to add 'guava10' before all of your guava i
 The reason this is required is FML uses guava 12 which is not compatible with guava 10.
 So BukkitForge ships with guava 10 in 'guava10.com.google.xxx' rather than 'com.google.xxx'.
 
-=head1 OMG, LIKE, MAH PLGINS DNT LOAD!!!!!1111one!1eleven
+OMG, LIKE, MAH PLGINS DNT LOAD!!!!!1111one!1eleven
+==========================================
 
 Speak english, and please, report it in issues!
 
-=head1 LICENSE:
+LICENSE:
+========
  
 This mod is licensed under the LGPL, the same as Craftbukkit.
+ 
