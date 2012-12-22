@@ -2,16 +2,17 @@ package keepcalm.mods.bukkit.events;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.event.Cancelable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 /**
  * 
- * Easiest way to cancel - just reverse it, it's called AFTER the event does its stuff.
+ * Called from ItemInWorldManager.updateBlockRemoving
  * 
- * Called from ItemInWorldManager.updateBlockRemoving (after this.durabilityRemainingOnBlock = var5;)
- * 
+ * The cancellation doesn't actually work.
  * @author keepcalm
  *
  */
+@Cancelable
 public class PlayerDamageBlockEvent extends PlayerEvent {
 
 	public final int blockX;

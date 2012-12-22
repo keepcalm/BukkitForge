@@ -152,11 +152,11 @@ public class BlockEventHelpers implements IClassTransformer {
 						toAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper", "onDispenseItem", 
 								"(L" + names.get("worldJavaName") + ";IIIL" + names.get("itemStackJavaName") + ";)Z"));
 
-						LabelNode label = new LabelNode(new Label());
-						toAdd.add(new JumpInsnNode(Opcodes.IFEQ, label)); // if the return value of ^ is true
+						LabelNode endLabel = new LabelNode(new Label());
+						toAdd.add(new JumpInsnNode(Opcodes.IFEQ, endLabel)); // if the return value of ^ is true
 						// then return - it was cancelled - and so will not be run
 						toAdd.add(new InsnNode(Opcodes.RETURN));
-						toAdd.add(label); // otherwise, continue on
+						toAdd.add(endLabel); // otherwise, continue on
 						toAdd.add(lmmnode);
 
 						System.out.println("Instructions have been compiled, adding to bytecode...");
@@ -170,8 +170,8 @@ public class BlockEventHelpers implements IClassTransformer {
 				}
 			}
 		}
-		
-		
+
+
 
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		cn.accept(cw);
@@ -201,9 +201,9 @@ public class BlockEventHelpers implements IClassTransformer {
 					// ", OpCode " + m.instructions.get(index).getOpcode());
 
 					// return integer (or boolean), load integer (or boolean)
-					if (instr.getOpcode() == Opcodes.IRETURN && instr.getPrevious().getOpcode() == Opcodes.ILOAD) {
+					if (instr.getOpcode() == Opcodes.ILOAD && instr.getPrevious().getOpcode() == Opcodes.IRETURN) {
 						System.out.println("Found IRETURN after ILOAD, inserting code before...");
-						index -= 1;
+						index++;
 						InsnList toInject = new InsnList();
 						/*toInject.add(new FieldInsnNode(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"));
 						toInject.add(new VarInsnNode(Opcodes.ALOAD, 0));
@@ -259,21 +259,18 @@ public class BlockEventHelpers implements IClassTransformer {
 				System.out.println("Found target for ItemInWorldManager transformation: " + m.name + m.desc + "! Searching for landmarks...");
 
 				boolean seen = true;
+				int occ = 0;
 				for (int index = 0; index < m.instructions.size(); index++) {
-					AbstractInsnNode i = m.instructions.get(index);
-					
-					if (i.getOpcode() == Opcodes.IF_ICMPEQ && seen) {
-						System.out.println("Found landmark: IF_ICMPEQ, searching for next landmark...");
-						int ifloc = index;
-						while (m.instructions.get(index).getOpcode() != Opcodes.PUTFIELD) index++;
-						System.out.println("Found PUTFIELD at index " + index + " to IF_ICMPEQ, which is at " + ifloc + ". Inserting function call after this...");
-						
-						FieldInsnNode f = (FieldInsnNode) m.instructions.get(index);
-						System.out.println("PUTFIELD is accessing " + f.owner + "/" + f.name + " (" + f.desc + ")" );
-						int loc = ifloc + index;
-						// after, not at the same location
-						loc += 1;
+					AbstractInsnNode instr = m.instructions.get(index);
 
+					if (instr.getOpcode() == Opcodes.RETURN) {
+						System.out.println("Found landmark: RETURN, searching for previous landmark...");
+						int ifloc = index;
+						while (m.instructions.get(index).getOpcode() != Opcodes.IF_ICMPEQ) index--;
+						System.out.println("Found IF_ICMPEQ at index " + index + " to R, which is at " + ifloc + ". Inserting function call after this...");
+						int loc = index + 1;
+						System.out.println("Will insert code at: " + loc);
+						// after, not at the same location
 						LabelNode lmmnode = new LabelNode(new Label());
 
 						InsnList toInject = new InsnList();
@@ -283,11 +280,15 @@ public class BlockEventHelpers implements IClassTransformer {
 						// call the helper method
 						System.out.println("Using desc: " + "(L" + names.get("itemInWorldManagerJavaName") + ";)V");
 						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper",
-								"onBlockDamage", "(L" + names.get("itemInWorldManagerJavaName") + ";)V"));
+								"onBlockDamage", "(L" + names.get("itemInWorldManagerJavaName") + ";)Z"));
+						LabelNode endIf = new LabelNode(new Label());
+						toInject.add(new JumpInsnNode(Opcodes.IFEQ, endIf));
+						toInject.add(new InsnNode(Opcodes.RETURN));
+						toInject.add(endIf);
 						toInject.add(lmmnode);
 						System.out.println("Finished compiling instruction nodes, inserting new instructions... at " + loc);
 
-						m.instructions.insertBefore(m.instructions.get(loc), toInject);
+						m.instructions.insertBefore(m.instructions.get(index + 1), toInject);
 						for (int i1 = 0; i1 < m.instructions.size(); i1++) {
 							System.out.println("Location " + i1 + ": " + m.instructions.get(i1).getClass().getName());
 							if (m.instructions.get(i1) instanceof MethodInsnNode) {
@@ -299,12 +300,16 @@ public class BlockEventHelpers implements IClassTransformer {
 								System.out.println("Location " + i1 + ": Line " + x.line);
 							}
 						}
-						MethodInsnNode x = (MethodInsnNode) m.instructions.get(249);
+						//MethodInsnNode x = (MethodInsnNode) m.instructions.get(249);
 						System.out.println("Finished patching ItemInWorldManager! The game will now continue!");
 						break;
 					}
-					else if (i.getOpcode() == Opcodes.IF_ICMPEQ && !seen)
-						seen = true;
+					else if (instr.getOpcode() == Opcodes.PUTFIELD && instr.getPrevious().getOpcode() == Opcodes.ILOAD && ((VarInsnNode)instr.getPrevious()).var == 3 && instr.getNext() instanceof LabelNode && !seen) {
+						occ++;
+						if (occ > 0) seen = true;
+
+						System.out.println("Found first occurance of misbehaving segment, ignoring...");
+					}
 
 				}
 

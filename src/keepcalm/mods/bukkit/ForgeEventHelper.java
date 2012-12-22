@@ -23,15 +23,22 @@ public class ForgeEventHelper {
 		MinecraftForge.EVENT_BUS.post(ev);
 	}
 	
-	public static void onBlockDamage(ItemInWorldManager man) {
+	public static boolean onBlockDamage(ItemInWorldManager man) {
 		
 		// mcp has ridiculously long names
+		
+		//System.out.println("BlockDamage CANCELLED :P");
 		
 		PlayerDamageBlockEvent ev = new PlayerDamageBlockEvent(man.thisPlayerMP, man.partiallyDestroyedBlockX,
 				man.partiallyDestroyedBlockY, man.partiallyDestroyedBlockZ,
 				man.theWorld, man.curblockDamage, man.durabilityRemainingOnBlock);
 		
 		MinecraftForge.EVENT_BUS.post(ev);
+		
+		if (ev.isCanceled()) {
+			return true;
+		}
+		return false;
 		
 	}
 	
