@@ -53,6 +53,16 @@ public class ObfuscationHelper {
 
 		mcpNames.put("dispenserDispenseDesc", "(Lnet/minecraft/world/World;III)V");
 		obfNames.put("dispenserDispenseDesc", "(Lyc;III)V");
+		
+		// entitySheep stuff
+		mcpNames.put("entitySheepClassName", "net.minecraft.entity.passive.EntitySheep");
+		obfNames.put("entitySheepClassName", "pe");
+		
+		mcpNames.put("entitySheepJavaName",  "net/minecraft/entity/passive/EntitySheep");
+		obfNames.put("entitySheepJavaName",  "pe");
+		
+		mcpNames.put("entitySheepSetColour", "setFleeceColor");
+		obfNames.put("entitySheepSetColour", "s");
 
 	}
 	

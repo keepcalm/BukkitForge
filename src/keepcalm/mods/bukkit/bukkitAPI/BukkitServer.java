@@ -42,6 +42,7 @@ import net.minecraft.server.ConvertingProgressUpdate;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.PropertyManager;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChunkCoordinates;
@@ -63,6 +64,7 @@ import net.minecraftforge.common.ForgeVersion;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
@@ -238,6 +240,13 @@ public class BukkitServer implements Server {
 		}
 		ForgeEventHandler.ready = true;
 		commandMap.doneLoadingPlugins((ServerCommandManager) theServer.getCommandManager());
+		if (theServer instanceof IntegratedServer) {
+			EntityPlayer par0 = theServer.getConfigurationManager().getPlayerForUsername(theServer.getServerOwner());
+			if (par0 != null) {
+				par0.sendChatToPlayer(ChatColor.GREEN + "BukkitForge has finished loading! You may now enjoy a (relatively) lag-free game!");
+				theServer.getCommandManager().executeCommand(par0, "/plugins");
+			}
+		}
 	}
 	
 	private Environment wtToEnv(WorldServer x) {

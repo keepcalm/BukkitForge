@@ -3,7 +3,7 @@ package keepcalm.mods.bukkit;
 import keepcalm.mods.bukkit.events.DispenseItemEvent;
 import keepcalm.mods.bukkit.events.PlayerDamageBlockEvent;
 import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
-import net.minecraft.block.BlockDispenser;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemInWorldManager;
 import net.minecraft.item.ItemStack;
@@ -60,6 +60,11 @@ public class ForgeEventHelper {
 			return true;
 		}
 		
+		return false;
+	}
+	
+	public static boolean onSheepDye(EntitySheep sheep, int newColor, byte oldColor) {
+		System.out.println("SheepDye!");
 		return false;
 	}
 	

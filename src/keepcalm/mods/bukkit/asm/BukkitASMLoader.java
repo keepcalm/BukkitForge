@@ -9,7 +9,7 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 	
 	@Override
 	public String[] getASMTransformerClass() {
-		return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer", /*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */"keepcalm.mods.bukkit.asm.transformers.events.BlockEventHelpers"};
+		return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer", /*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */"keepcalm.mods.bukkit.asm.transformers.events.BlockEventHelpers", "keepcalm.mods.bukkit.asm.transformers.events.EntityEventHelpers"};
 	}
 	@Override
 	public String[] getLibraryRequestClass() {

@@ -7,13 +7,13 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
-import net.minecraft.network.NetServerHandler;
 import net.minecraft.network.TcpConnection;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -103,9 +103,23 @@ public class ConnectionHandler implements IConnectionHandler {
 		EntityPlayerMP guy = (EntityPlayerMP) player;
 		//this.serverHandlers.put(guy.username, netHandler);
 		EntityPlayerMP dude = (EntityPlayerMP) player;
-		TcpConnection j = (TcpConnection) dude.playerNetServerHandler.netManager;
-		
-		PlayerLoginEvent x = new PlayerLoginEvent(new BukkitPlayer(dude), BukkitServer.instance().getServerName(), j.getSocket().getInetAddress());
+		PlayerLoginEvent x;
+		if (manager instanceof TcpConnection) {
+			TcpConnection j = (TcpConnection) manager;
+			x = new PlayerLoginEvent(new BukkitPlayer(dude), BukkitServer.instance().getServerName(), j.getSocket().getInetAddress());
+		}
+		else {
+			// logging in events on single player are presently broken, TODO
+			dude.sendChatToPlayer(ChatColor.GREEN + "BukkitForge is loading, hold on a sec...");
+			return;
+			/*
+			try {
+				x = new PlayerLoginEvent(new BukkitPlayer(dude), BukkitServer.instance().getServerName(), InetAddress.getLocalHost());
+			} catch (Exception e) {
+				BukkitServer.instance().getLogger().severe("FAILED to process login for player " + dude.username);
+				return;
+			}*/
+		}
 		Bukkit.getPluginManager().callEvent(x);
 	}
 

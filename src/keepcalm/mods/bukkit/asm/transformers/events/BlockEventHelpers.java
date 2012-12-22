@@ -228,7 +228,7 @@ public class BlockEventHelpers implements IClassTransformer {
 						System.out.println("Finished compiling instruction nodes, inserting new instructions... at " + loc);
 
 						m.instructions.insertBefore(m.instructions.get(index + 1), toInject);
-						for (int i1 = 0; i1 < m.instructions.size(); i1++) {
+						/*for (int i1 = 0; i1 < m.instructions.size(); i1++) {
 							System.out.println("Location " + i1 + ": " + m.instructions.get(i1).getClass().getName());
 							if (m.instructions.get(i1) instanceof MethodInsnNode) {
 								MethodInsnNode x = (MethodInsnNode) m.instructions.get(i1);
@@ -238,7 +238,7 @@ public class BlockEventHelpers implements IClassTransformer {
 								LineNumberNode x = (LineNumberNode) m.instructions.get(i1);
 								System.out.println("Location " + i1 + ": Line " + x.line);
 							}
-						}
+						}*/
 						//MethodInsnNode x = (MethodInsnNode) m.instructions.get(249);
 						System.out.println("Finished patching ItemInWorldManager! The game will now continue!");
 						break;
