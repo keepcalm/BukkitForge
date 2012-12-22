@@ -59,7 +59,8 @@
 				  </fileset>
 			  </copy>
 
-			<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="META-INF/MANIFEST.MF"/>
+			  <jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="META-INF/MANIFEST.MF"/>
+			  <delete dir="${classes.dir}" />
 	</target>
 	
 	<target name="build" depends="setup-forge" unless="already-compiled">
