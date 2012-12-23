@@ -85,7 +85,6 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		boolean allowed = bukkitCommandInstance.testPermissionSilent(sender) 
 				|| sender.hasPermission(bukkitCommandInstance.getPermission())
 				|| bukkitCommandInstance.getPermission().isEmpty();
-		
 		if (!(MinecraftServer.getServer() instanceof DedicatedServer)) {
 			allowed = allowed || MinecraftServer.getServer().getServerOwner().equalsIgnoreCase(who.getCommandSenderName()) 
 					|| MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(who.getCommandSenderName().toLowerCase());

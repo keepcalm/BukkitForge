@@ -240,7 +240,7 @@ public class BukkitServer implements Server {
 		}
 		ForgeEventHandler.ready = true;
 		commandMap.doneLoadingPlugins((ServerCommandManager) theServer.getCommandManager());
-		if (theServer instanceof IntegratedServer) {
+		if (!theServer.isDedicatedServer()) {
 			EntityPlayer par0 = theServer.getConfigurationManager().getPlayerForUsername(theServer.getServerOwner());
 			if (par0 != null) {
 				par0.sendChatToPlayer(ChatColor.GREEN + "BukkitForge has finished loading! You may now enjoy a (relatively) lag-free game!");
