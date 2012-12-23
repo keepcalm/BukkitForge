@@ -58,7 +58,9 @@
 					  </patternset>
 				  </fileset>
 			  </copy>
-
+			 <manifest file="MANIFEST.MF" >
+				 <attribute name="FMLCorePlugin" value="keepcalm.mods.bukkit.asm.BukkitASMLoader" />
+			 </manifest>
 			  <jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="META-INF/MANIFEST.MF"/>
 			  <delete dir="${classes.dir}" />
 	</target>
