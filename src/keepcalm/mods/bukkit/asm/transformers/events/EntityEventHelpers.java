@@ -66,7 +66,7 @@ public class EntityEventHelpers implements IClassTransformer {
 						toAdd.add(new VarInsnNode(Opcodes.ILOAD, 1));
 						// old fleece colour
 						toAdd.add(new VarInsnNode(Opcodes.ILOAD, 2));
-						toAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper", "onSheepDye", "(L" + names.get("entitySheepJavaName") + ";IB)Z"));
+						toAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper", "onSheepDye", "(L" + names.get("entitySheepJavaName") + ";II)Z"));
 						LabelNode endIf = new LabelNode(new Label());
 						toAdd.add(new JumpInsnNode(Opcodes.IFEQ, endIf));
 						toAdd.add(new InsnNode(Opcodes.RETURN));

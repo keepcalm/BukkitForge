@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.rcon.RConConsoleSource;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.integrated.IntegratedServer;
 
 import org.bukkit.Bukkit;
@@ -85,7 +86,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 				|| sender.hasPermission(bukkitCommandInstance.getPermission())
 				|| bukkitCommandInstance.getPermission().isEmpty();
 		
-		if (MinecraftServer.getServer() instanceof IntegratedServer) {
+		if (!(MinecraftServer.getServer() instanceof DedicatedServer)) {
 			allowed = allowed || MinecraftServer.getServer().getServerOwner().equalsIgnoreCase(who.getCommandSenderName()) 
 					|| MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(who.getCommandSenderName().toLowerCase());
 		}
