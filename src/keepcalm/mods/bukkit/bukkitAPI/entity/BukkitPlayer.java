@@ -1043,4 +1043,10 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
 	public void setBedSpawnLocation(Location location, boolean force) {
 		getHandle().setSpawnChunk(new ChunkCoordinates(location.getBlockX(),  location.getBlockY(), location.getBlockZ()), force);
 	}
+
+	@Override
+	public void setTexturePack(String url) {
+		// assume 16
+		getHandle().requestTexturePackLoad(url, 16);
+	}
 }

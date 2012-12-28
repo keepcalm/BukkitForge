@@ -144,13 +144,11 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 	}
 
 	public int getMaximumAir() {
-		//FIXME
-		return 200;
+		return getHandle().getAir();
 	}
 
 	public void setMaximumAir(int ticks) {
-		// FIXME
-		//getHandle().maxAirTicks = ticks;
+		getHandle().setAir(ticks);
 	}
 
 	public void damage(int amount) {
@@ -339,5 +337,16 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 	@Override
 	public boolean getCanPickupItems() {
 		return getHandle().captureDrops;//instanceof EntityPlayer;
+	}
+
+	@Override
+	public void setMaxHealth(int health) {
+		// TODO
+	}
+
+	@Override
+	public void resetMaxHealth() {
+		// TODO
+		
 	}
 }
