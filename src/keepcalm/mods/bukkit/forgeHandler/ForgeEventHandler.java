@@ -312,7 +312,24 @@ public class ForgeEventHandler {
 	public void interactEvent(PlayerInteractEvent ev) {
 		if (!ready|| Side.CLIENT.isClient())
 			return;
-		BukkitEventFactory.callPlayerInteractEvent((EntityPlayerMP) ev.entityPlayer, Action.valueOf(ev.action.toString()), ev.entityPlayer.inventory.getCurrentItem());
+		
+		Action act;
+		switch (ev.action) 
+		{
+		case LEFT_CLICK_BLOCK:
+			act = Action.LEFT_CLICK_BLOCK;
+			break;
+		case RIGHT_CLICK_AIR:
+			act = Action.RIGHT_CLICK_AIR;
+			break;
+		case RIGHT_CLICK_BLOCK:
+			act = Action.RIGHT_CLICK_BLOCK;
+			break;
+		default:
+			act= Action.PHYSICAL;
+		}
+		BukkitEventFactory.callPlayerInteractEvent((EntityPlayerMP) ev.entityPlayer, act, ev.entityPlayer.inventory.getCurrentItem());
+		
 	}
 	
 	@ForgeSubscribe
