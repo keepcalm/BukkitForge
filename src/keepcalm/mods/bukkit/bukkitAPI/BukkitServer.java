@@ -148,7 +148,7 @@ public class BukkitServer implements Server {
 	private Map<String, OfflinePlayer> offlinePlayers;
 	private StandardMessenger theMessenger;
 	private SimpleHelpMap theHelpMap = new SimpleHelpMap(this);
-	private BukkitConsoleCommandSender console;
+	private final BukkitConsoleCommandSender console;// = (BukkitConsoleCommandSender) BukkitConsoleCommandSender.getInstance();
 	private int monsterSpawn;
 	private int animalSpawn;
 	private int waterAnimalSpawn;
@@ -212,7 +212,7 @@ public class BukkitServer implements Server {
 		this.playerMetadata = new PlayerMetadataStore();
 		this.worldMetadata = new WorldMetadataStore();
 		this.warningState = Warning.WarningState.DEFAULT;
-		this.console = new BukkitConsoleCommandSender(this);
+		this.console = (BukkitConsoleCommandSender) BukkitConsoleCommandSender.getInstance();
 		// wait until server start
 		
 		/*try {

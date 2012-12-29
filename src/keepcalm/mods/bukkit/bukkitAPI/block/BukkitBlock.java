@@ -9,6 +9,8 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -331,6 +333,13 @@ public class BukkitBlock implements Block {
     }
 
     public boolean isLiquid() {
+    	LiquidStack me = new LiquidStack(this.getTypeId(), 1);
+    	// forge compat
+    	for (LiquidStack i : LiquidDictionary.getLiquids().values()) {
+    		if (i.equals(me)) {
+    			return true;
+    		}
+    	}
         return (getType() == Material.WATER) || (getType() == Material.STATIONARY_WATER) || (getType() == Material.LAVA) || (getType() == Material.STATIONARY_LAVA);
     }
 

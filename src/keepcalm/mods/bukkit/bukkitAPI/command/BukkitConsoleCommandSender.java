@@ -1,5 +1,6 @@
 package keepcalm.mods.bukkit.bukkitAPI.command;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.conversations.ConversationTracker;
 
 import org.bukkit.ChatColor;
@@ -16,8 +17,11 @@ public class BukkitConsoleCommandSender extends ServerCommandSender implements C
 
     protected final ConversationTracker conversationTracker = new ConversationTracker();
 
+    private static final BukkitConsoleCommandSender instance = (BukkitConsoleCommandSender) (BukkitContainer.instance.allowAnsi ? new ColouredConsoleSender() : new BukkitConsoleCommandSender());
+    
     protected BukkitConsoleCommandSender() {
         super();
+        
     }
 
     public void sendMessage(String message) {
@@ -65,4 +69,9 @@ public class BukkitConsoleCommandSender extends ServerCommandSender implements C
     public boolean isConversing() {
         return conversationTracker.isConversing();
     }
+    
+    public static BukkitConsoleCommandSender instance() {
+    	return instance;
+    }
+    
 }

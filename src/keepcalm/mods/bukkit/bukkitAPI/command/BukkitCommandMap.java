@@ -251,6 +251,8 @@ public class BukkitCommandMap extends SimpleCommandMap implements CommandMap  {
 			cmdHandlers.put(i.getName().toLowerCase(), new CommandExecutor2CommandBase(i, i.getName()));
 		}
 		for (CommandExecutor2CommandBase i : this.cmdHandlers.values()) {
+			if (i.getCommandName().equalsIgnoreCase("stop"))
+				continue;
 			//server.getLogger().info("Registering command: " + i.getCommandName());
 			scm.registerCommand(i);
 		}

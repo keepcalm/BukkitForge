@@ -8,6 +8,7 @@ import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandHelp;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandMVFix;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandMods;
+import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandStop;
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandRequirementRegistry;
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandSetLevel;
 import net.minecraft.command.ServerCommandManager;
@@ -39,6 +40,7 @@ public class BukkitStarter implements Runnable {
 			//BukkitContainer.bServer.setServer(MinecraftServer.getServer());
 			//BukkitContainer.bServer.continueLoad();
 			// hopefully this works...
+			scm.registerCommand(new BukkitCommandStop());
 		}
 		catch (Exception e) {
 			// disable nicely
