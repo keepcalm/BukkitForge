@@ -13,6 +13,7 @@ import keepcalm.mods.bukkit.forgeHandler.BlockBreakEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.BukkitCrashCallable;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
+import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
 import net.minecraft.item.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.gui.ServerGUI;
@@ -38,9 +39,11 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
+import cpw.mods.fml.server.FMLServerHandler;
 
 @Mod(modid="BukkitForge",name="BukkitForge",version="1.4.6-0")
 @NetworkMod(clientSideRequired=false,serverSideRequired=false)
@@ -153,6 +156,8 @@ public class BukkitContainer {
 	public void init(FMLInitializationEvent ev) {
 		ItemInWorldManager.class.desiredAssertionStatus();
 		FMLCommonHandler.instance().registerCrashCallable(new BukkitCrashCallable());
+		GameRegistry.registerPlayerTracker(new PlayerTracker());
+		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		bukkitLogger.info("Complete! Registering handlers...");
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		if (Loader.isModLoaded("BlockBreak")) {

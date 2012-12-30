@@ -472,7 +472,7 @@ public final class SimplePluginManager implements PluginManager {
             if (!registration.getPlugin().isEnabled()) {
                 continue;
             }
-
+            System.out.println("Forwarding event " + event.getEventName() + " to plugin " + registration.getPlugin().getDescription().getName());
             try {
                 registration.callEvent(event);
             } catch (AuthorNagException ex) {

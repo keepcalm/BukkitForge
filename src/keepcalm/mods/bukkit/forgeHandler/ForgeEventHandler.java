@@ -11,7 +11,7 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
-import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
+import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import keepcalm.mods.bukkit.events.DispenseItemEvent;
 import keepcalm.mods.bukkit.events.PlayerDamageBlockEvent;
 import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
@@ -359,7 +359,8 @@ public class ForgeEventHandler {
 	
 	@ForgeSubscribe
 	public void serverChat(ServerChatEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		System.out.println("ServerChat!");
+		if (!ready)
 			return;
 		String newName = ev.player.username;
 		if (playerDisplayNames.containsKey(newName)) {
@@ -370,8 +371,9 @@ public class ForgeEventHandler {
 		
 		AsyncPlayerChatEvent ev1 = new AsyncPlayerChatEvent(false, whom, ev.message, Sets.newHashSet(BukkitServer.instance().getOnlinePlayers()));
 		ev1 = BukkitEventFactory.callEvent(ev1);
-		ev.line = ev.line.replace(ev.message, ev1.getMessage());
 		String newLine = String.format(ev1.getFormat(),new Object[] {newName, ev1.getMessage()});
+		ev.line = newLine;
+		System.out.println("Setting line to " + ev.line + " (name " + newName + " message " + ev1.getMessage());
 	}
 	
 	@ForgeSubscribe

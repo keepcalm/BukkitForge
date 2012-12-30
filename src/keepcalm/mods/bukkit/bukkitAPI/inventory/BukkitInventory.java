@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
-import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
-import keepcalm.mods.bukkit.bukkitAPI.item.InventoryIterator;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.inventory.IInventory;
 

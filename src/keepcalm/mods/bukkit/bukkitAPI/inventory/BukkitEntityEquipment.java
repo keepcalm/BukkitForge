@@ -2,7 +2,6 @@ package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
-import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
 import net.minecraft.entity.EntityLiving;
 
 import org.bukkit.entity.Entity;

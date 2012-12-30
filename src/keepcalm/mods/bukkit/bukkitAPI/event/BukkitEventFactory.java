@@ -16,7 +16,7 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventory;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCrafting;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryView;
-import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
+import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;

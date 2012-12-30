@@ -1,6 +1,6 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
-import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 
@@ -16,6 +16,10 @@ public class BukkitRecipe implements Recipe {
 	}
 	public BukkitRecipe(ShapelessRecipes shapeless) {
 		this.result = new BukkitItemStack(shapeless.getRecipeOutput());
+	}
+	
+	public BukkitRecipe(IRecipe recipe) {
+		this.result = new BukkitItemStack(recipe.getRecipeOutput());
 	}
 	
 	@Override

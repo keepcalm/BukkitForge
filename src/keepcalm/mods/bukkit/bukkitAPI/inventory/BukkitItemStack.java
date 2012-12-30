@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit.bukkitAPI.item;
+package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;

@@ -3,7 +3,7 @@ package keepcalm.mods.bukkit.bukkitAPI.entity;
 import java.util.Random;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
+import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

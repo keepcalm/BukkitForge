@@ -24,11 +24,13 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.help.CommandHelpTopic;
 import keepcalm.mods.bukkit.bukkitAPI.help.SimpleHelpMap;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCustom;
+import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemFactory;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.EntityMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.PlayerMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.WorldMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
+import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +44,6 @@ import net.minecraft.server.ConvertingProgressUpdate;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.PropertyManager;
-import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChunkCoordinates;
@@ -245,8 +246,11 @@ public class BukkitServer implements Server {
 			if (par0 != null) {
 				par0.sendChatToPlayer(ChatColor.GREEN + "BukkitForge has finished loading! You may now enjoy a (relatively) lag-free game!");
 				theServer.getCommandManager().executeCommand(par0, "/plugins");
+				(new PlayerTracker()).onPlayerLogin(par0);
 			}
+			
 		}
+		
 	}
 	
 	private Environment wtToEnv(WorldServer x) {
@@ -812,7 +816,6 @@ public class BukkitServer implements Server {
 
 	        pluginManager.clearPlugins();
 	        commandMap.clearCommands();
-	        // TODO - fix this so that we automatically re-register mod recipes.
 	        resetRecipes();
 
 	        int pollCount = 0;
@@ -1358,8 +1361,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public ItemFactory getItemFactory() {
-		// TODO Auto-generated method stub
-		return null;
+		return BukkitItemFactory.instance();
 	}
 	
 

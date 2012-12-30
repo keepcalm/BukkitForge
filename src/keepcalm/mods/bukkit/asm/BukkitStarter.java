@@ -35,7 +35,7 @@ public class BukkitStarter implements Runnable {
 			scm.registerCommand(new BukkitCommandHelp());
 			scm.registerCommand(new BukkitCommandMVFix());
 			scm.registerCommand(new BukkitCommandMods());
-			if (server instanceof IntegratedServer) {
+			if (!(server instanceof IntegratedServer)) {
 				scm.registerCommand(new BukkitCommandConsole());
 				scm.registerCommand(new CommandServerOp());
 				scm.registerCommand(new CommandServerDeop());

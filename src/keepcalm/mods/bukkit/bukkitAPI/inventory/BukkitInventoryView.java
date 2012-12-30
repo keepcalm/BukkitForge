@@ -1,7 +1,6 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntityHuman;
-import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
 import net.minecraft.inventory.Container;
 
 import org.bukkit.GameMode;

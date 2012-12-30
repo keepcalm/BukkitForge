@@ -15,7 +15,7 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitLightningStrike;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitMinecart;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
-import keepcalm.mods.bukkit.bukkitAPI.item.BukkitItemStack;
+import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.BlockMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.utils.LongHash;
 import net.minecraft.entity.boss.EntityDragon;
