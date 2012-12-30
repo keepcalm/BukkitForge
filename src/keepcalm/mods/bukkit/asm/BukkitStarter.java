@@ -16,6 +16,7 @@ import net.minecraft.command.CommandServerDeop;
 import net.minecraft.command.CommandServerOp;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.integrated.IntegratedServer;
 import cpw.mods.fml.common.FMLCommonHandler;
 
@@ -35,7 +36,7 @@ public class BukkitStarter implements Runnable {
 			scm.registerCommand(new BukkitCommandHelp());
 			scm.registerCommand(new BukkitCommandMVFix());
 			scm.registerCommand(new BukkitCommandMods());
-			if (!(server instanceof IntegratedServer)) {
+			if (!(server instanceof DedicatedServer)) {
 				scm.registerCommand(new BukkitCommandConsole());
 				scm.registerCommand(new CommandServerOp());
 				scm.registerCommand(new CommandServerDeop());
