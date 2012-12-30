@@ -326,7 +326,7 @@ public class BukkitServer implements Server {
 	public Player[] getOnlinePlayers() {
 		List<Player> players= new ArrayList<Player>();
 		for (Object i : theServer.getConfigurationManager().playerEntityList) {
-			players.add(new BukkitPlayer((EntityPlayerMP) i));
+			players.add(BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) i));
 		}
 		return players.toArray(new Player[0]);
 	}

@@ -469,8 +469,10 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public void setSleepingIgnored(boolean isSleeping) {
-        getHandle().sleeping = isSleeping;
-        ((BukkitWorld) getWorld()).getHandle().updateAllPlayersSleepingFlag();
+    	// FIXME - this will explode MC
+        //getHandle().sleeping = isSleeping;
+        //((BukkitWorld) getWorld()).getHandle().updateAllPlayersSleepingFlag();
+    	BukkitServer.setPlayerFauxSleeping(getName(), isSleeping);
     }
 
     public boolean isSleepingIgnored() {

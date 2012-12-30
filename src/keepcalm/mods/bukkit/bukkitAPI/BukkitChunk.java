@@ -25,286 +25,291 @@ import org.bukkit.entity.Entity;
 //import org.bukkit.craftbukkit.block.BukkitBlock;
 
 public class BukkitChunk implements Chunk {
-    private WeakReference<net.minecraft.world.chunk.Chunk> weakChunk;
-    private final WorldServer worldServer;
-    private final int x;
-    private final int z;
-    private static final byte[] emptyData = new byte[2048];
-    private static final short[] emptyBlockIDs = new short[4096];
-    private static final byte[] emptySkyLight = new byte[2048];
+	private WeakReference<net.minecraft.world.chunk.Chunk> weakChunk;
+	private final WorldServer worldServer;
+	private final int x;
+	private final int z;
+	private static final byte[] emptyData = new byte[2048];
+	private static final short[] emptyBlockIDs = new short[4096];
+	private static final byte[] emptySkyLight = new byte[2048];
 
-    public BukkitChunk(net.minecraft.world.chunk.Chunk chunk) {
-        if (!(chunk instanceof EmptyChunk)) {
-            this.weakChunk = new WeakReference<net.minecraft.world.chunk.Chunk>(chunk);
-        }
+	public BukkitChunk(net.minecraft.world.chunk.Chunk chunk) {
+		if (!(chunk instanceof EmptyChunk)) {
+			this.weakChunk = new WeakReference<net.minecraft.world.chunk.Chunk>(chunk);
+		}
 
-        worldServer = (WorldServer) getHandle().worldObj;
-        x = getHandle().xPosition;
-        z = getHandle().zPosition;
-    }
+		worldServer = (WorldServer) getHandle().worldObj;
+		x = getHandle().xPosition;
+		z = getHandle().zPosition;
+	}
 
-    public World getWorld() {
-    	try {
-    		return BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getWorldName());
-    	}
-    	catch (Exception e) {
-    		return BukkitContainer.bServer.worlds.get(getHandle().worldObj.getWorldInfo().getDimension());
-    	}
-    }
+	public World getWorld() {
+		try {
+			return BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getWorldName());
+		}
+		catch (Exception e) {
+			try {
+				Thread.sleep(500);
+			}
+			catch (Exception e1) {}
+			return BukkitContainer.bServer.worlds.get(getHandle().worldObj.getWorldInfo().getDimension());
 
-    public BukkitWorld getBukkitWorld() {
-        return (BukkitWorld) getWorld();
-    }
+		}
+	}
 
-    public net.minecraft.world.chunk.Chunk getHandle() {
-        net.minecraft.world.chunk.Chunk c = weakChunk.get();
+	public BukkitWorld getBukkitWorld() {
+		return (BukkitWorld) getWorld();
+	}
 
-        if (c == null) {
-            c = worldServer.getChunkFromChunkCoords(x, z);
+	public net.minecraft.world.chunk.Chunk getHandle() {
+		net.minecraft.world.chunk.Chunk c = weakChunk.get();
 
-            if (!(c instanceof EmptyChunk)) {
-                weakChunk = new WeakReference<net.minecraft.world.chunk.Chunk>(c);
-            }
-        }
+		if (c == null) {
+			c = worldServer.getChunkFromChunkCoords(x, z);
 
-        return c;
-    }
+			if (!(c instanceof EmptyChunk)) {
+				weakChunk = new WeakReference<net.minecraft.world.chunk.Chunk>(c);
+			}
+		}
 
-    void breakLink() {
-        weakChunk.clear();
-    }
+		return c;
+	}
 
-    public int getX() {
-        return x;
-    }
+	void breakLink() {
+		weakChunk.clear();
+	}
 
-    public int getZ() {
-        return z;
-    }
+	public int getX() {
+		return x;
+	}
 
-    @Override
-    public String toString() {
-        return "BukkitChunk{" + "x=" + getX() + "z=" + getZ() + '}';
-    }
+	public int getZ() {
+		return z;
+	}
 
-    public Block getBlock(int x, int y, int z) {
-        return new BukkitBlock(this, (getX() << 4) | (x & 0xF), y & 0xFF, (getZ() << 4) | (z & 0xF));
-    }
+	@Override
+	public String toString() {
+		return "BukkitChunk{" + "x=" + getX() + "z=" + getZ() + '}';
+	}
 
-    public Entity[] getEntities() {
-        int count = 0, index = 0;
-        net.minecraft.world.chunk.Chunk chunk = getHandle();
+	public Block getBlock(int x, int y, int z) {
+		return new BukkitBlock(this, (getX() << 4) | (x & 0xF), y & 0xFF, (getZ() << 4) | (z & 0xF));
+	}
 
-        for (int i = 0; i < 16; i++) {
-            count += chunk.entityLists[i].size();
-        }
+	public Entity[] getEntities() {
+		int count = 0, index = 0;
+		net.minecraft.world.chunk.Chunk chunk = getHandle();
 
-        Entity[] entities = new Entity[count];
+		for (int i = 0; i < 16; i++) {
+			count += chunk.entityLists[i].size();
+		}
 
-        for (int i = 0; i < 16; i++) {
-            for (Object obj : chunk.entityLists[i].toArray()) {
-                if (!(obj instanceof net.minecraft.entity.Entity)) {
-                    continue;
-                }
+		Entity[] entities = new Entity[count];
 
-                entities[index++] = BukkitEntity.getEntity((BukkitServer) Bukkit.getServer(), (net.minecraft.entity.Entity) obj);
-            }
-        }
+		for (int i = 0; i < 16; i++) {
+			for (Object obj : chunk.entityLists[i].toArray()) {
+				if (!(obj instanceof net.minecraft.entity.Entity)) {
+					continue;
+				}
 
-        return entities;
-    }
+				entities[index++] = BukkitEntity.getEntity((BukkitServer) Bukkit.getServer(), (net.minecraft.entity.Entity) obj);
+			}
+		}
 
-    public BlockState[] getTileEntities() {
-        int index = 0;
-        net.minecraft.world.chunk.Chunk chunk = getHandle();
-        BlockState[] entities = new BlockState[chunk.chunkTileEntityMap.size()];
+		return entities;
+	}
 
-        for (Object obj : chunk.chunkTileEntityMap.keySet().toArray()) {
-            if (!(obj instanceof ChunkPosition)) {
-                continue;
-            }
+	public BlockState[] getTileEntities() {
+		int index = 0;
+		net.minecraft.world.chunk.Chunk chunk = getHandle();
+		BlockState[] entities = new BlockState[chunk.chunkTileEntityMap.size()];
 
-            ChunkPosition position = (ChunkPosition) obj;
-            entities[index++] = new BukkitBlockState(getBlock(position.x, position.y, position.z));
-        }
-        return entities;
-    }
+		for (Object obj : chunk.chunkTileEntityMap.keySet().toArray()) {
+			if (!(obj instanceof ChunkPosition)) {
+				continue;
+			}
 
-    public boolean isLoaded() {
-        return getWorld().isChunkLoaded(this);
-    }
+			ChunkPosition position = (ChunkPosition) obj;
+			entities[index++] = new BukkitBlockState(getBlock(position.x, position.y, position.z));
+		}
+		return entities;
+	}
 
-    public boolean load() {
-        return getWorld().loadChunk(getX(), getZ(), true);
-    }
+	public boolean isLoaded() {
+		return getWorld().isChunkLoaded(this);
+	}
 
-    public boolean load(boolean generate) {
-        return getWorld().loadChunk(getX(), getZ(), generate);
-    }
+	public boolean load() {
+		return getWorld().loadChunk(getX(), getZ(), true);
+	}
 
-    public boolean unload() {
-        return getWorld().unloadChunk(getX(), getZ());
-    }
+	public boolean load(boolean generate) {
+		return getWorld().loadChunk(getX(), getZ(), generate);
+	}
 
-    public boolean unload(boolean save) {
-        return getWorld().unloadChunk(getX(), getZ(), save);
-    }
+	public boolean unload() {
+		return getWorld().unloadChunk(getX(), getZ());
+	}
 
-    public boolean unload(boolean save, boolean safe) {
-        return getWorld().unloadChunk(getX(), getZ(), save, safe);
-    }
+	public boolean unload(boolean save) {
+		return getWorld().unloadChunk(getX(), getZ(), save);
+	}
 
-    public ChunkSnapshot getChunkSnapshot() {
-        return getChunkSnapshot(true, false, false);
-    }
+	public boolean unload(boolean save, boolean safe) {
+		return getWorld().unloadChunk(getX(), getZ(), save, safe);
+	}
 
-    public ChunkSnapshot getChunkSnapshot(boolean includeMaxBlockY, boolean includeBiome, boolean includeBiomeTempRain) {
-        net.minecraft.world.chunk.Chunk chunk = getHandle();
+	public ChunkSnapshot getChunkSnapshot() {
+		return getChunkSnapshot(true, false, false);
+	}
 
-        ExtendedBlockStorage[] cs = chunk.getBlockStorageArray(); /* Get sections */
-        short[][] sectionBlockIDs = new short[cs.length][];
-        byte[][] sectionBlockData = new byte[cs.length][];
-        byte[][] sectionSkyLights = new byte[cs.length][];
-        byte[][] sectionEmitLights = new byte[cs.length][];
-        boolean[] sectionEmpty = new boolean[cs.length];
+	public ChunkSnapshot getChunkSnapshot(boolean includeMaxBlockY, boolean includeBiome, boolean includeBiomeTempRain) {
+		net.minecraft.world.chunk.Chunk chunk = getHandle();
 
-        for (int i = 0; i < cs.length; i++) {
-            if (cs[i] == null) { /* Section is empty? */
-                sectionBlockIDs[i] = emptyBlockIDs;
-                sectionBlockData[i] = emptyData;
-                sectionSkyLights[i] = emptySkyLight;
-                sectionEmitLights[i] = emptyData;
-                sectionEmpty[i] = true;
-            } else { /* Not empty */
-                short[] blockids = new short[4096];
-                byte[] baseids = cs[i].getBlockLSBArray();
+		ExtendedBlockStorage[] cs = chunk.getBlockStorageArray(); /* Get sections */
+		short[][] sectionBlockIDs = new short[cs.length][];
+		byte[][] sectionBlockData = new byte[cs.length][];
+		byte[][] sectionSkyLights = new byte[cs.length][];
+		byte[][] sectionEmitLights = new byte[cs.length][];
+		boolean[] sectionEmpty = new boolean[cs.length];
 
-                /* Copy base IDs */
-                for (int j = 0; j < 4096; j++) {
-                    blockids[j] = (short) (baseids[j] & 0xFF);
-                }
+		for (int i = 0; i < cs.length; i++) {
+			if (cs[i] == null) { /* Section is empty? */
+				sectionBlockIDs[i] = emptyBlockIDs;
+				sectionBlockData[i] = emptyData;
+				sectionSkyLights[i] = emptySkyLight;
+				sectionEmitLights[i] = emptyData;
+				sectionEmpty[i] = true;
+			} else { /* Not empty */
+				short[] blockids = new short[4096];
+				byte[] baseids = cs[i].getBlockLSBArray();
 
-                if (true) { /* If we've got extended IDs */
-                    byte[] extids = cs[i].getBlockMSBArray().data;
+				/* Copy base IDs */
+				for (int j = 0; j < 4096; j++) {
+					blockids[j] = (short) (baseids[j] & 0xFF);
+				}
 
-                    for (int j = 0; j < 2048; j++) {
-                        short b = (short) (extids[j] & 0xFF);
+				if (true) { /* If we've got extended IDs */
+					byte[] extids = cs[i].getBlockMSBArray().data;
 
-                        if (b == 0) {
-                            continue;
-                        }
+					for (int j = 0; j < 2048; j++) {
+						short b = (short) (extids[j] & 0xFF);
 
-                        blockids[j<<1] |= (b & 0x0F) << 8;
-                        blockids[(j<<1)+1] |= (b & 0xF0) << 4;
-                    }
-                }
+						if (b == 0) {
+							continue;
+						}
 
-                sectionBlockIDs[i] = blockids;
+						blockids[j<<1] |= (b & 0x0F) << 8;
+						blockids[(j<<1)+1] |= (b & 0xF0) << 4;
+					}
+				}
 
-                /* Get block data nibbles */
-                sectionBlockData[i] = new byte[2048];
-                System.arraycopy(cs[i].getBlockMSBArray().data, 0, sectionBlockData[i], 0, 2048); // Should be getData
-                sectionSkyLights[i] = new byte[2048];
-                System.arraycopy(cs[i].getSkylightArray().data, 0, sectionSkyLights[i], 0, 2048); // Should be getSkyLight
-                sectionEmitLights[i] = new byte[2048];
-                System.arraycopy(cs[i].getBlocklightArray().data, 0, sectionEmitLights[i], 0, 2048); // Should be getBlockLight
-            }
-        }
+				sectionBlockIDs[i] = blockids;
 
-        int[] hmap = null;
+				/* Get block data nibbles */
+				sectionBlockData[i] = new byte[2048];
+				System.arraycopy(cs[i].getBlockMSBArray().data, 0, sectionBlockData[i], 0, 2048); // Should be getData
+				sectionSkyLights[i] = new byte[2048];
+				System.arraycopy(cs[i].getSkylightArray().data, 0, sectionSkyLights[i], 0, 2048); // Should be getSkyLight
+				sectionEmitLights[i] = new byte[2048];
+				System.arraycopy(cs[i].getBlocklightArray().data, 0, sectionEmitLights[i], 0, 2048); // Should be getBlockLight
+			}
+		}
 
-        if (includeMaxBlockY) {
-            hmap = new int[256]; // Get copy of height map
-            System.arraycopy(chunk.heightMap, 0, hmap, 0, 256);
-        }
+		int[] hmap = null;
 
-        BiomeGenBase[] biome = null;
-        double[] biomeTemp = null;
-        double[] biomeRain = null;
+		if (includeMaxBlockY) {
+			hmap = new int[256]; // Get copy of height map
+			System.arraycopy(chunk.heightMap, 0, hmap, 0, 256);
+		}
 
-        if (includeBiome || includeBiomeTempRain) {
-            WorldChunkManager wcm = chunk.worldObj.getWorldChunkManager();
+		BiomeGenBase[] biome = null;
+		double[] biomeTemp = null;
+		double[] biomeRain = null;
 
-            if (includeBiome) {
-                biome = new BiomeGenBase[256];
-                for (int i = 0; i < 256; i++) {
-                    biome[i] = chunk.getBiomeGenForWorldCoords(i & 0xF, i >> 4, wcm);
-                }
-            }
+		if (includeBiome || includeBiomeTempRain) {
+			WorldChunkManager wcm = chunk.worldObj.getWorldChunkManager();
 
-            if (includeBiomeTempRain) {
-                biomeTemp = new double[256];
-                biomeRain = new double[256];
-                float[] dat = wcm.getTemperatures((float[]) null, getX() << 4, getZ() << 4, 16, 16);
+			if (includeBiome) {
+				biome = new BiomeGenBase[256];
+				for (int i = 0; i < 256; i++) {
+					biome[i] = chunk.getBiomeGenForWorldCoords(i & 0xF, i >> 4, wcm);
+				}
+			}
 
-                for (int i = 0; i < 256; i++) {
-                    biomeTemp[i] = dat[i];
-                }
+			if (includeBiomeTempRain) {
+				biomeTemp = new double[256];
+				biomeRain = new double[256];
+				float[] dat = wcm.getTemperatures((float[]) null, getX() << 4, getZ() << 4, 16, 16);
 
-                dat = wcm.getRainfall((float[]) null, getX() << 4, getZ() << 4, 16, 16);
+				for (int i = 0; i < 256; i++) {
+					biomeTemp[i] = dat[i];
+				}
 
-                for (int i = 0; i < 256; i++) {
-                    biomeRain[i] = dat[i];
-                }
-            }
-        }
+				dat = wcm.getRainfall((float[]) null, getX() << 4, getZ() << 4, 16, 16);
 
-        World world = getWorld();
-        return new BukkitChunkSnapshot(getX(), getZ(), world.getName(), world.getFullTime(), sectionBlockIDs, sectionBlockData, sectionSkyLights, sectionEmitLights, sectionEmpty, hmap, biome, biomeTemp, biomeRain);
-    }
+				for (int i = 0; i < 256; i++) {
+					biomeRain[i] = dat[i];
+				}
+			}
+		}
 
-    public static ChunkSnapshot getEmptyChunkSnapshot(int x, int z, BukkitWorld world, boolean includeBiome, boolean includeBiomeTempRain) {
-        BiomeGenBase[] biome = null;
-        double[] biomeTemp = null;
-        double[] biomeRain = null;
+		World world = getWorld();
+		return new BukkitChunkSnapshot(getX(), getZ(), world.getName(), world.getFullTime(), sectionBlockIDs, sectionBlockData, sectionSkyLights, sectionEmitLights, sectionEmpty, hmap, biome, biomeTemp, biomeRain);
+	}
 
-        if (includeBiome || includeBiomeTempRain) {
-            WorldChunkManager wcm = world.getHandle().getWorldChunkManager();
+	public static ChunkSnapshot getEmptyChunkSnapshot(int x, int z, BukkitWorld world, boolean includeBiome, boolean includeBiomeTempRain) {
+		BiomeGenBase[] biome = null;
+		double[] biomeTemp = null;
+		double[] biomeRain = null;
 
-            if (includeBiome) {
-                biome = new BiomeGenBase[256];
-                for (int i = 0; i < 256; i++) {
-                    biome[i] = world.getHandle().getBiomeGenForCoords((x << 4) + (i & 0xF), (z << 4) + (i >> 4));
-                }
-            }
+		if (includeBiome || includeBiomeTempRain) {
+			WorldChunkManager wcm = world.getHandle().getWorldChunkManager();
 
-            if (includeBiomeTempRain) {
-                biomeTemp = new double[256];
-                biomeRain = new double[256];
-                float[] dat = wcm.getTemperatures((float[]) null, x << 4, z << 4, 16, 16);
+			if (includeBiome) {
+				biome = new BiomeGenBase[256];
+				for (int i = 0; i < 256; i++) {
+					biome[i] = world.getHandle().getBiomeGenForCoords((x << 4) + (i & 0xF), (z << 4) + (i >> 4));
+				}
+			}
 
-                for (int i = 0; i < 256; i++) {
-                    biomeTemp[i] = dat[i];
-                }
+			if (includeBiomeTempRain) {
+				biomeTemp = new double[256];
+				biomeRain = new double[256];
+				float[] dat = wcm.getTemperatures((float[]) null, x << 4, z << 4, 16, 16);
 
-                dat = wcm.getRainfall((float[]) null, x << 4, z << 4, 16, 16);
+				for (int i = 0; i < 256; i++) {
+					biomeTemp[i] = dat[i];
+				}
 
-                for (int i = 0; i < 256; i++) {
-                    biomeRain[i] = dat[i];
-                }
-            }
-        }
+				dat = wcm.getRainfall((float[]) null, x << 4, z << 4, 16, 16);
 
-        /* Fill with empty data */
-        int hSection = world.getMaxHeight() >> 4;
-        short[][] blockIDs = new short[hSection][];
-        byte[][] skyLight = new byte[hSection][];
-        byte[][] emitLight = new byte[hSection][];
-        byte[][] blockData = new byte[hSection][];
-        boolean[] empty = new boolean[hSection];
+				for (int i = 0; i < 256; i++) {
+					biomeRain[i] = dat[i];
+				}
+			}
+		}
 
-        for (int i = 0; i < hSection; i++) {
-            blockIDs[i] = emptyBlockIDs;
-            skyLight[i] = emptySkyLight;
-            emitLight[i] = emptyData;
-            blockData[i] = emptyData;
-            empty[i] = true;
-        }
+		/* Fill with empty data */
+		int hSection = world.getMaxHeight() >> 4;
+				short[][] blockIDs = new short[hSection][];
+				byte[][] skyLight = new byte[hSection][];
+				byte[][] emitLight = new byte[hSection][];
+				byte[][] blockData = new byte[hSection][];
+				boolean[] empty = new boolean[hSection];
 
-        return new BukkitChunkSnapshot(x, z, world.getName(), world.getFullTime(), blockIDs, blockData, skyLight, emitLight, empty, new int[256], biome, biomeTemp, biomeRain);
-    }
+				for (int i = 0; i < hSection; i++) {
+					blockIDs[i] = emptyBlockIDs;
+					skyLight[i] = emptySkyLight;
+					emitLight[i] = emptyData;
+					blockData[i] = emptyData;
+					empty[i] = true;
+				}
 
-    static {
-        Arrays.fill(emptySkyLight, (byte) 0xFF);
-    }
+				return new BukkitChunkSnapshot(x, z, world.getName(), world.getFullTime(), blockIDs, blockData, skyLight, emitLight, empty, new int[256], biome, biomeTemp, biomeRain);
+	}
+
+	static {
+		Arrays.fill(emptySkyLight, (byte) 0xFF);
+	}
 }

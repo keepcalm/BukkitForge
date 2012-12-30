@@ -343,7 +343,7 @@ public class B4VScheduler implements BukkitScheduler {
             }
             if (task.isSync()) {
                 try {
-                	System.out.println("Execute task: " + task.getTaskClass().getCanonicalName());
+                	System.out.println("Execute task: " + task.getTaskClass().getCanonicalName() + " (" + task.getOwner().getDescription().getName() + ")");
                     task.run();
                 } catch (final Throwable throwable) {
                     task.getOwner().getLogger().log(

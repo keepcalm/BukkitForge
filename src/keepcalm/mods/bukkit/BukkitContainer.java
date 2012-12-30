@@ -136,7 +136,7 @@ public class BukkitContainer {
 		this.showAllLogs = showAllLogs.getBoolean(false);*/
 
 		config.save();
-		System.out.println("Registering Player Tracker...");
+		//System.out.println("Registering Player Tracker...");
 		GameRegistry.registerPlayerTracker(new PlayerTracker());
 	}
 

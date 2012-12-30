@@ -1,5 +1,6 @@
 package keepcalm.mods.bukkit.bukkitAPI.scheduler;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
@@ -26,6 +27,7 @@ class B4VAsyncTask extends B4VTask {
 
     @Override
     public void run() {
+    	System.out.println("Running task from plugin " + this.getOwner().getDescription().getName());
         final Thread thread = Thread.currentThread();
         synchronized(workers) {
             if (getPeriod() == -2) {
@@ -51,7 +53,16 @@ class B4VAsyncTask extends B4VTask {
         Throwable thrown = null;
         try {
             super.run();
-        } catch (final Throwable t) {
+        } 
+        catch (final ConcurrentModificationException e) {
+        	try {
+        		// give some time for other things to finish
+				Thread.sleep(500);
+				this.run();
+			} catch (InterruptedException e1) {}
+        }
+        catch (final Throwable t) {
+        	
             thrown = t;
             throw new UnhandledException(
                     String.format(
