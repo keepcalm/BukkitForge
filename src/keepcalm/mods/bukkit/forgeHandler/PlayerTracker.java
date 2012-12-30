@@ -24,14 +24,26 @@ public class PlayerTracker implements IPlayerTracker {
 	@Override
 	public void onPlayerLogin(final EntityPlayer player) {
 		
-				if (!ForgeEventHandler.ready)
-					return; // process in BukkitServer
+				if (!ForgeEventHandler.ready) {
+					System.out.println("ForgeEventHandler: NOT ready!");
+					return;
+				}
+					// process in BukkitServer
 				System.out.println("Started, posting join event...");
-				String msg = player.username + " joined the game";
-				if (!ForgeEventHandler.ready)
-					msg = ""; // nothing - SSP 
-				PlayerJoinEvent ev = new PlayerJoinEvent(new BukkitPlayer((EntityPlayerMP) player), msg);
-				Bukkit.getPluginManager().callEvent(ev);
+				Runnable run = new Runnable() {
+					public void run() {
+						String msg = player.username + " joined the game";
+						if (!ForgeEventHandler.ready)
+							msg = ""; // nothing - SSP 
+						PlayerJoinEvent ev = new PlayerJoinEvent(new BukkitPlayer((EntityPlayerMP) player), msg);
+						Bukkit.getPluginManager().callEvent(ev);
+					}
+				};
+				
+				Thread x = new Thread(run);
+				System.out.println("Thread start...");
+				x.start();
+				
 				
 		
 		

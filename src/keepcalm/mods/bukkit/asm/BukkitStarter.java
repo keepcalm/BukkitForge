@@ -56,7 +56,8 @@ public class BukkitStarter implements Runnable {
 		catch (Exception e) {
 			// disable nicely
 			ForgeEventHandler.ready = false;
-			FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE, "Something real bad happened! The BukkitAPI will not be running for this Minecraft session.", e);
+			FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE, "Something real bad happened! The BukkitAPI will not be running for this Minecraft session.\n" +
+					"You should *probably* report this bug to the developer(s) at https://github.com/keepcalm/BukkitForge/issues", e);
 		}
 
 	}

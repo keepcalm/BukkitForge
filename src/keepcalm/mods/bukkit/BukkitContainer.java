@@ -136,7 +136,8 @@ public class BukkitContainer {
 		this.showAllLogs = showAllLogs.getBoolean(false);*/
 
 		config.save();
-
+		System.out.println("Registering Player Tracker...");
+		GameRegistry.registerPlayerTracker(new PlayerTracker());
 	}
 
 	public static BukkitContainer getInstance() {
@@ -156,7 +157,7 @@ public class BukkitContainer {
 	public void init(FMLInitializationEvent ev) {
 		ItemInWorldManager.class.desiredAssertionStatus();
 		FMLCommonHandler.instance().registerCrashCallable(new BukkitCrashCallable());
-		GameRegistry.registerPlayerTracker(new PlayerTracker());
+		
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		bukkitLogger.info("Complete! Registering handlers...");
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());

@@ -18,13 +18,17 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.BlockMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.utils.LongHash;
+import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.item.EntityFallingSand;
+import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.item.EntityTNTPrimed;
@@ -43,7 +47,9 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityMooshroom;
@@ -58,8 +64,10 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityFishHook;
+import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.network.packet.Packet61DoorChange;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -95,7 +103,9 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Ambient;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Bat;
 import org.bukkit.entity.Blaze;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.CaveSpider;
@@ -107,17 +117,21 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Fireball;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Fish;
 import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Giant;
 import org.bukkit.entity.Golem;
+import org.bukkit.entity.Hanging;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.MagmaCube;
@@ -134,6 +148,7 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Silverfish;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
+import org.bukkit.entity.SmallFireball;
 import org.bukkit.entity.Snowball;
 import org.bukkit.entity.Snowman;
 import org.bukkit.entity.Spider;
@@ -144,6 +159,9 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.entity.ThrownExpBottle;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Weather;
+import org.bukkit.entity.Witch;
+import org.bukkit.entity.Wither;
+import org.bukkit.entity.WitherSkull;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -971,15 +989,19 @@ public class BukkitWorld implements World {
                 entity = new EntityExpBottle(world);
                 entity.setPositionAndRotation(x, y, z, 0, 0);
             } else if (Fireball.class.isAssignableFrom(clazz)) {
+                if (SmallFireball.class.isAssignableFrom(clazz)) {
                     entity = new EntitySmallFireball(world);
+                } else if (WitherSkull.class.isAssignableFrom(clazz)) {
+                    entity = new EntityWitherSkull(world);
+                } else {
+                    entity = new EntityLargeFireball(world);
                 }
                 ((EntityFireball) entity).setPositionAndRotation(x, y, z, yaw, pitch);
                 Vector direction = location.getDirection().multiply(10);
-                ((EntityFireball) entity).accelerationX = direction.getX();
-                ((EntityFireball) entity).accelerationY = direction.getY();
-                ((EntityFireball) entity).accelerationZ = direction.getZ();
-                
-                //(direction.getX(), direction.getY(), direction.getZ());
+                entity.motionX = direction.getX();
+                entity.motionY = direction.getY();
+                entity.motionZ = direction.getZ();
+            }
         } else if (Minecart.class.isAssignableFrom(clazz)) {
             if (PoweredMinecart.class.isAssignableFrom(clazz)) {
                 entity = new EntityMinecart(world, x, y, z, BukkitMinecart.Type.PoweredMinecart.getId());
@@ -989,7 +1011,7 @@ public class BukkitWorld implements World {
                 entity = new EntityMinecart(world, x, y, z, BukkitMinecart.Type.Minecart.getId());
             }
         } /*else if (EnderSignal.class.isAssignableFrom(clazz)) {
-            entity = new EntityEnderSignal(world, x, y, z);
+            entity = new EntityEnder(world, x, y, z);
         } */else if (EnderCrystal.class.isAssignableFrom(clazz)) {
             entity = new EntityEnderCrystal(world);
             entity.setPositionAndRotation(x, y, z, 0, 0);
@@ -1054,16 +1076,24 @@ public class BukkitWorld implements World {
                 entity = new EntityBlaze(world);
             } else if (Villager.class.isAssignableFrom(clazz)) {
                 entity = new EntityVillager(world);
+            } else if (Witch.class.isAssignableFrom(clazz)) {
+                entity = new EntityWitch(world);
+            } else if (Wither.class.isAssignableFrom(clazz)) {
+                entity = new EntityWither(world);
             } else if (ComplexLivingEntity.class.isAssignableFrom(clazz)) {
                 if (EnderDragon.class.isAssignableFrom(clazz)) {
                     entity = new EntityDragon(world);
+                }
+            } else if (Ambient.class.isAssignableFrom(clazz)) {
+                if (Bat.class.isAssignableFrom(clazz)) {
+                    entity = new EntityBat(world);
                 }
             }
 
             if (entity != null) {
                 entity.setLocationAndAngles(x, y, z, pitch, yaw);
             }
-        } else if (Painting.class.isAssignableFrom(clazz)) {
+        } else if (Hanging.class.isAssignableFrom(clazz)) {
             Block block = getBlockAt(location);
             BlockFace face = BlockFace.SELF;
             if (block.getRelative(BlockFace.EAST).getTypeId() == 0) {
@@ -1077,22 +1107,28 @@ public class BukkitWorld implements World {
             }
             int dir;
             switch (face) {
-            case EAST:
+            case SOUTH:
             default:
                 dir = 0;
                 break;
-            case NORTH:
+            case WEST:
                 dir = 1;
                 break;
-            case WEST:
+            case NORTH:
                 dir = 2;
                 break;
-            case SOUTH:
+            case EAST:
                 dir = 3;
                 break;
             }
-            entity = new EntityPainting(world, (int) x, (int) y, (int) z, dir);
-            if (((EntityPainting) entity).isDead) {
+
+            if (Painting.class.isAssignableFrom(clazz)) {
+                entity = new EntityPainting(world, (int) x, (int) y, (int) z, dir);
+            } else if (ItemFrame.class.isAssignableFrom(clazz)) {
+                entity = new EntityItemFrame(world, (int) x, (int) y, (int) z, dir);
+            }
+
+            if (entity != null && ((EntityHanging) entity).isDead) {
                 entity = null;
             }
         } else if (TNTPrimed.class.isAssignableFrom(clazz)) {
@@ -1108,13 +1144,15 @@ public class BukkitWorld implements World {
             // this is not a fish, it's a bobber, and it's probably useless
             entity = new EntityFishHook(world);
             entity.setLocationAndAngles(x, y, z, pitch, yaw);
+        } else if (Firework.class.isAssignableFrom(clazz)) {
+            entity = new EntityFireworkRocket(world, x, y, z, null);
         }
 
         if (entity != null) {
-            world.spawnEntityInWorld(entity);//, reason);
-            return (T) BukkitEntity.getEntity(server, entity);
+            world.spawnEntityInWorld(entity);
+            return (T) BukkitEntity.getEntity(BukkitServer.instance(), entity);
         }
-
+        // mcpc does this as well!
         throw new IllegalArgumentException("Cannot spawn an entity for " + clazz.getName());
     }
 

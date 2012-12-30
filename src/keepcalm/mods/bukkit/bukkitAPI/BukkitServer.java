@@ -146,7 +146,7 @@ public class BukkitServer implements Server {
 	//private BukkitScheduler scheduler = new BukkitScheduler();
 //	private ServicesManager servicesManager = new SimpleServicesManager();
 	public Map<Integer,BukkitWorld> worlds = new LinkedHashMap<Integer,BukkitWorld>();
-	private Map<String, OfflinePlayer> offlinePlayers;
+	private Map<String, OfflinePlayer> offlinePlayers = new HashMap<String, OfflinePlayer>();
 	private StandardMessenger theMessenger;
 	private SimpleHelpMap theHelpMap = new SimpleHelpMap(this);
 	private final BukkitConsoleCommandSender console;// = (BukkitConsoleCommandSender) BukkitConsoleCommandSender.getInstance();

@@ -42,9 +42,9 @@ public class BlockEventHelpers implements IClassTransformer {
 			itemStackTryPlaceDesc = String.format(itemStackTryPlaceDesc, new Object[] { names.get("entityPlayerClassName").replace('.', '/'), names.get("worldClassName").replace('.', '/') });
 			return transformItemStack(bytes, names);
 		}
-		else if (name.equalsIgnoreCase(names.get("itemInWorldManagerClassName"))) {
+		/*else if (name.equalsIgnoreCase(names.get("itemInWorldManagerClassName"))) {
 			return transformItemInWorldManager(bytes, names);
-		}
+		}*/
 		else if (name.equalsIgnoreCase(names.get("blockDispenserClassName"))) {
 			return transformDispenser(bytes, names);
 		}
