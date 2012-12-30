@@ -359,21 +359,18 @@ public class ForgeEventHandler {
 	
 	@ForgeSubscribe
 	public void serverChat(ServerChatEvent ev) {
-		System.out.println("ServerChat!");
 		if (!ready)
 			return;
 		String newName = ev.player.username;
 		if (playerDisplayNames.containsKey(newName)) {
 			newName = playerDisplayNames.get(newName);
 		}
-		System.out.println(newName);
 		BukkitPlayer whom = new BukkitPlayer(ev.player);
 		
 		AsyncPlayerChatEvent ev1 = new AsyncPlayerChatEvent(false, whom, ev.message, Sets.newHashSet(BukkitServer.instance().getOnlinePlayers()));
 		ev1 = BukkitEventFactory.callEvent(ev1);
 		String newLine = String.format(ev1.getFormat(),new Object[] {newName, ev1.getMessage()});
 		ev.line = newLine;
-		System.out.println("Setting line to " + ev.line + " (name " + newName + " message " + ev1.getMessage());
 	}
 	
 	@ForgeSubscribe

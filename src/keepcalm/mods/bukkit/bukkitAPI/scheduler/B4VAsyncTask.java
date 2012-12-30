@@ -27,7 +27,6 @@ class B4VAsyncTask extends B4VTask {
 
     @Override
     public void run() {
-    	System.out.println("Running task from plugin " + this.getOwner().getDescription().getName());
         final Thread thread = Thread.currentThread();
         synchronized(workers) {
             if (getPeriod() == -2) {

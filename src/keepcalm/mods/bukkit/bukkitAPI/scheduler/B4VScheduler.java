@@ -117,7 +117,6 @@ public class B4VScheduler implements BukkitScheduler {
 
     public BukkitTask runTaskTimer(Plugin plugin, Runnable runnable, long delay, long period) {
         validate(plugin, runnable);
-        System.out.println("Plugin " + plugin.getDescription().getName() + " is registering a task " + runnable.getClass().getCanonicalName() + " to be run in " + delay + " ticks.");
         if (delay < 0l) {
             delay = 0;
         }
@@ -343,7 +342,6 @@ public class B4VScheduler implements BukkitScheduler {
             }
             if (task.isSync()) {
                 try {
-                	System.out.println("Execute task: " + task.getTaskClass().getCanonicalName() + " (" + task.getOwner().getDescription().getName() + ")");
                     task.run();
                 } catch (final Throwable throwable) {
                     task.getOwner().getLogger().log(

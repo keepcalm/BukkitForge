@@ -215,9 +215,9 @@ public abstract class BukkitEntity implements org.bukkit.entity.Entity {
     }
 
     public Location getLocation() {
-    	System.out.println("Location request!");
+    	//System.out.println("Location request!");
     	Location loc = new Location(getWorld(), entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
-    	System.out.println("Location for " + this + " is " + loc);
+    	//System.out.println("Location for " + this + " is " + loc);
         return loc;
     }
 

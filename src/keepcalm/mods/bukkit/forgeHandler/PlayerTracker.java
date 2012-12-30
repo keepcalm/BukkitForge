@@ -25,11 +25,9 @@ public class PlayerTracker implements IPlayerTracker {
 	public void onPlayerLogin(final EntityPlayer player) {
 		
 				if (!ForgeEventHandler.ready) {
-					System.out.println("ForgeEventHandler: NOT ready!");
 					return;
 				}
 					// process in BukkitServer
-				System.out.println("Started, posting join event...");
 				Runnable run = new Runnable() {
 					public void run() {
 						String msg = player.username + " joined the game";
@@ -41,7 +39,6 @@ public class PlayerTracker implements IPlayerTracker {
 				};
 				
 				Thread x = new Thread(run);
-				System.out.println("Thread start...");
 				x.start();
 				
 				
