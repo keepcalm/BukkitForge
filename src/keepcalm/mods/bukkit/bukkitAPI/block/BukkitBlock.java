@@ -403,7 +403,7 @@ public class BukkitBlock implements Block {
 	/* Build biome index based lookup table for BiomeGenBase to Biome mapping */
 	static {
 		BIOME_MAPPING = new Biome[BiomeGenBase.biomeList.length];
-		BiomeGenBase_MAPPING = new BiomeGenBase[Biome.values().length];
+		BiomeGenBase_MAPPING = new BiomeGenBase[BIOME_MAPPING.length];
 		BIOME_MAPPING[BiomeGenBase.beach.biomeID] = Biome.BEACH;
 
 		BIOME_MAPPING[BiomeGenBase.swampland.biomeID] = Biome.SWAMPLAND;
