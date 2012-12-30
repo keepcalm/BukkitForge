@@ -77,7 +77,7 @@ public class BukkitChunkSnapshot implements ChunkSnapshot {
     }
 
     public final Biome getBiome(int x, int z) {
-        return BukkitBlock.biomeBaseToBiome(biome[z << 4 | x]);
+        return BukkitBlock.BiomeGenBaseToBiome(biome[z << 4 | x]);
     }
 
     public final double getRawBiomeTemperature(int x, int z) {

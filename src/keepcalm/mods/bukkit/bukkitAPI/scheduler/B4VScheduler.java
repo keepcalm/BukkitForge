@@ -69,7 +69,7 @@ public class B4VScheduler implements BukkitScheduler {
      * These are tasks that are currently active. It's provided for 'viewing' the current state.
      */
     private final ConcurrentHashMap<Integer, B4VTask> runners = new ConcurrentHashMap<Integer, B4VTask>();
-    private volatile int currentTick = -1;
+    public static volatile int currentTick = -1;
     private final Executor executor = Executors.newCachedThreadPool();
     private B4VAsyncDebugger debugHead = new B4VAsyncDebugger(-1, null, null) {@Override StringBuilder debugTo(StringBuilder string) {return string;}};
     private B4VAsyncDebugger debugTail = debugHead;
@@ -117,6 +117,7 @@ public class B4VScheduler implements BukkitScheduler {
 
     public BukkitTask runTaskTimer(Plugin plugin, Runnable runnable, long delay, long period) {
         validate(plugin, runnable);
+        System.out.println("Plugin " + plugin.getDescription().getName() + " is registering a task " + runnable.getClass().getCanonicalName() + " to be run in " + delay + " ticks.");
         if (delay < 0l) {
             delay = 0;
         }
@@ -342,6 +343,7 @@ public class B4VScheduler implements BukkitScheduler {
             }
             if (task.isSync()) {
                 try {
+                	System.out.println("Execute task: " + task.getTaskClass().getCanonicalName());
                     task.run();
                 } catch (final Throwable throwable) {
                     task.getOwner().getLogger().log(
@@ -418,6 +420,7 @@ public class B4VScheduler implements BukkitScheduler {
     }
 
     private boolean isReady(final int currentTick) {
+    	//System.out.println("Task " + pending.peek().getTaskClass().getCanonicalName() + " will be run in " + (pending.peek().getNextRun() - currentTick) + " ticks.");
         return !pending.isEmpty() && pending.peek().getNextRun() <= currentTick;
     }
 
@@ -427,5 +430,9 @@ public class B4VScheduler implements BukkitScheduler {
         StringBuilder string = new StringBuilder("Recent tasks from ").append(debugTick - RECENT_TICKS).append('-').append(debugTick).append('{');
         debugHead.debugTo(string);
         return string.append('}').toString();
+    }
+    
+    public void resetTicks() {
+    	this.currentTick = -1;
     }
 }

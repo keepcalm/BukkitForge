@@ -8,12 +8,14 @@ import java.util.logging.Logger;
 
 import keepcalm.mods.bukkit.asm.BukkitStarter;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
 import keepcalm.mods.bukkit.common.CommonProxy;
 import keepcalm.mods.bukkit.forgeHandler.BlockBreakEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.BukkitCrashCallable;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
+import keepcalm.mods.bukkit.forgeHandler.SchedulerTickHandler;
 import net.minecraft.item.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.gui.ServerGUI;
@@ -32,18 +34,20 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.Metadata;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarting;
+import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
-import cpw.mods.fml.server.FMLServerHandler;
 
 @Mod(modid="BukkitForge",name="BukkitForge",version="1.4.6-0")
 @NetworkMod(clientSideRequired=false,serverSideRequired=false)
@@ -82,11 +86,7 @@ public class BukkitContainer {
 		else
 			isDediServer = false;
 		instance = this;
-		try {
-			//ASMifier.main(new String[] {"net.minecraft.item.ItemStack"});
-		} catch (Exception e) {
-			System.out.println("FAILED to ASMIfy. Oh well.");
-		}
+		
 
 	}
 	public boolean registerBus(EventBus bus, LoadController controller) {
@@ -158,6 +158,8 @@ public class BukkitContainer {
 		ItemInWorldManager.class.desiredAssertionStatus();
 		FMLCommonHandler.instance().registerCrashCallable(new BukkitCrashCallable());
 		
+		TickRegistry.registerTickHandler(new SchedulerTickHandler(), Side.SERVER);
+		
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		bukkitLogger.info("Complete! Registering handlers...");
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
@@ -186,6 +188,14 @@ public class BukkitContainer {
 		ThreadGroup theThreadGroup = new ThreadGroup("BukkitForge");
 		this.bThread = new Thread(theThreadGroup, new BukkitStarter(ev.getServer()), "BukkitCoreAPI-0");
 		bThread.start();
+	}
+	
+	@ServerStopping
+	public void serverStopping(FMLServerStoppingEvent ev) {
+		// reset for potential next launch (if on client)
+		B4VScheduler.currentTick = -1;
+		ForgeEventHandler.ready = false;
+		SchedulerTickHandler.tickOffset = 0;
 	}
 
 }

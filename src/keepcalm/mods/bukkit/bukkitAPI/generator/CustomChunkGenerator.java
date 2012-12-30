@@ -40,7 +40,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
         BiomeGenBase[] biome;
 
         public Biome getBiome(int x, int z) {
-            return BukkitBlock.biomeBaseToBiome(biome[(z << 4) | x]);
+            return BukkitBlock.BiomeGenBaseToBiome(biome[(z << 4) | x]);
         }
 
         public void setBiome(int x, int z, Biome bio) {

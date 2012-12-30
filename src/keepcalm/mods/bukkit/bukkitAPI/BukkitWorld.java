@@ -653,7 +653,7 @@ public class BukkitWorld implements World {
     }
 
     public Biome getBiome(int x, int z) {
-        return BukkitBlock.biomeBaseToBiome(this.world.getBiomeGenForCoords(x, z));
+        return BukkitBlock.BiomeGenBaseToBiome(this.world.getBiomeGenForCoords(x, z));
     }
 
     public void setBiome(int x, int z, Biome bio) {
