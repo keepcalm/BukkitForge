@@ -13,7 +13,6 @@ public class VanishUtils {
 	private static HashMap<EntityPlayerMP,List<EntityPlayerMP>> hidden = new HashMap<EntityPlayerMP, List<EntityPlayerMP>>();
 	
 	public static boolean isHidden(EntityPlayerMP who, Entity from) {
-		System.out.println("Checking: " + who + " hidden from " + from);
 		EntityPlayerMP ent = (EntityPlayerMP) from;
 		
 		if (!hidden.containsKey(who)) {

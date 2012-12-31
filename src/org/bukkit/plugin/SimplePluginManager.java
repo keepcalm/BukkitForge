@@ -18,6 +18,8 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import keepcalm.mods.bukkit.BukkitContainer;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -472,6 +474,7 @@ public final class SimplePluginManager implements PluginManager {
             if (!registration.getPlugin().isEnabled()) {
                 continue;
             }
+            if (BukkitContainer.DEBUG)
             System.out.println("Forwarding event " + event.getEventName() + " to plugin " + registration.getPlugin().getDescription().getName());
             try {
                 registration.callEvent(event);

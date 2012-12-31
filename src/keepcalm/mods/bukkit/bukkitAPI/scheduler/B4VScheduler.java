@@ -418,7 +418,6 @@ public class B4VScheduler implements BukkitScheduler {
     }
 
     private boolean isReady(final int currentTick) {
-    	//System.out.println("Task " + pending.peek().getTaskClass().getCanonicalName() + " will be run in " + (pending.peek().getNextRun() - currentTick) + " ticks.");
         return !pending.isEmpty() && pending.peek().getNextRun() <= currentTick;
     }
 

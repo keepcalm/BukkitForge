@@ -9,7 +9,21 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 	
 	@Override
 	public String[] getASMTransformerClass() {
-		return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer", /*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */"keepcalm.mods.bukkit.asm.transformers.events.BlockEventHelpers", "keepcalm.mods.bukkit.asm.transformers.events.EntityEventHelpers"};
+		try {
+			Class.forName("keepcalm.mods.blockbreak.asm.BlockBreakEventAdder");
+			return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer", 
+					"keepcalm.mods.blockbreak.asm.BlockBreakEventAdder",
+					/*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */
+					"keepcalm.mods.bukkit.asm.transformers.events.BlockEventHelpers",
+					"keepcalm.mods.bukkit.asm.transformers.events.EntityEventHelpers"};
+		}
+		catch (ClassNotFoundException e) {
+			return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer", 
+					/*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */
+					"keepcalm.mods.bukkit.asm.transformers.events.BlockEventHelpers",
+					"keepcalm.mods.bukkit.asm.transformers.events.EntityEventHelpers"};
+		}
+		
 	}
 	@Override
 	public String[] getLibraryRequestClass() {
@@ -27,9 +41,6 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 	@Override
 	public void injectData(Map<String, Object> data) {
 		
-		for (String i : data.keySet()) {
-			System.out.println("Injected: " + i);
-		}
 		
 	}
 }

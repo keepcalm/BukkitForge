@@ -53,6 +53,20 @@ public class BlockEventHelpers implements IClassTransformer {
 		return bytes;
 	}
 
+	private byte[] transformBlockFire(byte[] bytes, HashMap<String, String> names) {
+		
+		ClassNode cn = new ClassNode();
+		ClassReader cr = new ClassReader(bytes);
+		cr.accept(cn, 0);
+		
+		Iterator<MethodNode> methods = cn.methods.iterator();
+		
+		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+		cn.accept(cw);
+		return cw.toByteArray();
+		
+	}
+	
 	private byte[] transformDispenser(byte[] bytes, HashMap<String, String> names) {
 		ClassNode cn = new ClassNode();
 		ClassReader cr = new ClassReader(bytes);

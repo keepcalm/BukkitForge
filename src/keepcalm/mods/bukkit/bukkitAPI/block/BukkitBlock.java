@@ -457,7 +457,7 @@ public class BukkitBlock implements Block {
 				String name = BiomeGenBase.biomeList[i].biomeName;
 				int id = BiomeGenBase.biomeList[i].biomeID;
 
-				System.out.println("Adding biome mapping "+BiomeGenBase.biomeList[i].biomeID+" "+name+" at BiomeGenBase["+i+"]");
+				System.out.println("Adding mod biome mapping "+BiomeGenBase.biomeList[i].biomeID+" "+name+" at BiomeGenBase["+i+"]");
 				addBukkitBiome(name);
 				BIOME_MAPPING[BiomeGenBase.biomeList[i].biomeID] = Enum.valueOf(Biome.class, name);
 			}

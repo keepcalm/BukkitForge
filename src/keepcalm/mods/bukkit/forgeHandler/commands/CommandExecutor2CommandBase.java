@@ -39,14 +39,8 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	 * @param name - the name of the command
 	 */
 	public CommandExecutor2CommandBase(Command cmd, String name) {
-		/*this.name = name;
-		this.requiredPerm = permissionWanted;*/
 		this.bukkitCommandInstance = cmd;
-		//this.myExec = cmd.
 		this.name =name;
-		//this.requiredPerms = wantedPerms;
-		//this.bukkitCommandInstance = Bukkit.getServer().getPluginCommand(name);
-		
 	}
 	
 	public List<String> addTabCompletionOptions(ICommandSender who, String[] args) {
@@ -61,18 +55,15 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	}
 	
 	public List<String> getCommandAliases() {
-		//bukkitCommandInstance.
 		return bukkitCommandInstance.getAliases();
 	}
 	
 	public String getCommandUsage(ICommandSender who) {
 		String usage = bukkitCommandInstance.getUsage();
 		usage = usage.replace("<command>", name);
-		//System.out.println(usage);
 		return usage;
 	}
 	
-	@SuppressWarnings("all")
 	public boolean canCommandSenderUseCommand(ICommandSender who) {
 		
 		CommandSender sender;
@@ -89,11 +80,9 @@ public class CommandExecutor2CommandBase extends CommandBase {
 			allowed = allowed || MinecraftServer.getServer().getServerOwner().equalsIgnoreCase(who.getCommandSenderName()) 
 					|| MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(who.getCommandSenderName().toLowerCase());
 		}
-		//System.out.println((allowed ? "A" : "Not a") + "llowing user " + who.getCommandSenderName() + " to run command" + name);
 		if (allowed) {
 			return true;
 		}
-		//System.out.println("NO! For " + name);
 		return false;
 		
 	}
@@ -106,7 +95,6 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
 		try {
-			//System.out.println("Begin execution: " + name + " " + Joiner.on(' ').join(var2));
 			CommandSender sender;
 			if (var1 instanceof EntityPlayerMP) {
 				sender = new BukkitPlayer((EntityPlayerMP) var1);
@@ -122,8 +110,11 @@ public class CommandExecutor2CommandBase extends CommandBase {
 
 	}
 	public void execute(CommandSender g, String usedName, String[] args) {
-		//System.out.println("Begin execution: " + usedName + " " + Joiner.on(' ').join(args));
 		bukkitCommandInstance.execute(g, usedName, args);
+	}
+	
+	public List<String> tabComplete(CommandSender who, String name, String[] args) {
+		return bukkitCommandInstance.tabComplete(who, name, args);
 	}
 
 }

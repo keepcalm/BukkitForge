@@ -176,11 +176,6 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.util.Vector;
-//import org.bukkit.craftbukkit.entity.*;
-//import org.bukkit.craftbukkit.metadata.BlockMetadataStore;
-//import org.bukkit.craftbukkit.block.BukkitBlock;
-//import org.bukkit.craftbukkit.inventory.BukkitItemStack;
-//import keepcalm.mods.bukkit.bukkitAPI.utils.LongHash;
 
 public class BukkitWorld implements World {
     private final WorldServer world;
@@ -229,7 +224,7 @@ public class BukkitWorld implements World {
     public boolean setSpawnLocation(int x, int y, int z) {
         try {
             Location previousLocation = getSpawnLocation();
-            world.getWorldInfo().setSpawnPosition(x, y, z);
+            world.provider.setSpawnPoint(x, y, z);
 
             // Notify anyone who's listening.
             SpawnChangeEvent event = new SpawnChangeEvent(this, previousLocation);
@@ -565,7 +560,6 @@ public class BukkitWorld implements World {
     }
 
     public void setTime(long time) {
-    	//System.out.println("Setting time: " + time);
         world.getWorldInfo().setWorldTime(time);
         for (Object i : world.playerEntities) {
         	server.getHandle().getConfigurationManager().updateTimeAndWeatherForPlayer((EntityPlayerMP) i, world);

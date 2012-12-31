@@ -29,9 +29,6 @@ public class BukkitStarter implements Runnable {
 	@Override
 	public void run() {
 		try {
-			//URL[] urls = ((URLClassLoader)getClass().getClassLoader()).getURLs();
-			//BukkitClassLoader newCL = new BukkitClassLoader(urls, getClass().getClassLoader());
-			//newCL.loadClass("keepcalm.mods.bukkit.bukkitAPI.BukkitServer").getMethod("bukkitReEntry").invoke(null);
 			ServerCommandManager scm = (ServerCommandManager) server.getCommandManager();
 			scm.registerCommand(new BukkitCommandHelp());
 			scm.registerCommand(new BukkitCommandMVFix());
@@ -44,13 +41,8 @@ public class BukkitStarter implements Runnable {
 			}
 			CommandRequirementRegistry.load();
 			scm.registerCommand(new CommandSetLevel());
-			BukkitContainer.bukkitLogger.info("Starting the API, implementing Bukkit API version " + BukkitServer.version);
 			
-			//System.out.println("Starting the API...");
 			BukkitContainer.bServer = new BukkitServer(MinecraftServer.getServer());
-			//BukkitContainer.bServer.setServer(MinecraftServer.getServer());
-			//BukkitContainer.bServer.continueLoad();
-			// hopefully this works...
 			scm.registerCommand(new BukkitCommandStop());
 		}
 		catch (Exception e) {

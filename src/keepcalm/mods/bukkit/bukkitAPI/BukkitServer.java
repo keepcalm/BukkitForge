@@ -25,6 +25,7 @@ import keepcalm.mods.bukkit.bukkitAPI.help.CommandHelpTopic;
 import keepcalm.mods.bukkit.bukkitAPI.help.SimpleHelpMap;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCustom;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemFactory;
+import keepcalm.mods.bukkit.bukkitAPI.map.BukkitMapView;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.EntityMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.PlayerMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.WorldMetadataStore;
@@ -173,12 +174,10 @@ public class BukkitServer implements Server {
 	}*/
 	
 	public BukkitServer(MinecraftServer server) {
-		//System.out.println("My classloader is " + getClass().getClassLoader().getClass().getCanonicalName());
 		this.instance = this;
 		configMan = server.getConfigurationManager();
 		theServer = server;
 		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());
-		//System.out.println("IDs: " + Joiner.on(", ").join(ids));
 		Iterator<Integer> _ = ids.iterator();
 		
 		bukkitConfig = new YamlConfiguration();
@@ -230,8 +229,6 @@ public class BukkitServer implements Server {
 		Bukkit.getServer().getHelpMap().addTopic(myHelp);
 		loadPlugins();
 		enablePlugins(PluginLoadOrder.STARTUP);
-		//System.out.println("Hi!");
-		//System.out.println("Thread: " + Thread.currentThread().getName());
 		
 		theLogger.info("Loading PostWorld plugins...");
 		enablePlugins(PluginLoadOrder.POSTWORLD);
@@ -586,7 +583,7 @@ public class BukkitServer implements Server {
             (worlds.get(dimension)).getPopulators().addAll(generator.getDefaultPopulators(worlds.get(dimension)));
         }
         
-        pluginManager.callEvent(new WorldInitEvent(((World)internal)));
+        pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
         System.out.print("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
 
         if (DimensionManager.shouldLoadSpawn(dimension)) {
@@ -616,7 +613,7 @@ public class BukkitServer implements Server {
                     }//
                 }
             }
-        pluginManager.callEvent( new WorldLoadEvent( (World) internal));
+        pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
 		return worlds.get(dimension);
 	}
 
@@ -657,63 +654,19 @@ public class BukkitServer implements Server {
 
 	@Override
 	public boolean unloadWorld(World world, boolean save) {
-		if (world == null) {
-            return false;
-        }
-
-        WorldServer handle = ((BukkitWorld) world).getHandle();
-        int srvIndex = -10000;
-        boolean loaded = false;
-        for (int i = 0; i < theServer.worldServers.length; i++) {
-        	WorldServer j = theServer.worldServers[i];
-        	if (j == handle) {
-        		loaded = true;
-        		srvIndex = i;
-        		break;
-        	}
-        }
-        if (!loaded) {
-            return false;
-        }
-
-        if (!(handle.getWorldInfo().getDimension() > 1)) {
-            return false;
-        }
-
-        if (handle.playerEntities.size() > 0) {
-            return false;
-        }
-
-        WorldUnloadEvent e = new WorldUnloadEvent((World) handle);
-        pluginManager.callEvent(e);
-
-        if (e.isCancelled()) {
-            return false;
-        }
-
-        if (save) {
-            try {
-                handle.saveAllChunks(true, (IProgressUpdate) null);
-                
-                WorldSaveEvent event = new WorldSaveEvent((World) handle);
-                getPluginManager().callEvent(event);
-            } catch (Exception ex) {
-                getLogger().log(Level.SEVERE, null, ex);
-            }
-        }
-
-        worlds.remove(world.getName().toLowerCase());
-        theServer.worldServers[srvIndex] = null;
-
-        return true;
+		WorldServer handle = ((BukkitWorld) world).getHandle();
+		WorldUnloadEvent ev = new WorldUnloadEvent(world);
+		getPluginManager().callEvent(ev);
+		if (ev.isCancelled())
+			return false; // cancelled
+		DimensionManager.unloadWorld(handle.getWorldInfo().getDimension());
+		return true;
 		
 	}
 
 	@Override
 	public World getWorld(String name) {
-		//System.out.println("Get world: " + name);
 		for (WorldServer w : theServer.worldServers) {
-			//System.out.println("NAME: " + w.getWorldInfo().getWorldName() + " WPNAME: " + w.getProviderName());
 			if (w.getWorldInfo().getWorldName().equals(name)) {
 				return this.getWorld(w.getWorldInfo().getDimension());
 			}
@@ -732,7 +685,7 @@ public class BukkitServer implements Server {
 			//return null;
 			UUID wUUID = new UUID(w.getSeed(), w.getWorldInfo().getDimension());
 			if (wUUID == uid) {
-				return (World) w;
+				return worlds.get(w.getWorldInfo().getDimension());
 			}
 			//if (w.getWorldInfo().)
 		}
@@ -749,7 +702,7 @@ public class BukkitServer implements Server {
 	 */
 	@Override
 	public MapView getMap(short id) {
-		return this.getMap(id, (World) theServer.worldServerForDimension(0));
+		return this.getMap(id, this.getWorld(0));
 	}
 
 	/**
@@ -761,8 +714,8 @@ public class BukkitServer implements Server {
 	 * @return the map of that ID in that world.
 	 */
 	private MapView getMap(short id, World world) {
-		MapData d = ItemMap.getMPMapData(id, (net.minecraft.world.World) world);
-		return (MapView) d;
+		MapData d = ItemMap.getMPMapData(id, ((BukkitWorld) world).getHandle());
+		return new BukkitMapView(d);
 	}
 	
 	@Override

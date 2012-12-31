@@ -75,6 +75,7 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.metadata.MetadataValue;
@@ -82,7 +83,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 //import org.bukkit.entity.Entity;
 
-public abstract class BukkitEntity implements org.bukkit.entity.Entity {
+public class BukkitEntity implements org.bukkit.entity.Entity {
     protected final BukkitServer server;
     protected Entity entity;
     private EntityDamageEvent lastDamageEvent;
@@ -100,7 +101,7 @@ public abstract class BukkitEntity implements org.bukkit.entity.Entity {
             // Players
             if (entity instanceof EntityPlayer) {
                 if (entity instanceof EntityPlayerMP) { return new BukkitPlayer(server, (EntityPlayerMP) entity); }
-                else { return new BukkitEntityHuman(server, (EntityPlayerMP) entity); }
+                else { return new BukkitEntityHuman(server, (EntityPlayer) entity); }
             }
             else if (entity instanceof EntityCreature) {
                 // Animals
@@ -211,13 +212,15 @@ public abstract class BukkitEntity implements org.bukkit.entity.Entity {
         	return new BukkitAmbient(server, (EntityBat) entity);
         	
         }
+        // unknown, last resort for mod entities
+        else if (entity instanceof Entity ) {
+        	return new BukkitEntity(server, entity);
+        }
         throw new IllegalArgumentException("Unknown entity");
     }
 
     public Location getLocation() {
-    	//System.out.println("Location request!");
     	Location loc = new Location(getWorld(), entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
-    	//System.out.println("Location for " + this + " is " + loc);
         return loc;
     }
 
@@ -463,5 +466,10 @@ public abstract class BukkitEntity implements org.bukkit.entity.Entity {
 		loc.setY(getHandle().posY);
 		loc.setZ(getHandle().posZ);
 		return loc;
+	}
+
+	@Override
+	public EntityType getType() {
+		return EntityType.UNKNOWN;
 	}
 }

@@ -17,8 +17,6 @@ public class ForgeEventHelper {
 		if (Side.CLIENT.isClient())
 			// not on client
 			return;
-		//System.out.println("ItemUse!");
-		//System.out.println("Hello");
 		PlayerUseItemEvent ev = new PlayerUseItemEvent(stack, who, world, x, y, z, ForgeDirection.getOrientation(blockFace));
 		MinecraftForge.EVENT_BUS.post(ev);
 	}
@@ -26,8 +24,6 @@ public class ForgeEventHelper {
 	public static boolean onBlockDamage(ItemInWorldManager man) {
 		
 		// mcp has ridiculously long names
-		
-		//System.out.println("BlockDamage CANCELLED :P");
 		
 		PlayerDamageBlockEvent ev = new PlayerDamageBlockEvent(man.thisPlayerMP, man.partiallyDestroyedBlockX,
 				man.partiallyDestroyedBlockY, man.partiallyDestroyedBlockZ,
@@ -53,7 +49,6 @@ public class ForgeEventHelper {
 	 */
 	public static boolean onDispenseItem(World world, int x, int y, int z, ItemStack itemToDispense) {
 		DispenseItemEvent ev = new DispenseItemEvent(x, y, z, world, itemToDispense);
-		//System.out.println("Dispense!");
 		MinecraftForge.EVENT_BUS.post(ev);
 		
 		if (ev.isCanceled()) {
@@ -64,7 +59,6 @@ public class ForgeEventHelper {
 	}
 	
 	public static boolean onSheepDye(EntitySheep sheep, int newColor, byte oldColor) {
-		System.out.println("SheepDye!");
 		return false;
 	}
 	

@@ -46,7 +46,7 @@
 	</target>
 
 	 <target name="install" depends="check-blockbreak,build">
-		 <delete dir="${classes.dir}/keepcalm/mods/blockbreak" />
+		 <!--		 <delete dir="${classes.dir}/keepcalm/mods/blockbreak" />-->
 		 <copy todir="${classes.dir}">
 		        	  <fileset file="${package.at}" />
 			  </copy>

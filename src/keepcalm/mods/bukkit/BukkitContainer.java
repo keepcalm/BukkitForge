@@ -54,13 +54,14 @@ import cpw.mods.fml.relauncher.Side;
 public class BukkitContainer {
 	public static BukkitServer bServer;
 	public File myConfigurationFile;
-	public boolean allowAnsi;
+	public static boolean allowAnsi;
 	public String pluginFolder;
 	public static boolean showAllLogs;
 	public static boolean isDediServer;
 	public static String serverUUID;
 	public static boolean overrideVanillaCommands;
 	public static Logger bukkitLogger ;//.getLogger("[Bukkit API]");
+	public static boolean DEBUG;
 
 	private static boolean isGuiEnabled = false;
 	
@@ -118,6 +119,10 @@ public class BukkitContainer {
 		override.comment = "Override vanilla commands (/me etc) with Bukkit defaults (won't stop plugins from overriding)";
 		this.overrideVanillaCommands = override.getBoolean(false);
 		
+		Property debug = config.get("consoleConfig", "debug", false);
+		debug.comment = "Print debug messages";
+		this.DEBUG = debug.getBoolean(false);
+		
 		Property colour = config.get("consoleConfig", "enablecolour", isGuiEnabled ? false : true);
 		colour.comment = "Enable coloured ANSI console output";
 		this.allowAnsi = colour.getBoolean(false);
@@ -136,7 +141,6 @@ public class BukkitContainer {
 		this.showAllLogs = showAllLogs.getBoolean(false);*/
 
 		config.save();
-		//System.out.println("Registering Player Tracker...");
 		GameRegistry.registerPlayerTracker(new PlayerTracker());
 	}
 
