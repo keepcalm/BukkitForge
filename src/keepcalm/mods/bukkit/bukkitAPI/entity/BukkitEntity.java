@@ -211,6 +211,9 @@ public abstract class BukkitEntity implements org.bukkit.entity.Entity {
         	return new BukkitAmbient(server, (EntityBat) entity);
         	
         }
+        else if (entity instanceof Entity) { 	// Like MCPC Does :) for custom entities.
+        	return instance; 
+        }
         throw new IllegalArgumentException("Unknown entity");
     }
 
