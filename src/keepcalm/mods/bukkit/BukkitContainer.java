@@ -62,6 +62,7 @@ public class BukkitContainer {
 	public static boolean overrideVanillaCommands;
 	public static Logger bukkitLogger ;//.getLogger("[Bukkit API]");
 	public static boolean DEBUG;
+	public static boolean IGNORE_CONNECTION_RECEIVED = false;
 
 	private static boolean isGuiEnabled = false;
 	
@@ -115,6 +116,10 @@ public class BukkitContainer {
 		config.addCustomCategoryComment("consoleConfig", "Configuration for the server console");
 		config.addCustomCategoryComment("dontTouchThis", "Things which are best left untouched");
 
+		Property ignore = config.get(Configuration.CATEGORY_GENERAL, "ignoreConnectionHandler", false);
+		ignore.comment = "Ignore connection events. If you get kicked from the server when output has stopped from the console, turn this ON";
+		this.IGNORE_CONNECTION_RECEIVED = ignore.getBoolean(false);
+		
 		Property override = config.get(Configuration.CATEGORY_GENERAL, "overrideVanillaCommands", false);
 		override.comment = "Override vanilla commands (/me etc) with Bukkit defaults (won't stop plugins from overriding)";
 		this.overrideVanillaCommands = override.getBoolean(false);

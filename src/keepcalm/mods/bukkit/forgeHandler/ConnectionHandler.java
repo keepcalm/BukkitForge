@@ -2,6 +2,7 @@ package keepcalm.mods.bukkit.forgeHandler;
 
 import java.util.HashMap;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -11,6 +12,7 @@ import net.minecraft.network.TcpConnection;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,6 +53,15 @@ public class ConnectionHandler implements IConnectionHandler {
 	@Override
 	public String connectionReceived(NetLoginHandler netHandler,
 			INetworkManager manager) {
+		if (BukkitContainer.IGNORE_CONNECTION_RECEIVED) {
+			return null;
+		}
+		if (!ForgeEventHandler.ready && (MinecraftServer.getServer() instanceof DedicatedServer)) {
+			return "Patience, my padawan! BukkitForge is still loading.\nTry again in a few moments...";
+		}
+		else if (!ForgeEventHandler.ready) {
+			return null; // not single player - don't bother
+		}
 		boolean banned = MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().isBanned(netHandler.clientUsername) || MinecraftServer.getServer().getConfigurationManager().getBannedIPs().isBanned(netHandler.myTCPConnection.getSocket().getInetAddress().getHostAddress());
 		boolean whitelisted = true;
 		if (MinecraftServer.getServer().getConfigurationManager().isWhiteListEnabled())
