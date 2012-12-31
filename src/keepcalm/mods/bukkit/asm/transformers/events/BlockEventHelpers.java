@@ -42,9 +42,12 @@ public class BlockEventHelpers implements IClassTransformer {
 			itemStackTryPlaceDesc = String.format(itemStackTryPlaceDesc, new Object[] { names.get("entityPlayerClassName").replace('.', '/'), names.get("worldClassName").replace('.', '/') });
 			return transformItemStack(bytes, names);
 		}
-		/*else if (name.equalsIgnoreCase(names.get("itemInWorldManagerClassName"))) {
+		else if (name.equalsIgnoreCase(names.get("itemInWorldManagerClassName"))) {
 			return transformItemInWorldManager(bytes, names);
-		}*/
+		}
+		else if (name.equalsIgnoreCase(names.get("blockClassName"))) {
+			return transformBlock(bytes, names);
+		}
 		else if (name.equalsIgnoreCase(names.get("blockDispenserClassName"))) {
 			return transformDispenser(bytes, names);
 		}
@@ -60,11 +63,56 @@ public class BlockEventHelpers implements IClassTransformer {
 		cr.accept(cn, 0);
 		
 		Iterator<MethodNode> methods = cn.methods.iterator();
+		while (methods.hasNext()) {
+			MethodNode m = methods.next();
+			if (m.name.equals(names.get("blockFireTargName")) && m.desc.equals(names.get("blockFireTargDesc"))) {
+				System.out.println("Found target method: " + m.name + m.desc +"!");
+				
+			}
+		}
+		
 		
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		cn.accept(cw);
 		return cw.toByteArray();
 		
+	}
+	
+	private byte[] transformBlock(byte[] bytes, HashMap<String,String> names) {
+		ClassNode cn = new ClassNode();
+		ClassReader cr = new ClassReader(bytes);
+		cr.accept(cn, 0);
+		
+		Iterator<MethodNode> methods = cn.methods.iterator();
+		while (methods.hasNext()) {
+			MethodNode m = methods.next();
+			
+			if (m.name.equals(names.get("blockBreakBlock")) && m.desc.equals(names.get("blockBreakBlockDesc"))) {
+				System.out.println("Found global block break call: " + m.name + m.desc );
+				
+				InsnList toAdd = new InsnList();
+				
+				LabelNode lmmnode = new LabelNode(new Label());
+				
+				toAdd.add(new VarInsnNode(Opcodes.ALOAD, 1));
+				toAdd.add(new VarInsnNode(Opcodes.ILOAD, 2));
+				toAdd.add(new VarInsnNode(Opcodes.ILOAD, 3));
+				toAdd.add(new VarInsnNode(Opcodes.ILOAD, 4));
+				toAdd.add(new VarInsnNode(Opcodes.ILOAD, 5));
+				toAdd.add(new VarInsnNode(Opcodes.ILOAD, 6));
+				toAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper", "onBlockBreak", "(L" + names.get("worldJavaName") + ";IIIII)V"));
+				toAdd.add(lmmnode);
+				// insert at the beginning
+				m.instructions.insert(toAdd);
+				System.out.println("Inserted instructions!");
+				// done!
+				break;
+			}
+		}
+		
+		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+		cn.accept(cw);
+		return cw.toByteArray();
 	}
 	
 	private byte[] transformDispenser(byte[] bytes, HashMap<String, String> names) {

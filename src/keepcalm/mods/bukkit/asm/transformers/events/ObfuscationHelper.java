@@ -63,6 +63,26 @@ public class ObfuscationHelper {
 		
 		mcpNames.put("entitySheepSetColour", "setFleeceColor");
 		obfNames.put("entitySheepSetColour", "s");
+		
+		//blockFire stuff
+		mcpNames.put("blockFireClassName", "net.minecraft.block.BlockFire");
+		obfNames.put("blockFireClassName", "akf");
+		
+		mcpNames.put("blockFireTargDesc", "(Lnet/minecraft/world/World;IIIILjava/util/Random;ILnet/minecraftforge/common/ForgeDirection;)V");
+		obfNames.put("blockFireTargDesc", "Lyc;IIIILjava/util/Random;ILnet/minecraftforge/common/ForgeDirection;)V");
+		
+		mcpNames.put("blockFireTargName", "tryToCatchBlockOnFire");
+		obfNames.put("blockFireTargName", "a");
+		
+		// block stuff
+		mcpNames.put("blockClassName", "net.minecraft.block.Block");
+		obfNames.put("blockClassName", "amq");
+		
+		mcpNames.put("blockBreakBlock", "breakBlock");
+		obfNames.put("blockBreakBlock", "a");
+		
+		mcpNames.put("blockBreakBlockDesc", "(Lnet/minecraft/world/World;IIIII)V");
+		obfNames.put("blockBreakBlockDesc", "(Lyc;IIIII)V");
 
 	}
 	

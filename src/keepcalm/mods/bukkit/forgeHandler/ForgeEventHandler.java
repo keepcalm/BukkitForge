@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.forgeHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
@@ -12,6 +13,7 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
+import keepcalm.mods.bukkit.events.BlockDestroyEvent;
 import keepcalm.mods.bukkit.events.DispenseItemEvent;
 import keepcalm.mods.bukkit.events.PlayerDamageBlockEvent;
 import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
@@ -57,6 +59,7 @@ import org.bukkit.TreeType;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
@@ -434,7 +437,26 @@ public class ForgeEventHandler {
 				new BukkitItemStack(ev.entityPlayer.inventory.getCurrentItem()), 
 				((EntityPlayerMP) ev.entityPlayer).capabilities.isCreativeMode);
 		Bukkit.getPluginManager().callEvent(bev);
-		// cancellation is misbehaving, TODO
+		if (bev.isCancelled()) {
+			ev.setCanceled(true);
+			return;
+		}
+		if (bev.getInstaBreak()) {
+			Block.blocksList[ev.blockID].breakBlock(ev.world, ev.blockX, ev.blockY, ev.blockZ, ev.blockID, ev.world.getBlockMetadata(ev.blockX, ev.blockY, ev.blockZ));
+			return;
+		}
+		
+	}
+	
+	@ForgeSubscribe
+	public void blockBreakSomehow(BlockDestroyEvent ev) {
+		BlockBreakEvent bev = new BlockBreakEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), new BukkitPlayer(BukkitContainer.MOD_PLAYER));
+		Bukkit.getPluginManager().callEvent(bev);
+		
+		if (bev.isCancelled()) {
+			ev.setCanceled(true);
+		}
+		//ignore XP etc
 	}
 
 }

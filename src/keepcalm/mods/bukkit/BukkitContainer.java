@@ -16,6 +16,7 @@ import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
 import keepcalm.mods.bukkit.forgeHandler.SchedulerTickHandler;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.gui.ServerGUI;
@@ -63,7 +64,9 @@ public class BukkitContainer {
 	public static Logger bukkitLogger ;//.getLogger("[Bukkit API]");
 	public static boolean DEBUG;
 	public static boolean IGNORE_CONNECTION_RECEIVED = false;
-
+	private static String MOD_USERNAME = "[Mod]";
+	public static EntityPlayerMP MOD_PLAYER;
+	
 	private static boolean isGuiEnabled = false;
 	
 	@SidedProxy(clientSide="keepcalm.mods.bukkit.client.ClientProxy",serverSide="keepcalm.mods.bukkit.common.CommonProxy")
@@ -140,6 +143,11 @@ public class BukkitContainer {
 		bukkitLogger.info("Set UUID to " + suuid.value);
 		suuid.comment = "The UUID of the server. Don't touch this or it might break your plugins.";
 		this.serverUUID = suuid.value;
+		
+		Property modActionName = config.get(Configuration.CATEGORY_GENERAL, "modActionUserName", "[Mod]");
+		modActionName.comment = "The name of the player to use when passing break events from mods to plugins";
+		this.MOD_USERNAME = modActionName.value;
+		
 
 		/*Property showAllLogs = config.get(Configuration.CATEGORY_GENERAL, "printForgeLogToGui", false);
 		showAllLogs.comment = "Print stuff that's outputted to the logs to the GUI as it happens.";
@@ -194,6 +202,7 @@ public class BukkitContainer {
 
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent ev) {
+		this.MOD_PLAYER = ev.getServer().getConfigurationManager().getPlayerForUsername(MOD_USERNAME);
 		ThreadGroup theThreadGroup = new ThreadGroup("BukkitForge");
 		this.bThread = new Thread(theThreadGroup, new BukkitStarter(ev.getServer()), "BukkitCoreAPI-0");
 		bThread.start();
