@@ -108,13 +108,13 @@ public class ForgeEventHelper {
 				a++;
 			}
 			
-			if (foundIIWM) {// block break got this
-				System.out.println("Cancelled.");
+			if (foundIIWM) {// block break got this, or it's something else
+				//System.out.println("Cancelled.");
 				return;
 			}
 			if (id == 0) // no point - air got broken
 				return;
-			System.out.println("This is a break!");
+			//System.out.println("This is a break!");
 			Bukkit.getScheduler().runTaskLater(BukkitDummyPlugin.INSTANCE, new Runnable() {
 				
 				@Override
