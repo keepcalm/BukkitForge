@@ -13,14 +13,18 @@ import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryView;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.InventoryMerchant;
 import net.minecraft.network.packet.Packet100OpenWindow;
 import net.minecraft.network.packet.Packet101CloseWindow;
+import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -77,7 +81,7 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		return new BukkitItemStack(getHandle().inventory.getCurrentItem());
 	}
 	/**
-	 * UNIMPLEMENTED
+	 * UNIMPLEMENTED - TODO
 	 */
 	public void setItemOnCursor(ItemStack item) {
 		/*
@@ -177,6 +181,7 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 	}
 
 	public InventoryView getOpenInventory() {
+		BukkitInventoryView inv = new BukkitInventoryView(this, null, getHandle().openContainer);
 		return null;
 	}
 
@@ -223,6 +228,23 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		case ENCHANTING:
 			openCustomInventory(inventory, player, 4);
 			break;
+		case ANVIL:
+			openCustomInventory(inventory, player, 8);
+			break;
+		case BEACON:
+			if (craftinv.getInventory() instanceof TileEntityBeacon) {
+				getHandle().displayGUIBeacon((TileEntityBeacon)craftinv.getInventory());
+			} else {
+				openCustomInventory(craftinv, player, 7);
+			}
+			break;
+		case MERCHANT:
+			if (craftinv.getInventory() instanceof IMerchant) {
+				getHandle().displayGUIMerchant((IMerchant) craftinv.getInventory());
+			}
+			else {
+				openCustomInventory(craftinv, player, 6);
+			}
 		case CREATIVE:
 		case CRAFTING:
 		default:
@@ -232,7 +254,7 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 			return null;
 		}
 		//getHandle().openContainer. = false;
-		return new BukkitInventoryView(this, this.inventory, getHandle().openContainer);
+		return new BukkitInventoryView(this, craftinv, getHandle().openContainer);
 	}
 
 	private void openCustomInventory(Inventory inventory, EntityPlayerMP player, int windowType) {
@@ -245,7 +267,7 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		String title = cont.getBukkitView().getTitle();// container.();
 		int size = cont.getBukkitView().getTopInventory().getSize();
 
-		player.playerNetServerHandler.unexpectedPacket(new Packet100OpenWindow(container.windowId, windowType, title, size));
+		player.playerNetServerHandler.handleOpenWindow(new Packet100OpenWindow(container.windowId, windowType, title, size));
 		getHandle().openContainer = container;
 		getHandle().openContainer.setPlayerIsPresent(player, true);
 	}
