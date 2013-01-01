@@ -968,21 +968,21 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
         getHandle().capabilities.isFlying = value;
         
     }
-    private void updateAbilities() {
-    	Packet202PlayerAbilities j = new Packet202PlayerAbilities(getHandle().capabilities);
+    private void updateAbilities(Packet202PlayerAbilities j) {
+    	//Packet202PlayerAbilities j = new Packet202PlayerAbilities(getHandle().capabilities);
         getHandle().playerNetServerHandler.handlePlayerAbilities(j);
+    }
+    private Packet202PlayerAbilities getAbilitiesPacket() {
+    	return new Packet202PlayerAbilities(getHandle().capabilities);
     }
     public boolean getAllowFlight() {
         return getHandle().capabilities.allowFlying;
     }
 
     public void setAllowFlight(boolean value) {
-        if (isFlying() && !value) {
-            getHandle().capabilities.isFlying = false;
-        }
-
-        getHandle().capabilities.allowFlying = value;
-        updateAbilities();
+        Packet202PlayerAbilities able = getAbilitiesPacket();    	
+        able.setAllowFlying(value);
+        updateAbilities(able);
     }
 
     @Override
@@ -996,17 +996,18 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
 
     public void setFlySpeed(float value) {
         validateSpeed(value);
-        EntityPlayerMP player = getHandle();
-        player.capabilities.setFlySpeed(value / 2f);
-        updateAbilities();
+        Packet202PlayerAbilities pack = getAbilitiesPacket();
+        pack.setFlySpeed(value);
+        
+        updateAbilities(pack);
 
     }
 
     public void setWalkSpeed(float value) {
         validateSpeed(value);
-        EntityPlayerMP player = getHandle();
-        player.capabilities.walkSpeed = value / 2f;
-        updateAbilities();
+        Packet202PlayerAbilities pack = getAbilitiesPacket();
+        pack.setWalkSpeed(value);
+        updateAbilities(pack);
     }
 
     public float getFlySpeed() {

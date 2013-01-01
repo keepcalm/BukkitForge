@@ -1,5 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
+import java.util.HashMap;
+
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import net.minecraft.entity.Entity;
@@ -86,7 +88,7 @@ public class BukkitInventoryPlayer extends BukkitInventory implements org.bukkit
 
 	@Override
 	public void setItemInHand(ItemStack stack) {
-		realInv.setInventorySlotContents(getHeldItemSlot(), ((BukkitItemStack) stack).getHandle());		
+		realInv.setInventorySlotContents(getHeldItemSlot(), BukkitItemStack.createNMSItemStack(stack));		
 	}
 	
 	@Override
@@ -104,4 +106,32 @@ public class BukkitInventoryPlayer extends BukkitInventory implements org.bukkit
 		return realInv.clearInventory(id, data);
 	}
 
+	
+	@Override
+	public HashMap<Integer,ItemStack> addItem(ItemStack... items) {
+		HashMap<Integer,ItemStack> leftover = new HashMap<Integer, ItemStack>();
+		
+		InventoryPlayer inv = (InventoryPlayer) inventory;
+		int count = 0;
+		for (ItemStack i : items ) {
+			net.minecraft.item.ItemStack internal = BukkitItemStack.createNMSItemStack(i);
+			if (!inv.addItemStackToInventory(internal)) {
+				int origsize = internal.stackSize;
+				internal.stackSize--;
+				
+				while (!inv.addItemStackToInventory(internal)) {
+					internal.stackSize--;
+					if (internal.stackSize == 0)
+						break;
+				}
+				
+				leftover.put(count, new BukkitItemStack(internal.itemID, origsize - internal.stackSize, (short) internal.getItemDamage()));
+				 
+			}
+		count++;	
+		}
+		
+		return leftover;
+		
+	}
 }

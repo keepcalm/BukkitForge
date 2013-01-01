@@ -250,7 +250,7 @@ public class BukkitInventory implements Inventory {
          *  - Cache firstEmpty result
          */
 
-        for (int i = 0; i < items.length; i++) {
+       for (int i = 0; i < items.length; i++) {
             ItemStack item = items[i];
             while (true) {
                 // Do we already have a stack of it?
