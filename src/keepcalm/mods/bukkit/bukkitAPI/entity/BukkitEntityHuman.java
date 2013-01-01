@@ -50,8 +50,8 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 
 	public BukkitEntityHuman(BukkitServer server, EntityLiving entity) {
 		super(server, entity);
-		this.inventory = new BukkitInventoryPlayer(new InventoryPlayer((EntityPlayer) entity));
-		this.enderChest = null;
+		this.inventory = new BukkitInventoryPlayer(((EntityPlayer) entity).inventory);
+		this.enderChest = new BukkitInventory(((EntityPlayer) entity).getInventoryEnderChest());
 	}
 	public String getName() {
 		return getHandle().username;
