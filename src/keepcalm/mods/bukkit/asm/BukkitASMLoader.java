@@ -27,8 +27,14 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 	}
 	@Override
 	public String[] getLibraryRequestClass() {
-		return new String[] {"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitCommonsLangDownload", "keepcalm.mods.bukkit.asm.libraryHandlers.BukkitEbeanDownload", "keepcalm.mods.bukkit.asm.libraryHandlers.BukkitGSonDownload", "keepcalm.mods.bukkit.asm.libraryHandlers.BukkitSQLiteDownload", 
-				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitYAMLDownload", "keepcalm.mods.bukkit.asm.libraryHandlers.BukkitJANSIDownload", "keepcalm.mods.bukkit.asm.libraryHandlers.BukkitGuava10Download"}; 
+		return new String[] {"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitCommonsLangDownload",
+				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitEbeanDownload",
+				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitGSonDownload",
+				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitSQLiteDownload", 
+				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitYAMLDownload",
+				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitJANSIDownload",
+				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitGuava10Download",
+				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitMySQLDownload"}; 
 	}
 	@Override
 	public String getModContainerClass() {
