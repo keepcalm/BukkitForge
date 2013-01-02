@@ -178,10 +178,6 @@ public class ForgeEventHandler {
 		BukkitEventFactory.callE
 	}*/
 	@ForgeSubscribe
-	/**
-	 * Needs fixing - field_blah is EntityExplosion or not?
-	 * @param ev
-	 */
 	public void onLivingDamage(LivingHurtEvent ev) {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;

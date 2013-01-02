@@ -490,7 +490,14 @@ public class BukkitServer implements Server {
 	@Override
 	public Player getPlayerExact(String name) {
 		
-		return (Player) BukkitEntity.getEntity(this, configMan.getPlayerForUsername(name));
+		OfflinePlayer player = new BukkitOfflinePlayer(this, name);
+		if (player.isOnline()) {
+			return player.getPlayer();
+		}
+		else {
+			return null;
+		}
+		
 	}
 
 	@Override
