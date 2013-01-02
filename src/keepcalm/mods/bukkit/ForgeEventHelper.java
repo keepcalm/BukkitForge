@@ -20,11 +20,12 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.bukkit.Bukkit;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
 public class ForgeEventHelper {
 	public static void onItemUse(ItemStack stack, EntityPlayer who, World world, int x, int y, int z, int blockFace) {
-		if (Side.CLIENT.isClient())
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
 			// not on client
 			return;
 		PlayerUseItemEvent ev = new PlayerUseItemEvent(stack, who, world, x, y, z, ForgeDirection.getOrientation(blockFace));

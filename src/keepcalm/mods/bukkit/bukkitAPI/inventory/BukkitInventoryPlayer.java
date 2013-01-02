@@ -121,8 +121,9 @@ public class BukkitInventoryPlayer extends BukkitInventory implements org.bukkit
 				
 				while (!inv.addItemStackToInventory(internal)) {
 					internal.stackSize--;
-					if (internal.stackSize == 0)
+					if (internal.stackSize == 0) {
 						break;
+					}
 				}
 				
 				leftover.put(count, new BukkitItemStack(internal.itemID, origsize - internal.stackSize, (short) internal.getItemDamage()));

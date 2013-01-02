@@ -13,7 +13,6 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
-import keepcalm.mods.bukkit.bukkitAPI.scheduler.BukkitDummyPlugin;
 import keepcalm.mods.bukkit.events.BlockDestroyEvent;
 import keepcalm.mods.bukkit.events.DispenseItemEvent;
 import keepcalm.mods.bukkit.events.PlayerDamageBlockEvent;
@@ -29,7 +28,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
@@ -66,7 +64,6 @@ import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
@@ -78,7 +75,7 @@ import org.bukkit.util.Vector;
 
 import com.google.common.collect.Sets;
 
-import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.common.FMLCommonHandler;
 /**
  * 
  * @author keepcalm
@@ -137,7 +134,7 @@ public class ForgeEventHandler {
 	 * Can't cancel this
 	 */
 	public void onEntityJoinWorld(EntityJoinWorldEvent ev) {
-		if (!ready || Side.CLIENT.isClient())
+		if (!ready || FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		if (ev.entity instanceof EntityLiving && !(ev.entity instanceof EntityPlayer)) {// || ev.entity instanceof EntityPlayerMP) {
 
@@ -146,19 +143,19 @@ public class ForgeEventHandler {
 	}
 	@ForgeSubscribe
 	public void onItemExpire(ItemExpireEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		BukkitEventFactory.callItemDespawnEvent(ev.entityItem);
 	}
 	@ForgeSubscribe
 	public void onItemTossEvent(ItemTossEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		BukkitEventFactory.callItemSpawnEvent(ev.entityItem);
 	}
 	@ForgeSubscribe
 	public void onLivingAttack(LivingAttackEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		if (BukkitEventFactory.callEntityDamageEvent(ev.entityLiving.getLastAttackingEntity(),
 				ev.entity, 
@@ -171,7 +168,7 @@ public class ForgeEventHandler {
 	}
 	@ForgeSubscribe
 	public void onLivingDeathEvent(LivingDeathEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		BukkitEventFactory.callEntityDeathEvent(ev.entityLiving);
 	}
@@ -186,7 +183,7 @@ public class ForgeEventHandler {
 	 * @param ev
 	 */
 	public void onLivingDamage(LivingHurtEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		DamageCause dc = getDamageCause(ev.source);
 
@@ -195,7 +192,7 @@ public class ForgeEventHandler {
 	}
 	@ForgeSubscribe
 	public void onTarget(LivingSetAttackTargetEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		BukkitEventFactory.callEntityTargetEvent(ev.entity, ev.target, TargetReason.CUSTOM);
 	}
@@ -215,7 +212,7 @@ public class ForgeEventHandler {
 	 * @param ev
 	 */
 	public void bowFire(ArrowLooseEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		
 		//BukkitEventFactory.callEntityShootBowEvent(ev.entityPlayer, ev.bow, null, ev.charge);
@@ -223,7 +220,7 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void playerVEntity(AttackEntityEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		BukkitEventFactory.callEntityDamageEvent(ev.entityPlayer, ev.target, DamageCause.ENTITY_ATTACK, ev.entityPlayer.inventory.getDamageVsEntity(ev.target));
 	}
@@ -233,7 +230,7 @@ public class ForgeEventHandler {
 	}*/
 	@ForgeSubscribe
 	public void onPlayerInteraction(final PlayerInteractEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		if (ev.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
 			if (!ev.entityPlayer.isSneaking() && ev.entityPlayer.worldObj.blockHasTileEntity(ev.x, ev.y, ev.z)) {
@@ -284,7 +281,7 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void pickUp(EntityItemPickupEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		// assume all picked up at the same time
 		PlayerPickupItemEvent bev = new PlayerPickupItemEvent(new BukkitPlayer((EntityPlayerMP) ev.entityPlayer), new BukkitItem(BukkitServer.instance(), ev.item), 0);
@@ -298,7 +295,7 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void fillBukkit(FillBucketEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		if (BukkitEventFactory.callPlayerBucketFillEvent((EntityPlayerMP) ev.entityPlayer, ev.target.blockX, ev.target.blockY, ev.target.blockZ, ev.target.sideHit, ev.current,Item.itemsList[ev.result.itemID]).isCancelled())
 			ev.setCanceled(true);
@@ -306,7 +303,7 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void interactEvent(PlayerInteractEvent ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 
 		Action act;
@@ -347,7 +344,7 @@ public class ForgeEventHandler {
 	}
 	@ForgeSubscribe
 	public void chunkLoadEvent(ChunkEvent.Load ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 
 		final org.bukkit.event.world.ChunkLoadEvent c = new org.bukkit.event.world.ChunkLoadEvent(new BukkitChunk(ev.getChunk()), false);
@@ -357,7 +354,7 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void chunkUnloadEvent(ChunkEvent.Unload ev) {
-		if (!ready|| Side.CLIENT.isClient())
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		org.bukkit.event.world.ChunkUnloadEvent c = new org.bukkit.event.world.ChunkUnloadEvent(new BukkitChunk(ev.getChunk()));
 		Bukkit.getPluginManager().callEvent(c);

@@ -37,7 +37,6 @@ public class BukkitChunk implements Chunk {
 		if (!(chunk instanceof EmptyChunk)) {
 			this.weakChunk = new WeakReference<net.minecraft.world.chunk.Chunk>(chunk);
 		}
-
 		worldServer = (WorldServer) getHandle().worldObj;
 		x = getHandle().xPosition;
 		z = getHandle().zPosition;
