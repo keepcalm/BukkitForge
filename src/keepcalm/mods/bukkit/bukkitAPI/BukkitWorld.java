@@ -811,7 +811,7 @@ public class BukkitWorld implements World {
     }
 
     public boolean hasStorm() {
-        return world.getWorldInfo().isThundering();
+        return world.getWorldInfo().isRaining();
     }
 
     public void setStorm(boolean hasStorm) {
@@ -821,6 +821,7 @@ public class BukkitWorld implements World {
         server.getPluginManager().callEvent(weather);
         if (!weather.isCancelled()) {
             world.getWorldInfo().setThundering(hasStorm);
+            world.getWorldInfo().setRaining(hasStorm);
 
             // These numbers are from Minecraft
             if (hasStorm) {
