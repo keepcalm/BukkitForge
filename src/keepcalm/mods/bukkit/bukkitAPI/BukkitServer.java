@@ -122,6 +122,7 @@ import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.collect.ImmutableList;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 //import cpw.mods.fml.common.FMLCommonHandler;
@@ -174,6 +175,7 @@ public class BukkitServer implements Server {
 	}*/
 	
 	public BukkitServer(MinecraftServer server) {
+		System.out.println("Side: " + FMLCommonHandler.instance().getEffectiveSide().toString());
 		this.instance = this;
 		configMan = server.getConfigurationManager();
 		theServer = server;

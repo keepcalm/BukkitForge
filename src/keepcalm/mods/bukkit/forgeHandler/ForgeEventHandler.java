@@ -5,8 +5,10 @@ import java.util.HashMap;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
+import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlockFake;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
@@ -56,6 +58,7 @@ import net.minecraftforge.event.world.ChunkEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.TreeType;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -318,7 +321,18 @@ public class ForgeEventHandler {
 		default:
 			act= Action.PHYSICAL;
 		}
-		BukkitEventFactory.callPlayerInteractEvent((EntityPlayerMP) ev.entityPlayer, act, ev.entityPlayer.inventory.getCurrentItem());
+		BukkitBlock bb = new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.z)), ev.x,ev.y,ev.z);
+		BlockFace face = BukkitBlock.notchToBlockFace(ev.face);
+		org.bukkit.event.player.PlayerInteractEvent bev = 
+				new org.bukkit.event.player.PlayerInteractEvent(BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) ev.entityPlayer), act, new BukkitItemStack(ev.entityPlayer.inventory.getCurrentItem()), bb, face);
+		
+		Bukkit.getPluginManager().callEvent(bev);
+		
+		if (bev.isCancelled()) {
+			ev.setCanceled(true);
+		}
+		
+		//BukkitEventFactory.callPlayerInteractEvent((EntityPlayerMP) ev.entityPlayer, act, ev.entityPlayer.inventory.getCurrentItem());
 
 	}
 
@@ -327,7 +341,6 @@ public class ForgeEventHandler {
 		org.bukkit.event.player.PlayerBedEnterEvent bev = new PlayerBedEnterEvent(new BukkitPlayer((EntityPlayerMP) ev.entityPlayer), new BukkitBlock(new BukkitChunk(ev.entityPlayer.worldObj.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z));
 
 		Bukkit.getPluginManager().callEvent(bev);
-
 	}
 	@ForgeSubscribe
 	public void chunkLoadEvent(ChunkEvent.Load ev) {
