@@ -237,45 +237,46 @@ public class ForgeEventHandler {
 			if (!ev.entityPlayer.isSneaking() && ev.entityPlayer.worldObj.blockHasTileEntity(ev.x, ev.y, ev.z)) {
 				return;
 			}
-			if (BukkitContainer.DEBUG)
-				System.out.println("PLACE!");
-			final BukkitItemStack itemInHand = new BukkitItemStack(ev.entityPlayer.inventory.getCurrentItem());
-			final int blockX = ev.x + ForgeDirection.getOrientation(ev.face).offsetX;
-			final int blockY = ev.y + ForgeDirection.getOrientation(ev.face).offsetY;
-			final int blockZ = ev.z + ForgeDirection.getOrientation(ev.face).offsetZ;
-			final BukkitPlayer thePlayer = new BukkitPlayer((EntityPlayerMP) ev.entityPlayer);
-			final BukkitBlock beforeBlock = new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ);
-			WorldServer world = (WorldServer) ev.entity.worldObj;
-			int minX = world.getSpawnPoint().posX;
-			int minY = world.getSpawnPoint().posY;
-			int minZ = world.getSpawnPoint().posZ;
-			int sps = MinecraftServer.getServer().getSpawnProtectionSize();
-			int maxX = minX + sps;
-			int maxY = minY + sps;
-			int maxZ = minZ + sps;
+			if (ev.entityPlayer.inventory.getCurrentItem().getItem() instanceof ItemBlock) {
+				if (BukkitContainer.DEBUG)
+					System.out.println("PLACE!");
+				final BukkitItemStack itemInHand = new BukkitItemStack(ev.entityPlayer.inventory.getCurrentItem());
+				final int blockX = ev.x + ForgeDirection.getOrientation(ev.face).offsetX;
+				final int blockY = ev.y + ForgeDirection.getOrientation(ev.face).offsetY;
+				final int blockZ = ev.z + ForgeDirection.getOrientation(ev.face).offsetZ;
+				final BukkitPlayer thePlayer = new BukkitPlayer((EntityPlayerMP) ev.entityPlayer);
+				final BukkitBlock beforeBlock = new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ);
+				WorldServer world = (WorldServer) ev.entity.worldObj;
+				int minX = world.getSpawnPoint().posX;
+				int minY = world.getSpawnPoint().posY;
+				int minZ = world.getSpawnPoint().posZ;
+				int sps = MinecraftServer.getServer().getSpawnProtectionSize();
+				int maxX = minX + sps;
+				int maxY = minY + sps;
+				int maxZ = minZ + sps;
 
-			AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
-			final boolean canBuild;
-			if (aabb.isVecInside(Vec3.vec3dPool.getVecFromPool(blockX, blockY, blockZ))) {
-				canBuild = false;
+				AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+				final boolean canBuild;
+				if (aabb.isVecInside(Vec3.vec3dPool.getVecFromPool(blockX, blockY, blockZ))) {
+					canBuild = false;
+				}
+				else {
+					canBuild = true;
+				}
+
+
+
+
+				BukkitBlock placedBlock = new BukkitBlockFake(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ, itemInHand.getTypeId(), itemInHand.getDurability());
+				BlockPlaceEvent bev = new BlockPlaceEvent(placedBlock, beforeBlock.getState(), placedBlock, itemInHand, thePlayer, canBuild);
+
+				Bukkit.getPluginManager().callEvent(bev);
+
+				if (bev.isCancelled() || !bev.canBuild()) {
+					ev.setCanceled(true);
+				}
+
 			}
-			else {
-				canBuild = true;
-			}
-
-
-
-
-			BukkitBlock placedBlock = new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ);
-			BlockPlaceEvent bev = new BlockPlaceEvent(placedBlock, beforeBlock.getState(), new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), itemInHand, thePlayer, canBuild);
-
-			Bukkit.getPluginManager().callEvent(bev);
-			
-			if (bev.isCancelled() || !bev.canBuild()) {
-				ev.setCanceled(true);
-			}
-
-
 		}
 	}
 
@@ -325,13 +326,13 @@ public class ForgeEventHandler {
 		BlockFace face = BukkitBlock.notchToBlockFace(ev.face);
 		org.bukkit.event.player.PlayerInteractEvent bev = 
 				new org.bukkit.event.player.PlayerInteractEvent(BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) ev.entityPlayer), act, new BukkitItemStack(ev.entityPlayer.inventory.getCurrentItem()), bb, face);
-		
+
 		Bukkit.getPluginManager().callEvent(bev);
-		
+
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
 		}
-		
+
 		//BukkitEventFactory.callPlayerInteractEvent((EntityPlayerMP) ev.entityPlayer, act, ev.entityPlayer.inventory.getCurrentItem());
 
 	}
