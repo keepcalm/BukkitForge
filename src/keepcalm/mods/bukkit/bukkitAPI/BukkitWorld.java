@@ -820,9 +820,9 @@ public class BukkitWorld implements World {
         WeatherChangeEvent weather = new WeatherChangeEvent((org.bukkit.World) this, hasStorm);
         server.getPluginManager().callEvent(weather);
         if (!weather.isCancelled()) {
-            world.getWorldInfo().setThundering(hasStorm);
+            //world.getWorldInfo().setThundering(hasStorm);
             world.getWorldInfo().setRaining(hasStorm);
-
+            System.out.println("Set raining: " + hasStorm);
             // These numbers are from Minecraft
             if (hasStorm) {
                 setWeatherDuration(rand.nextInt(12000) + 12000);
@@ -853,13 +853,14 @@ public class BukkitWorld implements World {
         server.getPluginManager().callEvent(thunder);
         if (!thunder.isCancelled()) {
             world.getWorldInfo().setThundering(thundering);
+            //world.getWorldInfo().setRaining(false);
 
             // These numbers are from Minecraft
-            /*if (thundering) {
+            if (thundering) {
                 setThunderDuration(rand.nextInt(12000) + 3600);
             } else {
                 setThunderDuration(rand.nextInt(168000) + 12000);
-            }*/
+            }
         }
     }
 
