@@ -216,7 +216,7 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
         else if (entity instanceof Entity ) {
         	return new BukkitEntity(server, entity);
         }
-        throw new IllegalArgumentException("Unknown entity");
+        throw new IllegalArgumentException("Unknown entity: " + entity.getClass().getCanonicalName());
     }
 
     public Location getLocation() {

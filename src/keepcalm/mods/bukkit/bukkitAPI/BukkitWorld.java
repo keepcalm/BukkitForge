@@ -855,11 +855,11 @@ public class BukkitWorld implements World {
             world.getWorldInfo().setThundering(thundering);
 
             // These numbers are from Minecraft
-            if (thundering) {
+            /*if (thundering) {
                 setThunderDuration(rand.nextInt(12000) + 3600);
             } else {
                 setThunderDuration(rand.nextInt(168000) + 12000);
-            }
+            }*/
         }
     }
 
