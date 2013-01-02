@@ -238,6 +238,9 @@ public class ForgeEventHandler {
 			if (!ev.entityPlayer.isSneaking() && ev.entityPlayer.worldObj.blockHasTileEntity(ev.x, ev.y, ev.z)) {
 				return;
 			}
+			if (ev.entityPlayer.inventory.getCurrentItem() == null) {
+				return;
+			}
 			if (ev.entityPlayer.inventory.getCurrentItem().getItem() instanceof ItemBlock) {
 				if (BukkitContainer.DEBUG)
 					System.out.println("PLACE!");
@@ -265,11 +268,12 @@ public class ForgeEventHandler {
 					canBuild = true;
 				}
 
-
+				BlockCanBuildEvent can = new BlockCanBuildEvent(beforeBlock, beforeBlock.getTypeId(), canBuild);
+				Bukkit.getPluginManager().callEvent(can);
 
 
 				BukkitBlock placedBlock = new BukkitBlockFake(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ, itemInHand.getTypeId(), itemInHand.getDurability());
-				BlockPlaceEvent bev = new BlockPlaceEvent(placedBlock, beforeBlock.getState(), placedBlock, itemInHand, thePlayer, canBuild);
+				BlockPlaceEvent bev = new BlockPlaceEvent(placedBlock, beforeBlock.getState(), placedBlock, itemInHand, thePlayer, can.isBuildable());
 
 				Bukkit.getPluginManager().callEvent(bev);
 
