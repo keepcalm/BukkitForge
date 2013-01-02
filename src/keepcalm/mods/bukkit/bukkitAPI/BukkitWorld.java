@@ -69,6 +69,7 @@ import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.network.packet.Packet61DoorChange;
+import net.minecraft.network.packet.Packet71Weather;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
@@ -180,7 +181,7 @@ import org.bukkit.util.Vector;
 public class BukkitWorld implements World {
     private final WorldServer world;
     private Environment environment;
-    private final BukkitServer server = (BukkitServer) Bukkit.getServer();
+    private final BukkitServer server ;//= (BukkitServer) Bukkit.getServer();
     private ChunkGenerator generator;
     private final List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
     private final BlockMetadataStore blockMetadata = new BlockMetadataStore(this);
@@ -193,7 +194,7 @@ public class BukkitWorld implements World {
     public BukkitWorld(WorldServer world, ChunkGenerator gen, Environment env) {
         this.world = world;
         this.generator = gen;
-
+        this.server = BukkitServer.instance();
         environment = env;
     }
     
@@ -817,18 +818,13 @@ public class BukkitWorld implements World {
     public void setStorm(boolean hasStorm) {
         BukkitServer server = this.server;
 
-        WeatherChangeEvent weather = new WeatherChangeEvent((org.bukkit.World) this, hasStorm);
+        WeatherChangeEvent weather = new WeatherChangeEvent(this, hasStorm);
         server.getPluginManager().callEvent(weather);
         if (!weather.isCancelled()) {
             //world.getWorldInfo().setThundering(hasStorm);
             world.getWorldInfo().setRaining(hasStorm);
             System.out.println("Set raining: " + hasStorm);
-            // These numbers are from Minecraft
-            if (hasStorm) {
-                setWeatherDuration(rand.nextInt(12000) + 12000);
-            } else {
-                setWeatherDuration(rand.nextInt(168000) + 12000);
-            }
+            world.updateWeatherBody();
         }
     }
 
@@ -854,13 +850,7 @@ public class BukkitWorld implements World {
         if (!thunder.isCancelled()) {
             world.getWorldInfo().setThundering(thundering);
             //world.getWorldInfo().setRaining(false);
-
-            // These numbers are from Minecraft
-            if (thundering) {
-                setThunderDuration(rand.nextInt(12000) + 3600);
-            } else {
-                setThunderDuration(rand.nextInt(168000) + 12000);
-            }
+            world.updateWeatherBody();
         }
     }
 
