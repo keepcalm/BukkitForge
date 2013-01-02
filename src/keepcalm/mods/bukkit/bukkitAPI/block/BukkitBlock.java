@@ -225,7 +225,9 @@ public class BukkitBlock implements Block {
 
 	public BlockState getState() {
 		Material material = getType();
-
+		if (material == null) {
+			return new BukkitBlockState(this);
+		}
 		switch (material) {
 		case SIGN:
 		case SIGN_POST:
