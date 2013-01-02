@@ -7,6 +7,7 @@ import java.util.Map;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.world.chunk.storage.AnvilSaveHandler;
 
@@ -135,7 +136,8 @@ public class BukkitOfflinePlayer implements OfflinePlayer, ConfigurationSerializ
     }
 
     private NBTTagCompound getData() {
-        return storage.getPlayerData(getName());
+    	return storage.getPlayerData(name);
+    	
     }
 
     private NBTTagCompound getBukkitData() {
@@ -192,7 +194,7 @@ public class BukkitOfflinePlayer implements OfflinePlayer, ConfigurationSerializ
     }
 
     public boolean hasPlayedBefore() {
-        return getData() != null;
+        return getDataFile().exists();// != null;
     }
 
     public Location getBedSpawnLocation() {

@@ -837,6 +837,7 @@ public class BukkitWorld implements World {
 
     public void setWeatherDuration(int duration) {
         world.getWorldInfo().setRainTime(duration);
+        world.updateWeatherBody();
     }
 
     public boolean isThundering() {
@@ -867,6 +868,7 @@ public class BukkitWorld implements World {
 
     public void setThunderDuration(int duration) {
         world.getWorldInfo().setThunderTime(duration);
+        world.updateWeatherBody();
     }
 
     public long getSeed() {
