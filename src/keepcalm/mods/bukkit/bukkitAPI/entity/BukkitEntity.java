@@ -213,10 +213,9 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
         	
         }
         // unknown, last resort for mod entities
-        else if (entity instanceof Entity ) {
-        	return new BukkitEntity(server, entity);
-        }
-        throw new IllegalArgumentException("Unknown entity: " + entity.getClass().getCanonicalName());
+        Bukkit.getLogger().warning("Unknown entity: " + entity.getClass().getCanonicalName() + " - returning a dummy instance of BukkitEntity...");
+        
+        return new BukkitEntity(server,entity);
     }
 
     public Location getLocation() {

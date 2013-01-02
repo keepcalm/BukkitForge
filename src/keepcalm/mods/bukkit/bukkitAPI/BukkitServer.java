@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,7 +50,6 @@ import net.minecraft.server.dedicated.PropertyManager;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.WorldManager;
@@ -87,7 +88,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
@@ -143,8 +143,10 @@ public class BukkitServer implements Server {
 	private ServicesManager servicesManager = new SimpleServicesManager();
 
 	private BukkitCommandMap commandMap = new BukkitCommandMap(this);
-	private PluginManager pluginManager = new SimplePluginManager(this, commandMap);
+	private PluginManager pluginManager;// = new SimplePluginManager(this, commandMap);
 
+	
+	private BukkitClassLoader thePluginLoader = new BukkitClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs(), getClass().getClassLoader());
 	//private BukkitScheduler scheduler = new BukkitScheduler();
 //	private ServicesManager servicesManager = new SimpleServicesManager();
 	public Map<Integer,BukkitWorld> worlds = new LinkedHashMap<Integer,BukkitWorld>();
@@ -175,13 +177,27 @@ public class BukkitServer implements Server {
 	}*/
 	
 	public BukkitServer(MinecraftServer server) {
-		System.out.println("Side: " + FMLCommonHandler.instance().getEffectiveSide().toString());
 		this.instance = this;
 		configMan = server.getConfigurationManager();
 		theServer = server;
 		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());
 		Iterator<Integer> _ = ids.iterator();
 		
+		
+		/*try {
+			System.out.println("This is a test of the SPM Loader!");
+			// this *should* load simplepluginamanger via BukkitClassLoader
+			Class<?> pluginMan = thePluginLoader.loadClass("org.bukkit.plugin.SimplePluginManager");
+			
+			Method insn = pluginMan.getMethod("newInstance");
+			insn.setAccessible(true);
+			this.pluginManager = (PluginManager) insn.invoke(null);
+			
+			
+		} catch (Exception e1) {
+			throw new RuntimeException("BukkitForge encountered an error (most likely it  was installed incorrectly!)", e1);
+		}*/
+		pluginManager = new SimplePluginManager(this, commandMap);
 		bukkitConfig = new YamlConfiguration();
 		YamlConfiguration yml = new YamlConfiguration();
 		try {
@@ -205,7 +221,7 @@ public class BukkitServer implements Server {
 			worlds.put(i, new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getWorldName()), this.wtToEnv(x)));
 		}
 		this.theLogger = BukkitContainer.bukkitLogger;
-		theLogger.info("Bukkit API for Vanilla, version " + version + " starting up...");
+		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
 		Bukkit.setServer(this);
 		this.theHelpMap = new SimpleHelpMap(this);
 		this.theMessenger = new StandardMessenger();

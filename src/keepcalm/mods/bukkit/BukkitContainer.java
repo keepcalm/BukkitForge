@@ -66,6 +66,8 @@ public class BukkitContainer {
 	public static boolean IGNORE_CONNECTION_RECEIVED = false;
 	private static String MOD_USERNAME = "[Mod]";
 	public static EntityPlayerMP MOD_PLAYER;
+	public static String[] pluginsInPath;
+	
 	
 	private static boolean isGuiEnabled = false;
 	
@@ -127,6 +129,10 @@ public class BukkitContainer {
 		override.comment = "Override vanilla commands (/me etc) with Bukkit defaults (won't stop plugins from overriding)";
 		this.overrideVanillaCommands = override.getBoolean(false);
 		
+		Property plugins = config.get(Configuration.CATEGORY_GENERAL, "pluginsToLoad", "");
+		plugins.comment = "Comma-separated list of plugins which are in the classpath to load. Only developers need use this option.";
+		this.pluginsInPath = plugins.value.isEmpty() ? new String[] {} : plugins.value.split(",");
+		
 		Property debug = config.get("consoleConfig", "debug", false);
 		debug.comment = "Print debug messages";
 		this.DEBUG = debug.getBoolean(false);
@@ -135,9 +141,9 @@ public class BukkitContainer {
 		colour.comment = "Enable coloured ANSI console output";
 		this.allowAnsi = colour.getBoolean(false);
 
-		Property plugins = config.get(Configuration.CATEGORY_GENERAL, "pluginDir", "plugins");
-		plugins.comment = "The folder to look for plugins in.";
-		this.pluginFolder = plugins.value;
+		Property pluginDir = config.get(Configuration.CATEGORY_GENERAL, "pluginDir", "plugins");
+		pluginDir.comment = "The folder to look for plugins in.";
+		this.pluginFolder = pluginDir.value;
 
 		Property suuid = config.get("dontTouchThis", "serverUUID", this.genUUID());
 		bukkitLogger.info("Set UUID to " + suuid.value);
