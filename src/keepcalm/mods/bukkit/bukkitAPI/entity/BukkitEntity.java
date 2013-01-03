@@ -235,6 +235,7 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
     }
 
     public World getWorld() {
+    	
     	return BukkitServer.instance().getWorld(getHandle().worldObj.getWorldInfo().getDimension());
         //return (World) ((WorldServer) entity.worldObj);
     }

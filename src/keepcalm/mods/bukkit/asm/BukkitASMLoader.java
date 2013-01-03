@@ -11,7 +11,8 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 	public String[] getASMTransformerClass() {
 		try {
 			Class.forName("keepcalm.mods.blockbreak.asm.BlockBreakEventAdder");
-			return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer", 
+			return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer",
+					"keepcalm.mods.bukkit.asm.transformers.BukkitAPIHelperTransformer",
 					"keepcalm.mods.blockbreak.asm.BlockBreakEventAdder",
 					/*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */
 					"keepcalm.mods.bukkit.asm.transformers.events.BlockEventHelpers",
@@ -19,6 +20,7 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 		}
 		catch (ClassNotFoundException e) {
 			return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer", 
+					"keepcalm.mods.bukkit.asm.transformers.BukkitAPIHelperTransformer",
 					/*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */
 					"keepcalm.mods.bukkit.asm.transformers.events.BlockEventHelpers",
 					"keepcalm.mods.bukkit.asm.transformers.events.EntityEventHelpers"};

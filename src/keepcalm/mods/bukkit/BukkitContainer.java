@@ -62,7 +62,7 @@ public class BukkitContainer {
 	public static String serverUUID;
 	public static boolean overrideVanillaCommands;
 	public static Logger bukkitLogger ;//.getLogger("[Bukkit API]");
-	public static boolean DEBUG;
+	public static boolean DEBUG = ClassLoader.getSystemResourceAsStream("/net/minecraft/item") == null;
 	public static boolean IGNORE_CONNECTION_RECEIVED = false;
 	private static String MOD_USERNAME = "[Mod]";
 	public static EntityPlayerMP MOD_PLAYER;
@@ -136,6 +136,11 @@ public class BukkitContainer {
 		Property debug = config.get("consoleConfig", "debug", false);
 		debug.comment = "Print debug messages";
 		this.DEBUG = debug.getBoolean(false);
+		
+		// auto-on for MCP
+		if (!DEBUG && getClass().getClassLoader().getResourceAsStream("net/minecraft/item") != null) {
+			DEBUG = true;
+		}
 		
 		Property colour = config.get("consoleConfig", "enablecolour", isGuiEnabled ? false : true);
 		colour.comment = "Enable coloured ANSI console output";

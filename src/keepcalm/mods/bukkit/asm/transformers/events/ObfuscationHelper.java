@@ -83,6 +83,11 @@ public class ObfuscationHelper {
 		
 		mcpNames.put("blockBreakBlockDesc", "(Lnet/minecraft/world/World;IIIII)V");
 		obfNames.put("blockBreakBlockDesc", "(Lyc;IIIII)V");
+		
+		// item stuff
+		mcpNames.put("itemClassName", "net.minecraft.item.Item");
+		obfNames.put("itemClassName", "up");
+		
 
 	}
 	
