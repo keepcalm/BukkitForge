@@ -131,7 +131,6 @@ public class BukkitInventoryPlayer extends BukkitInventory implements org.bukkit
 			}
 		count++;	
 		}
-		
 		return leftover;
 		
 	}

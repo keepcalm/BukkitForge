@@ -1193,7 +1193,7 @@ public class BukkitWorld implements World {
 
         final BukkitWorld other = (BukkitWorld) obj;
 
-        return this.getHandle().getWorldInfo().getWorldName().equals(other.getHandle().getWorldInfo().getWorldName());
+        return this.getHandle().getWorldInfo().getDimension() == other.getHandle().getWorldInfo().getDimension();
     }
 
     public File getWorldFolder() {
