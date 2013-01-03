@@ -1179,7 +1179,7 @@ public class BukkitWorld implements World {
 
     @Override
     public int hashCode() {
-        return getUID().hashCode();
+        return getHandle().hashCode();
     }
 
     @Override
