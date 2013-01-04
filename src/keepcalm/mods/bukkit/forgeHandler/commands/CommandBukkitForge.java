@@ -1,5 +1,6 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
+import java.util.Arrays;
 import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;
@@ -10,7 +11,6 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 
 /**
