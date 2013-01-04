@@ -162,6 +162,7 @@ public class BukkitServer implements Server {
 	private EntityMetadataStore entityMetadata;
 	private WorldMetadataStore worldMetadata;
 	private PlayerMetadataStore playerMetadata;
+	private static String cbBuild;
 	private static Map<String,Boolean> fauxSleeping = new HashMap();
 	
 	/*public void setServer(MinecraftServer server) {
@@ -176,8 +177,10 @@ public class BukkitServer implements Server {
 		theServer = (DedicatedServer) server;
 	}*/
 	
+	
 	public BukkitServer(MinecraftServer server) {
 		this.instance = this;
+		cbBuild = "git-BukkitForge-1.4.5-R1.0-b" + BukkitContainer.CRAFT_BUILD_NUMBER +  "jnks (Really: BukkitForge for MC " + version + ")";
 		configMan = server.getConfigurationManager();
 		theServer = server;
 		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());
@@ -328,7 +331,7 @@ public class BukkitServer implements Server {
 	@Override
 	public String getVersion() {
 		// towny fix?
-		return "git-BukkitForge-1.4.5-R1.0-b3000jnks (Really: BukkitForge for MC " + version + ")";
+		return cbBuild;
 	}
 
 	@Override
