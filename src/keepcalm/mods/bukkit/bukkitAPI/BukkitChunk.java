@@ -43,17 +43,8 @@ public class BukkitChunk implements Chunk {
 	}
 
 	public World getWorld() {
-		try {
-			return BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getWorldName());
-		}
-		catch (Exception e) {
-			try {
-				Thread.sleep(500);
-			}
-			catch (Exception e1) {}
-			return BukkitContainer.bServer.worlds.get(getHandle().worldObj.getWorldInfo().getDimension());
-
-		}
+		return BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension());
+		
 	}
 
 	public BukkitWorld getBukkitWorld() {

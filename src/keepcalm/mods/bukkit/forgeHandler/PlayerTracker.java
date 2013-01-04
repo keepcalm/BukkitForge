@@ -55,7 +55,7 @@ public class PlayerTracker implements IPlayerTracker {
 	@Override
 	public void onPlayerChangedDimension(EntityPlayer player) {
 		EntityPlayerMP dude = (EntityPlayerMP) player;
-		PlayerChangedWorldEvent c = new PlayerChangedWorldEvent(new BukkitPlayer(dude), Bukkit.getWorld(dude.worldObj.getWorldInfo().getWorldName()));
+		PlayerChangedWorldEvent c = new PlayerChangedWorldEvent(new BukkitPlayer(dude), BukkitServer.instance().getWorld(dude.worldObj.getWorldInfo().getDimension()));
 		Bukkit.getPluginManager().callEvent(c);
 	}
 
@@ -65,7 +65,7 @@ public class PlayerTracker implements IPlayerTracker {
 			@Override
 			public void run() {
 				ChunkCoordinates j = player.getHomePosition();
-				PlayerRespawnEvent c = new PlayerRespawnEvent(new BukkitPlayer((EntityPlayerMP) player), new Location(Bukkit.getWorld(player.worldObj.getWorldInfo().getWorldName()), j.posX, j.posY, j.posZ), player.hasHome());
+				PlayerRespawnEvent c = new PlayerRespawnEvent(new BukkitPlayer((EntityPlayerMP) player), new Location(BukkitServer.instance().getWorld(player.worldObj.getWorldInfo().getDimension()), j.posX, j.posY, j.posZ), player.hasHome());
 				Bukkit.getPluginManager().callEvent(c);
 			}
 		};

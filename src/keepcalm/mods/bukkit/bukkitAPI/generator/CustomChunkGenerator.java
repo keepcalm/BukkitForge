@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.IProgressUpdate;
@@ -72,7 +73,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
         world.getWorldChunkManager().getBiomeGenAt(biomegrid.biome, x << 4, z << 4, 16, 16, false);
 
         // Try extended block method (1.2+)
-        short[][] xbtypes = generator.generateExtBlockSections(Bukkit.getWorld(world.getWorldInfo().getWorldName()), this.random, x, z, biomegrid);
+        short[][] xbtypes = generator.generateExtBlockSections(BukkitServer.instance().getWorld(world.getWorldInfo().getDimension()), this.random, x, z, biomegrid);
         if (xbtypes != null) {
             chunk = new Chunk(this.world, x, z);
 
@@ -177,7 +178,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     }
 
     private org.bukkit.World getWorld(WorldServer world2) {
-		return Bukkit.getServer().getWorld(world2.getWorldInfo().getWorldName());
+		return BukkitServer.instance().getWorld(world2.getWorldInfo().getDimension());
 	}
 
 	public void getChunkAt(IChunkProvider icp, int i, int i1) {

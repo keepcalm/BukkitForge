@@ -281,7 +281,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public Location getCompassTarget() {
-        return new Location(Bukkit.getWorld(getHandle().worldObj.getWorldInfo().getWorldName()), getHandle().getHomePosition().posX, getHandle().getHomePosition().posY, getHandle().getHomePosition().posZ);
+        return new Location(BukkitServer.instance().getWorld(getHandle().worldObj.getWorldInfo().getDimension()), getHandle().getHomePosition().posX, getHandle().getHomePosition().posY, getHandle().getHomePosition().posZ);
     }
 
     public void chat(String msg) {
@@ -654,7 +654,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public Location getBedSpawnLocation() {
-        World world = getServer().getWorld(((BukkitServer) getServer()).getHandle().worldServerForDimension(0).getWorldInfo().getWorldName());
+        World world = ((BukkitServer)getServer()).getWorld(0);
         if ((world != null) && (getHandle().getHomePosition() != null)) {
             return new Location(world, getHandle().getHomePosition().posX, getHandle().getHomePosition().posY, getHandle().getHomePosition().posZ);
         }

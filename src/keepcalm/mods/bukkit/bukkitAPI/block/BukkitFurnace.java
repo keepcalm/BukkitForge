@@ -1,6 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.block;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryFurnace;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -26,7 +27,7 @@ public class BukkitFurnace extends BukkitBlockState implements Furnace {
 
     public BukkitFurnace(int xCoord, int yCoord, int zCoord, World worldObj) {
 		super( new BukkitBlock(new BukkitChunk(worldObj.getChunkFromBlockCoords(yCoord, zCoord)), xCoord, yCoord, zCoord));
-		world = (BukkitWorld) Bukkit.getWorld(worldObj.getWorldInfo().getWorldName());
+		world = (BukkitWorld) BukkitServer.instance().getWorld(worldObj.getWorldInfo().getDimension());
 		furnace = (TileEntityFurnace) world.getTileEntityAt(xCoord, yCoord, zCoord);
 	}
 

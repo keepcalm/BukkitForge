@@ -1,6 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI.block;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryBrewer;
 import net.minecraft.command.WrongUsageException;
@@ -33,7 +34,7 @@ public class BukkitBrewingStand extends BukkitBlockState implements BrewingStand
         }
         
         this.brewingStand = (TileEntityBrewingStand) world.getBlockTileEntity(xCoord, yCoord, zCoord);
-        this.world = (BukkitWorld) Bukkit.getServer().getWorld(world.getWorldInfo().getWorldName());
+        this.world = (BukkitWorld) BukkitServer.instance().getWorld(world.getWorldInfo().getDimension());
 	}
 
 	public BrewerInventory getInventory() {

@@ -124,7 +124,7 @@ public class BukkitEventFactory {
      * Block place methods
      */
     public static BlockPlaceEvent callBlockPlaceEvent(World world, EntityPlayerMP who, BlockState replacedBlockState, int clickedX, int clickedY, int clickedZ) {
-        BukkitWorld craftWorld = (BukkitWorld) Bukkit.getServer().getWorld(((WorldServer) world).getWorldInfo().getWorldName());
+        BukkitWorld craftWorld = (BukkitWorld) BukkitServer.instance().getWorld(((WorldServer) world).getWorldInfo().getDimension());
         BukkitServer craftServer = (BukkitServer) Bukkit.getServer();
 
         Player player = (who == null) ? null : (Player) BukkitEntity.getEntity(craftServer, who);

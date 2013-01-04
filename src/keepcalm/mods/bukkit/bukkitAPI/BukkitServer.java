@@ -145,10 +145,10 @@ public class BukkitServer implements Server {
 	private BukkitCommandMap commandMap = new BukkitCommandMap(this);
 	private PluginManager pluginManager;// = new SimplePluginManager(this, commandMap);
 
-	
+
 	private BukkitClassLoader thePluginLoader = new BukkitClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs(), getClass().getClassLoader());
 	//private BukkitScheduler scheduler = new BukkitScheduler();
-//	private ServicesManager servicesManager = new SimpleServicesManager();
+	//	private ServicesManager servicesManager = new SimpleServicesManager();
 	public Map<Integer,BukkitWorld> worlds = new LinkedHashMap<Integer,BukkitWorld>();
 	private Map<String, OfflinePlayer> offlinePlayers = new HashMap<String, OfflinePlayer>();
 	private StandardMessenger theMessenger;
@@ -157,14 +157,14 @@ public class BukkitServer implements Server {
 	private int monsterSpawn;
 	private int animalSpawn;
 	private int waterAnimalSpawn;
-	
+
 	private WarningState warningState;
 	private EntityMetadataStore entityMetadata;
 	private WorldMetadataStore worldMetadata;
 	private PlayerMetadataStore playerMetadata;
 	private static String cbBuild;
 	private static Map<String,Boolean> fauxSleeping = new HashMap();
-	
+
 	/*public void setServer(MinecraftServer server) {
 		if (server == null) {
 			throw new RuntimeException("Server must be set before continuing!");
@@ -176,8 +176,8 @@ public class BukkitServer implements Server {
 		configMan = server.getConfigurationManager();
 		theServer = (DedicatedServer) server;
 	}*/
-	
-	
+
+
 	public BukkitServer(MinecraftServer server) {
 		this.instance = this;
 		cbBuild = "git-BukkitForge-1.4.5-R1.0-b" + BukkitContainer.CRAFT_BUILD_NUMBER +  "jnks (Really: BukkitForge for MC " + version + ")";
@@ -185,18 +185,18 @@ public class BukkitServer implements Server {
 		theServer = server;
 		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());
 		Iterator<Integer> _ = ids.iterator();
-		
-		
+
+
 		/*try {
 			System.out.println("This is a test of the SPM Loader!");
 			// this *should* load simplepluginamanger via BukkitClassLoader
 			Class<?> pluginMan = thePluginLoader.loadClass("org.bukkit.plugin.SimplePluginManager");
-			
+
 			Method insn = pluginMan.getMethod("newInstance");
 			insn.setAccessible(true);
 			this.pluginManager = (PluginManager) insn.invoke(null);
-			
-			
+
+
 		} catch (Exception e1) {
 			throw new RuntimeException("BukkitForge encountered an error (most likely it  was installed incorrectly!)", e1);
 		}*/
@@ -212,12 +212,12 @@ public class BukkitServer implements Server {
 			bukkitConfig.load("bukkit.yml");
 			bukkitConfig.addDefaults(yml);
 			bukkitConfig.save("bukkit.yml");
-			
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		while(_.hasNext()) {
 			int i = _.next();
 			WorldServer x = theServer.worldServerForDimension(i);
@@ -235,7 +235,7 @@ public class BukkitServer implements Server {
 		this.warningState = Warning.WarningState.DEFAULT;
 		this.console = (BukkitConsoleCommandSender) BukkitConsoleCommandSender.getInstance();
 		// wait until server start
-		
+
 		/*try {
 			Thread.currentThread().wait();
 		} catch (InterruptedException e) {
@@ -250,7 +250,7 @@ public class BukkitServer implements Server {
 		Bukkit.getServer().getHelpMap().addTopic(myHelp);
 		loadPlugins();
 		enablePlugins(PluginLoadOrder.STARTUP);
-		
+
 		theLogger.info("Loading PostWorld plugins...");
 		enablePlugins(PluginLoadOrder.POSTWORLD);
 		theLogger.info("Loaded plugins: ");
@@ -266,15 +266,15 @@ public class BukkitServer implements Server {
 				theServer.getCommandManager().executeCommand(par0, "/plugins");
 				(new PlayerTracker()).onPlayerLogin(par0);
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	private Environment wtToEnv(WorldServer x) {
-		
+
 		IChunkProvider wp = x.theChunkProviderServer.currentChunkProvider;
-		
+
 		if (wp instanceof ChunkProviderEnd) {
 			return Environment.THE_END;
 		}
@@ -284,7 +284,7 @@ public class BukkitServer implements Server {
 		else {
 			return Environment.NORMAL;
 		}
-		
+
 	}
 
 	public MinecraftServer getHandle() {
@@ -294,22 +294,22 @@ public class BukkitServer implements Server {
 	public void sendPluginMessage(Plugin source, String channel, byte[] message) {
 		StandardMessenger.validatePluginMessage(getMessenger(), source, channel, message);
 		for (Player player : getOnlinePlayers()) {
-            player.sendPluginMessage(source, channel, message);
-        }
+			player.sendPluginMessage(source, channel, message);
+		}
 
 	}
 
 	@Override
 	public Set<String> getListeningPluginChannels() {
-		
+
 		Set<String> result = new HashSet<String>();
 
-        for (Player player : getOnlinePlayers()) {
-            result.addAll(player.getListeningPluginChannels());
-        }
+		for (Player player : getOnlinePlayers()) {
+			result.addAll(player.getListeningPluginChannels());
+		}
 
-        return result;
-		
+		return result;
+
 	}
 	public EntityMetadataStore getEntityMetadata() {
 		return entityMetadata;
@@ -324,7 +324,7 @@ public class BukkitServer implements Server {
 	}
 	@Override
 	public String getName() {
-		
+
 		return String.format("Minecraft Server %s, using FML %s, MinecraftForge %s, %s", new Object[] {Loader.instance().getMinecraftModContainer().getVersion(), Loader.instance().getFMLVersionString(), ForgeVersion.getVersion(), Loader.instance().getMCPVersionString()});
 	}
 
@@ -336,7 +336,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public String getBukkitVersion() {
-		
+
 		return this.apiVer;
 	}
 
@@ -351,31 +351,31 @@ public class BukkitServer implements Server {
 
 	@Override
 	public int getMaxPlayers() {
-		
+
 		return configMan.getMaxPlayers();
 	}
 
 	@Override
 	public int getPort() {
-		
+
 		return theServer.getServerPort();
 	}
 
 	@Override
 	public int getViewDistance() {
-		
+
 		return configMan.getViewDistance();
 	}
 
 	@Override
 	public String getIp() {
-		
+
 		return theServer.getHostname();
 	}
 
 	@Override
 	public String getServerName() {
-		
+
 		return theServer.getServerModName();
 	}
 
@@ -386,13 +386,13 @@ public class BukkitServer implements Server {
 
 	@Override
 	public String getWorldType() {
-		
+
 		return theServer.worldServerForDimension(0).getProviderName();
 	}
 
 	@Override
 	public boolean getGenerateStructures() {
-		
+
 		return theServer.canStructuresSpawn();
 	}
 
@@ -404,13 +404,13 @@ public class BukkitServer implements Server {
 
 	@Override
 	public boolean getAllowNether() {
-		
+
 		return theServer.getAllowNether();
 	}
 
 	@Override
 	public boolean hasWhitelist() {
-		
+
 		return configMan.isWhiteListEnabled();
 	}
 
@@ -428,10 +428,10 @@ public class BukkitServer implements Server {
 			String name = (String) i;
 			ret.add(new BukkitOfflinePlayer(this, name));
 		}
-		
+
 		//Set<OfflinePlayer> d = (Set<OfflinePlayer>) configMan.getWhiteListedPlayers();
 		//Set<OfflinePlayer> j = (Set<OfflinePlayer>) new ArrayList<OfflinePlayer>();
-		
+
 		return ret;
 	}
 
@@ -450,30 +450,30 @@ public class BukkitServer implements Server {
 	@Override
 	public String getUpdateFolder() {
 		return "plugins/updates";
-		
+
 	}
 
 	@Override
 	public File getUpdateFolderFile() {
-		
+
 		return new File("plugins/updates");
 	}
 
 	@Override
 	public long getConnectionThrottle() {
-		
-		 return this.bukkitConfig.getInt("settings.connection-throttle");
+
+		return this.bukkitConfig.getInt("settings.connection-throttle");
 	}
 
 	@Override
 	public int getTicksPerAnimalSpawns() {
-		
+
 		return this.bukkitConfig.getInt("ticks-per.animal-spawns");
 	}
 
 	@Override
 	public int getTicksPerMonsterSpawns() {
-		
+
 		return this.bukkitConfig.getInt("ticks-per.animal-spawn");
 	}
 
@@ -492,7 +492,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public Player getPlayerExact(String name) {
-		
+
 		OfflinePlayer player = new BukkitOfflinePlayer(this, name);
 		if (player.isOnline()) {
 			return player.getPlayer();
@@ -500,29 +500,29 @@ public class BukkitServer implements Server {
 		else {
 			return null;
 		}
-		
+
 	}
 
 	@Override
 	public List<Player> matchPlayer(String partialName) {
-		  List<Player> matchedPlayers = new ArrayList<Player>();
+		List<Player> matchedPlayers = new ArrayList<Player>();
 
-	        for (Player iterPlayer : this.getOnlinePlayers()) {
-	            String iterPlayerName = iterPlayer.getName();
+		for (Player iterPlayer : this.getOnlinePlayers()) {
+			String iterPlayerName = iterPlayer.getName();
 
-	            if (partialName.equalsIgnoreCase(iterPlayerName)) {
-	                // Exact match
-	                matchedPlayers.clear();
-	                matchedPlayers.add(iterPlayer);
-	                break;
-	            }
-	            if (iterPlayerName.toLowerCase().contains(partialName.toLowerCase())) {
-	                // Partial match
-	                matchedPlayers.add(iterPlayer);
-	            }
-	        }
+			if (partialName.equalsIgnoreCase(iterPlayerName)) {
+				// Exact match
+				matchedPlayers.clear();
+				matchedPlayers.add(iterPlayer);
+				break;
+			}
+			if (iterPlayerName.toLowerCase().contains(partialName.toLowerCase())) {
+				// Partial match
+				matchedPlayers.add(iterPlayer);
+			}
+		}
 
-	        return matchedPlayers;
+		return matchedPlayers;
 		//return null;
 	}
 
@@ -538,136 +538,136 @@ public class BukkitServer implements Server {
 
 	@Override
 	public ServicesManager getServicesManager() {
-		
+
 		return servicesManager;
 	}
 
 	@Override
 	public List<World> getWorlds() {
-		
+
 		return new ArrayList<World>(worlds.values());
 	}
 
 	@Override
 	public World createWorld(WorldCreator creator) {
 		if (creator == null) {
-            throw new IllegalArgumentException("Creator may not be null");
-        }
+			throw new IllegalArgumentException("Creator may not be null");
+		}
 
-        String name = creator.name();
-        ChunkGenerator generator = creator.generator();
-        File folder = new File(getWorldContainer().getParentFile(), name);
-        int dimension = DimensionManager.getNextFreeDimId();
-        World world = getWorld(name);
-        WorldType type = WorldType.parseWorldType(creator.type().getName());
-        boolean generateStructures = creator.generateStructures();
+		String name = creator.name();
+		ChunkGenerator generator = creator.generator();
+		File folder = new File(getWorldContainer().getParentFile(), name);
+		int dimension = DimensionManager.getNextFreeDimId();
+		World world = getWorld(dimension);
+		WorldType type = WorldType.parseWorldType(creator.type().getName());
+		boolean generateStructures = creator.generateStructures();
 
-        if (world != null) {
-            return world;
-        }
+		if (world != null) {
+			return world;
+		}
 
-        if ((folder.exists()) && (!folder.isDirectory())) {
-            throw new IllegalArgumentException("File exists with the name '" + name + "' and isn't a folder");
-        }
+		if ((folder.exists()) && (!folder.isDirectory())) {
+			throw new IllegalArgumentException("File exists with the name '" + name + "' and isn't a folder");
+		}
 
-        if (generator == null) {
-            generator = getGenerator(name);
-        }
+		if (generator == null) {
+			generator = getGenerator(name);
+		}
 
-        AnvilSaveConverter converter = new AnvilSaveConverter(getWorldContainer());
-        if (converter.isOldMapFormat(name)) {
-            getLogger().info("Converting world '" + name + "'");
-            converter.convertMapFormat(name, new ConvertingProgressUpdate(theServer));
-        }
+		AnvilSaveConverter converter = new AnvilSaveConverter(getWorldContainer());
+		if (converter.isOldMapFormat(name)) {
+			getLogger().info("Converting world '" + name + "'");
+			converter.convertMapFormat(name, new ConvertingProgressUpdate(theServer));
+		}
 
-        
-        boolean hardcore = false;
 
-        WorldServer internal = new WorldServer(theServer, new AnvilSaveHandler(getWorldContainer().getParentFile(), name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, hardcore, type), theServer.theProfiler);
-        
-        if (!(worlds.containsKey(dimension))) {
-            return null;
-        }
+		boolean hardcore = false;
 
-        //internal.getWorldInfo().get = console.worldServerForDimension(0).worldMaps;
+		WorldServer internal = new WorldServer(theServer, new AnvilSaveHandler(getWorldContainer().getParentFile(), name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, hardcore, type), theServer.theProfiler);
 
-        //internal. = new EntityTracker(internal); // CraftBukkit
-        internal.addWorldAccess((IWorldAccess) new WorldManager(theServer, internal));
-        internal.difficultySetting = 1;
-        //internal.(true, true);
-        //theServer.worldServers[theServer.worldServers.length] = internal;
-        DimensionManager.setWorld(dimension, internal);
-        this.worlds.put(dimension, new BukkitWorld(internal, creator.generator(), creator.environment()));
-        if (generator != null) {
-            (worlds.get(dimension)).getPopulators().addAll(generator.getDefaultPopulators(worlds.get(dimension)));
-        }
-        
-        pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
-        System.out.print("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
+		if (!(worlds.containsKey(dimension))) {
+			return null;
+		}
 
-        if (DimensionManager.shouldLoadSpawn(dimension)) {
-            short short1 = 196;
-            long i = System.currentTimeMillis();
-            for (int j = -short1; j <= short1; j += 16) {
-                for (int k = -short1; k <= short1; k += 16) {
-                    long l = System.currentTimeMillis();
+		//internal.getWorldInfo().get = console.worldServerForDimension(0).worldMaps;
 
-                    if (l < i) {
-                        i = l;
-                    }
+		//internal. = new EntityTracker(internal); // CraftBukkit
+		internal.addWorldAccess((IWorldAccess) new WorldManager(theServer, internal));
+		internal.difficultySetting = 1;
+		//internal.(true, true);
+		//theServer.worldServers[theServer.worldServers.length] = internal;
+		DimensionManager.setWorld(dimension, internal);
+		this.worlds.put(dimension, new BukkitWorld(internal, creator.generator(), creator.environment()));
+		if (generator != null) {
+			(worlds.get(dimension)).getPopulators().addAll(generator.getDefaultPopulators(worlds.get(dimension)));
+		}
 
-                    if (l > i + 1000L) {
-                        int i1 = (short1 * 2 + 1) * (short1 * 2 + 1);
-                        int j1 = (j + short1) * (short1 * 2 + 1) + k + 1;
+		pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
+		System.out.print("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
 
-                        System.out.println("Preparing spawn area for " + name + ", " + (j1 * 100 / i1) + "%");
-                        i = l;
-                    }
+		if (DimensionManager.shouldLoadSpawn(dimension)) {
+			short short1 = 196;
+			long i = System.currentTimeMillis();
+			for (int j = -short1; j <= short1; j += 16) {
+				for (int k = -short1; k <= short1; k += 16) {
+					long l = System.currentTimeMillis();
 
-                    ChunkCoordinates chunkcoordinates = internal.getSpawnPoint();
-                    internal.theChunkProviderServer.provideChunk(chunkcoordinates.posX + j >> 4, chunkcoordinates.posZ + k >> 4);
+					if (l < i) {
+						i = l;
+					}
 
-                    //while (internal.updateLights()) {
-                      //  ;
-                    }//
-                }
-            }
-        pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
+					if (l > i + 1000L) {
+						int i1 = (short1 * 2 + 1) * (short1 * 2 + 1);
+						int j1 = (j + short1) * (short1 * 2 + 1) + k + 1;
+
+						System.out.println("Preparing spawn area for " + name + ", " + (j1 * 100 / i1) + "%");
+								i = l;
+					}
+
+					ChunkCoordinates chunkcoordinates = internal.getSpawnPoint();
+					internal.theChunkProviderServer.provideChunk(chunkcoordinates.posX + j >> 4, chunkcoordinates.posZ + k >> 4);
+
+					//while (internal.updateLights()) {
+					//  ;
+				}//
+			}
+		}
+		pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
 		return worlds.get(dimension);
 	}
 
 	private ChunkGenerator getGenerator(String world) {
 		ConfigurationSection section = bukkitConfig.getConfigurationSection("worlds");
-        ChunkGenerator result = null;
+		ChunkGenerator result = null;
 
-        if (section != null) {
-            section = section.getConfigurationSection(world);
+		if (section != null) {
+			section = section.getConfigurationSection(world);
 
-            if (section != null) {
-                String name = section.getString("generator");
+			if (section != null) {
+				String name = section.getString("generator");
 
-                if ((name != null) && (!name.equals(""))) {
-                    String[] split = name.split(":", 2);
-                    String id = (split.length > 1) ? split[1] : null;
-                    Plugin plugin = pluginManager.getPlugin(split[0]);
+				if ((name != null) && (!name.equals(""))) {
+					String[] split = name.split(":", 2);
+					String id = (split.length > 1) ? split[1] : null;
+					Plugin plugin = pluginManager.getPlugin(split[0]);
 
-                    if (plugin == null) {
-                        getLogger().severe("Could not set generator for default world '" + world + "': Plugin '" + split[0] + "' does not exist");
-                    } else if (!plugin.isEnabled()) {
-                        getLogger().severe("Could not set generator for default world '" + world + "': Plugin '" + split[0] + "' is not enabled yet (is it load:STARTUP?)");
-                    } else {
-                        result = plugin.getDefaultWorldGenerator(world, id);
-                    }
-                }
-            }
-        }
+					if (plugin == null) {
+						getLogger().severe("Could not set generator for default world '" + world + "': Plugin '" + split[0] + "' does not exist");
+					} else if (!plugin.isEnabled()) {
+						getLogger().severe("Could not set generator for default world '" + world + "': Plugin '" + split[0] + "' is not enabled yet (is it load:STARTUP?)");
+					} else {
+						result = plugin.getDefaultWorldGenerator(world, id);
+					}
+				}
+			}
+		}
 
-        return result;
+		return result;
 	}
 
 	@Override
 	public boolean unloadWorld(String name, boolean save) {
-		
+
 		return unloadWorld(getWorld(name), save);
 	}
 
@@ -680,7 +680,7 @@ public class BukkitServer implements Server {
 			return false; // cancelled
 		DimensionManager.unloadWorld(handle.getWorldInfo().getDimension());
 		return true;
-		
+
 	}
 
 	@Override
@@ -688,15 +688,25 @@ public class BukkitServer implements Server {
 		String[] parts = name.split("@");
 		if (parts.length == 1) {
 			theLogger.warning("A plugin is trying to access a world without specifying its name correctly! You need to remove configs from build 44 and older");
+			if (BukkitContainer.DEBUG) {
+				System.out.println("here is a stack trace:");
+				try {
+					throw new Exception("potato");
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
 			return getWorld(0);
 		}
-		
+
 		try {
 			int dim = Integer.parseInt(parts[1]);
 			return getWorld(dim);
 		}
 		catch (NumberFormatException e) {
-			theLogger.warning("A plugin is trying to access a world without specifying its name correctly! You need to remove configs from build 44 and older");
+			theLogger.warning("Apparently " + parts[1] + " isn't an integer! Interesting!");
 			return getWorld(0);
 		}/*
 		for (WorldServer w : theServer.worldServers) {
@@ -704,10 +714,10 @@ public class BukkitServer implements Server {
 				return this.getWorld(w.getWorldInfo().getDimension());
 			}
 		}
-		*/
+		 */
 		//return null;
 	}
-	
+
 	public World getWorld(int dimID) {
 		if (worlds.containsKey(dimID))
 			return worlds.get(dimID);
@@ -752,44 +762,44 @@ public class BukkitServer implements Server {
 		MapData d = ItemMap.getMPMapData(id, ((BukkitWorld) world).getHandle());
 		return new BukkitMapView(d);
 	}
-	
+
 	@Override
 	public MapView createMap(World world) {
 		net.minecraft.item.ItemStack stack = new net.minecraft.item.ItemStack(Item.map, 1, -1);
-		
-		
-        MapData worldmap = Item.map.getMPMapData((short) stack.getItemDamage(), ((BukkitWorld)world).getHandle());
-        return (MapView) worldmap;
+
+
+		MapData worldmap = Item.map.getMPMapData((short) stack.getItemDamage(), ((BukkitWorld)world).getHandle());
+		return (MapView) worldmap;
 	}
 
 	@Override
 	public void reload() {
-			bukkitConfig = YamlConfiguration.loadConfiguration(new File("bukkit.yml"));
-	        PropertyManager config = new PropertyManager(theServer.getFile("server.properties"));
+		bukkitConfig = YamlConfiguration.loadConfiguration(new File("bukkit.yml"));
+		PropertyManager config = new PropertyManager(theServer.getFile("server.properties"));
 
-	        ((DedicatedServer) theServer).settings = config;
+		((DedicatedServer) theServer).settings = config;
 
-	        boolean animals = config.getBooleanProperty("spawn-animals", theServer.getCanSpawnAnimals());
-	        boolean monsters = config.getBooleanProperty("spawn-monsters", theServer.worldServerForDimension(0).difficultySetting > 0);
-	        int difficulty = config.getIntProperty("difficulty", theServer.worldServerForDimension(0).difficultySetting);
-			
-			//theServer.pro
-	        theServer.setOnlineMode(config.getBooleanProperty("online-mode", theServer.isServerInOnlineMode()));
-	        theServer.setCanSpawnAnimals(config.getBooleanProperty("spawn-animals", theServer.getCanSpawnAnimals()));
-	        theServer.setAllowPvp(config.getBooleanProperty("pvp", theServer.isPVPEnabled()));
-	        theServer.setAllowFlight(config.getBooleanProperty("allow-flight", theServer.isFlightAllowed()));
-	        theServer.setMOTD(config.getProperty("motd", theServer.getMOTD()));
-	        monsterSpawn = bukkitConfig.getInt("spawn-limits.monsters");
-	        animalSpawn = bukkitConfig.getInt("spawn-limits.animals");
-	        waterAnimalSpawn = bukkitConfig.getInt("spawn-limits.water-animals");
-	        warningState = WarningState.value(bukkitConfig.getString("settings.deprecated-verbose"));
-	        // = bukkitConfig.getInt("ticks-per.autosave");
+		boolean animals = config.getBooleanProperty("spawn-animals", theServer.getCanSpawnAnimals());
+		boolean monsters = config.getBooleanProperty("spawn-monsters", theServer.worldServerForDimension(0).difficultySetting > 0);
+		int difficulty = config.getIntProperty("difficulty", theServer.worldServerForDimension(0).difficultySetting);
 
-	        for (WorldServer world : theServer.worldServers) {
-	            world.difficultySetting = difficulty;
-	            world.spawnHostileMobs = monsters;
-	            world.spawnPeacefulMobs = animals;
-	            /*if (this.getTicksPerAnimalSpawns() < 0) {
+		//theServer.pro
+		theServer.setOnlineMode(config.getBooleanProperty("online-mode", theServer.isServerInOnlineMode()));
+		theServer.setCanSpawnAnimals(config.getBooleanProperty("spawn-animals", theServer.getCanSpawnAnimals()));
+		theServer.setAllowPvp(config.getBooleanProperty("pvp", theServer.isPVPEnabled()));
+		theServer.setAllowFlight(config.getBooleanProperty("allow-flight", theServer.isFlightAllowed()));
+		theServer.setMOTD(config.getProperty("motd", theServer.getMOTD()));
+		monsterSpawn = bukkitConfig.getInt("spawn-limits.monsters");
+		animalSpawn = bukkitConfig.getInt("spawn-limits.animals");
+		waterAnimalSpawn = bukkitConfig.getInt("spawn-limits.water-animals");
+		warningState = WarningState.value(bukkitConfig.getString("settings.deprecated-verbose"));
+		// = bukkitConfig.getInt("ticks-per.autosave");
+
+		for (WorldServer world : theServer.worldServers) {
+			world.difficultySetting = difficulty;
+			world.spawnHostileMobs = monsters;
+			world.spawnPeacefulMobs = animals;
+			/*if (this.getTicksPerAnimalSpawns() < 0) {
 	                world.ticksPerAnimalSpawns = 400;
 	            } else {
 	                world.ticksPerAnimalSpawns = this.getTicksPerAnimalSpawns();
@@ -800,40 +810,40 @@ public class BukkitServer implements Server {
 	            } else {
 	                world.ticksPerMonsterSpawns = this.getTicksPerMonsterSpawns();
 	            }*/
-	        }
+		}
 
-	        pluginManager.clearPlugins();
-	        commandMap.clearCommands();
-	        resetRecipes();
+		pluginManager.clearPlugins();
+		commandMap.clearCommands();
+		resetRecipes();
 
-	        int pollCount = 0;
+		int pollCount = 0;
 
-	        // Wait for at most 2.5 seconds for plugins to close their threads
-	        while (pollCount < 50 && getScheduler().getActiveWorkers().size() > 0) {
-	            try {
-	                Thread.sleep(50);
-	            } catch (InterruptedException e) {}
-	            pollCount++;
-	        }
+		// Wait for at most 2.5 seconds for plugins to close their threads
+		while (pollCount < 50 && getScheduler().getActiveWorkers().size() > 0) {
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {}
+			pollCount++;
+		}
 
-	        List<BukkitWorker> overdueWorkers = getScheduler().getActiveWorkers();
-	        for (BukkitWorker worker : overdueWorkers) {
-	            Plugin plugin = worker.getOwner();
-	            String author = "<NoAuthorGiven>";
-	            if (plugin.getDescription().getAuthors().size() > 0) {
-	                author = plugin.getDescription().getAuthors().get(0);
-	            }
-	            getLogger().log(Level.SEVERE, String.format(
-	                "Nag author: '%s' of '%s' about the following: %s",
-	                author,
-	                plugin.getDescription().getName(),
-	                "This plugin is not properly shutting down its async tasks when it is being reloaded.  This may cause conflicts with the newly loaded version of the plugin"
-	            ));
-	        }
-	        loadPlugins();
-	        enablePlugins(PluginLoadOrder.STARTUP);
-	        enablePlugins(PluginLoadOrder.POSTWORLD);
-		
+		List<BukkitWorker> overdueWorkers = getScheduler().getActiveWorkers();
+		for (BukkitWorker worker : overdueWorkers) {
+			Plugin plugin = worker.getOwner();
+			String author = "<NoAuthorGiven>";
+			if (plugin.getDescription().getAuthors().size() > 0) {
+				author = plugin.getDescription().getAuthors().get(0);
+			}
+			getLogger().log(Level.SEVERE, String.format(
+					"Nag author: '%s' of '%s' about the following: %s",
+					author,
+					plugin.getDescription().getName(),
+					"This plugin is not properly shutting down its async tasks when it is being reloaded.  This may cause conflicts with the newly loaded version of the plugin"
+					));
+		}
+		loadPlugins();
+		enablePlugins(PluginLoadOrder.STARTUP);
+		enablePlugins(PluginLoadOrder.POSTWORLD);
+
 	}
 	/**
 	 * @author CraftBukkit
@@ -953,7 +963,7 @@ public class BukkitServer implements Server {
 	}
 	@Override
 	public Logger getLogger() {
-		
+
 		return this.theLogger;
 	}
 
@@ -961,11 +971,11 @@ public class BukkitServer implements Server {
 	public PluginCommand getPluginCommand(String name) {
 		Command command = commandMap.getCommand(name);
 
-        if (command instanceof PluginCommand) {
-            return (PluginCommand) command;
-        } else {
-            return null;
-        }
+		if (command instanceof PluginCommand) {
+			return (PluginCommand) command;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -980,33 +990,33 @@ public class BukkitServer implements Server {
 		if (sender instanceof BukkitConsoleCommandSender) {
 			theServer.executeCommand(commandLine);
 		}
-		
+
 		else {
 			ICommandSender ics = ((BukkitPlayer) sender).getHandle();
 			theServer.getCommandManager().executeCommand(ics, commandLine);
 		}
-		
+
 		return true;
 	}
 
 	@Override
 	public void configureDbConfig(ServerConfig config) {
 		DataSourceConfig ds = new DataSourceConfig();
-        ds.setDriver(bukkitConfig.getString("database.driver"));
-        ds.setUrl(bukkitConfig.getString("database.url"));
-        ds.setUsername(bukkitConfig.getString("database.username"));
-        ds.setPassword(bukkitConfig.getString("database.password"));
-        ds.setIsolationLevel(TransactionIsolation.getLevel(bukkitConfig.getString("database.isolation")));
+		ds.setDriver(bukkitConfig.getString("database.driver"));
+		ds.setUrl(bukkitConfig.getString("database.url"));
+		ds.setUsername(bukkitConfig.getString("database.username"));
+		ds.setPassword(bukkitConfig.getString("database.password"));
+		ds.setIsolationLevel(TransactionIsolation.getLevel(bukkitConfig.getString("database.isolation")));
 
-        if (ds.getDriver().contains("sqlite")) {
-            config.setDatabasePlatform(new SQLitePlatform());
-            config.getDatabasePlatform().getDbDdlSyntax().setIdentity("");
-        }
-        else if (ds.getDriver().contains("mysql")) {
-        	theLogger.warning("MySQL is presently unsupported for BukkitForge");
-        }
+		if (ds.getDriver().contains("sqlite")) {
+			config.setDatabasePlatform(new SQLitePlatform());
+			config.getDatabasePlatform().getDbDdlSyntax().setIdentity("");
+		}
+		else if (ds.getDriver().contains("mysql")) {
+			theLogger.warning("MySQL is presently unsupported for BukkitForge");
+		}
 
-        config.setDataSourceConfig(ds);
+		config.setDataSourceConfig(ds);
 
 	}
 
@@ -1032,7 +1042,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public Iterator<Recipe> recipeIterator() {
-		
+
 		return CraftingManager.getInstance().getRecipeList().iterator();
 	}
 
@@ -1051,30 +1061,30 @@ public class BukkitServer implements Server {
 
 	@Override
 	public Map<String, String[]> getCommandAliases() {
-		
-		 ConfigurationSection section = bukkitConfig.getConfigurationSection("aliases");
-	        Map<String, String[]> result = new LinkedHashMap<String, String[]>();
 
-	        if (section != null) {
-	            for (String key : section.getKeys(false)) {
-	                List<String> commands = null;
+		ConfigurationSection section = bukkitConfig.getConfigurationSection("aliases");
+		Map<String, String[]> result = new LinkedHashMap<String, String[]>();
 
-	                if (section.isList(key)) {
-	                    commands = section.getStringList(key);
-	                } else {
-	                    commands = ImmutableList.<String>of(section.getString(key));
-	                }
+		if (section != null) {
+			for (String key : section.getKeys(false)) {
+				List<String> commands = null;
 
-	                result.put(key, commands.toArray(new String[commands.size()]));
-	            }
-	        }
+				if (section.isList(key)) {
+					commands = section.getStringList(key);
+				} else {
+					commands = ImmutableList.<String>of(section.getString(key));
+				}
 
-	        return result;
+				result.put(key, commands.toArray(new String[commands.size()]));
+			}
+		}
+
+		return result;
 	}
 
 	@Override
 	public int getSpawnRadius() {
-		
+
 		return theServer.getSpawnProtectionSize();
 	}
 
@@ -1091,19 +1101,19 @@ public class BukkitServer implements Server {
 
 	@Override
 	public boolean getOnlineMode() {
-		
+
 		return theServer.isServerInOnlineMode();
 	}
 
 	@Override
 	public boolean getAllowFlight() {
-		
+
 		return theServer.isFlightAllowed();
 	}
 
 	@Override
 	public boolean useExactLoginLocation() {
-		
+
 		return false;
 	}
 
@@ -1112,26 +1122,26 @@ public class BukkitServer implements Server {
 		theLogger.info("Stopping the Bukkit API " + version);
 		int pollCount = 0;
 		while (pollCount < 50 && getScheduler().getActiveWorkers().size() > 0) {
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {}
-            pollCount++;
-        }
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {}
+			pollCount++;
+		}
 
-        List<BukkitWorker> overdueWorkers = getScheduler().getActiveWorkers();
-        for (BukkitWorker worker : overdueWorkers) {
-            Plugin plugin = worker.getOwner();
-            String author = "<NoAuthorGiven>";
-            if (plugin.getDescription().getAuthors().size() > 0) {
-                author = plugin.getDescription().getAuthors().get(0);
-            }
-            getLogger().log(Level.SEVERE, String.format(
-                "Nag author: '%s' of '%s' about the following: %s",
-                author,
-                plugin.getDescription().getName(),
-                "This plugin is not properly shutting down its async tasks when it is being reloaded.  This may cause conflicts with the newly loaded version of the plugin"
-            ));
-        }
+		List<BukkitWorker> overdueWorkers = getScheduler().getActiveWorkers();
+		for (BukkitWorker worker : overdueWorkers) {
+			Plugin plugin = worker.getOwner();
+			String author = "<NoAuthorGiven>";
+			if (plugin.getDescription().getAuthors().size() > 0) {
+				author = plugin.getDescription().getAuthors().get(0);
+			}
+			getLogger().log(Level.SEVERE, String.format(
+					"Nag author: '%s' of '%s' about the following: %s",
+					author,
+					plugin.getDescription().getName(),
+					"This plugin is not properly shutting down its async tasks when it is being reloaded.  This may cause conflicts with the newly loaded version of the plugin"
+					));
+		}
 		//theServer.stopServer();
 
 	}
@@ -1139,43 +1149,43 @@ public class BukkitServer implements Server {
 	@Override
 	public int broadcast(String message, String permission) {
 		int count = 0;
-        Set<Permissible> permissibles = getPluginManager().getPermissionSubscriptions(permission);
+		Set<Permissible> permissibles = getPluginManager().getPermissionSubscriptions(permission);
 
-        for (Permissible permissible : permissibles) {
-            if (permissible instanceof CommandSender && permissible.hasPermission(permission)) {
-                CommandSender user = (CommandSender) permissible;
-                user.sendMessage(message);
-                count++;
-            }
-        }
+		for (Permissible permissible : permissibles) {
+			if (permissible instanceof CommandSender && permissible.hasPermission(permission)) {
+				CommandSender user = (CommandSender) permissible;
+				user.sendMessage(message);
+				count++;
+			}
+		}
 
-        return count;
+		return count;
 	}
 
 	@Override
 	public OfflinePlayer getOfflinePlayer(String name) {
-		
+
 		//EntityPlayerMP guy = new EntityPlayerMP();
-		  OfflinePlayer result = getPlayerExact(name);
-	        String lname = name.toLowerCase();
+		OfflinePlayer result = getPlayerExact(name);
+		String lname = name.toLowerCase();
 
-	        if (result == null) {
-	            result = offlinePlayers.get(lname);
+		if (result == null) {
+			result = offlinePlayers.get(lname);
 
-	            if (result == null) {
-	                result = new BukkitOfflinePlayer(this, name);
-	                offlinePlayers.put(lname, result);
-	            }
-	        } else {
-	            offlinePlayers.remove(lname);
-	        }
-	        return result;
+			if (result == null) {
+				result = new BukkitOfflinePlayer(this, name);
+				offlinePlayers.put(lname, result);
+			}
+		} else {
+			offlinePlayers.remove(lname);
+		}
+		return result;
 
 	}
 
 	@Override
 	public Set<String> getIPBans() {
-		
+
 		return theServer.getConfigurationManager().getBannedIPs().getBannedList().entrySet();
 	}
 
@@ -1214,7 +1224,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public GameMode getDefaultGameMode() {
-		
+
 		return GameMode.getByValue(theServer.getGameType().getID());
 	}
 
@@ -1237,7 +1247,7 @@ public class BukkitServer implements Server {
 	@Override
 	public OfflinePlayer[] getOfflinePlayers() {
 
-		
+
 		String[] files = new File(this.getWorldContainer(), "/players").list(new keepcalm.mods.bukkit.utils.DatFileFilter());
 		Set<OfflinePlayer> players = new HashSet<OfflinePlayer>();
 
@@ -1251,19 +1261,19 @@ public class BukkitServer implements Server {
 
 	@Override
 	public Messenger getMessenger() {
-		
+
 		return this.theMessenger;
 	}
 
 	@Override
 	public HelpMap getHelpMap() {
-		
+
 		return this.theHelpMap;
 	}
 
 	@Override
 	public Inventory createInventory(InventoryHolder owner, InventoryType type) {
-		
+
 		return new BukkitInventoryCustom(owner, type);
 	}
 
@@ -1282,37 +1292,37 @@ public class BukkitServer implements Server {
 
 	@Override
 	public int getMonsterSpawnLimit() {
-		
+
 		return monsterSpawn;
 	}
 
 	@Override
 	public int getAnimalSpawnLimit() {
-		
+
 		return animalSpawn;
 	}
 
 	@Override
 	public int getWaterAnimalSpawnLimit() {
-		
+
 		return waterAnimalSpawn;
 	}
 
 	@Override
 	public boolean isPrimaryThread() {
-		
+
 		return false ; /* since we're a mod, i doubt that we are the main thread */
 	}
 
 	@Override
 	public String getMotd() {
-		
+
 		return theServer.getMOTD();
 	}
 
 	@Override
 	public WarningState getWarningState() {
-		
+
 		return this.warningState;//FMLCommonHandler.instance().getFMLLogger().getLevel();
 	}
 
@@ -1324,11 +1334,11 @@ public class BukkitServer implements Server {
 	}
 	public static BukkitServer instance() {
 		return instance;
-		
+
 	}
 	public static void setPlayerFauxSleeping(String username, boolean b) {
 		fauxSleeping.put(username, b);
-		
+
 	}
 	public boolean isFauxSleeping(String username) {
 		return this.fauxSleeping.containsKey(username) ? this.fauxSleeping.get(username) : false;
@@ -1351,6 +1361,6 @@ public class BukkitServer implements Server {
 	public ItemFactory getItemFactory() {
 		return BukkitItemFactory.instance();
 	}
-	
+
 
 }

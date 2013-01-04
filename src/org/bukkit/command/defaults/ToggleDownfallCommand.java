@@ -2,6 +2,8 @@ package org.bukkit.command.defaults;
 
 import java.util.List;
 
+import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,10 +29,13 @@ public class ToggleDownfallCommand extends VanillaCommand {
         World world = null;
 
         if (args.length == 1) {
-            world = Bukkit.getWorld(args[0]);
+        	try {
+        		world = BukkitServer.instance().getWorld(Integer.parseInt(args[0]));
+        	}
+        	catch (NumberFormatException e) {}
 
             if (world == null) {
-                sender.sendMessage(ChatColor.RED + "No world exists with the name '" + args[0] + "'");
+                sender.sendMessage(ChatColor.RED + "No world exists with the dimension '" + args[0] + "'");
                 return true;
             }
         } else if (sender instanceof Player) {
@@ -39,7 +44,7 @@ public class ToggleDownfallCommand extends VanillaCommand {
             world = Bukkit.getWorlds().get(0);
         }
 
-        Command.broadcastCommandMessage(sender, "Toggling downfall " + (world.hasStorm() ? "off" : "on") + " for world '" + world.getName() + "'");
+        Command.broadcastCommandMessage(sender, "Toggling downfall " + (world.hasStorm() ? "off" : "on") + " for dimension '" + world.getName() + "'");
         world.setStorm(!world.hasStorm());
 
         return true;

@@ -3,11 +3,11 @@ package keepcalm.mods.bukkit.bukkitAPI.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import net.minecraft.world.World;
 
 import org.bukkit.BlockChangeDelegate;
-import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.MaterialData;
 //import org.bukkit.craftbukkit.CraftWorld;
@@ -17,7 +17,7 @@ public class StructureGrowDelegate implements BlockChangeDelegate {
     private final List<BlockState> blocks = new ArrayList<BlockState>();
 
     public StructureGrowDelegate(World world) {
-        this.world = (BukkitWorld) Bukkit.getServer().getWorld(world.getWorldInfo().getWorldName());
+        this.world = (BukkitWorld) BukkitServer.instance().getWorld(world.getWorldInfo().getDimension());
     }
 
     public boolean setRawTypeId(int x, int y, int z, int type) {
