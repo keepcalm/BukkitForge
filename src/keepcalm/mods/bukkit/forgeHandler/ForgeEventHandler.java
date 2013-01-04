@@ -451,6 +451,9 @@ public class ForgeEventHandler {
 		ev1 = BukkitEventFactory.callEvent(ev1);
 		String newLine = String.format(ev1.getFormat(),new Object[] {newName, ev1.getMessage()});
 		ev.line = newLine;
+		if (ev1.isCancelled()) {
+			ev.setCanceled(true);
+		}
 	}
 
 	@ForgeSubscribe
