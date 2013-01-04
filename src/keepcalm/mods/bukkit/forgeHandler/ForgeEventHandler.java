@@ -7,6 +7,7 @@ import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlockFake;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
@@ -14,6 +15,7 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitLivingEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
+import keepcalm.mods.bukkit.bukkitAPI.generator.NormalChunkGenerator;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import keepcalm.mods.bukkit.events.BlockDestroyEvent;
 import keepcalm.mods.bukkit.events.DispenseItemEvent;
@@ -32,6 +34,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.Event.Result;
@@ -52,11 +55,13 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
+import org.bukkit.World.Environment;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
@@ -77,6 +82,8 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.Vector;
 
 import com.google.common.collect.Sets;
@@ -469,7 +476,26 @@ public class ForgeEventHandler {
 		}
 	}
 
-
+	@ForgeSubscribe
+	public void worldLoad(WorldEvent.Load ev) {
+		if (!ForgeEventHandler.ready || FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
+		int dim = ev.world.getWorldInfo().getDimension();
+		if (BukkitServer.instance().getWorld(dim) == null) {
+			System.out.println("Registering dimension with BukkitForge: " + dim + "..." );
+			WorldProvider w = ev.world.provider;
+			
+			Environment env = w.isHellWorld ? Environment.NETHER : Environment.NORMAL;
+			ChunkGenerator cg = new NormalChunkGenerator(ev.world);//(((WorldServer)ev.world).theChunkProviderServer);
+			BukkitWorld bukkit = new BukkitWorld((WorldServer) ev.world, cg, env);
+			BukkitServer.instance().worlds.put(dim, bukkit);
+			WorldLoadEvent bev = new WorldLoadEvent(bukkit);
+			Bukkit.getPluginManager().callEvent(bev);
+		}
+		
+		
+		
+	}
 	// begin BukkitForge-added events
 
 	// used PlayerInteractEvent for this

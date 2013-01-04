@@ -21,6 +21,10 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
     public NormalChunkGenerator(World world, long seed) {
         provider = world.getChunkProvider();
     }
+    
+    public NormalChunkGenerator(World world) {
+    	this(world, world.getWorldInfo().getSeed());
+    }
 
     public byte[] generate(org.bukkit.World world, Random random, int x, int z) {
         throw new UnsupportedOperationException("Not supported.");

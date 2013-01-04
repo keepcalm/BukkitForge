@@ -540,7 +540,7 @@ public class BukkitWorld implements World {
     }
 
     public String getName() {
-        return world.getWorldInfo().getWorldName();
+        return world.getWorldInfo().getWorldName()+ "@" + world.getWorldInfo().getDimension() ;
     }
 
     @Deprecated
@@ -554,7 +554,7 @@ public class BukkitWorld implements World {
 
     @Override
     public String toString() {
-        return "BukkitWorld{name=" + getName() + '}';
+        return "BukkitWorld{name=" + getName() + "}";
     }
 
     public long getTime() {

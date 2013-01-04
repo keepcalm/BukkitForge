@@ -557,6 +557,7 @@ public class BukkitServer implements Server {
         String name = creator.name();
         ChunkGenerator generator = creator.generator();
         File folder = new File(getWorldContainer().getParentFile(), name);
+        int dimension = DimensionManager.getNextFreeDimId();
         World world = getWorld(name);
         WorldType type = WorldType.parseWorldType(creator.type().getName());
         boolean generateStructures = creator.generateStructures();
@@ -579,17 +580,7 @@ public class BukkitServer implements Server {
             converter.convertMapFormat(name, new ConvertingProgressUpdate(theServer));
         }
 
-        int dimension = 10 + theServer.worldServers.length;
-        boolean used = false;
-        do {
-            for (WorldServer server : theServer.worldServers) {
-                used = server.getWorldInfo().getDimension() == dimension;
-                if (used) {
-                    dimension++;
-                    break;
-                }
-            }
-        } while(used);
+        
         boolean hardcore = false;
 
         WorldServer internal = new WorldServer(theServer, new AnvilSaveHandler(getWorldContainer().getParentFile(), name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, hardcore, type), theServer.theProfiler);
@@ -694,17 +685,33 @@ public class BukkitServer implements Server {
 
 	@Override
 	public World getWorld(String name) {
+		String[] parts = name.split("@");
+		if (parts.length == 1) {
+			theLogger.warning("A plugin is trying to access a world without specifying its name correctly! You need to remove configs from build 44 and older");
+			return getWorld(0);
+		}
+		
+		try {
+			int dim = Integer.parseInt(parts[1]);
+			return getWorld(dim);
+		}
+		catch (NumberFormatException e) {
+			theLogger.warning("A plugin is trying to access a world without specifying its name correctly! You need to remove configs from build 44 and older");
+			return getWorld(0);
+		}/*
 		for (WorldServer w : theServer.worldServers) {
 			if (w.getWorldInfo().getWorldName().equals(name)) {
 				return this.getWorld(w.getWorldInfo().getDimension());
 			}
 		}
-		
-		return null;
+		*/
+		//return null;
 	}
 	
 	public World getWorld(int dimID) {
-		return worlds.get(dimID);
+		if (worlds.containsKey(dimID))
+			return worlds.get(dimID);
+		return null;
 	}
 
 	@Override
