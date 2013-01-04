@@ -364,7 +364,8 @@ public class BukkitWorld implements World {
     }
 
     public boolean isChunkInUse(int x, int z) {
-    	return world.getPlayerManager().getOrCreateChunkWatcher(x,z,false).playersInChunk.size() == 0;
+    	return world.getPlayerManager().getOrCreateChunkWatcher(x, z, false).playersInChunk == null || world.getPlayerManager().getOrCreateChunkWatcher(x, z, false).playersInChunk.size() == 0;
+    	//return world.getPlayerManager().getOrCreateChunkWatcher(x,z,false).playersInChunk.size() == 0;
         
     }
 
@@ -563,6 +564,7 @@ public class BukkitWorld implements World {
     public void setTime(long time) {
         world.getWorldInfo().setWorldTime(time);
         for (Object i : world.playerEntities) {
+        	if (!(i instanceof EntityPlayerMP)) continue;
         	server.getHandle().getConfigurationManager().updateTimeAndWeatherForPlayer((EntityPlayerMP) i, world);
         }
     }
