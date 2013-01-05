@@ -17,7 +17,7 @@ public class BukkitCrashCallable implements ICrashCallable {
 			int len = BukkitServer.instance().getPluginManager().getPlugins().length;
 			int j = 0;
 			for (Plugin i : BukkitServer.instance().getPluginManager().getPlugins()){
-				String name = i.getDescription().getMain() + "(" + i.getDescription().getFullName() + ": " + (i.isEnabled() ? "Enabled" : "Disabled") + ")";
+				String name = i.getDescription().getFullName() + ": " + (i.isEnabled() ? "Enabled" : "Disabled");
 				if (j == 0) {
 					plugins += name;
 				}

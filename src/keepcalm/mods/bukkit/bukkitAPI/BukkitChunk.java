@@ -7,6 +7,7 @@ import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlockState;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
+import keepcalm.mods.bukkit.bukkitAPI.generator.NormalChunkGenerator;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -18,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
@@ -43,6 +45,18 @@ public class BukkitChunk implements Chunk {
 	}
 
 	public World getWorld() {
+		if (BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension()) == null) {
+			Environment env;
+			if (worldServer.provider.isHellWorld) {
+				env = Environment.NETHER;
+			}
+			else {
+				env = Environment.NORMAL;
+			}
+			BukkitWorld bw = new BukkitWorld(worldServer, new NormalChunkGenerator(worldServer), env );
+			BukkitContainer.bServer.worlds.put(worldServer.getWorldInfo().getDimension(), bw);
+		}
+		
 		return BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension());
 		
 	}

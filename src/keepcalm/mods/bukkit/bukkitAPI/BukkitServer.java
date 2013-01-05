@@ -698,7 +698,7 @@ public class BukkitServer implements Server {
 				}
 			}
 
-			return getWorld(0);
+			return null;
 		}
 
 		try {

@@ -25,6 +25,7 @@ import keepcalm.mods.bukkit.forgeHandler.VanishUtils;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerBeacon;
 import net.minecraft.inventory.ContainerBrewingStand;
