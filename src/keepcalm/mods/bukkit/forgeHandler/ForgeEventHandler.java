@@ -117,7 +117,7 @@ public class ForgeEventHandler {
 			dc = DamageCause.FALL;
 		else if (ds == ds.fallingBlock)
 			dc = DamageCause.FALL;
-		else if (ds == ds.field_76375_l)
+		else if (ds == ds.explosion2)
 			dc = DamageCause.ENTITY_EXPLOSION;
 		else if (ds == ds.generic)
 			dc = DamageCause.CUSTOM;
@@ -476,26 +476,18 @@ public class ForgeEventHandler {
 		}
 	}
 
-	@ForgeSubscribe
+	/*@ForgeSubscribe
 	public void worldLoad(WorldEvent.Load ev) {
 		if (!ForgeEventHandler.ready || FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
-		int dim = ev.world.getWorldInfo().getDimension();
-		if (BukkitServer.instance().getWorld(dim) == null) {
-			System.out.println("Registering dimension with BukkitForge: " + dim + "..." );
-			WorldProvider w = ev.world.provider;
-			
-			Environment env = w.isHellWorld ? Environment.NETHER : Environment.NORMAL;
-			ChunkGenerator cg = new NormalChunkGenerator(ev.world);//(((WorldServer)ev.world).theChunkProviderServer);
-			BukkitWorld bukkit = new BukkitWorld((WorldServer) ev.world, cg, env);
-			BukkitServer.instance().worlds.put(dim, bukkit);
+
 			WorldLoadEvent bev = new WorldLoadEvent(bukkit);
 			Bukkit.getPluginManager().callEvent(bev);
 		}
 		
 		
 		
-	}
+	}*/
 	// begin BukkitForge-added events
 
 	// used PlayerInteractEvent for this

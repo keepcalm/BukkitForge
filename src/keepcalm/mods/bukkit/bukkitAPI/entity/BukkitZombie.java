@@ -44,6 +44,6 @@ public class BukkitZombie extends BukkitMonster implements Zombie {
 
 	@Override
 	public void setVillager(boolean flag) {
-		getHandle().setIsVillager(true);
+		getHandle().setVillager(true);
 	}
 }

@@ -7,11 +7,14 @@ public class BukkitClassLoader extends URLClassLoader {
 	
 	public BukkitClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
+		System.out.println("Hello there, my parent is " + parent.getClass().getName());
 	}
 	
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		String newName = name;
+		
+		System.out.println("Find class: "+ name);
 		
 		if (newName.startsWith("org.bukkit.craftbukkit")) {
 			newName.replace("org.bukkit.craftbukkit", "keepcalm.mods.bukkit.bukkitAPI");
@@ -24,8 +27,6 @@ public class BukkitClassLoader extends URLClassLoader {
 			newName = "guava10." + newName;
 			System.out.println(" to " + newName);
 		}
-		
-		
 		return super.findClass(newName);
 	}
 

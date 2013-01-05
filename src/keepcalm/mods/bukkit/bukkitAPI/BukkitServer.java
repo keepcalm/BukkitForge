@@ -23,6 +23,7 @@ import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.command.BukkitCommandMap;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import keepcalm.mods.bukkit.bukkitAPI.generator.NormalChunkGenerator;
 import keepcalm.mods.bukkit.bukkitAPI.help.CommandHelpTopic;
 import keepcalm.mods.bukkit.bukkitAPI.help.SimpleHelpMap;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCustom;
@@ -53,6 +54,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.WorldManager;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
@@ -104,7 +106,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLoadOrder;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
-import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.SimpleServicesManager;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.plugin.messaging.Messenger;
@@ -127,6 +128,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 //import cpw.mods.fml.common.FMLCommonHandler;
 //import jline.console.ConsoleReader;
+import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 
 public class BukkitServer implements Server {
@@ -146,7 +148,7 @@ public class BukkitServer implements Server {
 	private PluginManager pluginManager;// = new SimplePluginManager(this, commandMap);
 
 
-	private BukkitClassLoader thePluginLoader = new BukkitClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs(), getClass().getClassLoader());
+	private BukkitClassLoader thePluginLoader;// = new BukkitClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs(), getClass().getClassLoader());
 	//private BukkitScheduler scheduler = new BukkitScheduler();
 	//	private ServicesManager servicesManager = new SimpleServicesManager();
 	public Map<Integer,BukkitWorld> worlds = new LinkedHashMap<Integer,BukkitWorld>();
@@ -187,11 +189,12 @@ public class BukkitServer implements Server {
 		Iterator<Integer> _ = ids.iterator();
 
 
-		/*try {
+		thePluginLoader = new BukkitClassLoader(((RelaunchClassLoader)getClass().getClassLoader()).getURLs(), getClass().getClassLoader());
+		try {
 			System.out.println("This is a test of the SPM Loader!");
 			// this *should* load simplepluginamanger via BukkitClassLoader
 			Class<?> pluginMan = thePluginLoader.loadClass("org.bukkit.plugin.SimplePluginManager");
-
+			System.out.println("Loaded class: " + pluginMan.getCanonicalName() + " via " + thePluginLoader.getClass().getCanonicalName());
 			Method insn = pluginMan.getMethod("newInstance");
 			insn.setAccessible(true);
 			this.pluginManager = (PluginManager) insn.invoke(null);
@@ -199,8 +202,9 @@ public class BukkitServer implements Server {
 
 		} catch (Exception e1) {
 			throw new RuntimeException("BukkitForge encountered an error (most likely it  was installed incorrectly!)", e1);
-		}*/
-		pluginManager = new SimplePluginManager(this, commandMap);
+		}
+		
+		//pluginManager = new SimplePluginManager(this, commandMap);
 		bukkitConfig = new YamlConfiguration();
 		YamlConfiguration yml = new YamlConfiguration();
 		try {
@@ -721,6 +725,20 @@ public class BukkitServer implements Server {
 	public World getWorld(int dimID) {
 		if (worlds.containsKey(dimID))
 			return worlds.get(dimID);
+		else if (!worlds.containsKey(dimID) && Arrays.asList(DimensionManager.getIDs()).contains(dimID)) {
+			// dim there but not registered with us.
+			WorldServer internal = DimensionManager.getWorld(dimID);
+			int dim = internal.getWorldInfo().getDimension();
+				System.out.println("Registering dimension with BukkitForge: " + dim + "..." );
+				WorldProvider w = internal.provider;
+				
+				Environment env = w.isHellWorld ? Environment.NETHER : Environment.NORMAL;
+				ChunkGenerator cg = new NormalChunkGenerator(internal);//(((WorldServer)ev.world).theChunkProviderServer);
+				BukkitWorld bukkit = new BukkitWorld(internal, cg, env);
+				BukkitServer.instance().worlds.put(dim, bukkit);
+				return bukkit;
+			
+		}
 		return null;
 	}
 
@@ -775,20 +793,25 @@ public class BukkitServer implements Server {
 	@Override
 	public void reload() {
 		bukkitConfig = YamlConfiguration.loadConfiguration(new File("bukkit.yml"));
-		PropertyManager config = new PropertyManager(theServer.getFile("server.properties"));
+		//
 
-		((DedicatedServer) theServer).settings = config;
+		if (theServer instanceof DedicatedServer) {
+			PropertyManager config = new PropertyManager(theServer.getFile("server.properties"));
+			((DedicatedServer) theServer).settings = config;
+		}
+		
+		//
 
-		boolean animals = config.getBooleanProperty("spawn-animals", theServer.getCanSpawnAnimals());
-		boolean monsters = config.getBooleanProperty("spawn-monsters", theServer.worldServerForDimension(0).difficultySetting > 0);
-		int difficulty = config.getIntProperty("difficulty", theServer.worldServerForDimension(0).difficultySetting);
+		boolean animals = theServer.getCanSpawnAnimals();
+		boolean monsters = theServer.worldServerForDimension(0).difficultySetting > 0;
+		int difficulty = theServer.worldServerForDimension(0).difficultySetting;
 
 		//theServer.pro
-		theServer.setOnlineMode(config.getBooleanProperty("online-mode", theServer.isServerInOnlineMode()));
+		/*theServer.setOnlineMode(theServer.isServerInOnlineMode());
 		theServer.setCanSpawnAnimals(config.getBooleanProperty("spawn-animals", theServer.getCanSpawnAnimals()));
 		theServer.setAllowPvp(config.getBooleanProperty("pvp", theServer.isPVPEnabled()));
 		theServer.setAllowFlight(config.getBooleanProperty("allow-flight", theServer.isFlightAllowed()));
-		theServer.setMOTD(config.getProperty("motd", theServer.getMOTD()));
+		theServer.setMOTD(config.getProperty("motd", theServer.getMOTD()));*/
 		monsterSpawn = bukkitConfig.getInt("spawn-limits.monsters");
 		animalSpawn = bukkitConfig.getInt("spawn-limits.animals");
 		waterAnimalSpawn = bukkitConfig.getInt("spawn-limits.water-animals");
