@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.bukkitAPI.command;
 import static org.bukkit.util.Java15Compat.Arrays_copyOfRange;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -247,7 +248,8 @@ public class BukkitCommandMap extends SimpleCommandMap implements CommandMap  {
     }
 
 	public void doneLoadingPlugins(ServerCommandManager scm) {
-		for (Command i : this.knownCommands.values()) {
+		Command[] knownCommands = this.knownCommands.values().toArray(new Command[0]);
+		for (Command i : knownCommands) {
 			cmdHandlers.put(i.getName().toLowerCase(), new CommandExecutor2CommandBase(i, i.getName()));
 		}
 		for (CommandExecutor2CommandBase i : this.cmdHandlers.values()) {

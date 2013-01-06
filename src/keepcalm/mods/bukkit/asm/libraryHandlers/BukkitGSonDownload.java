@@ -6,17 +6,17 @@ public class BukkitGSonDownload implements ILibrarySet {
 
 	@Override
 	public String[] getHashes() {
-		return new String[] {"2e66da15851f9f5b5079228f856c2f090ba98c38"};
+		return new String[] {"881bf5cf5adb67e406df8dd5061c61bb4c3e143a"};
 	}
 
 	@Override
 	public String[] getLibraries() {
-		return new String[] {"gson-2.1.jar"};
+		return new String[] {"gson-2.1-cb.jar"};
 	}
 
 	@Override
 	public String getRootURL() {
-		return "http://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.1/%s";
+		return "https://github.com/keepcalm/BukkitForge/blob/master/lib/%s?raw=true";
 	}
 
 }
