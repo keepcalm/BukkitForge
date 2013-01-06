@@ -194,7 +194,7 @@ public class BukkitServer implements Server {
 			System.out.println("This is a test of the SPM Loader!");
 			// this *should* load simplepluginamanger via BukkitClassLoader
 			Class<?> pluginMan = thePluginLoader.loadClass("org.bukkit.plugin.SimplePluginManager");
-			System.out.println("Loaded class: " + pluginMan.getCanonicalName() + " via " + thePluginLoader.getClass().getCanonicalName());
+			System.out.println("Loaded class: " + pluginMan.getCanonicalName() + " via " + pluginMan.getClassLoader().getClass().getCanonicalName());
 			Method insn = pluginMan.getMethod("newInstance");
 			insn.setAccessible(true);
 			this.pluginManager = (PluginManager) insn.invoke(null);

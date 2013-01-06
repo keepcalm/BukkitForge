@@ -3,10 +3,10 @@ package keepcalm.mods.bukkit.bukkitAPI;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-public class BukkitClassLoader extends URLClassLoader {
+public class BukkitClassLoader extends ClassLoader {
 	
-	public BukkitClassLoader(URL[] urls, ClassLoader parent) {
-		super(urls, parent);
+	public BukkitClassLoader(ClassLoader parent) {
+		super(parent);
 		System.out.println("Hello there, my parent is " + parent.getClass().getName());
 	}
 	
