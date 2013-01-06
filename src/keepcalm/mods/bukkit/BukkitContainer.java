@@ -1,7 +1,13 @@
 package keepcalm.mods.bukkit;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,6 +59,8 @@ import cpw.mods.fml.relauncher.Side;
 @Mod(modid="BukkitForge",name="BukkitForge",version="1.4.6-0")
 @NetworkMod(clientSideRequired=false,serverSideRequired=false)
 public class BukkitContainer {
+	public static Properties users;
+	
 	public static BukkitServer bServer;
 	public File myConfigurationFile;
 	public static boolean allowAnsi;
@@ -69,6 +77,8 @@ public class BukkitContainer {
 	public static EntityPlayerMP MOD_PLAYER;
 	public static String[] pluginsInPath;
 	public static String CRAFT_BUILD_NUMBER;
+	
+	private static File propsFile;
 	
 	private static boolean isGuiEnabled = false;
 	
@@ -169,6 +179,55 @@ public class BukkitContainer {
 
 		config.save();
 		GameRegistry.registerPlayerTracker(new PlayerTracker());
+		FileInputStream fis;
+		propsFile = null;
+		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+			propsFile = new File("users.properties");
+			try {
+				propsFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+			
+		}
+		else {
+			// it's always this
+			Class<?> mcClazz;
+			try {
+				mcClazz = Class.forName("net.minecraft.client.Minecraft");
+			} catch (ClassNotFoundException e) {
+				bukkitLogger.warning("FAILED to load minecraft main class!");
+				return;
+			}
+			for (Field i : mcClazz.getFields()) {
+				if (i.getModifiers() == Modifier.STATIC + Modifier.PRIVATE) {
+					if (i.getType().equals(File.class)) {
+						System.out.println("Found mc file field: private static " + mcClazz.getCanonicalName() + "." + i.getName());
+						i.setAccessible(true);
+						try {
+							propsFile = (File) i.get(null);
+						} catch (Exception e) {
+							e.printStackTrace();
+							return;
+						}
+						
+					}
+				}
+			}
+		}
+		
+		this.users = new Properties();
+		if (propsFile == null) return;
+		try {
+			fis = new FileInputStream(propsFile);
+			users.load(fis);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		
 	}
 
 	public static BukkitContainer getInstance() {
@@ -228,6 +287,19 @@ public class BukkitContainer {
 		B4VScheduler.currentTick = -1;
 		ForgeEventHandler.ready = false;
 		SchedulerTickHandler.tickOffset = 0;
+		if (propsFile == null) {
+			return;
+		}
+		
+		try {
+			FileOutputStream fis = new FileOutputStream(propsFile);
+			users.store(fis, "BukkitForge seen users. THIS IS TEMPORARY. Although it may become permanent.");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
 	}
 
 }

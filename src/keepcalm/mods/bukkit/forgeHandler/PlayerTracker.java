@@ -1,8 +1,8 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
-import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.TcpConnection;
@@ -23,7 +23,8 @@ public class PlayerTracker implements IPlayerTracker {
 
 	@Override
 	public void onPlayerLogin(final EntityPlayer player) {
-		
+				// seen - nvm!
+				BukkitContainer.users.put(player.username, true);
 				if (!ForgeEventHandler.ready) {
 					return;
 				}

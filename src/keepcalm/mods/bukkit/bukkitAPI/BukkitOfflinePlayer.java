@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -194,7 +195,7 @@ public class BukkitOfflinePlayer implements OfflinePlayer, ConfigurationSerializ
     }
 
     public boolean hasPlayedBefore() {
-        return getDataFile().exists();// != null;
+        return BukkitContainer.users.containsKey(name);// != null;
     }
 
     public Location getBedSpawnLocation() {
