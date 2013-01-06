@@ -18,7 +18,8 @@ public class SchedulerTickHandler implements ITickHandler {
 			tickOffset++;
 			return;
 		}
-		B4VScheduler b4v = (B4VScheduler) BukkitServer.instance().getScheduler();
+		B4VScheduler b4v = (B4VScheduler) BukkitServer.instance().
+				getScheduler();
 		// the supposed ticks will always be tickOffset behind the actual number of ticks
 		b4v.mainThreadHeartbeat(MinecraftServer.getServer().getTickCounter() - tickOffset);
 	}

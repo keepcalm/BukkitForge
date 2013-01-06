@@ -2,6 +2,8 @@ package keepcalm.mods.bukkit.bukkitAPI;
 
 import java.util.Set;
 
+import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkit.bukkitAPI.command.ColouredConsoleSender;
 import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.ChatColor;
@@ -23,7 +25,9 @@ public class BukkitConsoleCommandSender implements ConsoleCommandSender {
 	protected final BukkitConversationTracker convo = new BukkitConversationTracker();
 	
 	public static ConsoleCommandSender getInstance() {
-		if (instance == null)
+		if (instance == null && BukkitContainer.allowAnsi)
+			instance = new ColouredConsoleSender();
+		else if (instance == null)
 			instance = new BukkitConsoleCommandSender(BukkitServer.instance());
 		
 		return instance;

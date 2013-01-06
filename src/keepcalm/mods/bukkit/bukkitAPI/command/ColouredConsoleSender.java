@@ -21,7 +21,7 @@ public class ColouredConsoleSender extends BukkitConsoleCommandSender {
     private final Map<ChatColor, String> replacements = new EnumMap<ChatColor, String>(ChatColor.class);
     private final ChatColor[] colors = ChatColor.values();
 
-    protected ColouredConsoleSender() {
+    public ColouredConsoleSender() {
         super((BukkitServer) Bukkit.getServer());
         //this.reader = ((BukkitServer) getServer()).getReader();
         //this.terminal = reader.getTerminal();

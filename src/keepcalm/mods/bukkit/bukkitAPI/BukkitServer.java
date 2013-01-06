@@ -106,6 +106,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLoadOrder;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
+import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.SimpleServicesManager;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.plugin.messaging.Messenger;
@@ -134,7 +135,8 @@ import cpw.mods.fml.relauncher.RelaunchClassLoader;
 public class BukkitServer implements Server {
 	public static final String apiVer = "1.4.5-R0.2";
 	public static final String version = "1.4.6";
-	public static BukkitServer instance;
+	
+	private static BukkitServer instance;
 	private MinecraftServer theServer;
 	//private BukkitServer bukkitServer;
 	private ServerConfigurationManager configMan;
@@ -181,14 +183,15 @@ public class BukkitServer implements Server {
 
 
 	public BukkitServer(MinecraftServer server) {
+		instance = this;
 		cbBuild = "git-BukkitForge-1.4.5-R1.0-b" + BukkitContainer.CRAFT_BUILD_NUMBER +  "jnks (Really: BukkitForge for MC " + version + ")";
 		configMan = server.getConfigurationManager();
 		theServer = server;
 		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());
 		Iterator<Integer> _ = ids.iterator();
 
-
-		
+		System.out.println("IS THE INSTANCE NULL? " + (instance == null ? "YES" : "NO"));
+		this.pluginManager = new SimplePluginManager(this, commandMap);
 		
 		//pluginManager = new SimplePluginManager(this, commandMap);
 		bukkitConfig = new YamlConfiguration();
@@ -216,6 +219,8 @@ public class BukkitServer implements Server {
 		this.theLogger = BukkitContainer.bukkitLogger;
 		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
 		thePluginLoader = new BukkitClassLoader(getClass().getClassLoader());
+		
+		// I MAINTAIN THAT THIS WILL WORK EVENTUALLY
 		/*try {
 			System.out.println("This is a test of the SPM Loader!");
 			// this *should* load simplepluginamanger via BukkitClassLoader
