@@ -15,7 +15,7 @@
 	<property name="package.meta-inf" value="META-INF" />
 	<property name="package.at" value="bukkit_at.cfg" />
 	<property name="package.configs" value="${src.dir}/configurations" />
-	<property name="build.ver" value="1.4.6" />
+	<property name="build.ver" value="1.4.7" />
 	<property name="blockbreak.src" value="blockbreak/src/keepcalm/mods" />
 	<!--<property name="files.minecraft.dir" value="jars" />-->
 	<property name="dist.dir" value="${build.dir}/dist" />
