@@ -5,7 +5,7 @@ import java.util.HashMap;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.bukkit.Bukkit;
@@ -13,12 +13,12 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 
 public class BukkitInventoryPlayer extends BukkitInventory implements org.bukkit.inventory.PlayerInventory {
-	private EntityPlayerMP player;
+	private EntityPlayer player;
 	private InventoryPlayer realInv;
 	public BukkitInventoryPlayer(InventoryPlayer inventory) {
 		super(inventory);
 		this.realInv = inventory;
-		this.player = (EntityPlayerMP) inventory.player;
+		this.player = inventory.player;
 	}
 
 	@Override
