@@ -28,8 +28,10 @@ public class BlockBreakEventHandler {
 			fp = BukkitContainer.MOD_PLAYER;
 		}
 		
-		// not cancelable at present
 		org.bukkit.event.block.BlockBreakEvent bb = new org.bukkit.event.block.BlockBreakEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.blockX, ev.blockZ)), ev.blockX, ev.blockY, ev.blockZ), new BukkitPlayer(fp));
 		Bukkit.getPluginManager().callEvent(bb);
+		if (bb.isCancelled()) {
+			ev.setCanceled(true);
+		}
 	}
 }
