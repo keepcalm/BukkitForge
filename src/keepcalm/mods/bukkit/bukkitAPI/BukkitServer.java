@@ -189,7 +189,7 @@ public class BukkitServer implements Server {
 		Iterator<Integer> _ = ids.iterator();
 
 
-		thePluginLoader = new BukkitClassLoader(((RelaunchClassLoader)getClass().getClassLoader()).getURLs(), getClass().getClassLoader());
+		thePluginLoader = new BukkitClassLoader(getClass().getClassLoader());
 		try {
 			System.out.println("This is a test of the SPM Loader!");
 			// this *should* load simplepluginamanger via BukkitClassLoader
