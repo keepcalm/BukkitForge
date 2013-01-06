@@ -53,8 +53,9 @@ public final class SimplePluginManager implements PluginManager {
     private final Map<Boolean, Map<Permissible, Boolean>> defSubs = new HashMap<Boolean, Map<Permissible, Boolean>>();
     private boolean useTimings = false;
 
-    public static SimplePluginManager newInstance() {
-    	return new SimplePluginManager(BukkitServer.instance(), BukkitServer.instance().getRealCmdMap());
+    public static SimplePluginManager newInstance(BukkitServer srv, SimpleCommandMap map) {
+    	return new SimplePluginManager(BukkitServer.instance,
+    			BukkitServer.instance.commandMap);
     }
     
     public SimplePluginManager(Server instance, SimpleCommandMap commandMap) {

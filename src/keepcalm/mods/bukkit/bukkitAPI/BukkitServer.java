@@ -134,7 +134,7 @@ import cpw.mods.fml.relauncher.RelaunchClassLoader;
 public class BukkitServer implements Server {
 	public static final String apiVer = "1.4.5-R0.2";
 	public static final String version = "1.4.6";
-	private static BukkitServer instance;
+	public static BukkitServer instance;
 	private MinecraftServer theServer;
 	//private BukkitServer bukkitServer;
 	private ServerConfigurationManager configMan;
@@ -144,7 +144,7 @@ public class BukkitServer implements Server {
 	private Logger theLogger;
 	private ServicesManager servicesManager = new SimpleServicesManager();
 
-	private BukkitCommandMap commandMap = new BukkitCommandMap(this);
+	public BukkitCommandMap commandMap = new BukkitCommandMap(this);
 	private PluginManager pluginManager;// = new SimplePluginManager(this, commandMap);
 
 
@@ -181,7 +181,6 @@ public class BukkitServer implements Server {
 
 
 	public BukkitServer(MinecraftServer server) {
-		this.instance = this;
 		cbBuild = "git-BukkitForge-1.4.5-R1.0-b" + BukkitContainer.CRAFT_BUILD_NUMBER +  "jnks (Really: BukkitForge for MC " + version + ")";
 		configMan = server.getConfigurationManager();
 		theServer = server;
@@ -189,20 +188,7 @@ public class BukkitServer implements Server {
 		Iterator<Integer> _ = ids.iterator();
 
 
-		thePluginLoader = new BukkitClassLoader(getClass().getClassLoader());
-		try {
-			System.out.println("This is a test of the SPM Loader!");
-			// this *should* load simplepluginamanger via BukkitClassLoader
-			Class<?> pluginMan = thePluginLoader.loadClass("org.bukkit.plugin.SimplePluginManager");
-			System.out.println("Loaded class: " + pluginMan.getCanonicalName() + " via " + pluginMan.getClassLoader().getClass().getCanonicalName());
-			Method insn = pluginMan.getMethod("newInstance");
-			insn.setAccessible(true);
-			this.pluginManager = (PluginManager) insn.invoke(null);
-
-
-		} catch (Exception e1) {
-			throw new RuntimeException("BukkitForge encountered an error (most likely it  was installed incorrectly!)", e1);
-		}
+		
 		
 		//pluginManager = new SimplePluginManager(this, commandMap);
 		bukkitConfig = new YamlConfiguration();
@@ -229,6 +215,20 @@ public class BukkitServer implements Server {
 		}
 		this.theLogger = BukkitContainer.bukkitLogger;
 		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
+		thePluginLoader = new BukkitClassLoader(getClass().getClassLoader());
+		/*try {
+			System.out.println("This is a test of the SPM Loader!");
+			// this *should* load simplepluginamanger via BukkitClassLoader
+			Class<?> pluginMan = thePluginLoader.loadClass("org.bukkit.plugin.SimplePluginManager");
+			System.out.println("Loaded class: " + pluginMan.getCanonicalName() + " via " + pluginMan.getClassLoader().getClass().getCanonicalName());
+			Method insn = pluginMan.getMethod("newInstance", new Class[] { BukkitServer.class, SimpleCommandMap.class });
+			insn.setAccessible(true);
+			this.pluginManager = (PluginManager) insn.invoke(null, this, this.commandMap);
+
+
+		} catch (Exception e1) {
+			throw new RuntimeException("BukkitForge encountered an error (most likely it  was installed incorrectly!)", e1);
+		}*/
 		Bukkit.setServer(this);
 		this.theHelpMap = new SimpleHelpMap(this);
 		this.theMessenger = new StandardMessenger();
@@ -252,6 +252,7 @@ public class BukkitServer implements Server {
 		//theServer = (DedicatedServer) server;
 		HelpTopic myHelp = new CommandHelpTopic("bexec", "Run a command forcibly bukkit aliases", "", "");
 		Bukkit.getServer().getHelpMap().addTopic(myHelp);
+		
 		loadPlugins();
 		enablePlugins(PluginLoadOrder.STARTUP);
 
