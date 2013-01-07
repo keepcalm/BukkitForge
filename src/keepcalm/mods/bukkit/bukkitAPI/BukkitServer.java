@@ -214,7 +214,7 @@ public class BukkitServer implements Server {
 		while(_.hasNext()) {
 			int i = _.next();
 			WorldServer x = theServer.worldServerForDimension(i);
-			worlds.put(i, new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getWorldName()), this.wtToEnv(x)));
+			worlds.put(i, new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getDimension()), this.wtToEnv(x)));
 		}
 		this.theLogger = BukkitContainer.bukkitLogger;
 		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
@@ -581,7 +581,7 @@ public class BukkitServer implements Server {
 		}
 
 		if (generator == null) {
-			generator = getGenerator(name);
+			generator = getGenerator(dimension);
 		}
 
 		AnvilSaveConverter converter = new AnvilSaveConverter(getWorldContainer());
@@ -646,12 +646,12 @@ public class BukkitServer implements Server {
 		return worlds.get(dimension);
 	}
 
-	private ChunkGenerator getGenerator(String world) {
+	private ChunkGenerator getGenerator(int dimID) {
 		ConfigurationSection section = bukkitConfig.getConfigurationSection("worlds");
 		ChunkGenerator result = null;
 
 		if (section != null) {
-			section = section.getConfigurationSection(world);
+			section = section.getConfigurationSection(Integer.toString(dimID));
 
 			if (section != null) {
 				String name = section.getString("generator");
@@ -662,11 +662,11 @@ public class BukkitServer implements Server {
 					Plugin plugin = pluginManager.getPlugin(split[0]);
 
 					if (plugin == null) {
-						getLogger().severe("Could not set generator for default world '" + world + "': Plugin '" + split[0] + "' does not exist");
+						getLogger().severe("Could not set generator for default world '" + Integer.toString(dimID) + "': Plugin '" + split[0] + "' does not exist");
 					} else if (!plugin.isEnabled()) {
-						getLogger().severe("Could not set generator for default world '" + world + "': Plugin '" + split[0] + "' is not enabled yet (is it load:STARTUP?)");
+						getLogger().severe("Could not set generator for default world '" + Integer.toString(dimID) + "': Plugin '" + split[0] + "' is not enabled yet (is it load:STARTUP?)");
 					} else {
-						result = plugin.getDefaultWorldGenerator(world, id);
+						result = plugin.getDefaultWorldGenerator(Integer.toString(dimID), id);
 					}
 				}
 			}
@@ -695,7 +695,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public World getWorld(String name) {
-		String[] parts = name.split("@");
+		/*String[] parts = name.split("@");
 		if (parts.length == 1) {
 			theLogger.warning("A plugin is trying to access a world without specifying its name correctly! You need to remove configs from build 44 and older");
 			if (BukkitContainer.DEBUG) {
@@ -710,13 +710,13 @@ public class BukkitServer implements Server {
 
 			return null;
 		}
-
+*/
 		try {
-			int dim = Integer.parseInt(parts[1]);
+			int dim = Integer.parseInt(name);
 			return getWorld(dim);
 		}
 		catch (NumberFormatException e) {
-			theLogger.warning("Apparently " + parts[1] + " isn't an integer! Interesting!");
+			theLogger.warning("Apparently " + name + " isn't an integer! Interesting! Using overworld instead...");
 			return getWorld(0);
 		}/*
 		for (WorldServer w : theServer.worldServers) {

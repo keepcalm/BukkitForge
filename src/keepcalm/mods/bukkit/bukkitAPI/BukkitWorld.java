@@ -581,7 +581,7 @@ public class BukkitWorld implements World {
 	}
 
 	public String getName() {
-		return world.getWorldInfo().getWorldName()+ "@" + Integer.toString(world.getWorldInfo().getDimension()) ;
+		return Integer.toString(world.getWorldInfo().getDimension()) ;
 	}
 
 	@Deprecated

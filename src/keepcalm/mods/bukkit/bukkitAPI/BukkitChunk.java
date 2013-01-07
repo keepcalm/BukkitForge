@@ -14,7 +14,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-
+import static keepcalm.mods.bukkit.BukkitContainer.DEBUG;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
@@ -38,6 +38,10 @@ public class BukkitChunk implements Chunk {
 	public BukkitChunk(net.minecraft.world.chunk.Chunk chunk) {
 		if (!(chunk instanceof EmptyChunk)) {
 			this.weakChunk = new WeakReference<net.minecraft.world.chunk.Chunk>(chunk);
+		}
+		if (DEBUG) {
+			System.out.println("Creating a new BukkitChunk - forge chunk is in dimension " + getHandle().worldObj.getWorldInfo().getDimension()
+					+ " at x,z " + getHandle().xPosition + "," + getHandle().zPosition + ".");
 		}
 		worldServer = (WorldServer) getHandle().worldObj;
 		x = getHandle().xPosition;

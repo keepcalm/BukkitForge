@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConversationTracker;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitEffect;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitOfflinePlayer;
@@ -759,7 +760,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public boolean hasPlayedBefore() {
-        return hasPlayedBefore;
+        return BukkitContainer.users.containsKey(getName().toLowerCase());
     }
 
     public void setFirstPlayed(long firstPlayed) {
