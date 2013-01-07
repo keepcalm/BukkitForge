@@ -335,7 +335,7 @@ public class BukkitServer implements Server {
 	@Override
 	public String getName() {
 
-		return String.format("Minecraft Server %s, using FML %s, MinecraftForge %s, %s", new Object[] {Loader.instance().getMinecraftModContainer().getVersion(), Loader.instance().getFMLVersionString(), ForgeVersion.getVersion(), Loader.instance().getMCPVersionString()});
+		return "BukkitForge";
 	}
 
 	@Override
