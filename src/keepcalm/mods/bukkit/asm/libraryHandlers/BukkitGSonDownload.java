@@ -6,7 +6,7 @@ public class BukkitGSonDownload implements ILibrarySet {
 
 	@Override
 	public String[] getHashes() {
-		return new String[] {"881bf5cf5adb67e406df8dd5061c61bb4c3e143a"};
+		return new String[] {"bbf47ddc2e8931665390d4de33caf0ece9d3ff75"};
 	}
 
 	@Override
