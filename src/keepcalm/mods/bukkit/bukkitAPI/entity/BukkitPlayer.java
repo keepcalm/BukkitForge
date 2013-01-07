@@ -25,8 +25,8 @@ import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.VanishUtils;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.EntityTrackerEntry;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerBeacon;
 import net.minecraft.inventory.ContainerBrewingStand;
@@ -116,7 +116,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     
     @Override
     public String getName() {
-    	return ((EntityPlayerMP) entity).username;
+    	return getHandle().username;
     }
 
 	@Override
