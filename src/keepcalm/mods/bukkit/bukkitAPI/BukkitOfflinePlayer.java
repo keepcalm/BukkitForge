@@ -195,6 +195,7 @@ public class BukkitOfflinePlayer implements OfflinePlayer, ConfigurationSerializ
     }
 
     public boolean hasPlayedBefore() {
+    	System.out.println("Has " + name + " played before? " + BukkitContainer.users.containsKey(name));
         return BukkitContainer.users.containsKey(name);// != null;
     }
 

@@ -1,5 +1,7 @@
 package keepcalm.mods.bukkit;
 
+import guava10.com.google.common.base.Joiner;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -227,7 +229,7 @@ public class BukkitContainer {
 			return;
 		}
 		
-		
+		System.out.println("Successfully loaded users: " + Joiner.on(' ').join(users.keySet()));
 	}
 
 	public static BukkitContainer getInstance() {

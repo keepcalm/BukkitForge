@@ -1,5 +1,6 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
+import static keepcalm.mods.bukkit.BukkitContainer.DEBUG;
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
@@ -23,28 +24,30 @@ public class PlayerTracker implements IPlayerTracker {
 
 	@Override
 	public void onPlayerLogin(final EntityPlayer player) {
-				// seen - nvm!
-				BukkitContainer.users.put(player.username, "SeenBefore");
-				if (!ForgeEventHandler.ready) {
-					return;
-				}
-					// process in BukkitServer
-				Runnable run = new Runnable() {
-					public void run() {
-						String msg = player.username + " joined the game";
-						if (!ForgeEventHandler.ready)
-							msg = ""; // nothing - SSP 
-						PlayerJoinEvent ev = new PlayerJoinEvent(new BukkitPlayer((EntityPlayerMP) player), msg);
-						Bukkit.getPluginManager().callEvent(ev);
-					}
-				};
-				
-				Thread x = new Thread(run);
-				x.start();
-				
-				
-		
-		
+		// seen - nvm!
+		if (DEBUG)
+		System.out.println("User logged in: " + player.username.toLowerCase());
+		BukkitContainer.users.put(player.username.toLowerCase(), "SeenBefore");
+		if (!ForgeEventHandler.ready) {
+			return;
+		}
+		// process in BukkitServer
+		Runnable run = new Runnable() {
+			public void run() {
+				String msg = player.username + " joined the game";
+				if (!ForgeEventHandler.ready)
+					msg = ""; // nothing - SSP 
+				PlayerJoinEvent ev = new PlayerJoinEvent(new BukkitPlayer((EntityPlayerMP) player), msg);
+				Bukkit.getPluginManager().callEvent(ev);
+			}
+		};
+
+		Thread x = new Thread(run);
+		x.start();
+
+
+
+
 	}
 
 	@Override
@@ -62,6 +65,7 @@ public class PlayerTracker implements IPlayerTracker {
 
 	@Override
 	public void onPlayerRespawn(final EntityPlayer player) {
+		if (DEBUG) System.out.println("Player respawned: " + player.username);
 		Runnable run = new Runnable() {
 			@Override
 			public void run() {
@@ -70,7 +74,7 @@ public class PlayerTracker implements IPlayerTracker {
 				Bukkit.getPluginManager().callEvent(c);
 			}
 		};
-		
+
 		if (ForgeEventHandler.ready) {
 			run.run();
 		}
@@ -78,7 +82,7 @@ public class PlayerTracker implements IPlayerTracker {
 			Thread t = new Thread(run);
 			t.start();
 		}
-		
+
 	}
 
 }

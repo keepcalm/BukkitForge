@@ -2,12 +2,12 @@ package keepcalm.mods.bukkit.forgeHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlockFake;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
@@ -15,7 +15,6 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitLivingEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
-import keepcalm.mods.bukkit.bukkitAPI.generator.NormalChunkGenerator;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import keepcalm.mods.bukkit.events.BlockDestroyEvent;
 import keepcalm.mods.bukkit.events.DispenseItemEvent;
@@ -25,6 +24,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.dispenser.IRegistry;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
@@ -34,7 +34,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.Event.Result;
@@ -55,13 +54,11 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.event.world.WorldEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
-import org.bukkit.World.Environment;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
@@ -76,14 +73,13 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
-import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.Vector;
 
 import com.google.common.collect.Sets;
@@ -193,7 +189,23 @@ public class ForgeEventHandler {
 	public void onLivingDeathEvent(LivingDeathEvent ev) {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
-		BukkitEventFactory.callEntityDeathEvent(ev.entityLiving);
+		LivingEntity e;
+		BukkitEntity j = BukkitEntity.getEntity(BukkitServer.instance(), ev.entityLiving);
+		if (!(j instanceof LivingEntity)) {
+			e = new BukkitLivingEntity(BukkitServer.instance(), ev.entityLiving);
+		}
+		else {
+			e = (LivingEntity) j;
+		}
+		List<org.bukkit.inventory.ItemStack> stacks = new ArrayList<org.bukkit.inventory.ItemStack>();
+		for (EntityItem i : ev.entityLiving.capturedDrops) {
+			ItemStack vanilla = i.func_92014_d();
+			stacks.add(new BukkitItemStack(vanilla));
+		}
+		EntityDeathEvent bev = new EntityDeathEvent(e, stacks);
+		bev.setDroppedExp(ev.entityLiving.experienceValue);
+		Bukkit.getPluginManager().callEvent(bev);
+		
 	}
 
 	/*@ForgeSubscribe
