@@ -184,7 +184,7 @@ public class BukkitServer implements Server {
 
 	public BukkitServer(MinecraftServer server) {
 		instance = this;
-		cbBuild = "git-BukkitForge-1.4.5-R1.0-b" + BukkitContainer.CRAFT_BUILD_NUMBER +  "jnks (Really: BukkitForge for MC " + version + ")";
+		cbBuild = BukkitContainer.CRAFT_VERSION;
 		configMan = server.getConfigurationManager();
 		theServer = server;
 		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());

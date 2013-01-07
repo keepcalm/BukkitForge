@@ -78,7 +78,7 @@ public class BukkitContainer {
 	private static String MOD_USERNAME = "[Mod]";
 	public static EntityPlayerMP MOD_PLAYER;
 	public static String[] pluginsInPath;
-	public static String CRAFT_BUILD_NUMBER;
+	public static String CRAFT_VERSION;
 	
 	private static File propsFile;
 	
@@ -142,9 +142,9 @@ public class BukkitContainer {
 		override.comment = "Override vanilla commands (/me etc) with Bukkit defaults (won't stop plugins from overriding)";
 		this.overrideVanillaCommands = override.getBoolean(false);
 		
-		Property build = config.get(Configuration.CATEGORY_GENERAL, "buildNumber", "3000");
+		Property build = config.get(Configuration.CATEGORY_GENERAL, "bukkitVersionString", "git-BukkitForge-1.4.5-R1.0-b3000 jnks (Really: BukkitForge for MC " + Loader.instance().getMinecraftModContainer().getDisplayVersion() + ")");
 		build.comment = "The CraftBukkit version to pretend to be";
-		this.CRAFT_BUILD_NUMBER = build.value;
+		this.CRAFT_VERSION = build.value;
 		
 		Property plugins = config.get(Configuration.CATEGORY_GENERAL, "pluginsToLoad", "");
 		plugins.comment = "Comma-separated list of plugins which are in the classpath to load. Only developers need use this option.";
@@ -153,9 +153,6 @@ public class BukkitContainer {
 		Property debug = config.get("consoleConfig", "debug", false);
 		debug.comment = "Print debug messages";
 		this.DEBUG = debug.getBoolean(false);
-		
-		// auto-on for MCP
-		
 		
 		Property colour = config.get("consoleConfig", "enablecolour", isGuiEnabled ? false : true);
 		colour.comment = "Enable coloured ANSI console output";
