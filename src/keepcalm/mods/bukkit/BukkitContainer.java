@@ -206,7 +206,7 @@ public class BukkitContainer {
 						System.out.println("Found mc file field: private static " + mcClazz.getCanonicalName() + "." + i.getName());
 						i.setAccessible(true);
 						try {
-							propsFile = (File) i.get(null);
+							propsFile = new File((File) i.get(null), "users.properties");
 						} catch (Exception e) {
 							e.printStackTrace();
 							return;

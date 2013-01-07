@@ -24,7 +24,7 @@ public class PlayerTracker implements IPlayerTracker {
 	@Override
 	public void onPlayerLogin(final EntityPlayer player) {
 				// seen - nvm!
-				BukkitContainer.users.put(player.username, true);
+				BukkitContainer.users.put(player.username, "SeenBefore");
 				if (!ForgeEventHandler.ready) {
 					return;
 				}
