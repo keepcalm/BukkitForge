@@ -19,6 +19,7 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
 import keepcalm.mods.bukkit.common.CommonProxy;
 import keepcalm.mods.bukkit.forgeHandler.BlockBreakEventHandler;
+import keepcalm.mods.bukkit.forgeHandler.BukkitCraftingHandler;
 import keepcalm.mods.bukkit.forgeHandler.BukkitCrashCallable;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
@@ -178,6 +179,7 @@ public class BukkitContainer {
 
 		config.save();
 		GameRegistry.registerPlayerTracker(new PlayerTracker());
+		GameRegistry.registerCraftingHandler(new BukkitCraftingHandler());
 		FileInputStream fis;
 		propsFile = null;
 		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
