@@ -83,7 +83,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		if (allowed) {
 			return true;
 		}
-		return false;
+		return true;
 		
 	}
 	
