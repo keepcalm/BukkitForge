@@ -35,7 +35,7 @@ public class BukkitAPIHelperTransformer implements IClassTransformer, Opcodes {
 	@Override
 	public byte[] transform(String name, byte[] bytes) {
 		
-		if (name.equals(names.get("itemClassName"))) {
+		if (name.equals(names.get("item_className"))) {
 			System.out.println("Transforming " + name + "...");
 			return transformItem(bytes);
 		}

@@ -38,14 +38,15 @@
 	        <available file="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
 			<available file="${download.dir}/minecraftforge-src-${forge.version}.zip"/>
 	    </or>
-	 </condition>
+    </condition>
+    <available property="props-there" file="utils/obf.properties" />
 	
 	<target name="check-blockbreak" unless="blockbreak-there">
-		<echo message="You must first run 'git submodules sync' or download the BlockBreak sources into the blockbreak folder!!"/>
+		<echo message="You must first run 'git submodules sync' and git pull origin or download the BlockBreak sources into the blockbreak folder!!"/>
 		<fail/>
 	</target>
 
-	 <target name="install" depends="check-blockbreak,build">
+	 <target name="install" depends="check-blockbreak,build,gen-props">
 		 <!--		 <delete dir="${classes.dir}/keepcalm/mods/blockbreak" />-->
 		 <copy todir="${classes.dir}">
 		        	  <fileset file="${package.at}" />
@@ -55,6 +56,13 @@
 				  <fileset dir="${package.configs}" >
 					  <patternset>
 						  <include name="*.yml" />
+					  </patternset>
+				  </fileset>
+			  </copy>
+			  <copy todir="${classes.dir}" >
+				  <fileset dir="utils">
+					  <patternset>
+						  <include name="*.properties" />
 					  </patternset>
 				  </fileset>
 			  </copy>
@@ -103,7 +111,15 @@
 	<target name="build-number-not-there" unless="env.BUILD_NUMBER" >
 	   <echo message="!! No build number set !!" />
 	   <property name="build.number" value="CUSTOM_BUILD" />
-	</target>
+   </target>
+
+   <target name="gen-props" unless="props-there" >
+	   <get src="https://github.com/agaricusb/MinecraftRemapping/blob/master/${build.ver}/pkgmcp2obf.srg?raw=true" dest="utils/pkgmcp2obf.srg" />
+	   <exec dir="utils" executable="perl">
+		   <arg value="genprops.pl" />
+	   </exec>
+   </target>
+
 	<target name="setup-forge" depends="download-forge,build-number-there,build-number-not-there" unless="already-compiled">
                  
     		<property name="build.full" value="${build.number}" />

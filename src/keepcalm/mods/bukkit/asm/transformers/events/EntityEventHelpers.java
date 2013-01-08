@@ -22,7 +22,6 @@ public class EntityEventHelpers implements IClassTransformer {
 
 	private final HashMap<String,String> names;
 	
-	private static final String setFleeceDesc = "(I)V";
 	
 	public EntityEventHelpers() {
 		names = ObfuscationHelper.getRelevantMappings();
@@ -31,7 +30,7 @@ public class EntityEventHelpers implements IClassTransformer {
 	@Override
 	public byte[] transform(String name, byte[] bytes) {
 		
-		if (name.equalsIgnoreCase(names.get("entitySheepClassName"))) {
+		if (name.equalsIgnoreCase(names.get("entitySheep_className"))) {
 			transformEntitySheep(bytes);
 		}
 		
@@ -43,7 +42,7 @@ public class EntityEventHelpers implements IClassTransformer {
 		ClassReader cr = new ClassReader(bytes);
 		cr.accept(cn, 0);
 		
-		
+		// TODO :P
 		
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		cn.accept(cw);
@@ -61,7 +60,7 @@ public class EntityEventHelpers implements IClassTransformer {
 		while (methods.hasNext()) {
 			MethodNode m = methods.next();
 			
-			if (m.name.equals(names.get("entitySheepSetColour")) && m.desc.equals(setFleeceDesc)) {
+			if (m.name.equals(names.get("entitySheep_setColour_func")) && m.desc.equals(names.get("entitySheep_setColour_desc"))) {
 				System.out.println("Found target method: " + m.name + m.desc + "! Inserting call...");
 				
 				for (int idx = 0; idx < m.instructions.size(); idx++) {
@@ -79,7 +78,7 @@ public class EntityEventHelpers implements IClassTransformer {
 						toAdd.add(new VarInsnNode(Opcodes.ILOAD, 1));
 						// old fleece colour
 						toAdd.add(new VarInsnNode(Opcodes.ILOAD, 2));
-						toAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper", "onSheepDye", "(L" + names.get("entitySheepJavaName") + ";II)Z"));
+						toAdd.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "keepcalm/mods/bukkit/ForgeEventHelper", "onSheepDye", "(L" + names.get("entitySheep_javaName") + ";II)Z"));
 						LabelNode endIf = new LabelNode(new Label());
 						toAdd.add(new JumpInsnNode(Opcodes.IFEQ, endIf));
 						toAdd.add(new InsnNode(Opcodes.RETURN));
