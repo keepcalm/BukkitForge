@@ -1,7 +1,5 @@
 package keepcalm.mods.bukkit;
 
-import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
-import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.scheduler.BukkitDummyPlugin;
 import keepcalm.mods.bukkit.events.BlockDestroyEvent;
 import keepcalm.mods.bukkit.events.DispenseItemEvent;
@@ -10,10 +8,10 @@ import keepcalm.mods.bukkit.events.PlayerUseItemEvent;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemInWorldManager;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.network.NetServerHandler;
+import net.minecraft.network.packet.Packet10Flying;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,8 +19,17 @@ import net.minecraftforge.common.MinecraftForge;
 import org.bukkit.Bukkit;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 
+/**
+ * Class of hooks to be used from ASM-injected code
+ * 
+ * RULES OF ADDING METHODS:
+ *  - They must use the least number of arguments possible - if you need obj.x, obj.y and obj.z, just pass obj.
+ *  This is for efficiency.
+ *  - If they are going to be cancelable, they must return TRUE when CANCELLED, this is easier to write in ASM.
+ * @author keepcalm
+ *
+ */
 public class ForgeEventHelper {
 	public static void onItemUse(ItemStack stack, EntityPlayer who, World world, int x, int y, int z, int blockFace) {
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient())
@@ -30,6 +37,10 @@ public class ForgeEventHelper {
 			return;
 		PlayerUseItemEvent ev = new PlayerUseItemEvent(stack, who, world, x, y, z, ForgeDirection.getOrientation(blockFace));
 		MinecraftForge.EVENT_BUS.post(ev);
+	}
+	
+	public static boolean onPlayerMove(Packet10Flying pack, NetServerHandler handler) {
+		return false;
 	}
 	
 	public static boolean onBlockDamage(ItemInWorldManager man) {

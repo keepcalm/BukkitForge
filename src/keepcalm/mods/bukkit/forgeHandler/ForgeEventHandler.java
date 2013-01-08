@@ -72,6 +72,7 @@ import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
@@ -176,14 +177,9 @@ public class ForgeEventHandler {
 	public void onLivingAttack(LivingAttackEvent ev) {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
-		if (BukkitEventFactory.callEntityDamageEvent(ev.entityLiving.getLastAttackingEntity(),
-				ev.entity, 
-				getDamageCause(ev.source), 
-				ev.ammount)
-				.isCancelled()) {
+		EntityDamageByEntityEvent bev = new EntityDamageByEntityEvent(BukkitEntity.getEntity(BukkitServer.instance(), ev.entityLiving.getLastAttackingEntity()), BukkitEntity.getEntity(BukkitServer.instance(), ev.entityLiving), getDamageCause(ev.source), 0);
 
 			ev.setCanceled(true);
-		}
 	}
 	@ForgeSubscribe
 	public void onLivingDeathEvent(LivingDeathEvent ev) {

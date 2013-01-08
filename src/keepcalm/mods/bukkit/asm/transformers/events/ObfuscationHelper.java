@@ -88,6 +88,10 @@ public class ObfuscationHelper {
 		mcpNames.put("itemClassName", "net.minecraft.item.Item");
 		obfNames.put("itemClassName", "up");
 		
+		// netserverhandler stuff
+		mcpNames.put("netServerHandler", "net.minecraft.network.NetServerHandler");
+		obfNames.put("netServerHandler", "iv");
+		
 
 	}
 	

@@ -38,6 +38,19 @@ public class EntityEventHelpers implements IClassTransformer {
 		return bytes;
 	}
 	
+	private byte[] transformNetServerHandler(byte[] bytes) {
+		ClassNode cn = new ClassNode();
+		ClassReader cr = new ClassReader(bytes);
+		cr.accept(cn, 0);
+		
+		
+		
+		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+		cn.accept(cw);
+		return cw.toByteArray();
+		
+	}
+	
 	private byte[] transformEntitySheep(byte[] bytes) {
 		System.out.println("Transforming EntitySheep...");
 		ClassNode cn = new ClassNode();

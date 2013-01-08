@@ -19,6 +19,7 @@ import net.minecraft.item.crafting.IRecipe;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.Recipe;
@@ -72,8 +73,7 @@ public class BukkitCraftingHandler implements ICraftingHandler {
 
 	@Override
 	public void onSmelting(EntityPlayer player, ItemStack item) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }
