@@ -19,6 +19,8 @@ You may find it [here](http://build.aegisgaming.org/job/BukkitForge/)
 
 [![Build status](http://build.aegisgaming.org/job/BukkitForge/badge/icon)](http://build.aegisgaming.org/job/BukkitForge)
 
+Any Plugins error please put them here: https://github.com/Bukkit-Forge-Plugins/Bukkit-Forge-Plugin-Errors
+
 GETTING IT WORKING IN MCP:
 =========================
  
