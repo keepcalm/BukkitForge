@@ -2,10 +2,9 @@ package keepcalm.mods.bukkit.forgeHandler;
 
 import java.util.EnumSet;
 
-import net.minecraft.server.MinecraftServer;
-
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
+import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 

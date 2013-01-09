@@ -3,7 +3,7 @@ package keepcalm.mods.bukkit.asm.transformers;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import keepcalm.mods.bukkit.asm.transformers.events.ObfuscationHelper;
+import keepcalm.mods.events.asm.transformers.events.ObfuscationHelper;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
