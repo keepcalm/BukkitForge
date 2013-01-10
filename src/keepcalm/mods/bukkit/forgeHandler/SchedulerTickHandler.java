@@ -19,6 +19,11 @@ public class SchedulerTickHandler implements ITickHandler {
 		}
 		B4VScheduler b4v = (B4VScheduler) BukkitServer.instance().
 				getScheduler();
+		if (b4v == null) {
+			System.out.println("WARNING: BukkitForge is ready, but scheduler is not set!");
+			tickOffset++;
+			return;
+		}
 		// the supposed ticks will always be tickOffset behind the actual number of ticks
 		b4v.mainThreadHeartbeat(MinecraftServer.getServer().getTickCounter() - tickOffset);
 	}
