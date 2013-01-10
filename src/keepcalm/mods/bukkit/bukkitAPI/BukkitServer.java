@@ -1148,6 +1148,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public void shutdown() {
+		
 		theLogger.info("Stopping the Bukkit API " + version);
 		int pollCount = 0;
 		while (pollCount < 50 && getScheduler().getActiveWorkers().size() > 0) {
@@ -1171,6 +1172,7 @@ public class BukkitServer implements Server {
 					"This plugin is not properly shutting down its async tasks when it is being reloaded.  This may cause conflicts with the newly loaded version of the plugin"
 					));
 		}
+		getPluginManager().disablePlugins();
 		//theServer.stopServer();
 
 	}
