@@ -1226,7 +1226,7 @@ public class BukkitWorld implements World {
 	 }
 
 	 @Override
-	 public boolean equals(Object obj) {
+	 public boolean  equals(Object obj) {
 		 if (obj == null) {
 			 return false;
 		 }
@@ -1235,7 +1235,7 @@ public class BukkitWorld implements World {
 		 }
 
 		 final BukkitWorld other = (BukkitWorld) obj;
-
+		 
 		 return this.getHandle().getWorldInfo().getDimension() == other.getHandle().getWorldInfo().getDimension();
 	 }
 

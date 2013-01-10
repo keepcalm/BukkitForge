@@ -14,6 +14,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
+import keepcalm.mods.bukkit.BukkitContainer;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -344,7 +346,7 @@ public class B4VScheduler implements BukkitScheduler {
                 try {
                     task.run();
                 } catch (final Throwable throwable) {
-                    task.getOwner().getLogger().log(
+                    BukkitContainer.bukkitLogger.log(
                             Level.WARNING,
                             String.format(
                                 "Task #%s for %s generated an exception",
