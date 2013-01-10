@@ -14,11 +14,14 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitLivingEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitSheep;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import keepcalm.mods.events.events.BlockDestroyEvent;
 import keepcalm.mods.events.events.DispenseItemEvent;
+import keepcalm.mods.events.events.LiquidFlowEvent;
 import keepcalm.mods.events.events.PlayerDamageBlockEvent;
+import keepcalm.mods.events.events.SheepDyeEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
@@ -56,13 +59,13 @@ import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockCanBuildEvent;
@@ -71,6 +74,7 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -78,6 +82,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
+import org.bukkit.event.entity.SheepDyeWoolEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
@@ -494,6 +499,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void saplingGrow(SaplingGrowTreeEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		int blockID = ev.world.getBlockId(ev.x, ev.y, ev.z);
 		int blockMeta = ev.world.getBlockMetadata(ev.x, ev.y, ev.z);
 
@@ -584,6 +591,41 @@ public class ForgeEventHandler {
 			ev.setCanceled(true);
 		}
 		//ignore XP etc
+	}
+	
+	@ForgeSubscribe
+	public void liquidFlow(LiquidFlowEvent ev) {
+		BukkitBlockFake newBlk = new BukkitBlockFake(
+				new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.flowToX, ev.flowToZ)), 
+				ev.flowToX, 
+				ev.flowToY,
+				ev.flowToZ, 
+				ev.liquid.blockID + 1,
+				0
+		);
+		
+		BukkitBlock source = new BukkitBlock(				
+				new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.flowFromX, ev.flowFromZ)), 
+				ev.flowFromX, 
+				ev.flowFromY,
+				ev.flowFromZ
+				);
+		
+		BlockSpreadEvent bev = new BlockSpreadEvent(newBlk, source, newBlk.getState());
+		Bukkit.getPluginManager().callEvent(bev);
+	}
+	
+	@ForgeSubscribe
+	public void onSheepDye(SheepDyeEvent ev) {
+		
+		SheepDyeWoolEvent bev = new SheepDyeWoolEvent(new BukkitSheep(BukkitServer.instance(), ev.sheep), DyeColor.getByData((byte)ev.newColour));
+		
+		Bukkit.getPluginManager().callEvent(bev);
+		
+		if (bev.isCancelled()) {
+			ev.setCanceled(true);
+		}
+		
 	}
 
 }
