@@ -43,12 +43,14 @@ import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.Metadata;
 import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
@@ -276,15 +278,21 @@ public class BukkitContainer {
 
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent ev) {
-		this.MOD_PLAYER = ev.getServer().getConfigurationManager().getPlayerForUsername(MOD_USERNAME);
 		ThreadGroup theThreadGroup = new ThreadGroup("BukkitForge");
 		this.bThread = new Thread(theThreadGroup, new BukkitStarter(ev.getServer()), "BukkitCoreAPI-0");
 		bThread.start();
 	}
 	
+	@ServerStarted
+	public void serverStarted(FMLServerStartedEvent ev) {
+		this.MOD_PLAYER = new EntityPlayerMP(MinecraftServer.getServer(), MinecraftServer.getServer().worldServerForDimension(0), MOD_USERNAME, new ItemInWorldManager(MinecraftServer.getServer().worldServerForDimension(0)));
+		System.out.println(MOD_PLAYER);
+		
+	}
 	@ServerStopping
 	public void serverStopping(FMLServerStoppingEvent ev) {
 		// reset for potential next launch (if on client)
+		this.bServer.shutdown();
 		B4VScheduler.currentTick = -1;
 		ForgeEventHandler.ready = false;
 		SchedulerTickHandler.tickOffset = 0;
