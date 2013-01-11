@@ -733,8 +733,8 @@ public class BukkitServer implements Server {
 			return getWorld(dim);
 		}
 		catch (NumberFormatException e) {
-			theLogger.warning("Apparently " + name + " isn't an integer! Interesting! Using overworld instead...");
-			return getWorld(0);
+			theLogger.warning("Apparently " + name + " isn't an integer! Interesting! You may need to correct your configs, this WILL error.");
+			return null;
 		}/*
 		for (WorldServer w : theServer.worldServers) {
 			if (w.getWorldInfo().getWorldName().equals(name)) {
