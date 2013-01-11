@@ -21,6 +21,7 @@ import keepcalm.mods.events.events.BlockDestroyEvent;
 import keepcalm.mods.events.events.DispenseItemEvent;
 import keepcalm.mods.events.events.LiquidFlowEvent;
 import keepcalm.mods.events.events.PlayerDamageBlockEvent;
+import keepcalm.mods.events.events.PlayerMoveEvent;
 import keepcalm.mods.events.events.SheepDyeEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
@@ -627,5 +628,19 @@ public class ForgeEventHandler {
 		}
 		
 	}
-
+	
+	@ForgeSubscribe
+	public void onPlayerMove(PlayerMoveEvent ev) {
+		if (!(ev.entityPlayer instanceof EntityPlayerMP)) return;
+		BukkitPlayer player = new BukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) ev.entityPlayer);
+		Location old = new Location(BukkitServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.oldX, ev.oldY, ev.oldZ);
+		Location now = new Location(BukkitServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.newX, ev.newY, ev.newZ);
+		org.bukkit.event.player.PlayerMoveEvent bev = new org.bukkit.event.player.PlayerMoveEvent(player, old, now);
+		
+		Bukkit.getPluginManager().callEvent(bev);
+		if (bev.isCancelled()) {
+			ev.setCanceled(true);
+		}
+		
+	}
 }

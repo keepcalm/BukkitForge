@@ -56,7 +56,7 @@ public final class Bukkit {
      * @param server Server instance
      */
     public static void setServer(Server server) {
-        /*if (Bukkit.server != null ) {
+        /*if (Bukkit.server != null) {
             throw new UnsupportedOperationException("Cannot redefine singleton Server");
         }*/
 

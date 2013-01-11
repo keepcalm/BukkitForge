@@ -25,7 +25,7 @@ public class SimpleCommandMap implements CommandMap {
     private final Server server;
     protected static final Set<VanillaCommand> fallbackCommands = new HashSet<VanillaCommand>();
 
-    /*static {
+    static {
         fallbackCommands.add(new ListCommand());
         fallbackCommands.add(new OpCommand());
         fallbackCommands.add(new DeopCommand());
@@ -55,7 +55,7 @@ public class SimpleCommandMap implements CommandMap {
         fallbackCommands.add(new ClearCommand());
         fallbackCommands.add(new GameRuleCommand());
         fallbackCommands.add(new EnchantCommand());
-    }*/
+    }
 
     public SimpleCommandMap(final Server server) {
         this.server = server;

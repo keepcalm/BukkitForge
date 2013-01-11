@@ -10,8 +10,6 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import static keepcalm.mods.bukkit.BukkitContainer.DEBUG;
-
 /**
  * Base Permissible for use in any Permissible object via proxy or extension
  */
@@ -97,8 +95,6 @@ public class PermissibleBase implements Permissible {
     }
 
     public PermissionAttachment addAttachment(Plugin plugin, String name, boolean value) {
-    	if (DEBUG) 
-    		System.out.println((value ? "Allow" : "Disallow") + "ing permission " + name + " from plugin " + plugin.getDescription().getName());
         if (name == null) {
             throw new IllegalArgumentException("Permission name cannot be null");
         } else if (plugin == null) {
@@ -156,8 +152,6 @@ public class PermissibleBase implements Permissible {
 
         for (Permission perm : defaults) {
             String name = perm.getName().toLowerCase();
-            if (DEBUG)
-            	System.out.println("Giving default permission " + name + "...");
             permissions.put(name, new PermissionAttachmentInfo(parent, name, null, true));
             Bukkit.getServer().getPluginManager().subscribeToPermission(name, parent);
             calculateChildPermissions(perm.getChildren(), false, null);

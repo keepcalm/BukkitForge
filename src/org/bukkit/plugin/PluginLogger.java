@@ -4,8 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-
 /**
  * The PluginLogger class is a modified {@link Logger} that prepends all logging calls with the name of the
  * plugin doing the logging. The API for PluginLogger is exactly the same as {@link Logger}.
@@ -23,7 +21,7 @@ public class PluginLogger extends Logger {
         super(context.getClass().getCanonicalName(), null);
         String prefix = context.getDescription().getPrefix();
         pluginName = prefix != null ? new StringBuilder().append("[").append(prefix).append("] ").toString() : "[" + context.getDescription().getName() + "] ";
-        setParent(FMLCommonHandler.instance().getFMLLogger());
+        setParent(context.getServer().getLogger());
         setLevel(Level.ALL);
     }
 

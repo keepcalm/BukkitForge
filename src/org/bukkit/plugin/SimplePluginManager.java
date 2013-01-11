@@ -18,9 +18,6 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import keepcalm.mods.bukkit.BukkitContainer;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -53,13 +50,7 @@ public final class SimplePluginManager implements PluginManager {
     private final Map<Boolean, Map<Permissible, Boolean>> defSubs = new HashMap<Boolean, Map<Permissible, Boolean>>();
     private boolean useTimings = false;
 
-    public static SimplePluginManager newInstance(BukkitServer srv, SimpleCommandMap map) {
-    	return new SimplePluginManager(BukkitServer.instance(),
-    			BukkitServer.instance().commandMap);
-    }
-    
     public SimplePluginManager(Server instance, SimpleCommandMap commandMap) {
-    	System.out.println("My class loader is " + getClass().getClassLoader().getClass().getCanonicalName());
         server = instance;
         this.commandMap = commandMap;
 
@@ -481,8 +472,7 @@ public final class SimplePluginManager implements PluginManager {
             if (!registration.getPlugin().isEnabled()) {
                 continue;
             }
-            if (BukkitContainer.DEBUG)
-            System.out.println("Forwarding event " + event.getEventName() + " to plugin " + registration.getPlugin().getDescription().getName());
+
             try {
                 registration.callEvent(event);
             } catch (AuthorNagException ex) {
