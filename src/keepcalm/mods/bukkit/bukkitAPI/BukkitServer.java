@@ -123,6 +123,7 @@ import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -169,6 +170,8 @@ public class BukkitServer implements Server {
 	private static String cbBuild;
 	private static Map<String,Boolean> fauxSleeping = new HashMap();
 
+	
+	private HashMap<String,World> pluginWorldMapping = Maps.newHashMap();
 	/*public void setServer(MinecraftServer server) {
 		if (server == null) {
 			throw new RuntimeException("Server must be set before continuing!");
@@ -211,10 +214,15 @@ public class BukkitServer implements Server {
 			e.printStackTrace();
 		}
 
+		String vanillaName = theServer.getWorldName();
+		
 		while(_.hasNext()) {
 			int i = _.next();
 			WorldServer x = theServer.worldServerForDimension(i);
-			worlds.put(i, new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getDimension()), this.wtToEnv(x)));
+			BukkitWorld world = new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getDimension()), this.wtToEnv(x));
+			worlds.put(i, world);
+			if (!x.getWorldInfo().getWorldName().equals(vanillaName))
+				pluginWorldMapping.put(x.getWorldInfo().getWorldName(), world);
 		}
 		this.theLogger = BukkitContainer.bukkitLogger;
 		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
@@ -711,6 +719,10 @@ public class BukkitServer implements Server {
 			return null;
 		}
 */
+		
+		if (pluginWorldMapping.containsKey(name)) {
+			return pluginWorldMapping.get(name);
+		}
 		
 		if (name.contains("@")) {
 			String[] parts = name.split("@");
