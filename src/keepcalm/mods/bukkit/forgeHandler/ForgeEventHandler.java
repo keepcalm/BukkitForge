@@ -10,6 +10,7 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlockFake;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitCreeper;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitLightningStrike;
@@ -19,6 +20,7 @@ import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitSheep;
 import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import keepcalm.mods.events.events.BlockDestroyEvent;
+import keepcalm.mods.events.events.CreeperExplodeEvent;
 import keepcalm.mods.events.events.DispenseItemEvent;
 import keepcalm.mods.events.events.LightningStrikeEvent;
 import keepcalm.mods.events.events.LiquidFlowEvent;
@@ -43,6 +45,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.Event.Result;
@@ -87,6 +90,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.event.entity.SheepDyeWoolEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -586,6 +590,8 @@ public class ForgeEventHandler {
 			return;
 		}
 		if (bev.getInstaBreak()) {
+			Block blck = Block.blocksList[ev.blockID];
+			blck.dropBlockAsItem(ev.world, ev.blockX, ev.blockY, ev.blockZ, ev.world.getBlockMetadata(ev.blockX, ev.blockY, ev.blockZ), 0);
 			ev.world.setBlockAndMetadata(ev.blockX, ev.blockY, ev.blockZ, 0, 0);
 			//Block.blocksList[ev.blockID].breakBlock(ev.world, ev.blockX, ev.blockY, ev.blockZ, ev.blockID, ev.world.getBlockMetadata(ev.blockX, ev.blockY, ev.blockZ));
 			return;
@@ -604,6 +610,21 @@ public class ForgeEventHandler {
 		//ignore XP etc
 	}
 
+	@ForgeSubscribe
+	public void onCreeperExplode(CreeperExplodeEvent ev) {
+		double x = ev.creeper.posX;
+		double y = ev.creeper.posY;
+		double z = ev.creeper.posZ;
+		
+		
+		World world = ev.creeper.worldObj;
+		AxisAlignedBB blocks = AxisAlignedBB.getBoundingBox(x - ev.explosionRadius, y - ev.explosionRadius, z - ev.explosionRadius, x + ev.explosionRadius, y + ev.explosionRadius, z + ev.explosionRadius);
+		//world.block
+		Location loc = new Location(BukkitServer.instance().getWorld(ev.creeper.worldObj.getWorldInfo().getDimension()), ev.creeper.posX, ev.creeper.posY, ev.creeper.posZ);
+		//EntityExplodeEvent bev = new EntityExplodeEvent(new BukkitCreeper(BukkitServer.instance(), ev.creeper), loc, blocks, yield);
+		
+	}
+	
 	@ForgeSubscribe
 	public void liquidFlow(LiquidFlowEvent ev) {
 		BukkitBlockFake newBlk = new BukkitBlockFake(
