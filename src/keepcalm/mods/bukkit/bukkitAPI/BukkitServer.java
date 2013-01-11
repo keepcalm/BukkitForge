@@ -711,6 +711,11 @@ public class BukkitServer implements Server {
 			return null;
 		}
 */
+		
+		if (name.contains("@")) {
+			String[] parts = name.split("@");
+			name = parts[1];
+		}
 		try {
 			int dim = Integer.parseInt(name);
 			return getWorld(dim);
