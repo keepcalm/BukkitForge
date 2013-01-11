@@ -22,6 +22,7 @@ import keepcalm.mods.events.events.DispenseItemEvent;
 import keepcalm.mods.events.events.LiquidFlowEvent;
 import keepcalm.mods.events.events.PlayerDamageBlockEvent;
 import keepcalm.mods.events.events.PlayerMoveEvent;
+import keepcalm.mods.events.events.PressurePlateInteractEvent;
 import keepcalm.mods.events.events.SheepDyeEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
@@ -642,5 +643,20 @@ public class ForgeEventHandler {
 			ev.setCanceled(true);
 		}
 		
+	}
+	
+	@ForgeSubscribe
+	public void onPressurePlate(PressurePlateInteractEvent ev) {
+		if (ev.entity instanceof EntityPlayerMP) {
+			EntityPlayerMP fp = (EntityPlayerMP) ev.entity;
+			BukkitPlayer player = new BukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) ev.entity);
+			
+			BukkitItemStack item = new BukkitItemStack(fp.inventory.getCurrentItem());
+			org.bukkit.event.player.PlayerInteractEvent bev = new org.bukkit.event.player.PlayerInteractEvent(player, Action.PHYSICAL, item, new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x,ev.y,ev.z), BukkitBlock.notchToBlockFace(-1));
+			Bukkit.getPluginManager().callEvent(bev);
+			if (bev.isCancelled()) {
+				ev.setCanceled(true);
+			}
+		}
 	}
 }
