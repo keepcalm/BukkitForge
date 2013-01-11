@@ -12,6 +12,7 @@ import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlockFake;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitItem;
+import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitLightningStrike;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitLivingEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitSheep;
@@ -19,6 +20,7 @@ import keepcalm.mods.bukkit.bukkitAPI.event.BukkitEventFactory;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import keepcalm.mods.events.events.BlockDestroyEvent;
 import keepcalm.mods.events.events.DispenseItemEvent;
+import keepcalm.mods.events.events.LightningStrikeEvent;
 import keepcalm.mods.events.events.LiquidFlowEvent;
 import keepcalm.mods.events.events.PlayerDamageBlockEvent;
 import keepcalm.mods.events.events.PlayerMoveEvent;
@@ -29,6 +31,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.dispenser.IRegistry;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -167,7 +170,7 @@ public class ForgeEventHandler {
 			if (bev.isCancelled()) {
 				ev.setCanceled(true);
 			}
-			
+
 			//BukkitEventFactory.callCreatureSpawnEvent((EntityLiving) ev.entity, SpawnReason.DEFAULT);
 		}
 	}
@@ -194,8 +197,8 @@ public class ForgeEventHandler {
 							ev.source.getSourceOfDamage()), 
 							BukkitEntity.getEntity(BukkitServer.instance(), 
 									ev.entityLiving), 
-							getDamageCause(ev.source), ev.ammount);
-							
+									getDamageCause(ev.source), ev.ammount);
+
 		}
 		else {
 			bev = new EntityDamageEvent(
@@ -203,9 +206,9 @@ public class ForgeEventHandler {
 					getDamageCause(ev.source),
 					ev.ammount);
 		}
-		
+
 		Bukkit.getPluginManager().callEvent(bev);
-		
+
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
 		}
@@ -230,7 +233,7 @@ public class ForgeEventHandler {
 		EntityDeathEvent bev = new EntityDeathEvent(e, stacks);
 		bev.setDroppedExp(ev.entityLiving.experienceValue);
 		Bukkit.getPluginManager().callEvent(bev);
-		
+
 	}
 
 	/*@ForgeSubscribe
@@ -270,7 +273,7 @@ public class ForgeEventHandler {
 	public void bowFire(ArrowLooseEvent ev) {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
-		
+
 		//BukkitEventFactory.callEntityShootBowEvent(ev.entityPlayer, ev.bow, null, ev.charge);
 	}
 
@@ -304,14 +307,14 @@ public class ForgeEventHandler {
 				final int blockZ = ev.z + ForgeDirection.getOrientation(ev.face).offsetZ;
 				EntityPlayerMP forgePlayerMP;
 				if (!(ev.entityPlayer instanceof EntityPlayerMP)) {
-					
+
 					forgePlayerMP = BukkitContainer.MOD_PLAYER;
-					
+
 				}
 				else {
 					forgePlayerMP = (EntityPlayerMP) ev.entityPlayer;
 				}
-				
+
 				final BukkitPlayer thePlayer = new BukkitPlayer(forgePlayerMP);
 				final BukkitBlock beforeBlock = new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ);
 				WorldServer world = (WorldServer) ev.entity.worldObj;
@@ -347,21 +350,21 @@ public class ForgeEventHandler {
 
 			}
 			else if (ev.entityPlayer.inventory.getCurrentItem().getItem() instanceof ItemFlintAndSteel) {
-				
+
 				// ignite
 				EntityPlayerMP fp;
-				
+
 				if (!(ev.entityPlayer instanceof EntityPlayerMP)) {
 					fp = BukkitContainer.MOD_PLAYER;
 				}
 				else {
 					fp = (EntityPlayerMP) ev.entityPlayer;
 				}
-				
+
 				BlockIgniteEvent bev = new BlockIgniteEvent(new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), IgniteCause.FLINT_AND_STEEL, new BukkitPlayer(fp));
-				
+
 				Bukkit.getPluginManager().callEvent(bev);
-				
+
 				if (bev.isCancelled()) {
 					ev.setCanceled(true);
 				}
@@ -375,7 +378,7 @@ public class ForgeEventHandler {
 			return;
 		// assume all picked up at the same time
 		EntityPlayerMP fp;
-		
+
 		if (!(ev.entityPlayer instanceof EntityPlayerMP)) {
 			fp = BukkitContainer.MOD_PLAYER;
 		}
@@ -396,7 +399,7 @@ public class ForgeEventHandler {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		EntityPlayerMP fp;
-		
+
 		if (!(ev.entityPlayer instanceof EntityPlayerMP)) {
 			fp = BukkitContainer.MOD_PLAYER;
 		}
@@ -432,16 +435,16 @@ public class ForgeEventHandler {
 		default:
 			act= Action.PHYSICAL;
 		}
-		
+
 		EntityPlayerMP fp;
-		
+
 		if (!(ev.entityPlayer instanceof EntityPlayerMP)) {
 			fp = BukkitContainer.MOD_PLAYER;
 		}
 		else {
 			fp = (EntityPlayerMP) ev.entityPlayer;
 		}
-		
+
 		BukkitBlock bb = new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.z)), ev.x,ev.y,ev.z);
 		BlockFace face = BukkitBlock.notchToBlockFace(ev.face);
 		org.bukkit.event.player.PlayerInteractEvent bev = 
@@ -462,7 +465,7 @@ public class ForgeEventHandler {
 		org.bukkit.event.player.PlayerBedEnterEvent bev = new PlayerBedEnterEvent(BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) ev.entityPlayer), new BukkitBlock(new BukkitChunk(ev.entityPlayer.worldObj.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z));
 
 		Bukkit.getPluginManager().callEvent(bev);
-		
+
 		if (bev.isCancelled()) {
 			ev.result = EnumStatus.OTHER_PROBLEM;
 		}
@@ -513,7 +516,7 @@ public class ForgeEventHandler {
 
 		if (Block.blocksList[blockID] == Block.sapling) {
 			TreeType type = TreeType.TREE;
-			
+
 
 			StructureGrowEvent bev = new StructureGrowEvent(new Location(BukkitServer.instance().getWorld(ev.world.getWorldInfo().getDimension()),ev.x,ev.y,ev.z), type, false, null, new ArrayList<BlockState>());
 		}
@@ -527,9 +530,9 @@ public class ForgeEventHandler {
 			WorldLoadEvent bev = new WorldLoadEvent(bukkit);
 			Bukkit.getPluginManager().callEvent(bev);
 		}
-		
-		
-		
+
+
+
 	}*/
 	// begin BukkitForge-added events
 
@@ -599,7 +602,7 @@ public class ForgeEventHandler {
 		}
 		//ignore XP etc
 	}
-	
+
 	@ForgeSubscribe
 	public void liquidFlow(LiquidFlowEvent ev) {
 		BukkitBlockFake newBlk = new BukkitBlockFake(
@@ -609,32 +612,32 @@ public class ForgeEventHandler {
 				ev.flowToZ, 
 				ev.liquid.blockID + 1,
 				0
-		);
-		
+				);
+
 		BukkitBlock source = new BukkitBlock(				
 				new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.flowFromX, ev.flowFromZ)), 
 				ev.flowFromX, 
 				ev.flowFromY,
 				ev.flowFromZ
 				);
-		
+
 		BlockSpreadEvent bev = new BlockSpreadEvent(newBlk, source, newBlk.getState());
 		Bukkit.getPluginManager().callEvent(bev);
 	}
-	
+
 	@ForgeSubscribe
 	public void onSheepDye(SheepDyeEvent ev) {
-		
+
 		SheepDyeWoolEvent bev = new SheepDyeWoolEvent(new BukkitSheep(BukkitServer.instance(), ev.sheep), DyeColor.getByData((byte)ev.newColour));
-		
+
 		Bukkit.getPluginManager().callEvent(bev);
-		
+
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
 		}
-		
+
 	}
-	
+
 	@ForgeSubscribe
 	public void onPlayerMove(PlayerMoveEvent ev) {
 		if (!(ev.entityPlayer instanceof EntityPlayerMP)) return;
@@ -642,20 +645,20 @@ public class ForgeEventHandler {
 		Location old = new Location(BukkitServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.oldX, ev.oldY, ev.oldZ);
 		Location now = new Location(BukkitServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.newX, ev.newY, ev.newZ);
 		org.bukkit.event.player.PlayerMoveEvent bev = new org.bukkit.event.player.PlayerMoveEvent(player, old, now);
-		
+
 		Bukkit.getPluginManager().callEvent(bev);
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
 		}
-		
+
 	}
-	
+
 	@ForgeSubscribe
 	public void onPressurePlate(PressurePlateInteractEvent ev) {
 		if (ev.entity instanceof EntityPlayerMP) {
 			EntityPlayerMP fp = (EntityPlayerMP) ev.entity;
 			BukkitPlayer player = new BukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) ev.entity);
-			
+
 			BukkitItemStack item = new BukkitItemStack(fp.inventory.getCurrentItem());
 			org.bukkit.event.player.PlayerInteractEvent bev = new org.bukkit.event.player.PlayerInteractEvent(player, Action.PHYSICAL, item, new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x,ev.y,ev.z), BukkitBlock.notchToBlockFace(-1));
 			Bukkit.getPluginManager().callEvent(bev);
@@ -664,4 +667,27 @@ public class ForgeEventHandler {
 			}
 		}
 	}
+
+	@ForgeSubscribe
+	public void onLightningStrike(LightningStrikeEvent ev) {
+		if (ev.bolt != null) {
+
+			org.bukkit.event.weather.LightningStrikeEvent bev1 = new org.bukkit.event.weather.LightningStrikeEvent(BukkitServer.instance().getWorld(ev.world.getWorldInfo().getDimension()), new BukkitLightningStrike(BukkitServer.instance(), ev.bolt));
+			Bukkit.getPluginManager().callEvent(bev1);
+			if (bev1.isCancelled()) {
+				cancelled.add(ev.bolt);
+				ev.setCanceled(true);
+				return;
+			}
+		}
+		if (cancelled.contains(ev.bolt)) {
+			// same as before
+			ev.setCanceled(true);
+			return;
+		}
+		
+		BlockIgniteEvent bev = new BlockIgniteEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), IgniteCause.LIGHTNING, null);
+	}
+	
+	private List<EntityLightningBolt> cancelled = new ArrayList<EntityLightningBolt>();
 }
