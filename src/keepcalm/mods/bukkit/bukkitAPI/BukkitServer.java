@@ -214,7 +214,7 @@ public class BukkitServer implements Server {
 			e.printStackTrace();
 		}
 
-		String vanillaName = theServer.getWorldName();
+		String vanillaName = theServer.worldServerForDimension(0).getWorldInfo().getWorldName();
 		
 		while(_.hasNext()) {
 			int i = _.next();
@@ -779,9 +779,12 @@ public class BukkitServer implements Server {
 	}
 
 	/**
-	 * @author keepcalm
 	 * 
 	 * WARNING: This assumes overworld. Use getMap(id, world) to do other worlds.
+	 * 
+	 * @author keepcalm
+	 * 
+	 * 
 	 * @param id - the id of the map to get
 	 * 
 	 * @return the map of that ID in dimension 0
