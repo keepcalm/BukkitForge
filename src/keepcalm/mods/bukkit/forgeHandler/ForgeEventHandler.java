@@ -44,6 +44,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -612,16 +613,40 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void onCreeperExplode(CreeperExplodeEvent ev) {
-		double x = ev.creeper.posX;
-		double y = ev.creeper.posY;
-		double z = ev.creeper.posZ;
+		int x = MathHelper.floor_double(ev.creeper.posX);
+		int y = MathHelper.floor_double(ev.creeper.posY);
+		int z = MathHelper.floor_double(ev.creeper.posZ);
+		
+		int minX = x - ev.explosionRadius;
+		int maxX = x + ev.explosionRadius;
+		int minY = y - ev.explosionRadius;
+		int maxY = y + ev.explosionRadius;
+		int minZ = z - ev.explosionRadius;
+		int maxZ = z + ev.explosionRadius;
+		
+		List<org.bukkit.block.Block> blocks = new ArrayList<org.bukkit.block.Block>();
+		
+		for (x = minX; x <= maxX; x++) {
+			for (y = minY; y <= maxY; y++) {
+				for (z = minZ; z <= maxZ; z++) {
+					BukkitBlock b = new BukkitBlock(
+							new BukkitChunk(ev.creeper.worldObj.getChunkFromBlockCoords(x, z)),
+							x,y,z);
+					blocks.add(b);
+					
+				}
+			}
+		}
 		
 		
-		World world = ev.creeper.worldObj;
-		AxisAlignedBB blocks = AxisAlignedBB.getBoundingBox(x - ev.explosionRadius, y - ev.explosionRadius, z - ev.explosionRadius, x + ev.explosionRadius, y + ev.explosionRadius, z + ev.explosionRadius);
+		//AxisAlignedBB blocks = AxisAlignedBB.getBoundingBox(x - ev.explosionRadius, y - ev.explosionRadius, z - ev.explosionRadius, x + ev.explosionRadius, y + ev.explosionRadius, z + ev.explosionRadius);
 		//world.block
 		Location loc = new Location(BukkitServer.instance().getWorld(ev.creeper.worldObj.getWorldInfo().getDimension()), ev.creeper.posX, ev.creeper.posY, ev.creeper.posZ);
-		//EntityExplodeEvent bev = new EntityExplodeEvent(new BukkitCreeper(BukkitServer.instance(), ev.creeper), loc, blocks, yield);
+		EntityExplodeEvent bev = new EntityExplodeEvent(new BukkitCreeper(BukkitServer.instance(), ev.creeper), loc, blocks, 1.0f);
+		Bukkit.getPluginManager().callEvent(bev);
+		if (bev.isCancelled()) {
+			ev.setCanceled(true);
+		}
 		
 	}
 	
