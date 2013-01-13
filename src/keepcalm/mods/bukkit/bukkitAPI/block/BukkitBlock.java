@@ -107,7 +107,7 @@ public class BukkitBlock implements Block {
 	}
 
 	public boolean setTypeIdAndData(final int type, final byte data, final boolean applyPhysics) {
-		if (net.minecraft.block.Block.blocksList[type] == null || type > 4096 || data > 16) {
+		if (type > 4096 || data > 16 ||  net.minecraft.block.Block.blocksList[type] == null) {
 			return false;
 		}
 		if (applyPhysics) {
