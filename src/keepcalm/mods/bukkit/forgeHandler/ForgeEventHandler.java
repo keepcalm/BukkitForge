@@ -670,6 +670,10 @@ public class ForgeEventHandler {
 
 		BlockSpreadEvent bev = new BlockSpreadEvent(newBlk, source, newBlk.getState());
 		Bukkit.getPluginManager().callEvent(bev);
+		
+		if (bev.isCancelled()) {
+			ev.setCanceled(true);
+		}
 	}
 
 	@ForgeSubscribe
