@@ -20,6 +20,8 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
+import keepcalm.mods.bukkit.BukkitContainer;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.Server;
 import org.bukkit.Warning;
@@ -82,7 +84,7 @@ public class JavaPluginLoader implements PluginLoader {
     public JavaPluginLoader(Server instance) {
         Validate.notNull(instance, "Server cannot be null");
         server = instance;
-        warn = instance.getWarningState() != WarningState.OFF;
+        warn = BukkitContainer.DEBUG;//instance.getWarningState() != WarningState.OFF;
         if (extended && warn) {
             warn = false;
             instance.getLogger().log(Level.WARNING, "JavaPluginLoader not intended to be extended by " + getClass() + ", and may be final in a future version of Bukkit");

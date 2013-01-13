@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.bukkitAPI.entity;
 import java.util.List;
 import java.util.UUID;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import net.minecraft.entity.Entity;
@@ -217,7 +218,8 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
         	System.out.println("WARNING - Null entity used. Things will begin exploding shortly.");
         }
         
-        BukkitServer.instance().getLogger().warning("Unknown entity: " + entity.getClass().getCanonicalName() + " - returning a dummy instance of BukkitEntity...");
+        if (BukkitContainer.DEBUG) 
+        	BukkitServer.instance().getLogger().warning("Unknown entity: " + entity.getClass().getCanonicalName() + " - returning a dummy instance of BukkitEntity...");
         
         return new BukkitEntity(server,entity);
     }
