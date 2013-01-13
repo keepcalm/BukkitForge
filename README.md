@@ -8,16 +8,16 @@ It can load plugins, commands work, lots of things work, permissions *should* wo
 Most of this mod is a fairly straight port from Craftbukkit, but I've had to modify parts
 (and i anticipate modifiying more).
 
-This is ported to 1.4, and works fine on 1.4.5
+This is ported to 1.4, and works fine on 1.4.6/7
 
 
 Jenkins? Jenkins? JENKINS!
 ==========================
 
 That's right, now we have an automated jenkins build-thingy.
-You may find it [here](http://build.technicpack.net:8080/job/BukkitForge)
+You may find it [here](http://build.technicpack.net/job/BukkitForge)
 
-[![Build status](http://build.technicpack.net:8080/job/BukkitForge/badge/icon)](http://build.technicpack.net:8080/job/BukkitForge/)
+[![Build status](http://build.technicpack.net/job/BukkitForge/badge/icon)](http://build.technicpack.net/job/BukkitForge/)
 
 Any errors with plugins go [here](https://github.com/Bukkit-Forge-Plugins/Bukkit-Forge-Plugin-Errors)
 
