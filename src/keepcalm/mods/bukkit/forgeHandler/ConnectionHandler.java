@@ -57,7 +57,7 @@ public class ConnectionHandler implements IConnectionHandler {
 			return null;
 		}
 		if (!ForgeEventHandler.ready && (MinecraftServer.getServer() instanceof DedicatedServer)) {
-			return "Patience, my padawan! BukkitForge is still loading.\nTry again in a few moments...";
+			return BukkitContainer.LOADING_KICK_MESSAGE;
 		}
 		else if (!ForgeEventHandler.ready) {
 			return null; // not single player - don't bother
