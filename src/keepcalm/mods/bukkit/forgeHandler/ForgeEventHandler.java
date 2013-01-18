@@ -459,6 +459,7 @@ public class ForgeEventHandler {
 
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
+			//ev.setResult(Result.DENY);
 		}
 
 		//BukkitEventFactory.callPlayerInteractEvent((EntityPlayerMP) ev.entityPlayer, act, ev.entityPlayer.inventory.getCurrentItem());
@@ -696,7 +697,12 @@ public class ForgeEventHandler {
 		Location old = new Location(BukkitServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.oldX, ev.oldY, ev.oldZ);
 		Location now = new Location(BukkitServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.newX, ev.newY, ev.newZ);
 		org.bukkit.event.player.PlayerMoveEvent bev = new org.bukkit.event.player.PlayerMoveEvent(player, old, now);
-
+		
+		if (old.equals(now)) {
+			return;
+		}
+		
+		
 		Bukkit.getPluginManager().callEvent(bev);
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);

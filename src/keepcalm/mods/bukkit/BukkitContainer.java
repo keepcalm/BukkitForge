@@ -82,6 +82,7 @@ public class BukkitContainer {
 	public static EntityPlayerMP MOD_PLAYER;
 	public static String[] pluginsInPath;
 	public static String CRAFT_VERSION;
+	public static String LOADING_KICK_MESSAGE;
 	
 	private static File propsFile;
 	
@@ -152,6 +153,10 @@ public class BukkitContainer {
 		Property plugins = config.get(Configuration.CATEGORY_GENERAL, "pluginsToLoad", "");
 		plugins.comment = "Comma-separated list of plugins which are in the classpath to load. Only developers need use this option.";
 		this.pluginsInPath = plugins.value.isEmpty() ? new String[] {} : plugins.value.split(",");
+		
+		Property kickMsg = config.get(Configuration.CATEGORY_GENERAL, "kickMessage", "Patience, my padawan! BukkitForge is still loading.\nTry again in a few moments...");
+		kickMsg.comment = "Message to kick players with if they try to join before BukkitForge is loaded. \n makes a new line";
+		this.LOADING_KICK_MESSAGE = kickMsg.value;
 		
 		Property debug = config.get("consoleConfig", "debug", false);
 		debug.comment = "Print debug messages";
