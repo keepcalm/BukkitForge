@@ -48,8 +48,7 @@ OMG, LIKE, MAH PLGINS DNT LOAD!!!!!1111one!1eleven
 ==========================================
 
 Speak english, and please, report it in issues!
-
-Please review the new [Issues Posting Guidelines](http://www.minecraftforge.net/forum/index.php?action=pm;sa=send;f=inbox;pmsg=1549;quote;u=8309)
+Please review the new [Issues Posting Guidelines](https://github.com/keepcalm/BukkitForge/wiki/Issue-Posting-Guidelines)
 
 LICENSE:
 ========
