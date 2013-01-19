@@ -3,14 +3,11 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
-
-import net.minecraft.command.CommandServerStop;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandServerStop;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.StopCommand;
 /**

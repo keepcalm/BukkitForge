@@ -65,11 +65,11 @@
 						  <include name="*.properties" />
 					  </patternset>
 				  </fileset>
-				  <fileset dir="${package.srgs}">
+				  <!--		  <fileset dir="${package.srgs}">
 					  <patternset>
 						  <include name="*.srg" />
 					  </patternset>
-				  </fileset>
+				  </fileset>-->
 			  </copy>
 			 <manifest file="MANIFEST.MF" >
 				 <attribute name="FMLCorePlugin" value="keepcalm.mods.bukkit.asm.BukkitASMLoader" />

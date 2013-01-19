@@ -1,5 +1,7 @@
 package keepcalm.mods.bukkit.bukkitAPI;
 
+import static keepcalm.mods.bukkit.BukkitContainer.DEBUG;
+
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
@@ -14,7 +16,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import static keepcalm.mods.bukkit.BukkitContainer.DEBUG;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;

@@ -1,9 +1,9 @@
 package keepcalm.mods.bukkit.bukkitAPI.block;
 
-import org.bukkit.Material;
-
-import net.minecraft.block.Block;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
+import net.minecraft.block.Block;
+
+import org.bukkit.Material;
 
 public class BukkitBlockFake extends BukkitBlock {
 	

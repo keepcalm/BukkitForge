@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,7 +63,6 @@ import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.ForgeVersion;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -125,12 +122,9 @@ import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 //import cpw.mods.fml.common.FMLCommonHandler;
 //import jline.console.ConsoleReader;
-import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 
 public class BukkitServer implements Server {

@@ -3,7 +3,6 @@ package keepcalm.mods.bukkit.bukkitAPI.command;
 import static org.bukkit.util.Java15Compat.Arrays_copyOfRange;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;

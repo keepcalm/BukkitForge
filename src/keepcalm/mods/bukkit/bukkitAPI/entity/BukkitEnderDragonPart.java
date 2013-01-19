@@ -3,11 +3,10 @@ package keepcalm.mods.bukkit.bukkitAPI.entity;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import net.minecraft.entity.boss.EntityDragonPart;
 
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.EnderDragonPart;
-//import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Entity;
+//import org.bukkit.craftbukkit.CraftServer;
 
 public class BukkitEnderDragonPart extends BukkitComplexPart implements EnderDragonPart {
     public BukkitEnderDragonPart(BukkitServer server, EntityDragonPart entity) {

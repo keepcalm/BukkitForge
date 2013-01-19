@@ -1,10 +1,5 @@
 package org.bukkit.plugin.java;
 
-import com.google.common.io.ByteStreams;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.commons.RemappingClassAdapter;
-
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -13,6 +8,12 @@ import java.security.CodeSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.commons.RemappingClassAdapter;
+
+import com.google.common.io.ByteStreams;
 
 /**
  * A ClassLoader for plugins, to allow shared classes across multiple plugins

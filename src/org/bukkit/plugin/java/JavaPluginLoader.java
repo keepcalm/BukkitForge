@@ -1,5 +1,7 @@
 package org.bukkit.plugin.java;
 
+import guava10.com.google.common.collect.ImmutableList;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,8 +21,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
-
-import keepcalm.mods.bukkit.ApplySrg;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Server;
@@ -45,8 +45,6 @@ import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.TimedRegisteredListener;
 import org.bukkit.plugin.UnknownDependencyException;
 import org.yaml.snakeyaml.error.YAMLException;
-
-import guava10.com.google.common.collect.ImmutableList;
 
 /**
  * Represents a Java plugin loader, allowing plugins in the form of .jar

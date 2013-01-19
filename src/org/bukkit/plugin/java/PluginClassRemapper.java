@@ -1,10 +1,10 @@
 package org.bukkit.plugin.java;
 
-import org.objectweb.asm.commons.Remapper;
-
 import java.util.HashMap;
 
 import keepcalm.mods.bukkit.BukkitContainer;
+
+import org.objectweb.asm.commons.Remapper;
 
 /**
  * Remap classes in Bukkit plugins for compatibility purposes

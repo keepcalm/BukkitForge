@@ -2,8 +2,6 @@ package keepcalm.mods.bukkit.bukkitAPI;
 
 import java.util.HashMap;
 
-import com.google.common.cache.CacheBuilder;
-
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 

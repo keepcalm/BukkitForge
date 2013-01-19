@@ -2,7 +2,6 @@ package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
 import java.util.Map;
 
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.ShapedRecipes;
 
 import org.bukkit.inventory.ItemStack;

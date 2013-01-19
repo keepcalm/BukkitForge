@@ -1,8 +1,9 @@
 package keepcalm.mods.bukkit.bukkitAPI.inventory;
 
+import static keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemFactory.DEFAULT_LEATHER_COLOR;
+
 import java.util.Map;
 
-import static keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemFactory.DEFAULT_LEATHER_COLOR;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitMetaItem.SerializableMeta;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;

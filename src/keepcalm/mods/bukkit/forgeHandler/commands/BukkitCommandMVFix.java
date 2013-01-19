@@ -1,13 +1,12 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
-import org.bukkit.command.CommandSender;
-
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.rcon.RConConsoleSource;
+
+import org.bukkit.command.CommandSender;
 /**
  * A command to fix compatibility issues with plugins like MultiVerse - which i __suspect__ use 
  * aliases.

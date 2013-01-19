@@ -3,7 +3,6 @@ package keepcalm.mods.bukkit.forgeHandler;
 import static keepcalm.mods.bukkit.BukkitContainer.DEBUG;
 
 import java.util.List;
-import java.util.Map;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
@@ -20,7 +19,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import cpw.mods.fml.common.IPlayerTracker;
 

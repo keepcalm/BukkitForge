@@ -7,7 +7,6 @@ import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryFurnace;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
 import org.bukkit.inventory.FurnaceInventory;

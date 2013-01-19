@@ -25,7 +25,6 @@ import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.VanishUtils;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.EntityTrackerEntry;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerBeacon;
@@ -652,7 +651,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public void setFoodLevel(int value) {
-        getHandle().getFoodStats().setFoodLevel(value);
+    	getHandle().getFoodStats().setFoodLevel(0);
     }
 
     public Location getBedSpawnLocation() {

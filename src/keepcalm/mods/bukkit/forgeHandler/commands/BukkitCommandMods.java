@@ -1,11 +1,12 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+
 import org.bukkit.ChatColor;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
 
 public class BukkitCommandMods extends CommandBase {
 

@@ -18,7 +18,6 @@ import net.minecraft.command.CommandServerOp;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.server.integrated.IntegratedServer;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class BukkitStarter implements Runnable {

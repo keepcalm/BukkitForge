@@ -7,7 +7,6 @@ import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryBrewer;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.inventory.BrewerInventory;
