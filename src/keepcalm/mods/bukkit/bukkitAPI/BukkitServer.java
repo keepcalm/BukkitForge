@@ -26,6 +26,7 @@ import keepcalm.mods.bukkit.bukkitAPI.help.CommandHelpTopic;
 import keepcalm.mods.bukkit.bukkitAPI.help.SimpleHelpMap;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCustom;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemFactory;
+import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitItemStack;
 import keepcalm.mods.bukkit.bukkitAPI.map.BukkitMapView;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.EntityMetadataStore;
 import keepcalm.mods.bukkit.bukkitAPI.metadata.PlayerMetadataStore;
@@ -42,6 +43,7 @@ import net.minecraft.item.ItemMap;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.server.ConvertingProgressUpdate;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -63,6 +65,9 @@ import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -96,6 +101,8 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.map.MapView;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
@@ -1066,7 +1073,50 @@ public class BukkitServer implements Server {
 
 	@Override
 	public boolean addRecipe(Recipe recipe) {
-		GameRegistry.addRecipe((IRecipe) recipe);
+	//	GameRegistry.addRecipe((IRecipe) recipe);
+		if (recipe instanceof ShapedRecipe) {
+			ShapedRecipe r = (ShapedRecipe) recipe;
+			boolean useOreDict = false;
+			Map<Character,net.minecraft.item.ItemStack> nmsRecipe = Maps.newHashMap();
+			List<Object> objRecipe = new ArrayList<Object>();
+			objRecipe.addAll(Arrays.asList(r.getShape()));
+			for (Character j : r.getIngredientMap().keySet()) {
+				ItemStack x = r.getIngredientMap().get(j);
+				net.minecraft.item.ItemStack nms = BukkitItemStack.createNMSItemStack(x);
+				if (OreDictionary.getOreID(nms) != -1) {
+					useOreDict = true;
+				}
+				objRecipe.add(j);
+				objRecipe.add(nms);
+			}
+			
+			if (useOreDict) {
+				ShapedOreRecipe rec = new ShapedOreRecipe(BukkitItemStack.createNMSItemStack(recipe.getResult()), objRecipe);
+				GameRegistry.addRecipe(rec);
+			}
+			else {
+				GameRegistry.addRecipe(BukkitItemStack.createNMSItemStack(recipe.getResult()), objRecipe);
+			}
+		}
+		else if (recipe instanceof ShapelessRecipe) {
+			ShapelessRecipe r = (ShapelessRecipe) recipe;
+			List<net.minecraft.item.ItemStack> items = new ArrayList<net.minecraft.item.ItemStack>();
+			boolean useOreDict = false;
+			for (ItemStack i : r.getIngredientList()) {
+				net.minecraft.item.ItemStack nms = BukkitItemStack.createNMSItemStack(i);
+				if (OreDictionary.getOreID(nms) != -1) {
+					useOreDict = true;
+				}
+				items.add(nms);
+			}
+			if (useOreDict) {
+				ShapelessOreRecipe nmsRec = new ShapelessOreRecipe(BukkitItemStack.createNMSItemStack(recipe.getResult()), items);
+			}
+			else {
+				ShapelessRecipes nmsRec = new ShapelessRecipes(BukkitItemStack.createNMSItemStack(recipe.getResult()), items);
+				GameRegistry.addRecipe(nmsRec);
+			}
+		}
 		return true;
 	}
 
