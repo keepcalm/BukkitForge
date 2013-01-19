@@ -35,6 +35,10 @@ COMPILING (to get all that good stuff)
 You need Apache Ant and the JDK. To build, run 'git submodule init' and 'git submodule update' in the root folder.
 cd back up one level and simply type 'ant' in the folder with build.xml inside it.
 
+INSTALLATION
+=======================
+This is a core mod, and the jar should live in the 'coremods' directory of your server. If you put it uinder 'mods' it will try and fail to load, with an uninformative message.
+
 FOR BUKKIT DEVS WHO WANT TO ENSURE COMPATIBILITY
 ===============================================
 
