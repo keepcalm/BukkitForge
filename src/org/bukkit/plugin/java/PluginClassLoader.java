@@ -1,44 +1,29 @@
 package org.bukkit.plugin.java;
 
+import com.google.common.io.ByteStreams;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.commons.RemappingClassAdapter;
+
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.CodeSigner;
+import java.security.CodeSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-
-import org.apache.commons.lang.Validate;
-import org.bukkit.plugin.AuthorNagException;
 
 /**
  * A ClassLoader for plugins, to allow shared classes across multiple plugins
  */
 public class PluginClassLoader extends URLClassLoader {
+    private String nbtTest = "cd";
     private final JavaPluginLoader loader;
     private final Map<String, Class<?>> classes = new HashMap<String, Class<?>>();
-    final boolean extended = this.getClass() != PluginClassLoader.class;
 
-    /**
-     * Internal class not intended to be exposed
-     */
-    @Deprecated
     public PluginClassLoader(final JavaPluginLoader loader, final URL[] urls, final ClassLoader parent) {
-        this(loader, urls, parent, null);
-
-        if (loader.warn) {
-            if (extended) {
-                loader.server.getLogger().log(Level.WARNING, "PluginClassLoader not intended to be extended by " + getClass() + ", and may be final in a future version of Bukkit");
-            } else {
-                loader.server.getLogger().log(Level.WARNING, "Constructor \"public PluginClassLoader(JavaPluginLoader, URL[], ClassLoader)\" is Deprecated, and may be removed in a future version of Bukkit", new AuthorNagException(""));
-            }
-            loader.warn = false;
-        }
-    }
-
-
-    PluginClassLoader(final JavaPluginLoader loader, final URL[] urls, final ClassLoader parent, final Object methodSignature) {
         super(urls, parent);
-        Validate.notNull(loader, "Loader cannot be null");
 
         this.loader = loader;
     }
@@ -50,22 +35,10 @@ public class PluginClassLoader extends URLClassLoader {
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        return extended ? findClass(name, true) : findClass0(name, true); // Don't warn on deprecation, but maintain overridability
+        return findClass(name, true);
     }
 
-    /**
-     * @deprecated Internal method that wasn't intended to be exposed
-     */
-    @Deprecated
     protected Class<?> findClass(String name, boolean checkGlobal) throws ClassNotFoundException {
-        if (loader.warn) {
-            loader.server.getLogger().log(Level.WARNING, "Method \"protected Class<?> findClass(String, boolean)\" is Deprecated, and may be removed in a future version of Bukkit", new AuthorNagException(""));
-            loader.warn = false;
-        }
-        return findClass0(name, checkGlobal);
-    }
-
-    Class<?> findClass0(String name, boolean checkGlobal) throws ClassNotFoundException {
         if (name.startsWith("org.bukkit.") || name.startsWith("net.minecraft.")) {
             throw new ClassNotFoundException(name);
         }
@@ -73,18 +46,45 @@ public class PluginClassLoader extends URLClassLoader {
 
         if (result == null) {
             if (checkGlobal) {
-                result = loader.extended ? loader.getClassByName(name) : loader.getClassByName0(name); // Don't warn on deprecation, but maintain overridability
+                result = loader.getClassByName(name);
             }
 
             if (result == null) {
-                result = super.findClass(name);
+                // MCPC+ start - custom loader
+                //result = super.findClass(name);
+
+                try {
+                    // Load the resource to the name
+                    String path = name.replace('.', '/').concat(".class");
+                    URL url = this.findResource(path);
+                    if (url != null) {
+                        InputStream stream = url.openStream();
+                        if (stream != null) {
+                            byte[] bytecode = ByteStreams.toByteArray(stream);
+
+                            // Remap the classes
+                            ClassReader classReader = new ClassReader(bytecode);
+                            ClassWriter classWriter = new ClassWriter(classReader, 0);
+                            classReader.accept(new RemappingClassAdapter(classWriter, new PluginClassRemapper()), ClassReader.EXPAND_FRAMES);
+                            byte[] remappedBytecode = classWriter.toByteArray();
+
+                            // Define (create) the class using the modified byte code
+                            // The top-child class loader is used for this to prevent access violations
+                            CodeSource codeSource = new CodeSource(url, new CodeSigner[0]);
+                            result = this.defineClass(name, remappedBytecode, 0, remappedBytecode.length, codeSource);
+                            if (result != null) {
+                                // Resolve it - sets the class loader of the class
+                                this.resolveClass(result);
+                            }
+                        }
+                    }
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+                // MCPC+ end
 
                 if (result != null) {
-                    if (loader.extended) { // Don't warn on deprecation, but maintain overridability
-                        loader.setClass(name, result);
-                    } else {
-                        loader.setClass0(name, result);
-                    }
+                    loader.setClass(name, result);
                 }
             }
 
@@ -94,19 +94,7 @@ public class PluginClassLoader extends URLClassLoader {
         return result;
     }
 
-    /**
-     * @deprecated Internal method that wasn't intended to be exposed
-     */
-    @Deprecated
     public Set<String> getClasses() {
-        if (loader.warn) {
-            loader.server.getLogger().log(Level.WARNING, "Method \"public Set<String> getClasses()\" is Deprecated, and may be removed in a future version of Bukkit", new AuthorNagException(""));
-            loader.warn = false;
-        }
-        return getClasses0();
-    }
-
-    Set<String> getClasses0() {
         return classes.keySet();
     }
 }
