@@ -32,8 +32,12 @@ You will also need to add the files in the 'lib' folder (excluding bukkitAPI.jar
 COMPILING (to get all that good stuff)
 =======================
 
-You need Apache Ant and the JDK. To build, run 'git submodule sync' in the root folder, and then cd to the 'blockbreak' folder and type 'git pull origin'.
+You need Apache Ant and the JDK. To build, run 'git submodule init' and 'git submodule update' in the root folder.
 cd back up one level and simply type 'ant' in the folder with build.xml inside it.
+
+INSTALLATION
+=======================
+This is a core mod, and the jar should live in the 'coremods' directory of your server. If you put it uinder 'mods' it will try and fail to load, with an uninformative message.
 
 FOR BUKKIT DEVS WHO WANT TO ENSURE COMPATIBILITY
 ===============================================
