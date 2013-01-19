@@ -313,12 +313,15 @@ public class BukkitWorld implements World {
 		chunk.entityLists = null; // Always remove entities - even if discarding, need to get them out of world table
 
 		if (save && !(chunk instanceof EmptyChunk)) {
-			world.theChunkProviderServer.safeSaveChunk(chunk);
+			world.theChunkProviderServer.unloadChunksIfNotNearSpawn(x, z);
+			world.theChunkProviderServer.unload100OldestChunks();
+			
+			//world.theChunkProviderServer.safeSaveChunk(chunk);
 			//world.theChunkProviderServer.saveChunkNOP(chunk);
 		}
 
-		world.theChunkProviderServer.chunksToUnload.remove(ChunkCoordIntPair.chunkXZ2Int(x,z));
-		world.theChunkProviderServer.loadedChunks.remove(LongHash.toLong(x, z));
+//		world.theChunkProviderServer.chunksToUnload.remove(ChunkCoordIntPair.chunkXZ2Int(x,z));
+//		world.theChunkProviderServer.loadedChunks.remove(LongHash.toLong(x, z));
 
 		return true;
 	}
