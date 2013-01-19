@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitEntityEquipment;
@@ -217,7 +218,14 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 	}
 
 	public Player getKiller() {
-		return getHandle().attackingPlayer == null && getHandle().isDead ? null : (Player) BukkitEntity.getEntity(this.server, getHandle().attackingPlayer);
+		EntityPlayerMP fp;
+		if (getHandle().attackingPlayer instanceof EntityPlayerMP) {
+			fp = (EntityPlayerMP) getHandle().attackingPlayer;
+		}
+		else {
+			fp = BukkitContainer.MOD_PLAYER;
+		}
+		return getHandle().attackingPlayer == null && getHandle().isDead ? null : new BukkitPlayer(fp));
 	}
 
 	public boolean addPotionEffect(PotionEffect effect) {
