@@ -68,6 +68,12 @@ public class JavaPluginLoader implements PluginLoader {
 		if (!file.exists()) {
 			throw new InvalidPluginException(new FileNotFoundException(file.getPath() + " does not exist"));
 		}
+		
+		File newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
+		if (newFile.exists() && !(newFile.length() < 100)) {
+			// herp, derp
+			file = newFile;
+		}
 		// first, srg the plugin
 		if (!file.getName().startsWith("ported_")) {
 
@@ -86,11 +92,12 @@ public class JavaPluginLoader implements PluginLoader {
 			} catch (IOException e) {
 				server.getLogger().log(Level.SEVERE, "Failed to load plugin " + file.getAbsolutePath() + " - SRG application failed.", e);
 			}
-			
-			
-			if (!file.delete()) {
+
+
+			/*if (!file.delete()) {
 				server.getLogger().warning("Failed to delete unported plugin " + file.getAbsolutePath() + ". DELETE IT before your next reload/restart or things may explode!");
-			}
+			}*/
+
 			File newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
 			/*if (!newFile.exists()) {
 				server.getLogger().warning("FAILED to port plugin " + file.getAbsolutePath() + " to " + newFile.getAbsolutePath() + ", not attempting to load the new one.");
@@ -100,15 +107,15 @@ public class JavaPluginLoader implements PluginLoader {
 			}*/
 			file = newFile;
 		}
-		else {
-			File newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
-			if (newFile.exists()) {
-				// herp, derp
-				file = newFile;
-			}
+
+		File newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
+		if (newFile.exists()) {
+			// herp, derp
+			file = newFile;
 		}
-		
-		
+
+
+
 
 		PluginDescriptionFile description;
 		try {

@@ -1,5 +1,7 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
+import guava10.com.google.common.base.Joiner;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +51,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.ServerChatEvent;
@@ -75,6 +78,7 @@ import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -97,7 +101,9 @@ import org.bukkit.event.entity.SheepDyeWoolEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.util.Vector;
 
@@ -541,6 +547,24 @@ public class ForgeEventHandler {
 
 
 	}*/
+	public void serverCmd(CommandEvent ev) {
+		if (ev.sender instanceof EntityPlayerMP) {
+			PlayerCommandPreprocessEvent bev=new PlayerCommandPreprocessEvent(new BukkitPlayer((EntityPlayerMP) ev.sender), ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
+			Bukkit.getPluginManager().callEvent(bev);
+			if (bev.isCancelled()) {
+				ev.setCanceled(true);
+				return;
+			}
+		}
+		
+		CommandSender s;
+		if (ev.sender instanceof EntityPlayerMP) s = new BukkitPlayer((EntityPlayerMP)ev.sender);
+		else s = Bukkit.getConsoleSender();
+		
+		ServerCommandEvent bev = new ServerCommandEvent(s, ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
+		Bukkit.getPluginManager().callEvent(bev);
+	}
+	
 	// begin BukkitForge-added events
 
 	// used PlayerInteractEvent for this
