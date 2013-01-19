@@ -651,7 +651,10 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public void setFoodLevel(int value) {
-    	getHandle().getFoodStats().setFoodLevel(0);
+    	NBTTagCompound nbt = new NBTTagCompound();
+    	getHandle().getFoodStats().writeNBT(nbt);
+    	nbt.setInteger("foodLevel", value);
+    	getHandle().getFoodStats().readNBT(nbt);
     }
 
     public Location getBedSpawnLocation() {
