@@ -89,7 +89,7 @@ public class JavaPluginLoader implements PluginLoader {
 			
 			
 			if (!file.delete()) {
-				server.getLogger().warning("Failed to delete unported plugin " + file.getAbsolutePath() + ". DELETE IT before your next reload/restart or things may explode shortly.");
+				server.getLogger().warning("Failed to delete unported plugin " + file.getAbsolutePath() + ". DELETE IT before your next reload/restart or things may explode!");
 			}
 			File newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
 			/*if (!newFile.exists()) {
@@ -99,6 +99,13 @@ public class JavaPluginLoader implements PluginLoader {
 				newFile.renameTo(file);
 			}*/
 			file = newFile;
+		}
+		else {
+			File newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
+			if (newFile.exists()) {
+				// herp, derp
+				file = newFile;
+			}
 		}
 		
 		
