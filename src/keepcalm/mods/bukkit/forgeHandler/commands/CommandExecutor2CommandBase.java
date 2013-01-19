@@ -95,7 +95,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
-		BukkitContainer.bukkitLogger.info(var1.getCommandSenderName() + " issued server command: " + Joiner.on(' ').join(var2));
+		BukkitContainer.bukkitLogger.info(var1.getCommandSenderName() + " issued server command: " + name + Joiner.on(' ').join(var2));
 		try {
 			CommandSender sender;
 			if (var1 instanceof EntityPlayerMP) {

@@ -712,10 +712,12 @@ public class ForgeEventHandler {
 		Location now = new Location(BukkitServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.newX, ev.newY, ev.newZ);
 		org.bukkit.event.player.PlayerMoveEvent bev = new org.bukkit.event.player.PlayerMoveEvent(player, old, now);
 		
-		if (old.equals(now)) {
+		/*if (old.equals(now)) {
 			return;
+		}*/
+		if (BukkitContainer.DEBUG){
+			System.out.println(ev.entityPlayer.username + ": " + old + " => " + now);
 		}
-		
 		
 		Bukkit.getPluginManager().callEvent(bev);
 		if (bev.isCancelled()) {
