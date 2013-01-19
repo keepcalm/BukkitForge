@@ -969,7 +969,9 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
             throw new IllegalArgumentException("Cannot make player fly if getAllowFlight() is false");
         }
 
-        getHandle().capabilities.isFlying = value;
+        Packet202PlayerAbilities pack = getAbilitiesPacket();
+        pack.setFlying(value);
+        this.updateAbilities(pack);
         
     }
     private void updateAbilities(Packet202PlayerAbilities j) {
