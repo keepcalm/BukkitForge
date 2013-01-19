@@ -225,7 +225,7 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 		else {
 			fp = BukkitContainer.MOD_PLAYER;
 		}
-		return getHandle().attackingPlayer == null && getHandle().isDead ? null : new BukkitPlayer(fp));
+		return getHandle().attackingPlayer == null && getHandle().isDead ? null : new BukkitPlayer(fp);
 	}
 
 	public boolean addPotionEffect(PotionEffect effect) {

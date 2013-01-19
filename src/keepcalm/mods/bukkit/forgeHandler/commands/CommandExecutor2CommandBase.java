@@ -2,6 +2,7 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 
 import java.util.List;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
@@ -16,6 +17,8 @@ import net.minecraft.server.dedicated.DedicatedServer;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import com.google.common.base.Joiner;
 /**
  * 
  * A basic Bukkit2ICommand command handler
@@ -92,6 +95,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
+		BukkitContainer.bukkitLogger.info(var1.getCommandSenderName() + " issued server command: " + Joiner.on(' ').join(var2));
 		try {
 			CommandSender sender;
 			if (var1 instanceof EntityPlayerMP) {
