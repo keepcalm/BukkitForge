@@ -244,8 +244,7 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 	}
 
 	public boolean hasPotionEffect(PotionEffectType type) {
-		List<net.minecraft.potion.PotionEffect> j = PotionHelper.getPotionEffects(type.getId(), false);
-		return getHandle().isPotionApplicable(j.get(0));
+		return getHandle().isPotionActive(net.minecraft.potion.Potion.potionTypes[type.getId()]);
 	}
 
 	public void removePotionEffect(PotionEffectType type) {
