@@ -467,6 +467,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void playerGoToSleep(PlayerSleepInBedEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		org.bukkit.event.player.PlayerBedEnterEvent bev = new PlayerBedEnterEvent(BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) ev.entityPlayer), new BukkitBlock(new BukkitChunk(ev.entityPlayer.worldObj.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z));
 
 		Bukkit.getPluginManager().callEvent(bev);
@@ -562,6 +564,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void dispenseItem(DispenseItemEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		ItemStack item = ev.stackToDispense.copy();
 		item.stackSize = 1;
 		IRegistry dispenserRegistry = BlockDispenser.dispenseBehaviorRegistry;
@@ -581,6 +585,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void playerDamageBlock(PlayerDamageBlockEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		BlockDamageEvent bev = new BlockDamageEvent(new BukkitPlayer((EntityPlayerMP) ev.entityPlayer), 
 				new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.blockX, ev.blockZ)), ev.blockX, ev.blockY, ev.blockZ),
 				new BukkitItemStack(ev.entityPlayer.inventory.getCurrentItem()), 
@@ -602,6 +608,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void blockBreakSomehow(BlockDestroyEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		BlockBreakEvent bev = new BlockBreakEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), new BukkitPlayer(BukkitContainer.MOD_PLAYER));
 		Bukkit.getPluginManager().callEvent(bev);
 
@@ -613,6 +621,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void onCreeperExplode(CreeperExplodeEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		int x = MathHelper.floor_double(ev.creeper.posX);
 		int y = MathHelper.floor_double(ev.creeper.posY);
 		int z = MathHelper.floor_double(ev.creeper.posZ);
@@ -652,6 +662,8 @@ public class ForgeEventHandler {
 	
 	@ForgeSubscribe
 	public void liquidFlow(LiquidFlowEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		BukkitBlockFake newBlk = new BukkitBlockFake(
 				new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.flowToX, ev.flowToZ)), 
 				ev.flowToX, 
@@ -678,7 +690,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void onSheepDye(SheepDyeEvent ev) {
-
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		SheepDyeWoolEvent bev = new SheepDyeWoolEvent(new BukkitSheep(BukkitServer.instance(), ev.sheep), DyeColor.getByData((byte)ev.newColour));
 
 		Bukkit.getPluginManager().callEvent(bev);
@@ -691,6 +704,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void onPlayerMove(PlayerMoveEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		if (!(ev.entityPlayer instanceof EntityPlayerMP)) return;
 		BukkitPlayer player = new BukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) ev.entityPlayer);
 		Location old = new Location(BukkitServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.oldX, ev.oldY, ev.oldZ);
@@ -711,6 +726,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void onPressurePlate(PressurePlateInteractEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		if (ev.entity instanceof EntityPlayerMP) {
 			EntityPlayerMP fp = (EntityPlayerMP) ev.entity;
 			BukkitPlayer player = new BukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) ev.entity);
@@ -726,6 +743,8 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe
 	public void onLightningStrike(LightningStrikeEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		if (ev.bolt != null) {
 
 			org.bukkit.event.weather.LightningStrikeEvent bev1 = new org.bukkit.event.weather.LightningStrikeEvent(BukkitServer.instance().getWorld(ev.world.getWorldInfo().getDimension()), new BukkitLightningStrike(BukkitServer.instance(), ev.bolt));
@@ -746,6 +765,8 @@ public class ForgeEventHandler {
 	}
 	
 	public void onSignChange(SignChangeEvent ev) {
+		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
+			return;
 		BukkitBlock theBlock = new BukkitBlock(
 					new BukkitChunk(ev.signChanger.worldObj.getChunkFromBlockCoords(ev.x, ev.z)),
 					ev.x,
