@@ -65,6 +65,9 @@ import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -1086,6 +1089,9 @@ public class BukkitServer implements Server {
 				if (OreDictionary.getOreID(nms) != -1) {
 					useOreDict = true;
 				}
+				if (LiquidContainerRegistry.isContainer(nms)) {
+					useOreDict = true;
+				}
 				objRecipe.add(j);
 				objRecipe.add(nms);
 			}
@@ -1105,6 +1111,9 @@ public class BukkitServer implements Server {
 			for (ItemStack i : r.getIngredientList()) {
 				net.minecraft.item.ItemStack nms = BukkitItemStack.createNMSItemStack(i);
 				if (OreDictionary.getOreID(nms) != -1) {
+					useOreDict = true;
+				}
+				if (LiquidContainerRegistry.isContainer(nms)) {
 					useOreDict = true;
 				}
 				items.add(nms);
