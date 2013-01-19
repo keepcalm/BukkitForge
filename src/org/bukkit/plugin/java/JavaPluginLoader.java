@@ -98,21 +98,19 @@ public class JavaPluginLoader implements PluginLoader {
 				server.getLogger().warning("Failed to delete unported plugin " + file.getAbsolutePath() + ". DELETE IT before your next reload/restart or things may explode!");
 			}*/
 
-			File newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
+			newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
 			/*if (!newFile.exists()) {
 				server.getLogger().warning("FAILED to port plugin " + file.getAbsolutePath() + " to " + newFile.getAbsolutePath() + ", not attempting to load the new one.");
 			}
 			else {
 				newFile.renameTo(file);
 			}*/
-			file = newFile;
+			if (newFile.exists() && !(newFile.length() < 100)) {
+				// herp, derp
+				file = newFile;
+			}
 		}
 
-		File newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
-		if (newFile.exists()) {
-			// herp, derp
-			file = newFile;
-		}
 
 
 
