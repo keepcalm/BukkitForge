@@ -407,7 +407,8 @@ public class BukkitWorld implements World {
 	}
 
 	public boolean isChunkInUse(int x, int z) {
-		return world.getPlayerManager().getOrCreateChunkWatcher(x, z, false).playersInChunk == null || world.getPlayerManager().getOrCreateChunkWatcher(x, z, false).playersInChunk.size() == 0;
+		return world.getPlayerManager().getOrCreateChunkWatcher(x, z, false).playersInChunk.size() == 0;
+		//eturn world.getPlayerManager().getOrCreateChunkWatcher(x, z, false).playersInChunk == null || world.getPlayerManager().getOrCreateChunkWatcher(x, z, false).playersInChunk.size() == 0;
 		//return world.getPlayerManager().getOrCreateChunkWatcher(x,z,false).playersInChunk.size() == 0;
 
 	}
