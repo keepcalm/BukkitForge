@@ -20,6 +20,8 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
+import keepcalm.mods.bukkit.ApplySrg;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.Server;
 import org.bukkit.Warning;
@@ -54,7 +56,8 @@ public class JavaPluginLoader implements PluginLoader {
     protected final Pattern[] fileFilters = new Pattern[] { Pattern.compile("\\.jar$"), };
     protected final Map<String, Class<?>> classes = new HashMap<String, Class<?>>();
     protected final Map<String, PluginClassLoader> loaders = new LinkedHashMap<String, PluginClassLoader>();
-
+    
+    
     public JavaPluginLoader(Server instance) {
         server = instance;
     }
@@ -65,6 +68,22 @@ public class JavaPluginLoader implements PluginLoader {
         if (!file.exists()) {
             throw new InvalidPluginException(new FileNotFoundException(file.getPath() + " does not exist"));
         }
+        // first, srg the plugin
+        /*InputStream srg;
+       	if (getClass().getClassLoader().getResourceAsStream("net/minecraft/src") == null) {
+        	srg = getClass().getClassLoader().getResourceAsStream("cb2obf.srg");
+       	}
+       	else {
+       		srg = getClass().getClassLoader().getResourceAsStream("cb2pkgmcp.srg");
+       	}
+       	if (srg == null) {
+       		throw new RuntimeException("BukkitForge was packaged incorrectly - sorry.");
+       	}
+        try {
+			ApplySrg.main(file, srg);
+		} catch (IOException e) {
+			server.getLogger().log(Level.SEVERE, "Failed to load plugin " + file.getAbsolutePath() + " - SRG application failed.", e);
+		}*/
 
         PluginDescriptionFile description;
         try {

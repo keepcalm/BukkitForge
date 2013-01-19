@@ -343,7 +343,7 @@ public class BukkitServer implements Server {
 	@Override
 	public String getName() {
 
-		return "BukkitForge";
+		return "CraftBukkit";
 	}
 
 	@Override

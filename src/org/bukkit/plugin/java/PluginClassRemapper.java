@@ -4,6 +4,8 @@ import org.objectweb.asm.commons.Remapper;
 
 import java.util.HashMap;
 
+import keepcalm.mods.bukkit.BukkitContainer;
+
 /**
  * Remap classes in Bukkit plugins for compatibility purposes
  */
@@ -28,10 +30,13 @@ public class PluginClassRemapper extends Remapper {
                 return newName;
             }
         }
-        if (typeName.startsWith("org.bukkit.craftbukkit")) {
+        // no plugins have support for BForge, so they're doing something weird if it starts with our packages
+        if (typeName.startsWith("org.bukkit.craftbukkit") || typeName.startsWith("keepcalm.mods.bukkit.bukkitAPI")) {
         	String newName = typeName.replace("org.bukkit.craftbukkit", "keepcalm.mods.bukkit.bukkitAPI");
         	newName = newName.replace("Craft", "Bukkit");
         	newName = newName.replace("Bukkiting", "Crafting");
+        	if (BukkitContainer.DEBUG)
+        		System.out.println("Plugin OBC access attempt diverted: " + typeName + " => " + newName);
         	return newName;
         }
         

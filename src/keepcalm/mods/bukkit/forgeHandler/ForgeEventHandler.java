@@ -370,7 +370,6 @@ public class ForgeEventHandler {
 				BlockIgniteEvent bev = new BlockIgniteEvent(new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), IgniteCause.FLINT_AND_STEEL, new BukkitPlayer(fp));
 
 				Bukkit.getPluginManager().callEvent(bev);
-
 				if (bev.isCancelled()) {
 					ev.setCanceled(true);
 				}

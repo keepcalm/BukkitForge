@@ -110,6 +110,9 @@ public class ConnectionHandler implements IConnectionHandler {
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler,
 			INetworkManager manager) {
+		if (!(ForgeEventHandler.ready)) {
+			return;
+		}
 		EntityPlayerMP guy = (EntityPlayerMP) player;
 		//this.serverHandlers.put(guy.username, netHandler);
 		EntityPlayerMP dude = (EntityPlayerMP) player;
