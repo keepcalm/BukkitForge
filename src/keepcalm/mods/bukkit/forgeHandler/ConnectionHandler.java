@@ -35,7 +35,6 @@ public class ConnectionHandler implements IConnectionHandler {
 
 	@Override
 	public void connectionClosed(INetworkManager manager) {
-
 	}
 
 	@Override

@@ -1,6 +1,10 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
 import static keepcalm.mods.bukkit.BukkitContainer.DEBUG;
+
+import java.util.List;
+import java.util.Map;
+
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
@@ -15,13 +19,19 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import cpw.mods.fml.common.IPlayerTracker;
 
 public class PlayerTracker implements IPlayerTracker {
 
+	public static List<String> online = Lists.newArrayList();
+	
 	@Override
 	public void onPlayerLogin(final EntityPlayer player) {
 		// seen - nvm!
+		online.add(player.username);
 		if (DEBUG)
 		System.out.println("User logged in: " + player.username.toLowerCase());
 		BukkitContainer.users.put(player.username.toLowerCase(), "SeenBefore");
@@ -49,6 +59,7 @@ public class PlayerTracker implements IPlayerTracker {
 
 	@Override
 	public void onPlayerLogout(EntityPlayer player) {
+		online.remove(player.username);
 		PlayerQuitEvent ev = new PlayerQuitEvent(new BukkitPlayer((EntityPlayerMP) player), player.username + " left the game");
 		Bukkit.getPluginManager().callEvent(ev);
 	}

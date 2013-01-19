@@ -27,7 +27,7 @@ public class BukkitOfflinePlayer implements OfflinePlayer, ConfigurationSerializ
     private final BukkitServer server;
     private final AnvilSaveHandler storage;
 
-    protected BukkitOfflinePlayer(BukkitServer server, String name) {
+    public BukkitOfflinePlayer(BukkitServer server, String name) {
         this.server = server;
         this.name = name;
         this.storage = (AnvilSaveHandler) server.getHandle().getConfigurationManager().playerNBTManagerObj;

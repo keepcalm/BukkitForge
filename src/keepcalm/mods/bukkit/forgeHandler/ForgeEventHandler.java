@@ -28,6 +28,7 @@ import keepcalm.mods.events.events.PlayerDamageBlockEvent;
 import keepcalm.mods.events.events.PlayerMoveEvent;
 import keepcalm.mods.events.events.PressurePlateInteractEvent;
 import keepcalm.mods.events.events.SheepDyeEvent;
+import keepcalm.mods.events.events.SignChangeEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
@@ -746,5 +747,31 @@ public class ForgeEventHandler {
 		BlockIgniteEvent bev = new BlockIgniteEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), IgniteCause.LIGHTNING, null);
 	}
 	
+	public void onSignChange(SignChangeEvent ev) {
+		BukkitBlock theBlock = new BukkitBlock(
+					new BukkitChunk(ev.signChanger.worldObj.getChunkFromBlockCoords(ev.x, ev.z)),
+					ev.x,
+					ev.y,
+					ev.z
+				);
+		BukkitPlayer thePlayer;
+		if (ev.signChanger instanceof EntityPlayerMP)
+		thePlayer = new BukkitPlayer((EntityPlayerMP)ev.signChanger);
+		
+		else thePlayer = new BukkitPlayer(BukkitContainer.MOD_PLAYER);
+		
+		org.bukkit.event.block.SignChangeEvent bev = new org.bukkit.event.block.SignChangeEvent(theBlock, thePlayer, ev.lines);
+		
+		Bukkit.getPluginManager().callEvent(bev);
+		
+		if (bev.isCancelled()) {
+			ev.setCanceled(true);
+		}
+		
+		ev.lines = bev.getLines();
+		
+	}
+	
 	private List<EntityLightningBolt> cancelled = new ArrayList<EntityLightningBolt>();
 }
+
