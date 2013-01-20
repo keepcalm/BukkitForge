@@ -13,6 +13,7 @@ public class CaseInsensitiveArrayList extends ArrayList<String> {
 	
 	public CaseInsensitiveArrayList() {}
 
+	
 	@Override
 	public boolean contains(Object i) {
 		if (!(i instanceof String)) return false;

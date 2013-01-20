@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.forgeHandler;
 import guava10.com.google.common.base.Joiner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -549,8 +550,10 @@ public class ForgeEventHandler {
 	}*/
 	public void serverCmd(CommandEvent ev) {
 		if (ev.sender instanceof EntityPlayerMP) {
-			PlayerCommandPreprocessEvent bev=new PlayerCommandPreprocessEvent(new BukkitPlayer((EntityPlayerMP) ev.sender), ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
+			PlayerCommandPreprocessEvent bev=new PlayerCommandPreprocessEvent(new BukkitPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
 			Bukkit.getPluginManager().callEvent(bev);
+			String[] msg = bev.getMessage().split(" ");
+			ev.parameters = Arrays.copyOfRange(msg, 1, msg.length);
 			if (bev.isCancelled()) {
 				ev.setCanceled(true);
 				return;
