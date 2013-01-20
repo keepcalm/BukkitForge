@@ -1,6 +1,7 @@
 package org.bukkit.plugin.java;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 
@@ -33,6 +34,10 @@ public class PluginClassRemapper extends Remapper {
         // no plugins have support for BForge, so they're doing something weird if it starts with our packages
         if (typeName.startsWith("org.bukkit.craftbukkit") || typeName.startsWith("keepcalm.mods.bukkit.bukkitAPI")) {
         	String newName = typeName.replace("org.bukkit.craftbukkit", "keepcalm.mods.bukkit.bukkitAPI");
+        	Pattern pat = Pattern.compile("v(\\d_)+\\.");
+        	if (pat.matcher(newName).matches()) {
+        		newName = pat.matcher(newName).replaceAll("");
+        	}
         	newName = newName.replace("Craft", "Bukkit");
         	newName = newName.replace("Bukkiting", "Crafting");
         	if (BukkitContainer.DEBUG)
