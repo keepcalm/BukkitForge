@@ -314,7 +314,7 @@ public class BukkitWorld implements World {
 
 		if (save && !(chunk instanceof EmptyChunk)) {
 			world.theChunkProviderServer.unloadChunksIfNotNearSpawn(x, z);
-			world.theChunkProviderServer.unload100OldestChunks();
+//			world.theChunkProviderServer.unload100OldestChunks();
 			
 			//world.theChunkProviderServer.safeSaveChunk(chunk);
 			//world.theChunkProviderServer.saveChunkNOP(chunk);
