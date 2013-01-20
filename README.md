@@ -10,6 +10,12 @@ Most of this mod is a fairly straight port from Craftbukkit, but I've had to mod
 
 This is ported to 1.4, and works fine on 1.4.6/7
 
+Staff List:
+======================
+keepcalm: Main Mod Dev.
+
+alexbegt: His Helper.
+
 
 Jenkins? Jenkins? JENKINS!
 ==========================
