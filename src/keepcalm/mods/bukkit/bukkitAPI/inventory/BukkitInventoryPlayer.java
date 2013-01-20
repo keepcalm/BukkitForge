@@ -27,28 +27,29 @@ public class BukkitInventoryPlayer extends BukkitInventory implements org.bukkit
 		int i = 0;
 		for (net.minecraft.item.ItemStack j : realInv.armorInventory) {
 			armorContents[i] = new BukkitItemStack(j);
+			i++;
 		}
 		return armorContents;
 	}
 
 	@Override
 	public ItemStack getHelmet() {
-		return new BukkitItemStack(realInv.armorItemInSlot(0));
+		return new BukkitItemStack(realInv.armorItemInSlot(3));
 	}
 
 	@Override
 	public ItemStack getChestplate() {
-		return new BukkitItemStack(realInv.armorItemInSlot(1));
-	}
-
-	@Override
-	public ItemStack getLeggings() {
 		return new BukkitItemStack(realInv.armorItemInSlot(2));
 	}
 
 	@Override
+	public ItemStack getLeggings() {
+		return new BukkitItemStack(realInv.armorItemInSlot(1));
+	}
+
+	@Override
 	public ItemStack getBoots() {
-		return new BukkitItemStack(realInv.armorItemInSlot(3));
+		return new BukkitItemStack(realInv.armorItemInSlot(0));
 	}
 
 	@Override
@@ -62,23 +63,23 @@ public class BukkitInventoryPlayer extends BukkitInventory implements org.bukkit
 
 	@Override
 	public void setHelmet(ItemStack helmet) {
-		realInv.armorInventory[0] = ((BukkitItemStack) helmet).getHandle();
+		realInv.armorInventory[3] = ((BukkitItemStack) helmet).getHandle();
 		
 	}
 
 	@Override
 	public void setChestplate(ItemStack chestplate) {
-		realInv.armorInventory[1] = ((BukkitItemStack) chestplate).getHandle();		
+		realInv.armorInventory[2] = ((BukkitItemStack) chestplate).getHandle();		
 	}
 
 	@Override
 	public void setLeggings(ItemStack leggings) {
-		realInv.armorInventory[2] = ((BukkitItemStack) leggings).getHandle();		
+		realInv.armorInventory[1] = ((BukkitItemStack) leggings).getHandle();		
 	}
 
 	@Override
 	public void setBoots(ItemStack boots) {
-		realInv.armorInventory[3] = ((BukkitItemStack) boots).getHandle();		
+		realInv.armorInventory[0] = ((BukkitItemStack) boots).getHandle();		
 	}
 
 	@Override
