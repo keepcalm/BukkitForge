@@ -62,6 +62,8 @@ public class BukkitCraftingHandler implements ICraftingHandler {
 			CraftItemEvent ev = new CraftItemEvent(recipe, what, SlotType.CRAFTING, -1, false, false);
 			Bukkit.getPluginManager().callEvent(ev);
 			if (ev.isCancelled()) {
+				// failure!
+				if (!(inv.eventHandler instanceof ContainerWorkbench)) return;
 				ContainerWorkbench cc = (ContainerWorkbench) inv.eventHandler;
 				InventoryCraftResult iv = (InventoryCraftResult) cc.craftResult;
 				iv.setInventorySlotContents(0, null);
