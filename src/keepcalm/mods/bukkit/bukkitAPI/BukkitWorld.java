@@ -76,6 +76,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -92,6 +93,7 @@ import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.ForgeChunkManager;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.BlockChangeDelegate;
@@ -570,7 +572,7 @@ public class BukkitWorld implements World {
 		default:
 			gen = new WorldGenTrees(true);
 			break;
-		}
+		}	
 
 		return gen.generate(world, rand, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
@@ -584,10 +586,9 @@ public class BukkitWorld implements World {
 	}
 
 	public String getName() {
-		return Integer.toString(world.getWorldInfo().getDimension()) ;
+		return "" + world.getWorldInfo().getDimension();
 	}
 
-	@Deprecated
 	public long getId() {
 		return world.getWorldInfo().getSeed();
 	}
@@ -1221,6 +1222,7 @@ public class BukkitWorld implements World {
 	 * FIXME - broken
 	 */
 	 public void setKeepSpawnInMemory(boolean keepLoaded) {
+		 
 	 }
 
 	 @Override
@@ -1239,7 +1241,7 @@ public class BukkitWorld implements World {
 
 		 final BukkitWorld other = (BukkitWorld) obj;
 		 
-		 return world.equals(other.getHandle());
+		 return world.equals(other.getHandle()) && other.getWorldFolder().equals(getWorldFolder());
 		 //return this.getHandle().getWorldInfo().getDimension() == other.getHandle().getWorldInfo().getDimension();
 	 }
 
@@ -1298,7 +1300,7 @@ public class BukkitWorld implements World {
 	  * FIXME
 	  */
 	  public void setTicksPerAnimalSpawns(int ticksPerAnimalSpawns) {
-		  //
+		  
 	  }
 
 	  public long getTicksPerMonsterSpawns() {
