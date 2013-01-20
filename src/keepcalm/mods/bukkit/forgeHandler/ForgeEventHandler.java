@@ -548,6 +548,8 @@ public class ForgeEventHandler {
 
 
 	}*/
+
+         @ForgeSubscribe
 	public void serverCmd(CommandEvent ev) {
 		if (ev.sender instanceof EntityPlayerMP) {
 			PlayerCommandPreprocessEvent bev=new PlayerCommandPreprocessEvent(new BukkitPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
