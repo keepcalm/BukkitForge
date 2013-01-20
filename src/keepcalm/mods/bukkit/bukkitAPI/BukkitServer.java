@@ -155,7 +155,7 @@ public class BukkitServer implements Server {
 	private PluginManager pluginManager;// = new SimplePluginManager(this, commandMap);
 
 
-	private BukkitClassLoader thePluginLoader;// = new BukkitClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs(), getClass().getClassLoader());
+	//private BukkitClassLoader thePluginLoader;// = new BukkitClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs(), getClass().getClassLoader());
 	//private BukkitScheduler scheduler = new BukkitScheduler();
 	//	private ServicesManager servicesManager = new SimpleServicesManager();
 	public Map<Integer,BukkitWorld> worlds = new LinkedHashMap<Integer,BukkitWorld>();
@@ -174,8 +174,7 @@ public class BukkitServer implements Server {
 	private static String cbBuild;
 	private static Map<String,Boolean> fauxSleeping = new HashMap();
 
-	
-	private HashMap<String,World> pluginWorldMapping = Maps.newHashMap();
+	private HashMap<String,World> worldNameMapping = Maps.newHashMap();
 	/*public void setServer(MinecraftServer server) {
 		if (server == null) {
 			throw new RuntimeException("Server must be set before continuing!");
@@ -195,7 +194,7 @@ public class BukkitServer implements Server {
 		configMan = server.getConfigurationManager();
 		theServer = server;
 		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());
-		Iterator<Integer> _ = ids.iterator();
+		Iterator<Integer> worldIter = ids.iterator();
 
 		System.out.println("IS THE INSTANCE NULL? " + (instance == null ? "YES" : "NO"));
 		this.pluginManager = new SimplePluginManager(this, commandMap);
@@ -218,61 +217,41 @@ public class BukkitServer implements Server {
 			e.printStackTrace();
 		}
 
-		String vanillaName = theServer.worldServerForDimension(0).getWorldInfo().getWorldName();
-		
-		while(_.hasNext()) {
-			int i = _.next();
+		while(worldIter.hasNext()) {
+			int i = worldIter.next();
 			WorldServer x = theServer.worldServerForDimension(i);
-			BukkitWorld world = new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getDimension()), this.wtToEnv(x));
+			BukkitWorld world = new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getDimension()), this.wtToEnv(x), false);
 			worlds.put(i, world);
 			//if (!x.getWorldInfo().getWorldName().equals(vanillaName))
-				pluginWorldMapping.put(x.getWorldInfo().getWorldName(), world);
+			worldNameMapping.put(x.provider.getDimensionName(), world);
 		}
 		this.theLogger = BukkitContainer.bukkitLogger;
 		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
-		thePluginLoader = new BukkitClassLoader(getClass().getClassLoader());
 		
-		// I MAINTAIN THAT THIS WILL WORK EVENTUALLY
-		/*try {
-			System.out.println("This is a test of the SPM Loader!");
-			// this *should* load simplepluginamanger via BukkitClassLoader
-			Class<?> pluginMan = thePluginLoader.loadClass("org.bukkit.plugin.SimplePluginManager");
-			System.out.println("Loaded class: " + pluginMan.getCanonicalName() + " via " + pluginMan.getClassLoader().getClass().getCanonicalName());
-			Method insn = pluginMan.getMethod("newInstance", new Class[] { BukkitServer.class, SimpleCommandMap.class });
-			insn.setAccessible(true);
-			this.pluginManager = (PluginManager) insn.invoke(null, this, this.commandMap);
-
-
-		} catch (Exception e1) {
-			throw new RuntimeException("BukkitForge encountered an error (most likely it  was installed incorrectly!)", e1);
-		}*/
 		Bukkit.setServer(this);
 		this.theHelpMap = new SimpleHelpMap(this);
 		this.theMessenger = new StandardMessenger();
-		//theLogger.info("Testing the bukkit Logger!");
 		this.entityMetadata = new EntityMetadataStore();
 		this.playerMetadata = new PlayerMetadataStore();
 		this.worldMetadata = new WorldMetadataStore();
 		this.warningState = Warning.WarningState.DEFAULT;
 		this.console = (BukkitConsoleCommandSender) BukkitConsoleCommandSender.getInstance();
-		// wait until server start
 
-		/*try {
-			Thread.currentThread().wait();
-		} catch (InterruptedException e) {
-			theLogger.log(Level.FINE, "The server was interrupted, it might explode!", e);
-		}*/
-		theLogger.info("Completing load...");
-		// fix for the 'mod recipes disappear' bug
 		BukkitModRecipeHelper.saveCraftingManagerRecipes();
-		//configMan = theServer.getConfigurationManager();
-		//theServer = (DedicatedServer) server;
+
 		HelpTopic myHelp = new CommandHelpTopic("bexec", "Run a command forcibly bukkit aliases", "", "");
 		Bukkit.getServer().getHelpMap().addTopic(myHelp);
 		
 		loadPlugins();
 		enablePlugins(PluginLoadOrder.STARTUP);
 
+		
+		// load plugin worlds - TODO
+		
+		
+		
+		
+		
 		theLogger.info("Loading PostWorld plugins...");
 		enablePlugins(PluginLoadOrder.POSTWORLD);
 		theLogger.info("Loaded plugins: ");
@@ -282,11 +261,11 @@ public class BukkitServer implements Server {
 		ForgeEventHandler.ready = true;
 		commandMap.doneLoadingPlugins((ServerCommandManager) theServer.getCommandManager());
 		if (!theServer.isDedicatedServer()) {
-			EntityPlayer par0 = theServer.getConfigurationManager().getPlayerForUsername(theServer.getServerOwner());
-			if (par0 != null) {
-				par0.sendChatToPlayer(ChatColor.GREEN + "BukkitForge has finished loading! You may now enjoy a (relatively) lag-free game!");
-				theServer.getCommandManager().executeCommand(par0, "/plugins");
-				(new PlayerTracker()).onPlayerLogin(par0);
+			EntityPlayer player = theServer.getConfigurationManager().getPlayerForUsername(theServer.getServerOwner());
+			if (player != null) {
+				player.sendChatToPlayer(ChatColor.GREEN + "BukkitForge has finished loading! You may now enjoy a (relatively) lag-free game!");
+				theServer.getCommandManager().executeCommand(player, "/plugins");
+				(new PlayerTracker()).onPlayerLogin(player);
 			}
 
 		}
@@ -408,8 +387,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public String getWorldType() {
-
-		return theServer.worldServerForDimension(0).getProviderName();
+		return DimensionManager.getWorld(0).provider.terrainType.getWorldTypeName();
 	}
 
 	@Override
@@ -619,7 +597,7 @@ public class BukkitServer implements Server {
 		//internal.(true, true);
 		//theServer.worldServers[theServer.worldServers.length] = internal;
 		DimensionManager.setWorld(dimension, internal);
-		this.worlds.put(dimension, new BukkitWorld(internal, creator.generator(), creator.environment()));
+		this.worlds.put(dimension, new BukkitWorld(internal, creator.generator(), creator.environment(), true));
 		if (generator != null) {
 			(worlds.get(dimension)).getPopulators().addAll(generator.getDefaultPopulators(worlds.get(dimension)));
 		}
@@ -707,6 +685,8 @@ public class BukkitServer implements Server {
 
 	@Override
 	public World getWorld(String name) {
+		if (worldNameMapping.containsKey(name))
+			return worldNameMapping.get(name);
 		/*String[] parts = name.split("@");
 		if (parts.length == 1) {
 			theLogger.warning("A plugin is trying to access a world without specifying its name correctly! You need to remove configs from build 44 and older");
@@ -724,7 +704,7 @@ public class BukkitServer implements Server {
 		}
 */
 		
-		if (!theServer.worldServerForDimension(0).getWorldInfo().getWorldName().equals(name) && pluginWorldMapping.containsKey(name)) {
+	/*	if (!theServer.worldServerForDimension(0).getWorldInfo().getWorldName().equals(name) && pluginWorldMapping.containsKey(name)) {
 			return pluginWorldMapping.get(name);
 		}
 		
@@ -747,7 +727,7 @@ public class BukkitServer implements Server {
 			}
 		}
 		 */
-		//return null;
+		return null;
 	}
 
 	public World getWorld(int dimID) {
@@ -762,7 +742,7 @@ public class BukkitServer implements Server {
 				
 				Environment env = w.isHellWorld ? Environment.NETHER : Environment.NORMAL;
 				ChunkGenerator cg = new NormalChunkGenerator(internal);//(((WorldServer)ev.world).theChunkProviderServer);
-				BukkitWorld bukkit = new BukkitWorld(internal, cg, env);
+				BukkitWorld bukkit = new BukkitWorld(internal, cg, env, false);
 				BukkitServer.instance().worlds.put(dim, bukkit);
 				return bukkit;
 			

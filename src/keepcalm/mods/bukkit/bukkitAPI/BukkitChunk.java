@@ -59,7 +59,7 @@ public class BukkitChunk implements Chunk {
 			else {
 				env = Environment.NORMAL;
 			}
-			BukkitWorld bw = new BukkitWorld(worldServer, new NormalChunkGenerator(worldServer), env );
+			BukkitWorld bw = new BukkitWorld(worldServer, new NormalChunkGenerator(worldServer), env, false );
 			BukkitContainer.bServer.worlds.put(worldServer.getWorldInfo().getDimension(), bw);
 		}
 		

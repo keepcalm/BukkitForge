@@ -92,6 +92,7 @@ import net.minecraft.world.gen.feature.WorldGenTaiga1;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager;
 
@@ -194,12 +195,14 @@ public class BukkitWorld implements World {
 	private int waterAnimalSpawn = -1;
 	private int ambientSpawn = -1;
 	private static final Random rand = new Random();
+	private final boolean useWorldName;
 
-	public BukkitWorld(WorldServer world, ChunkGenerator gen, Environment env) {
+	public BukkitWorld(WorldServer world, ChunkGenerator gen, Environment env, boolean hasDifferentName) {
 		this.world = world;
 		this.generator = gen;
 		this.server = BukkitServer.instance();
 		environment = env;
+		this.useWorldName = hasDifferentName;
 	}
 
 
@@ -586,7 +589,9 @@ public class BukkitWorld implements World {
 	}
 
 	public String getName() {
-		return "" + world.getWorldInfo().getDimension();
+		if (!this.useWorldName)
+		return world.provider.getDimensionName();
+		return world.getWorldInfo().getWorldName();
 	}
 
 	public long getId() {
@@ -1246,7 +1251,14 @@ public class BukkitWorld implements World {
 	 }
 
 	 public File getWorldFolder() {
-		 return new File(world.getSaveHandler().getSaveDirectoryName());
+		        File worldDir = ((SaveHandler)world.getSaveHandler()).getSaveDirectory();
+
+		        if (world.provider.getSaveFolder() != null)
+		        {
+		            worldDir = new File(worldDir, world.provider.getSaveFolder());
+		        }
+
+		        return worldDir;
 	 }
 
 	 public void explodeBlock(Block block, float yield) {
