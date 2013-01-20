@@ -7,6 +7,7 @@ import java.util.List;
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import keepcalm.mods.bukkit.utils.CaseInsensitiveArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChunkCoordinates;
@@ -24,7 +25,7 @@ import cpw.mods.fml.common.IPlayerTracker;
 
 public class PlayerTracker implements IPlayerTracker {
 
-	public static List<String> online = Lists.newArrayList();
+	public static CaseInsensitiveArrayList online = new CaseInsensitiveArrayList();
 	
 	@Override
 	public void onPlayerLogin(final EntityPlayer player) {
