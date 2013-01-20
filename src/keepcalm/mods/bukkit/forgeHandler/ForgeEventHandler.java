@@ -548,6 +548,10 @@ public class ForgeEventHandler {
 
 
 	}*/
+	
+	//People be saying Commands dont work.
+
+        //@ForgeSubscribe
 	public void serverCmd(CommandEvent ev) {
 		if (ev.sender instanceof EntityPlayerMP) {
 			PlayerCommandPreprocessEvent bev=new PlayerCommandPreprocessEvent(new BukkitPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
@@ -793,6 +797,7 @@ public class ForgeEventHandler {
 		BlockIgniteEvent bev = new BlockIgniteEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), IgniteCause.LIGHTNING, null);
 	}
 	
+        @ForgeSubscribe
 	public void onSignChange(SignChangeEvent ev) {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
