@@ -793,7 +793,7 @@ public class ForgeEventHandler {
 		BlockIgniteEvent bev = new BlockIgniteEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), IgniteCause.LIGHTNING, null);
 	}
 	
-         @ForgeSubscribe
+        @ForgeSubscribe
 	public void onSignChange(SignChangeEvent ev) {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
