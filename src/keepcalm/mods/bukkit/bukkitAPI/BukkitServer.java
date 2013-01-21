@@ -223,7 +223,7 @@ public class BukkitServer implements Server {
 			BukkitWorld world = new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getDimension()), this.wtToEnv(x), false);
 			worlds.put(i, world);
 			//if (!x.getWorldInfo().getWorldName().equals(vanillaName))
-			worldNameMapping.put(x.provider.getDimensionName(), world);
+			worldNameMapping.put(x.provider.getDimensionName().replace(' ', '_'), world);
 		}
 		this.theLogger = BukkitContainer.bukkitLogger;
 		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");

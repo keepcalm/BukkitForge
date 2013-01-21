@@ -590,7 +590,7 @@ public class BukkitWorld implements World {
 
 	public String getName() {
 		if (!this.useWorldName)
-		return world.provider.getDimensionName();
+		return world.provider.getDimensionName().replace(' ' , '_');
 		return world.getWorldInfo().getWorldName();
 	}
 
