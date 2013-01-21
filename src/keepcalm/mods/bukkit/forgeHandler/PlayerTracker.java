@@ -38,6 +38,7 @@ public class PlayerTracker implements IPlayerTracker {
 		if (!ForgeEventHandler.ready) {
 			return;
 		}
+		
 		// process in BukkitServer
 		Runnable run = new Runnable() {
 			public void run() {
@@ -62,6 +63,7 @@ public class PlayerTracker implements IPlayerTracker {
 		online.remove(player.username);
 		PlayerQuitEvent ev = new PlayerQuitEvent(BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) player), player.username + " left the game");
 		Bukkit.getPluginManager().callEvent(ev);
+		BukkitPlayerCache.removePlayer(player.username);
 	}
 
 	@Override
