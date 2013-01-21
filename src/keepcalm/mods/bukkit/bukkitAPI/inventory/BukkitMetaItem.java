@@ -401,8 +401,10 @@ class BukkitMetaItem implements ItemMeta, Repairable {
     }
 
     public Map<Enchantment, Integer> getEnchants() {
-        return hasEnchants() ? ImmutableMap.copyOf(enchantments) : ImmutableMap.<Enchantment, Integer>of();
+    	
+        return hasEnchants() && enchantments != null ? ImmutableMap.copyOf(enchantments) : ImmutableMap.<Enchantment, Integer>of();
     }
+    
 
     public boolean addEnchant(Enchantment ench, int level, boolean ignoreRestrictions) {
         if (enchantments == null) {
