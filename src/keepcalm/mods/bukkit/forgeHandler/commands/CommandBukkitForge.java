@@ -6,6 +6,7 @@ import java.util.List;
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -80,7 +81,7 @@ public class CommandBukkitForge extends BukkitCommandBase {
 	public boolean canCommandSenderUseCommand(ICommandSender par1) {
 		CommandSender x;
 		if (par1 instanceof EntityPlayerMP) {
-			x = new BukkitPlayer((EntityPlayerMP) par1);
+			x = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) par1);
 		}
 		else {
 			x = BukkitConsoleCommandSender.getInstance();

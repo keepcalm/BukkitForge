@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.forgeHandler;
 import java.util.HashMap;
 
 import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -119,7 +120,7 @@ public class ConnectionHandler implements IConnectionHandler {
 		PlayerLoginEvent x;
 		if (manager instanceof TcpConnection) {
 			TcpConnection j = (TcpConnection) manager;
-			x = new PlayerLoginEvent(new BukkitPlayer(dude), MinecraftServer.getServer().getHostname(), j.getSocket().getInetAddress());
+			x = new PlayerLoginEvent(BukkitPlayerCache.getBukkitPlayer(dude), MinecraftServer.getServer().getHostname(), j.getSocket().getInetAddress());
 		}
 		else {
 			// logging in events on single player are presently broken, TODO
@@ -127,7 +128,7 @@ public class ConnectionHandler implements IConnectionHandler {
 			return;
 			/*
 			try {
-				x = new PlayerLoginEvent(new BukkitPlayer(dude), BukkitServer.instance().getServerName(), InetAddress.getLocalHost());
+				x = new PlayerLoginEvent(BukkitPlayerCache.getBukkitPlayer(dude), BukkitServer.instance().getServerName(), InetAddress.getLocalHost());
 			} catch (Exception e) {
 				BukkitServer.instance().getLogger().severe("FAILED to process login for player " + dude.username);
 				return;
