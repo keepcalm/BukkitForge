@@ -7,6 +7,7 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitEntity;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -69,7 +70,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		
 		CommandSender sender;
 		if (who instanceof EntityPlayerMP) {
-			sender = new BukkitPlayer((EntityPlayerMP) who);
+			sender = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) who);
 		}
 		else {
 			sender = BukkitConsoleCommandSender.getInstance();
@@ -81,11 +82,8 @@ public class CommandExecutor2CommandBase extends CommandBase {
 			allowed = allowed || MinecraftServer.getServer().getServerOwner().equalsIgnoreCase(who.getCommandSenderName()) 
 					|| MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(who.getCommandSenderName().toLowerCase());
 		}
-		if (allowed) {
-			return true;
-		}
-		return true;
 		
+		return allowed;
 	}
 	
 	@Override
@@ -99,7 +97,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		try {
 			CommandSender sender;
 			if (var1 instanceof EntityPlayerMP) {
-				sender = new BukkitPlayer((EntityPlayerMP) var1);
+				sender = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) var1);
 			}
 			else {
 				sender = BukkitConsoleCommandSender.getInstance();

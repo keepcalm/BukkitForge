@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import org.bukkit.Bukkit;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
@@ -51,7 +52,7 @@ public class SchedulerTickHandler implements ITickHandler {
 		for (String i : PlayerTracker.online) {
 			if (!cial.contains(i)) {
 				EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().createPlayerForUser(i);
-				PlayerQuitEvent ev = new PlayerQuitEvent(new BukkitPlayer(player), player.username + " left the game");
+				PlayerQuitEvent ev = new PlayerQuitEvent(BukkitPlayerCache.getBukkitPlayer(player), player.username + " left the game");
 				Bukkit.getPluginManager().callEvent(ev);
 				PlayerTracker.online.remove(i);
 			}

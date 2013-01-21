@@ -13,8 +13,17 @@ public class BukkitPlayerCache {
 	
 	public static BukkitPlayer getBukkitPlayer(EntityPlayerMP player) {
 		if (playerCache.containsKey(player.username))
+		{
 			return playerCache.get(player.username);
+		}
 		playerCache.put(player.username, new BukkitPlayer(player));
+		return playerCache.get(player.username);
+	}
+	
+	public static BukkitPlayer getBukkitPlayer( BukkitServer server, EntityPlayerMP player) {
+		if (playerCache.containsKey(player.username))
+			return playerCache.get(player.username);
+		playerCache.put(player.username, new BukkitPlayer(server, player));
 		return playerCache.get(player.username);
 	}
 	
