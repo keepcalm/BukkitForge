@@ -119,7 +119,7 @@ public class ConnectionHandler implements IConnectionHandler {
 		PlayerLoginEvent x;
 		if (manager instanceof TcpConnection) {
 			TcpConnection j = (TcpConnection) manager;
-			x = new PlayerLoginEvent(new BukkitPlayer(dude), BukkitServer.instance().getServerName(), j.getSocket().getInetAddress());
+			x = new PlayerLoginEvent(new BukkitPlayer(dude), MinecraftServer.getServer().getHostname(), j.getSocket().getInetAddress());
 		}
 		else {
 			// logging in events on single player are presently broken, TODO
