@@ -2,6 +2,9 @@ package org.bukkit.plugin.java;
 
 import com.google.common.collect.ImmutableList;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -79,9 +82,13 @@ public class JavaPluginLoader implements PluginLoader {
 
 			InputStream srg;
 			if (getClass().getClassLoader().getResourceAsStream("net/minecraft/src") == null) {
-				srg = getClass().getClassLoader().getResourceAsStream("vcb2obf.srg");
+				if (Loader.instance().getMCVersionString().equals("1.4.6"))
+					srg = getClass().getClassLoader().getResourceAsStream("vcb2obf_1.4.6.srg");
+				else
+					srg = getClass().getClassLoader().getResourceAsStream("vcb2obf.srg");
 			}
 			else {
+				
 				srg = getClass().getClassLoader().getResourceAsStream("cb2pkgmcp.srg");
 			}
 			if (srg == null) {
