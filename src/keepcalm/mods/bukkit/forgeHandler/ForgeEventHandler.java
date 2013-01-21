@@ -1,6 +1,6 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import guava10.com.google.common.base.Joiner;
+import com.google.common.base.Joiner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -239,7 +239,7 @@ public class ForgeEventHandler {
 		}
 		List<org.bukkit.inventory.ItemStack> stacks = new ArrayList<org.bukkit.inventory.ItemStack>();
 		for (EntityItem i : ev.entityLiving.capturedDrops) {
-			ItemStack vanilla = i.func_92014_d();
+			ItemStack vanilla = i.getEntityItem();
 			stacks.add(new BukkitItemStack(vanilla));
 		}
 		EntityDeathEvent bev = new EntityDeathEvent(e, stacks);

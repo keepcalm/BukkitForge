@@ -1,6 +1,6 @@
 package org.bukkit.plugin.java;
 
-import guava10.com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList;
 
 import java.io.File;
 import java.io.FileNotFoundException;

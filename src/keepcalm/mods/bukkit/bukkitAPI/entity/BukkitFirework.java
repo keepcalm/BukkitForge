@@ -21,7 +21,7 @@ public class BukkitFirework extends BukkitEntity implements Firework {
 		ItemStack item = getHandle().getDataWatcher().getWatchableObjectItemStack(8);
 		
 		if (item == null) {
-			item = new ItemStack(Item.field_92052_bU);
+			item = new ItemStack(Item.firework);
 			getHandle().getDataWatcher().updateObject(8, item);
 		}
 		this.item = new BukkitItemStack(item);
@@ -55,7 +55,7 @@ public class BukkitFirework extends BukkitEntity implements Firework {
 	public void setFireworkMeta(FireworkMeta meta) {
 		item.setItemMeta(meta);
 		Random rand = new Random();
-		getHandle().field_92010_b = 10 * (1 + meta.getPower() + rand.nextInt(6) + rand.nextInt(7));
+		getHandle().lifetime = 10 * (1 + meta.getPower() + rand.nextInt(6) + rand.nextInt(7));
 		getHandle().getDataWatcher().updateObject(8, item.getHandle());
 	}
 

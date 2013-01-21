@@ -26,7 +26,7 @@ public class BukkitCreatureSpawner extends BukkitBlockState implements CreatureS
     }
 
     public EntityType getSpawnedType() {
-        return EntityType.fromName(spawner.func_92015_a());
+        return EntityType.fromName(spawner.getMobID());
     }
 
     @Deprecated

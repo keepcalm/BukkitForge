@@ -1,6 +1,6 @@
 package keepcalm.mods.bukkit;
 
-import guava10.com.google.common.base.Joiner;
+import com.google.common.base.Joiner;
 
 import java.io.File;
 import java.io.FileInputStream;
