@@ -112,8 +112,9 @@ public class JavaPluginLoader implements PluginLoader {
 			else {
 				newFile.renameTo(file);
 			}*/
+			
 			if (newFile.exists() && !(newFile.length() < 100)) {
-				// herp, derp
+				file.delete();
 				file = newFile;
 			}
 		}

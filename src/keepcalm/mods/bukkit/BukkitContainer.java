@@ -146,7 +146,7 @@ public class BukkitContainer {
 		override.comment = "Override vanilla commands (/me etc) with Bukkit defaults (won't stop plugins from overriding)";
 		this.overrideVanillaCommands = override.getBoolean(false);
 		
-		Property build = config.get(Configuration.CATEGORY_GENERAL, "bukkitVersionString", "git-BukkitForge-1.4.5-R1.0-b3000 jnks (Really: BukkitForge for MC " + Loader.instance().getMinecraftModContainer().getDisplayVersion() + ")");
+		Property build = config.get(Configuration.CATEGORY_GENERAL, "bukkitVersionString", "git-Bukkit-1.4.5-R1.0-b3000jnks (Really: BukkitForge for MC " + Loader.instance().getMinecraftModContainer().getDisplayVersion() + ")");
 		build.comment = "The CraftBukkit version to pretend to be";
 		this.CRAFT_VERSION = build.value;
 		
