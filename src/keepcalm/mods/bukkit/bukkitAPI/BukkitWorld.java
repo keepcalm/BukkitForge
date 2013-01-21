@@ -1236,6 +1236,7 @@ public class BukkitWorld implements World {
 	 }
 
 	 @Override
+	 // FIXME - broken horribly
 	 public boolean  equals(Object obj) {
 		 if (obj == null) {
 			 return false;
@@ -1246,8 +1247,9 @@ public class BukkitWorld implements World {
 
 		 final BukkitWorld other = (BukkitWorld) obj;
 		 
-		 return other.getHandle().getWorldInfo().getDimension() == world.getWorldInfo().getDimension() ||
-				 other.getHandle().equals(this.getHandle());
+		// return other.getHandle().getWorldInfo().getDimension() == world.getWorldInfo().getDimension() ||
+			//	 other.getHandle().equals(this.getHandle());
+		 return other.getName().equals(getName()) || other.getWorldFolder().equals(getWorldFolder());
 		 //return this.getHandle().getWorldInfo().getDimension() == other.getHandle().getWorldInfo().getDimension();
 	 }
 
