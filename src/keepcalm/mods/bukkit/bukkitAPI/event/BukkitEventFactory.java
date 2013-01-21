@@ -92,7 +92,10 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.InventoryView;
 
@@ -452,6 +455,12 @@ public class BukkitEventFactory {
     public static PlayerExpChangeEvent callPlayerExpChangeEvent(EntityPlayerMP entity, int expAmount) {
         Player player = (Player) getBukkitEntity(entity);
         PlayerExpChangeEvent event = new PlayerExpChangeEvent(player, expAmount);
+        Bukkit.getPluginManager().callEvent(event);
+        return event;
+    }
+    
+     public static PlayerJoinEvent callPlayerJoinEvent(Player player, String message) {
+        PlayerJoinEvent event = new PlayerJoinEvent(player, message);
         Bukkit.getPluginManager().callEvent(event);
         return event;
     }
