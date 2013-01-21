@@ -458,6 +458,12 @@ public class BukkitEventFactory {
         Bukkit.getPluginManager().callEvent(event);
         return event;
     }
+    
+     public static PlayerJoinEvent callPlayerJoinEvent(Player player, String message) {
+        PlayerJoinEvent event = new PlayerJoinEvent(player, message);
+        Bukkit.getPluginManager().callEvent(event);
+        return event;
+    }
 
     public static void handleBlockGrowEvent(World world, int x, int y, int z, int type, int data) {
         Block block = new BukkitBlock(new BukkitChunk(world.getChunkFromBlockCoords(x, z)), x, y, z);
