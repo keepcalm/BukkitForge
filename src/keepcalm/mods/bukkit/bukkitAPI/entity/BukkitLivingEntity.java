@@ -10,6 +10,7 @@ import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitEntityEquipment;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.item.EntityEnderPearl;
@@ -225,7 +226,7 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 		else {
 			fp = BukkitContainer.MOD_PLAYER;
 		}
-		return getHandle().attackingPlayer == null && getHandle().isDead ? null : new BukkitPlayer(fp);
+		return getHandle().attackingPlayer == null && getHandle().isDead ? null : BukkitPlayerCache.getBukkitPlayer(fp);
 	}
 
 	public boolean addPotionEffect(PotionEffect effect) {

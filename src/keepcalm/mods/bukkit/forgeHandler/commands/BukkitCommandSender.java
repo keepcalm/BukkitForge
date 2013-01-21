@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 import java.util.Set;
 
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -20,7 +21,7 @@ public class BukkitCommandSender implements CommandSender {
 	private ConsoleCommandSender cons;
 	private boolean isConsole = false;
 	public BukkitCommandSender(ICommandSender guy) {
-		this.realPlayer = new BukkitPlayer((EntityPlayerMP) guy);
+		this.realPlayer = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) guy);
 	}
 	@Override
 	public boolean isPermissionSet(String name) {

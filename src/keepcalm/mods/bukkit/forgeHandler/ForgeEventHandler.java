@@ -327,7 +327,7 @@ public class ForgeEventHandler {
 					forgePlayerMP = (EntityPlayerMP) ev.entityPlayer;
 				}
 
-				final BukkitPlayer thePlayer = new BukkitPlayer(forgePlayerMP);
+				final BukkitPlayer thePlayer = BukkitPlayerCache.getBukkitPlayer(forgePlayerMP);
 				final BukkitBlock beforeBlock = new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ);
 				WorldServer world = (WorldServer) ev.entity.worldObj;
 				int minX = world.getSpawnPoint().posX;
@@ -373,7 +373,7 @@ public class ForgeEventHandler {
 					fp = (EntityPlayerMP) ev.entityPlayer;
 				}
 
-				BlockIgniteEvent bev = new BlockIgniteEvent(new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), IgniteCause.FLINT_AND_STEEL, new BukkitPlayer(fp));
+				BlockIgniteEvent bev = new BlockIgniteEvent(new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), IgniteCause.FLINT_AND_STEEL, BukkitPlayerCache.getBukkitPlayer(fp));
 
 				Bukkit.getPluginManager().callEvent(bev);
 				if (bev.isCancelled()) {
@@ -396,7 +396,7 @@ public class ForgeEventHandler {
 		else {
 			fp = (EntityPlayerMP) ev.entityPlayer;
 		}
-		PlayerPickupItemEvent bev = new PlayerPickupItemEvent(new BukkitPlayer(fp), new BukkitItem(BukkitServer.instance(), ev.item), 0);
+		PlayerPickupItemEvent bev = new PlayerPickupItemEvent(BukkitPlayerCache.getBukkitPlayer(fp), new BukkitItem(BukkitServer.instance(), ev.item), 0);
 		bev.setCancelled(ev.entityLiving.captureDrops);
 		Bukkit.getPluginManager().callEvent(bev);
 		if (bev.isCancelled()) {
@@ -418,7 +418,7 @@ public class ForgeEventHandler {
 			fp = (EntityPlayerMP) ev.entityPlayer;
 		}
 		BukkitBlock blk = new BukkitBlock(new BukkitChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.target.blockX, ev.target.blockZ)), ev.target.blockX, ev.target.blockY, ev.target.blockZ);
-		PlayerBucketFillEvent bev = new PlayerBucketFillEvent(new BukkitPlayer(fp), blk, BukkitBlock.notchToBlockFace(ev.target.sideHit), Material.BUCKET, new BukkitItemStack(ev.result));
+		PlayerBucketFillEvent bev = new PlayerBucketFillEvent(BukkitPlayerCache.getBukkitPlayer(fp), blk, BukkitBlock.notchToBlockFace(ev.target.sideHit), Material.BUCKET, new BukkitItemStack(ev.result));
 		Bukkit.getPluginManager().callEvent(bev);
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
@@ -510,7 +510,7 @@ public class ForgeEventHandler {
 		if (playerDisplayNames.containsKey(newName)) {
 			newName = playerDisplayNames.get(newName);
 		}
-		BukkitPlayer whom = new BukkitPlayer(ev.player);
+		BukkitPlayer whom = BukkitPlayerCache.getBukkitPlayer(ev.player);
 
 		AsyncPlayerChatEvent ev1 = new AsyncPlayerChatEvent(false, whom, ev.message, Sets.newHashSet(BukkitServer.instance().getOnlinePlayers()));
 		ev1 = BukkitEventFactory.callEvent(ev1);
@@ -551,10 +551,10 @@ public class ForgeEventHandler {
 	
 	//People be saying Commands dont work.
 
-        //@ForgeSubscribe
+    @ForgeSubscribe
 	public void serverCmd(CommandEvent ev) {
 		if (ev.sender instanceof EntityPlayerMP) {
-			PlayerCommandPreprocessEvent bev=new PlayerCommandPreprocessEvent(new BukkitPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
+			PlayerCommandPreprocessEvent bev=new PlayerCommandPreprocessEvent(BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
 			Bukkit.getPluginManager().callEvent(bev);
 			String[] msg = bev.getMessage().split(" ");
 			ev.parameters = Arrays.copyOfRange(msg, 1, msg.length);
@@ -565,7 +565,7 @@ public class ForgeEventHandler {
 		}
 		
 		CommandSender s;
-		if (ev.sender instanceof EntityPlayerMP) s = new BukkitPlayer((EntityPlayerMP)ev.sender);
+		if (ev.sender instanceof EntityPlayerMP) s = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP)ev.sender);
 		else s = Bukkit.getConsoleSender();
 		
 		ServerCommandEvent bev = new ServerCommandEvent(s, ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
@@ -618,7 +618,7 @@ public class ForgeEventHandler {
 	public void playerDamageBlock(PlayerDamageBlockEvent ev) {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
-		BlockDamageEvent bev = new BlockDamageEvent(new BukkitPlayer((EntityPlayerMP) ev.entityPlayer), 
+		BlockDamageEvent bev = new BlockDamageEvent(BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) ev.entityPlayer), 
 				new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.blockX, ev.blockZ)), ev.blockX, ev.blockY, ev.blockZ),
 				new BukkitItemStack(ev.entityPlayer.inventory.getCurrentItem()), 
 				((EntityPlayerMP) ev.entityPlayer).capabilities.isCreativeMode);
@@ -641,7 +641,7 @@ public class ForgeEventHandler {
 	public void blockBreakSomehow(BlockDestroyEvent ev) {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
-		BlockBreakEvent bev = new BlockBreakEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), new BukkitPlayer(BukkitContainer.MOD_PLAYER));
+		BlockBreakEvent bev = new BlockBreakEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), BukkitPlayerCache.getBukkitPlayer(BukkitContainer.MOD_PLAYER));
 		Bukkit.getPluginManager().callEvent(bev);
 
 		if (bev.isCancelled()) {
@@ -738,7 +738,7 @@ public class ForgeEventHandler {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		if (!(ev.entityPlayer instanceof EntityPlayerMP)) return;
-		BukkitPlayer player = new BukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) ev.entityPlayer);
+		BukkitPlayer player = BukkitPlayerCache.getBukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) ev.entityPlayer);
 		Location old = new Location(BukkitServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.oldX, ev.oldY, ev.oldZ);
 		Location now = new Location(BukkitServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.newX, ev.newY, ev.newZ);
 		org.bukkit.event.player.PlayerMoveEvent bev = new org.bukkit.event.player.PlayerMoveEvent(player, old, now);
@@ -763,7 +763,7 @@ public class ForgeEventHandler {
 			return;
 		if (ev.entity instanceof EntityPlayerMP) {
 			EntityPlayerMP fp = (EntityPlayerMP) ev.entity;
-			BukkitPlayer player = new BukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) ev.entity);
+			BukkitPlayer player = BukkitPlayerCache.getBukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) ev.entity);
 
 			BukkitItemStack item = new BukkitItemStack(fp.inventory.getCurrentItem());
 			org.bukkit.event.player.PlayerInteractEvent bev = new org.bukkit.event.player.PlayerInteractEvent(player, Action.PHYSICAL, item, new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x,ev.y,ev.z), BukkitBlock.notchToBlockFace(-1));
@@ -809,9 +809,9 @@ public class ForgeEventHandler {
 				);
 		BukkitPlayer thePlayer;
 		if (ev.signChanger instanceof EntityPlayerMP)
-		thePlayer = new BukkitPlayer((EntityPlayerMP)ev.signChanger);
+		thePlayer = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP)ev.signChanger);
 		
-		else thePlayer = new BukkitPlayer(BukkitContainer.MOD_PLAYER);
+		else thePlayer = BukkitPlayerCache.getBukkitPlayer(BukkitContainer.MOD_PLAYER);
 		
 		org.bukkit.event.block.SignChangeEvent bev = new org.bukkit.event.block.SignChangeEvent(theBlock, thePlayer, ev.lines);
 		

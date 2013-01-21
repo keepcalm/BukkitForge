@@ -18,6 +18,13 @@ public class BukkitPlayerCache {
 		return playerCache.get(player.username);
 	}
 	
+	public static BukkitPlayer getBukkitPlayer( BukkitServer server, EntityPlayerMP player) {
+		if (playerCache.containsKey(player.username))
+			return playerCache.get(player.username);
+		playerCache.put(player.username, new BukkitPlayer(server, player));
+		return playerCache.get(player.username);
+	}
+	
 	public static void removePlayer(String name) {
 		if (playerCache.containsKey(name))
 			playerCache.remove(name);

@@ -4,6 +4,7 @@ import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.help.SimpleHelpMap;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +33,7 @@ public class BukkitCommandHelp extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
 		SimpleHelpMap hm = (SimpleHelpMap) BukkitServer.instance().getHelpMap();
-		CommandSender pcs = var1 instanceof EntityPlayer ? new BukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) var1) : BukkitConsoleCommandSender.getInstance();
+		CommandSender pcs = var1 instanceof EntityPlayer ? BukkitPlayerCache.getBukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) var1) : BukkitConsoleCommandSender.getInstance();
 		int total = hm.getHelpTopics().size();
 		// round up
 		int totalPages = MathHelper.ceiling_float_int(total / entries_per_page);

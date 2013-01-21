@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandServerStop;
 import net.minecraft.command.ICommandSender;
@@ -25,7 +26,7 @@ public class BukkitCommandStop extends CommandBase {
 	public boolean canCommandSenderUseCommand(ICommandSender sender) {
 		CommandSender s;
 		if (sender instanceof EntityPlayerMP) {
-			s = new BukkitPlayer ((EntityPlayerMP) sender);
+			s = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) sender);
 		}
 		else s = BukkitConsoleCommandSender.getInstance();
 		if ((new StopCommand()).testPermissionSilent(s)) {

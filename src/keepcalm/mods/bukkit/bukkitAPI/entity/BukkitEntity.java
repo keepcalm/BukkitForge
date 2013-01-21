@@ -6,6 +6,7 @@ import java.util.UUID;
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitWorld;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityFlying;
@@ -101,7 +102,7 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
         if (entity instanceof EntityLiving) {
             // Players
             if (entity instanceof EntityPlayer) {
-                if (entity instanceof EntityPlayerMP) { return new BukkitPlayer(server, (EntityPlayerMP) entity); }
+                if (entity instanceof EntityPlayerMP) { return BukkitPlayerCache.getBukkitPlayer(server, (EntityPlayerMP) entity); }
                 else { return new BukkitEntityHuman(server, (EntityPlayer) entity); }
             }
             else if (entity instanceof EntityCreature) {

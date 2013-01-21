@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
 import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
+import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -34,7 +35,7 @@ public class BukkitCommandMVFix extends BukkitCommandBase {
 	public void processCommand(ICommandSender var1, String[] var2) {
 		CommandSender sender;
 		if (var1 instanceof EntityPlayerMP) 
-			sender = new BukkitPlayer((EntityPlayerMP) var1);
+			sender = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) var1);
 		else
 			sender = BukkitConsoleCommandSender.getInstance();
 			BukkitContainer.bServer.getRealCmdMap().dispatch(sender, this.joinListOfStrings(var2));
