@@ -1236,7 +1236,6 @@ public class BukkitWorld implements World {
 	 }
 
 	 @Override
-	 // FIXME - broken horribly
 	 public boolean  equals(Object obj) {
 		 if (obj == null) {
 			 return false;

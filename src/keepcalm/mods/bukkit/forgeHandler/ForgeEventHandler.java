@@ -549,9 +549,8 @@ public class ForgeEventHandler {
 
 	}*/
 	
-	//People be saying Commands dont work.
-
-    @ForgeSubscribe
+	// TODO: This breaks commands for some reason.
+    //@ForgeSubscribe
 	public void serverCmd(CommandEvent ev) {
 		if (ev.sender instanceof EntityPlayerMP) {
 			PlayerCommandPreprocessEvent bev=new PlayerCommandPreprocessEvent(BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
