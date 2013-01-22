@@ -221,11 +221,12 @@ public class SimpleHelpMap implements HelpMap {
         return false;
     }
 
-    public void registerHelpTopicFactory(Class<MultipleCommandAlias> commandClass, HelpTopicFactory<Command> factory) {
+    @SuppressWarnings("unchecked")
+    public void registerHelpTopicFactory(Class<?> commandClass, HelpTopicFactory<?> factory) {
         if (!Command.class.isAssignableFrom(commandClass) && !CommandExecutor.class.isAssignableFrom(commandClass)) {
             throw new IllegalArgumentException("commandClass must implement either Command or CommandExecutor!");
         }
-        topicFactoryMap.put(commandClass, factory);
+        topicFactoryMap.put(commandClass, (HelpTopicFactory<Command>) factory);
     }
 
     private class IsCommandTopicPredicate implements Predicate<HelpTopic> {
