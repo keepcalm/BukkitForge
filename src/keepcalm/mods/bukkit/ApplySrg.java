@@ -304,7 +304,7 @@ public class ApplySrg {
 	public static void main(File file, InputStream srgStream) throws IOException {
 		String strInputFilename=file.getAbsolutePath();
 		String strOutputFilename=file.getParentFile().getAbsolutePath() + "/ported_" + file.getName();
-		List<String> listInputSrg=new LinkedList<String>();
+		//List<String> listInputSrg=new LinkedList<String>();
 		List<String> listInputInheritance=new LinkedList<String>();
 		List<ParseEntry> listTranslate=new LinkedList<ParseEntry>();
 		/*for (int i=0; i<args.length; i++) {
@@ -392,7 +392,7 @@ public class ApplySrg {
 				 String strFrom=arrLine[1];
 				 String strFromArguments=arrLine[2];
 				 String strTo=arrLine[3];
-				 String strToArguments=arrLine[4];
+				 //String strToArguments=arrLine[4];
 				 int nSplitFrom=strFrom.lastIndexOf('/');
 				 int nSplitTo=strTo.lastIndexOf('/');
 				 if (nSplitFrom==-1 || nSplitTo==-1) {

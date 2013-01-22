@@ -172,7 +172,7 @@ public class BukkitServer implements Server {
 	private WorldMetadataStore worldMetadata;
 	private PlayerMetadataStore playerMetadata;
 	private static String cbBuild;
-	private static Map<String,Boolean> fauxSleeping = new HashMap();
+	private static Map<String,Boolean> fauxSleeping = new HashMap<String,Boolean>();
 
 	private HashMap<String,World> worldNameMapping = Maps.newHashMap();
 	/*public void setServer(MinecraftServer server) {
@@ -338,7 +338,7 @@ public class BukkitServer implements Server {
 	@Override
 	public String getBukkitVersion() {
 
-		return this.apiVer;
+		return BukkitServer.apiVer;
 	}
 
 	@Override
@@ -479,7 +479,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public Player getPlayer(String name) {
-		Player j;
+		//Player j;
 		for (Object i : configMan.playerEntityList) {
 			EntityPlayer guy = (EntityPlayer) i;
 			if (guy.username.toLowerCase().startsWith(name)) {
@@ -797,7 +797,7 @@ public class BukkitServer implements Server {
 		net.minecraft.item.ItemStack stack = new net.minecraft.item.ItemStack(Item.map, 1, -1);
 
 
-		MapData worldmap = Item.map.getMPMapData((short) stack.getItemDamage(), ((BukkitWorld)world).getHandle());
+		MapData worldmap = ItemMap.getMPMapData((short) stack.getItemDamage(), ((BukkitWorld)world).getHandle());
 		return (MapView) worldmap;
 	}
 
@@ -1060,7 +1060,7 @@ public class BukkitServer implements Server {
 		if (recipe instanceof ShapedRecipe) {
 			ShapedRecipe r = (ShapedRecipe) recipe;
 			boolean useOreDict = false;
-			Map<Character,net.minecraft.item.ItemStack> nmsRecipe = Maps.newHashMap();
+			//Map<Character,net.minecraft.item.ItemStack> nmsRecipe = Maps.newHashMap();
 			List<Object> objRecipe = new ArrayList<Object>();
 			objRecipe.addAll(Arrays.asList(r.getShape()));
 			for (Character j : r.getIngredientMap().keySet()) {
@@ -1099,7 +1099,9 @@ public class BukkitServer implements Server {
 				items.add(nms);
 			}
 			if (useOreDict) {
-				ShapelessOreRecipe nmsRec = new ShapelessOreRecipe(BukkitItemStack.createNMSItemStack(recipe.getResult()), items);
+				//TODO: Check if the new Class is even required
+				//ShapelessOreRecipe nmsRec = 
+						new ShapelessOreRecipe(BukkitItemStack.createNMSItemStack(recipe.getResult()), items);
 			}
 			else {
 				ShapelessRecipes nmsRec = new ShapelessRecipes(BukkitItemStack.createNMSItemStack(recipe.getResult()), items);
@@ -1426,7 +1428,7 @@ public class BukkitServer implements Server {
 
 	}
 	public boolean isFauxSleeping(String username) {
-		return this.fauxSleeping.containsKey(username) ? this.fauxSleeping.get(username) : false;
+		return BukkitServer.fauxSleeping.containsKey(username) ? BukkitServer.fauxSleeping.get(username) : false;
 	}
 	@Override
 	public boolean isHardcore() {

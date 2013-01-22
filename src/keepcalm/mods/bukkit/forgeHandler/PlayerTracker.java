@@ -2,12 +2,10 @@ package keepcalm.mods.bukkit.forgeHandler;
 
 import static keepcalm.mods.bukkit.BukkitContainer.DEBUG;
 
-import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.utils.CaseInsensitiveArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,7 +18,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.IPlayerTracker;
 

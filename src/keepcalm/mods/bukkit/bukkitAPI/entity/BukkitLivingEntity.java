@@ -310,7 +310,7 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 		Validate.notNull(launch, "Projectile not supported");
 
 		world.spawnEntityInWorld(launch);
-		return (T) this.getEntity(this.server, launch);
+		return (T) BukkitLivingEntity.getEntity(this.server, launch);
 	}
 
 	public EntityType getType() {

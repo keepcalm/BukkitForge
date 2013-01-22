@@ -36,11 +36,12 @@ public class SimpleHelpMap implements HelpMap {
 
     private HelpTopic defaultTopic;
     private final Map<String, HelpTopic> helpTopics;
-    private final Map<Class, HelpTopicFactory<Command>> topicFactoryMap;
+    @SuppressWarnings("rawtypes")
+	private final Map<Class, HelpTopicFactory<Command>> topicFactoryMap;
     private final BukkitServer server;
     private HelpYamlReader yaml;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public SimpleHelpMap(BukkitServer server) {
         this.helpTopics = new TreeMap<String, HelpTopic>(HelpTopicComparator.topicNameComparatorInstance()); // Using a TreeMap for its explicit sorting on key
         this.topicFactoryMap = new HashMap<Class, HelpTopicFactory<Command>>();
@@ -128,7 +129,7 @@ public class SimpleHelpMap implements HelpMap {
             }
 
             // Register a topic
-            for (Class c : topicFactoryMap.keySet()) {
+            for (Class<?> c : topicFactoryMap.keySet()) {
                 if (c.isAssignableFrom(command.getClass())) {
                     HelpTopic t = topicFactoryMap.get(c).createTopic(command);
                     if (t != null) addTopic(t);
@@ -220,7 +221,7 @@ public class SimpleHelpMap implements HelpMap {
         return false;
     }
 
-    public void registerHelpTopicFactory(Class commandClass, HelpTopicFactory factory) {
+    public void registerHelpTopicFactory(Class<MultipleCommandAlias> commandClass, HelpTopicFactory<Command> factory) {
         if (!Command.class.isAssignableFrom(commandClass) && !CommandExecutor.class.isAssignableFrom(commandClass)) {
             throw new IllegalArgumentException("commandClass must implement either Command or CommandExecutor!");
         }

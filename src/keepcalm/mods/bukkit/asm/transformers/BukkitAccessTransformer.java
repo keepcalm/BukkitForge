@@ -12,7 +12,7 @@ import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 
 public class BukkitAccessTransformer extends AccessTransformer {
 	private static BukkitAccessTransformer instance;
-	private static List mapFileList = new LinkedList();
+	private static List<String> mapFileList = new LinkedList<String>();
 	public static boolean isObfuscated = isObfuscated();
 	
 	public BukkitAccessTransformer() throws IOException {
@@ -21,7 +21,7 @@ public class BukkitAccessTransformer extends AccessTransformer {
 		if (isObfuscated) {
 			instance = this;
 			mapFileList.add("bukkit_at.cfg");
-			Iterator var2 = mapFileList.iterator();
+			Iterator<String> var2 = mapFileList.iterator();
 			while(var2.hasNext()) {
 				
 				String file = (String)var2.next();

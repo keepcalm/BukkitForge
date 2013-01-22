@@ -99,7 +99,7 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
 	}
 
 	@Override
-	public List getPossibleCreatures(EnumCreatureType var1, int var2, int var3,
+	public List<?> getPossibleCreatures(EnumCreatureType var1, int var2, int var3,
 			int var4) {
 		return this.getMobsFor(var1, var2, var3, var4);
 	}

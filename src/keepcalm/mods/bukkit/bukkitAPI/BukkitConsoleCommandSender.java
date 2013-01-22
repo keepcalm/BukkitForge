@@ -4,7 +4,6 @@ import java.util.Set;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.command.ColouredConsoleSender;
-import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -19,7 +18,7 @@ import org.bukkit.plugin.Plugin;
 
 public class BukkitConsoleCommandSender implements ConsoleCommandSender {
 	private static BukkitConsoleCommandSender instance = null;
-	private MinecraftServer theServer;
+	//private MinecraftServer theServer;
 	private BukkitServer bServer;
 	private final PermissibleBase perms = new PermissibleBase(this);
 	protected final BukkitConversationTracker convo = new BukkitConversationTracker();
@@ -34,10 +33,10 @@ public class BukkitConsoleCommandSender implements ConsoleCommandSender {
 	}
 	
 	public BukkitConsoleCommandSender(BukkitServer server) {
-		if (this.instance == null) {
+		if (BukkitConsoleCommandSender.instance == null) {
 			this.bServer = server;
-			this.theServer = server.getHandle();
-			this.instance = this;
+			//this.theServer = server.getHandle();
+			BukkitConsoleCommandSender.instance = this;
 		}
 		else {
 			// ignore

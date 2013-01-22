@@ -37,7 +37,7 @@ import org.bukkit.command.defaults.VersionCommand;
 public class BukkitCommandMap extends SimpleCommandMap implements CommandMap  {
     //protected final Map<String, Command> knownCommands = new HashMap<String, Command>();
     //protected final Set<String> aliases = new HashSet<String>();
-    protected final Map<String, CommandExecutor2CommandBase> cmdHandlers = new HashMap();
+    protected final Map<String, CommandExecutor2CommandBase> cmdHandlers = new HashMap<String, CommandExecutor2CommandBase>();
     private final Server server;
 
     public BukkitCommandMap(final Server server) {

@@ -5,6 +5,8 @@ import java.util.Collection;
 
 public class CaseInsensitiveArrayList extends ArrayList<String> {
 
+	private static final long serialVersionUID = -848820984022267396L;
+
 	public CaseInsensitiveArrayList(String[] vals) {
 		for (String i : vals) {
 			super.add(i.toLowerCase());

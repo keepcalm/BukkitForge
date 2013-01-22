@@ -43,7 +43,7 @@ public class LongHashSet {
         modCount = 0;
     }
 
-    public Iterator iterator() {
+    public Iterator<?> iterator() {
         return new Itr();
     }
 
@@ -242,7 +242,7 @@ public class LongHashSet {
         freeEntries = values.length - elements;
     }
 
-    private class Itr implements Iterator {
+    private class Itr implements Iterator<Object> {
         private int index;
         private int lastReturned = -1;
         private int expectedModCount;

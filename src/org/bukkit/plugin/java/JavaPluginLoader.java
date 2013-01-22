@@ -2,7 +2,6 @@ package org.bukkit.plugin.java;
 
 import com.google.common.collect.ImmutableList;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 
 import java.io.File;

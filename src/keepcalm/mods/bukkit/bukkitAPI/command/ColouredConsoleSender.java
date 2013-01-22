@@ -52,7 +52,7 @@ public class ColouredConsoleSender extends BukkitConsoleCommandSender {
 
     @Override
     public void sendMessage(String message) {
-        if (BukkitContainer.getInstance().allowAnsi == true) {
+        if (BukkitContainer.allowAnsi == true) {
             if (!this.convo.isConversingModaly()) {
                 String result = message;
                 for (ChatColor color : colors) {
