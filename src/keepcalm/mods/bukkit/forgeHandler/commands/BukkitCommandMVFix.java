@@ -2,7 +2,6 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
-import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,7 +13,7 @@ import org.bukkit.command.CommandSender;
  */
 public class BukkitCommandMVFix extends BukkitCommandBase {
 	
-	private boolean hasBeenAdded = false;
+	//private boolean hasBeenAdded = false;
 	
 	public BukkitCommandMVFix() {
 		

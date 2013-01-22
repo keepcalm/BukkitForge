@@ -9,11 +9,11 @@ import java.util.logging.ConsoleHandler;
  *
  */
 public class TerminalConsoleHandler extends ConsoleHandler {
-    private final Object reader;
+    //private final Object reader;
 
     public TerminalConsoleHandler(Object reader) {
         super();
-        this.reader = reader;
+        //this.reader = reader;
     }
 
     @Override

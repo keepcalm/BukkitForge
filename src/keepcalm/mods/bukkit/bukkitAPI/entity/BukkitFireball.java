@@ -37,7 +37,7 @@ public class BukkitFireball extends AbstractProjectile implements Fireball {
 
     public LivingEntity getShooter() {
         if (getHandle().shootingEntity != null) {
-            return (LivingEntity) this.getEntity(server, getHandle().shootingEntity);
+            return (LivingEntity) BukkitFireball.getEntity(server, getHandle().shootingEntity);
         }
 
         return null;

@@ -29,6 +29,10 @@ public class BukkitBlockFake extends BukkitBlock {
 		this.data = data;
 	}
 	
+	public byte getData() {
+		return (byte) this.data;
+	}
+	
 	@Override
 	public void setData(final byte data, boolean applyPhysics) {
 		setData(data);

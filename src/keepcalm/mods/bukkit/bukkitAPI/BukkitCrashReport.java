@@ -12,7 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-public class BukkitCrashReport implements Callable {
+public class BukkitCrashReport implements Callable<Object> {
 
     public Object call() throws Exception {
         StringWriter value = new StringWriter();

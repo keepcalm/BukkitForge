@@ -29,9 +29,15 @@ public class FileUtil {
         FileChannel out = null;
 
         try {
-            in = new FileInputStream(inFile).getChannel();
-            out = new FileOutputStream(outFile).getChannel();
+        	FileInputStream tin = new FileInputStream(inFile);
+        	FileOutputStream tout = new FileOutputStream(outFile);
+        	
+            in = tin.getChannel();
+            out = tout.getChannel();
 
+            tin.close();
+            tout.close();
+            
             long pos = 0;
             long size = in.size();
 

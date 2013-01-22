@@ -11,7 +11,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BukkitShapelessRecipe extends ShapelessRecipe implements CraftRecipe {
     // TODO: Could eventually use this to add a matches() method or some such
-    private ShapelessRecipes recipe;
+    //private ShapelessRecipes recipe;
 
     public BukkitShapelessRecipe(ItemStack result) {
         super(result);
@@ -19,7 +19,7 @@ public class BukkitShapelessRecipe extends ShapelessRecipe implements CraftRecip
 
     public BukkitShapelessRecipe(ItemStack result, ShapelessRecipes recipe) {
         this(result);
-        this.recipe = recipe;
+        //this.recipe = recipe;
     }
 
     public static BukkitShapelessRecipe fromBukkitRecipe(ShapelessRecipe recipe) {
