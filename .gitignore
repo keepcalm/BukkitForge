@@ -1,4 +1,8 @@
 .*\~
 target
 bin
+MANIFEST.MF
+build
+downloads
+
 
