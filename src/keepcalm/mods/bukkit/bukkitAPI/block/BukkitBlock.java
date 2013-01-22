@@ -317,9 +317,9 @@ public class BukkitBlock implements Block {
 	}
 
 	public int getBlockPower(BlockFace face) {
-		int power = 0;
-		BlockRedstoneWire wire = (BlockRedstoneWire) net.minecraft.block.Block.redstoneWire;
-		net.minecraft.world.World world = chunk.getHandle().worldObj;
+		//int power = 0;
+		//BlockRedstoneWire wire = (BlockRedstoneWire) net.minecraft.block.Block.redstoneWire;
+		//net.minecraft.world.World world = chunk.getHandle().worldObj;
 		/*if ((face == BlockFace.DOWN || face == BlockFace.SELF) && world.isBlockFacePowered(x, y - 1, z, 0)) power = wire(world, x, y - 1, z, power);
         if ((face == BlockFace.UP || face == BlockFace.SELF) && world.isBlockFacePowered(x, y + 1, z, 1)) power = wire.getPower(world, x, y + 1, z, power);
         if ((face == BlockFace.EAST || face == BlockFace.SELF) && world.isBlockFacePowered(x, y, z - 1, 2)) power = wire.getPower(world, x, y, z - 1, power);
@@ -459,7 +459,7 @@ public class BukkitBlock implements Block {
 		for (int i = 0; i < BIOME_MAPPING.length; i++) {
 			if ((BiomeGenBase.biomeList[i] != null) && (BIOME_MAPPING[i] == null)) {
 				String name = BiomeGenBase.biomeList[i].biomeName;
-				int id = BiomeGenBase.biomeList[i].biomeID;
+				//int id = BiomeGenBase.biomeList[i].biomeID;
 
 				System.out.println("Adding mod biome mapping "+BiomeGenBase.biomeList[i].biomeID+" "+name+" at BiomeGenBase["+i+"]");
 				addBukkitBiome(name);

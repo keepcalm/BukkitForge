@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
@@ -25,7 +23,7 @@ import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
 
 public class ConnectionHandler implements IConnectionHandler {
-	public static HashMap<String,NetHandler> serverHandlers = new HashMap();
+	public static HashMap<String,NetHandler> serverHandlers = new HashMap<String, NetHandler>();
 	public static INetworkManager netman;
 
 	@Override
@@ -114,7 +112,7 @@ public class ConnectionHandler implements IConnectionHandler {
 		if (!(ForgeEventHandler.ready)) {
 			return;
 		}
-		EntityPlayerMP guy = (EntityPlayerMP) player;
+		//EntityPlayerMP guy = (EntityPlayerMP) player;
 		//this.serverHandlers.put(guy.username, netHandler);
 		EntityPlayerMP dude = (EntityPlayerMP) player;
 		PlayerLoginEvent x;

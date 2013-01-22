@@ -14,8 +14,8 @@ public abstract class BukkitProjectile extends AbstractProjectile implements Pro
     }
 
     public LivingEntity getShooter() {
-        if (getHandle().thrower instanceof EntityLiving) {
-            return (LivingEntity) this.getEntity(this.server, getHandle().thrower);
+        if (getHandle().getThrower() instanceof EntityLiving) {
+            return (LivingEntity) BukkitProjectile.getEntity(this.server, getHandle().getThrower());
         }
 
         return null;

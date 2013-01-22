@@ -1,6 +1,5 @@
 package keepcalm.mods.bukkit.bukkitAPI.generator;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -30,7 +29,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     private final ChunkGenerator generator;
     private final WorldServer world;
     private final Random random;
-    private HashMap<int[],net.minecraft.world.chunk.Chunk> loadedChunks = new HashMap();
+    //UNUSED: private HashMap<int[],net.minecraft.world.chunk.Chunk> loadedChunks = new HashMap<int[], Chunk>();
     private final MapGenStronghold strongholdGen = new MapGenStronghold();
     private final MapGenVillage villageGen = new MapGenVillage();
     private final MapGenScatteredFeature scatteredGen = new MapGenScatteredFeature();

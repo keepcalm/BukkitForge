@@ -330,7 +330,7 @@ public class B4VScheduler implements BukkitScheduler {
 	 * This method is designed to never block or wait for locks; an immediate execution of all current tasks.
 	 */
 	public void mainThreadHeartbeat(final int currentTick) {
-		this.currentTick = currentTick;
+		B4VScheduler.currentTick = currentTick;
 		final List<B4VTask> temp = this.temp;
 		parsePending();
 		while (isReady(currentTick)) {
@@ -438,6 +438,6 @@ public class B4VScheduler implements BukkitScheduler {
 	}
 
 	public void resetTicks() {
-		this.currentTick = -1;
+		B4VScheduler.currentTick = -1;
 	}
 }

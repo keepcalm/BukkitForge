@@ -17,7 +17,7 @@ public class BukkitConsoleCommandSender extends ServerCommandSender implements C
 
     protected final ConversationTracker conversationTracker = new ConversationTracker();
 
-    private static final BukkitConsoleCommandSender instance = (BukkitConsoleCommandSender) (BukkitContainer.instance.allowAnsi ? new ColouredConsoleSender() : new BukkitConsoleCommandSender());
+    private static final BukkitConsoleCommandSender instance = (BukkitConsoleCommandSender) (BukkitContainer.allowAnsi ? new ColouredConsoleSender() : new BukkitConsoleCommandSender());
     
     protected BukkitConsoleCommandSender() {
         super();

@@ -5,7 +5,6 @@ import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
-import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;

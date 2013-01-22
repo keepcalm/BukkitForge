@@ -14,7 +14,8 @@ public class RecipeIterator implements Iterator<Recipe> {
     private Iterator<Integer> smelting;
     private Iterator<?> removeFrom = null;
 
-    public RecipeIterator() {
+    @SuppressWarnings("unchecked")
+	public RecipeIterator() {
         this.recipes = CraftingManager.getInstance().getRecipeList().iterator();
         this.smelting = FurnaceRecipes.smelting().getSmeltingList().keySet().iterator();
     }

@@ -127,37 +127,37 @@ public class ForgeEventHandler {
 	public static DamageCause getDamageCause(DamageSource ds) {
 
 		DamageCause dc;
-		if (ds == ds.anvil)
+		if (ds == DamageSource.anvil)
 			dc = DamageCause.CUSTOM;
-		else if (ds == ds.cactus)
+		else if (ds == DamageSource.cactus)
 			dc = DamageCause.CONTACT;
-		else if (ds == ds.drown)
+		else if (ds == DamageSource.drown)
 			dc = DamageCause.DROWNING;
-		else if (ds == ds.explosion)
+		else if (ds == DamageSource.explosion)
 			dc = DamageCause.BLOCK_EXPLOSION;
-		else if (ds == ds.fall)
+		else if (ds == DamageSource.fall)
 			dc = DamageCause.FALL;
-		else if (ds == ds.fallingBlock)
+		else if (ds == DamageSource.fallingBlock)
 			dc = DamageCause.FALL;
-		else if (ds == ds.explosion2)
+		else if (ds == DamageSource.explosion2)
 			dc = DamageCause.ENTITY_EXPLOSION;
-		else if (ds == ds.generic)
+		else if (ds == DamageSource.generic)
 			dc = DamageCause.CUSTOM;
-		else if (ds == ds.inFire)
+		else if (ds == DamageSource.inFire)
 			dc = DamageCause.FIRE;
-		else if (ds == ds.inWall)
+		else if (ds == DamageSource.inWall)
 			dc = DamageCause.SUFFOCATION;
-		else if (ds == ds.lava)
+		else if (ds == DamageSource.lava)
 			dc = DamageCause.LAVA;
-		else if (ds == ds.magic)
+		else if (ds == DamageSource.magic)
 			dc = DamageCause.MAGIC;
-		else if (ds == ds.onFire)
+		else if (ds == DamageSource.onFire)
 			dc = DamageCause.FIRE_TICK;
-		else if (ds == ds.outOfWorld)
+		else if (ds == DamageSource.outOfWorld)
 			dc = DamageCause.VOID;
-		else if (ds == ds.starve)
+		else if (ds == DamageSource.starve)
 			dc = DamageCause.STARVATION;
-		else if (ds == ds.wither)
+		else if (ds == DamageSource.wither)
 			dc = DamageCause.WITHER;
 		else
 			dc = DamageCause.CUSTOM;
@@ -526,13 +526,14 @@ public class ForgeEventHandler {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
 		int blockID = ev.world.getBlockId(ev.x, ev.y, ev.z);
-		int blockMeta = ev.world.getBlockMetadata(ev.x, ev.y, ev.z);
+		//int blockMeta = ev.world.getBlockMetadata(ev.x, ev.y, ev.z);
 
 		if (Block.blocksList[blockID] == Block.sapling) {
 			TreeType type = TreeType.TREE;
 
 
-			StructureGrowEvent bev = new StructureGrowEvent(new Location(BukkitServer.instance().getWorld(ev.world.getWorldInfo().getDimension()),ev.x,ev.y,ev.z), type, false, null, new ArrayList<BlockState>());
+			//StructureGrowEvent bev = 
+					new StructureGrowEvent(new Location(BukkitServer.instance().getWorld(ev.world.getWorldInfo().getDimension()),ev.x,ev.y,ev.z), type, false, null, new ArrayList<BlockState>());
 		}
 	}
 
@@ -598,8 +599,8 @@ public class ForgeEventHandler {
 			return;
 		ItemStack item = ev.stackToDispense.copy();
 		item.stackSize = 1;
-		IRegistry dispenserRegistry = BlockDispenser.dispenseBehaviorRegistry;
-		IBehaviorDispenseItem theBehaviour = (IBehaviorDispenseItem) dispenserRegistry.func_82594_a(item.getItem());
+		//IRegistry dispenserRegistry = BlockDispenser.dispenseBehaviorRegistry;
+		//IBehaviorDispenseItem theBehaviour = (IBehaviorDispenseItem) dispenserRegistry.func_82594_a(item.getItem());
 		BlockDispenseEvent bev = new BlockDispenseEvent(
 				new BukkitBlock(
 						new BukkitChunk(ev.blockWorld.getChunkFromBlockCoords(ev.blockX, ev.blockZ)),
@@ -793,7 +794,8 @@ public class ForgeEventHandler {
 			return;
 		}
 		
-		BlockIgniteEvent bev = new BlockIgniteEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), IgniteCause.LIGHTNING, null);
+		//BlockIgniteEvent bev = 
+				new BlockIgniteEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), IgniteCause.LIGHTNING, null);
 	}
 	
         @ForgeSubscribe

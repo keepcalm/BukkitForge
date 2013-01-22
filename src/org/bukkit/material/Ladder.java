@@ -74,6 +74,8 @@ public class Ladder extends SimpleAttachableMaterialData {
         case WEST:
             data = 0x5;
             break;
+        default:
+            break;
         }
 
         setData(data);

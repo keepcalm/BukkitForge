@@ -6,10 +6,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
 public class PlayerUtilities {
-	private EntityPlayerMP thePlayer;
+	//private EntityPlayerMP thePlayer;
 	
 	public PlayerUtilities(EntityPlayerMP who) {
-		thePlayer = who;
+		//thePlayer = who;
 	}
 	
 	public static MovingObjectPosition getTargetBlock(EntityPlayerMP thePlayer) {

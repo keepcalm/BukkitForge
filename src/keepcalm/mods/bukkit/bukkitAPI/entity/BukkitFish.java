@@ -16,7 +16,7 @@ public class BukkitFish extends AbstractProjectile implements Fish {
 
     public LivingEntity getShooter() {
         if (getHandle().angler != null) {
-            return (LivingEntity) this.getEntity(server, getHandle().angler);
+            return (LivingEntity) BukkitFish.getEntity(server, getHandle().angler);
         }
 
         return null;
