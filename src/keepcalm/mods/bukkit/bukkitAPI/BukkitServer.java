@@ -326,7 +326,7 @@ public class BukkitServer implements Server {
 	@Override
 	public String getName() {
 
-		return "CraftBukkit";
+		return "BukkitForge";
 	}
 
 	@Override
@@ -376,7 +376,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public String getServerName() {
-		return "CraftBukkit";
+		return "BukkitForge";
 		//return theServer.getServerModName();
 	}
 
