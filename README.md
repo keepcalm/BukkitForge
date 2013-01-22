@@ -10,11 +10,15 @@ Most of this mod is a fairly straight port from Craftbukkit, but I've had to mod
 
 This is ported to 1.4, and works fine on 1.4.6/7
 
+See a list of working plugins [here](https://github.com/keepcalm/BukkitForge/wiki/Working-plugins-page).
+
 Staff List:
 ======================
 keepcalm: Main Mod Dev.
 
-alexbegt: His Helper.
+alexbegt: His Helper
+
+SpoonsJTD: Issues Cleaner Upper
 
 
 Jenkins? Jenkins? JENKINS!
@@ -58,7 +62,7 @@ OMG, LIKE, MAH PLGINS DNT LOAD!!!!!1111one!1eleven
 ==========================================
 
 Speak english, and please, report it in issues!
-Please review the new [Issues Posting Guidelines](https://github.com/keepcalm/BukkitForge/wiki/Issue-Posting-Guidelines)
+Please review the new [Issues Posting Guidelines](https://github.com/keepcalm/BukkitForge/wiki/Issue-Posting-Guidelines).
 
 LICENSE:
 ========
