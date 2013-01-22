@@ -87,6 +87,7 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 		if (this instanceof BukkitPlayer) {
 			((EntityPlayer) getHandle()).send(); // Send set slot for cursor
 		}*/
+		net.minecraft.item.ItemStack stack = BukkitItemStack.createNMSItemStack(item);
 	}
 
 	public boolean isSleeping() {
