@@ -61,8 +61,8 @@ import cpw.mods.fml.relauncher.Side;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
-@Mod(modid="BukkitForge",name="BukkitForge",version="1.4.6-0")
-@NetworkMod(clientSideRequired=false,serverSideRequired=false)
+@Mod(modid="BukkitForge",name="BukkitForge",version="1.4.6-0",certificateFingerprint="")
+@NetworkMod(clientSideRequired=false,serverSideRequired=false,connectionHandler=ConnectionHandler.class)
 public class BukkitContainer {
 	public static Properties users;
 	
@@ -100,7 +100,7 @@ public class BukkitContainer {
 
 
 	public BukkitContainer() {
-		if (Side.SERVER.isServer()) {
+		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
 			isDediServer = true;
 			if (MinecraftServer.getServer() != null && MinecraftServer.getServer().getGuiEnabled()) {
 				isGuiEnabled = true;

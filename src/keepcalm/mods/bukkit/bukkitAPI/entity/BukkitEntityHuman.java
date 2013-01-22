@@ -178,8 +178,13 @@ public class BukkitEntityHuman extends BukkitLivingEntity implements HumanEntity
 	}
 
 	public InventoryView getOpenInventory() {
-		BukkitInventoryView inv = new BukkitInventoryView(this, null, getHandle().openContainer);
-		return null;
+		InventoryBasic nms = new InventoryBasic("", getHandle().openContainer.inventoryItemStacks.size());
+		for (int i = 0; i < nms.getSizeInventory(); i++) {
+			nms.setInventorySlotContents(i, (net.minecraft.item.ItemStack) getHandle().openContainer.inventoryItemStacks.get(i));
+		}
+		BukkitInventoryView inv = new BukkitInventoryView(this, new BukkitInventory(nms), getHandle().openContainer);
+		
+		return inv;
 	}
 
 	public InventoryView openInventory(Inventory inventory) {
