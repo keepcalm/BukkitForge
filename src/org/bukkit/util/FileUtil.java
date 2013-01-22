@@ -27,17 +27,17 @@ public class FileUtil {
 
         FileChannel in = null;
         FileChannel out = null;
+        FileInputStream tin = null;
+        FileOutputStream tout = null;
 
         try {
-        	FileInputStream tin = new FileInputStream(inFile);
-        	FileOutputStream tout = new FileOutputStream(outFile);
+        	tin = new FileInputStream(inFile);
+        	tout = new FileOutputStream(outFile);
         	
             in = tin.getChannel();
             out = tout.getChannel();
 
-            tin.close();
-            tout.close();
-            
+     
             long pos = 0;
             long size = in.size();
 
@@ -54,6 +54,12 @@ public class FileUtil {
                 if (out != null) {
                     out.close();
                 }
+                
+                if(tin != null)
+                	tin.close();
+                
+                if(tout != null)
+                	tout.close();
             } catch (IOException ioe) {
                 return false;
             }
