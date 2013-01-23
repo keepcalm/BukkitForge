@@ -18,9 +18,11 @@ import cpw.mods.fml.common.TickType;
 
 public class SchedulerTickHandler implements ITickHandler {
 	public static int tickOffset = 0;
-	
+
 	private int progress = 0;
-	
+
+	private Thread playerCheckerThread;
+
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
 		if (!ForgeEventHandler.ready) {
@@ -41,23 +43,31 @@ public class SchedulerTickHandler implements ITickHandler {
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 		if (!ForgeEventHandler.ready)return;
+		if (this.playerCheckerThread != null && this.playerCheckerThread.isAlive()) return;
 		if (progress < 21) {
 			progress++;
 			return;
 		}
 		progress = 0;
-		CaseInsensitiveArrayList cial = new CaseInsensitiveArrayList(MinecraftServer.getServer().getAllUsernames());
-		if (cial.size() == 0) return;
-		if (cial.equals(PlayerTracker.online));
-		for (String i : PlayerTracker.online) {
-			if (!cial.contains(i)) {
-				EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().createPlayerForUser(i);
-				PlayerQuitEvent ev = new PlayerQuitEvent(BukkitPlayerCache.getBukkitPlayer(player), player.username + " left the game");
-				Bukkit.getPluginManager().callEvent(ev);
-				PlayerTracker.online.remove(i);
+		this.playerCheckerThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				CaseInsensitiveArrayList cial = new CaseInsensitiveArrayList(MinecraftServer.getServer().getAllUsernames());
+				if (cial.size() == 0) return;
+				if (cial.equals(PlayerTracker.online));
+				for (String i : PlayerTracker.online) {
+					if (!cial.contains(i)) {
+						EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().createPlayerForUser(i);
+						PlayerQuitEvent ev = new PlayerQuitEvent(BukkitPlayerCache.getBukkitPlayer(player), player.username + " left the game");
+						Bukkit.getPluginManager().callEvent(ev);
+						PlayerTracker.online.remove(i);
+					}
+
+				}
+				
 			}
-			
-		}
+		});
+		playerCheckerThread.run();
 	}
 
 	@Override
