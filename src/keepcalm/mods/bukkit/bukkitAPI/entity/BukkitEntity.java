@@ -71,6 +71,7 @@ import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.network.packet.Packet61DoorChange;
+import net.minecraft.world.WorldServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
@@ -254,7 +255,8 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
     }
 
     public boolean teleport(Location location, TeleportCause cause) {
-        entity.worldObj = ((BukkitWorld) location.getWorld()).getHandle();
+    	if (!location.getWorld().equals(getWorld()))
+    	server.getHandle().getConfigurationManager().transferEntityToWorld(entity, 1, (WorldServer) entity.worldObj, ((BukkitWorld)location.getWorld()).getHandle());
         entity.setLocationAndAngles(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         // entity.setLocation() throws no event, and so cannot be cancelled
         return true;
