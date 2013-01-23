@@ -1245,10 +1245,10 @@ public class BukkitWorld implements World {
 		 }
 
 		 final BukkitWorld other = (BukkitWorld) obj;
-		 
+		 return other.hashCode() == this.hashCode();
 		// return other.getHandle().getWorldInfo().getDimension() == world.getWorldInfo().getDimension() ||
 			//	 other.getHandle().equals(this.getHandle());
-		 return other.getName().equals(getName()) && other.getWorldFolder().equals(getWorldFolder());
+		// return other.getName().equals(getName()) && other.getWorldFolder().equals(getWorldFolder());
 		 //return this.getHandle().getWorldInfo().getDimension() == other.getHandle().getWorldInfo().getDimension();
 	 }
 
