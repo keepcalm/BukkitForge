@@ -32,8 +32,8 @@ public class BukkitVanishTransformer implements IClassTransformer {
 	
 	private static final String targMethodDesc = "()V";
 	
-	private static final String newFuncOwner = "keepcalm.mods.bukkit.forgeHandler.VanishUtils";
-	private static final String newFuncName = "isHidden";
+	//private static final String newFuncOwner = "keepcalm.mods.bukkit.forgeHandler.VanishUtils";
+	//private static final String newFuncName = "isHidden";
 	private static       String newFuncDesc;
 	
 	
@@ -82,6 +82,7 @@ public class BukkitVanishTransformer implements IClassTransformer {
 		ClassReader cr = new ClassReader(clazz);
 		cr.accept(cn, 0);
 		
+		@SuppressWarnings("unchecked")
 		Iterator<MethodNode> methods = cn.methods.iterator();
 		
 		while (methods.hasNext()) {
@@ -127,11 +128,11 @@ public class BukkitVanishTransformer implements IClassTransformer {
                     	
                     	LabelNode jumpTarg = (LabelNode) m.instructions.get(newIndex);//.getNext();
                     	
-                    	  // make a new label node for the end of our code
-                        LabelNode lmm1Node = new LabelNode(new Label());
+                    	 // make a new label node for the end of our code
+                        //LabelNode lmm1Node = new LabelNode(new Label());
                         // make new instruction list
                         InsnList toInject = new InsnList();
-                        Boolean b;
+                        //Boolean b;
                         toInject.add(new VarInsnNode(Opcodes.ALOAD, lastPlayerPos));
                         toInject.add(new VarInsnNode(Opcodes.ALOAD, entryPos));
                         toInject.add(new FieldInsnNode(GETFIELD, entryOwner, entryName, entryDesc));

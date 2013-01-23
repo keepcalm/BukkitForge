@@ -18,7 +18,7 @@ public abstract class RegexPrompt extends ValidatingPrompt {
         this.pattern = pattern;
     }
 
-    private RegexPrompt() {}
+    //private RegexPrompt() {}
 
     @Override
     protected boolean isInputValid(ConversationContext context, String input) {

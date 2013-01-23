@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 public class BukkitClassLoader extends ClassLoader {
 	
+	@SuppressWarnings("rawtypes")
 	private HashMap<String,Class> classes = new HashMap<String, Class>();
 	
 	public BukkitClassLoader(ClassLoader parent) {
@@ -15,8 +16,8 @@ public class BukkitClassLoader extends ClassLoader {
 		System.out.println("Hello there, my parent is " + parent.getClass().getName());
 	}
 	
-    @Override
-    public Class loadClass(String className) throws ClassNotFoundException {
+	@Override
+    public Class<?> loadClass(String className) throws ClassNotFoundException {
          return findClass(className);
     }
 
@@ -24,8 +25,8 @@ public class BukkitClassLoader extends ClassLoader {
     public Class<?> findClass(String className) {
         System.out.println("Examining: " + className);
         byte classByte[];
-        Class result = null;
-        result = (Class) classes.get(className);
+        Class<?> result = null;
+        result = (Class<?>) classes.get(className);
         if (result != null) {
             return result;
         }

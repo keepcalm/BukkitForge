@@ -1,6 +1,5 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 
 import org.bukkit.Bukkit;
@@ -8,7 +7,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
-import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
 import keepcalm.mods.bukkit.utils.CaseInsensitiveArrayList;
 import net.minecraft.entity.player.EntityPlayerMP;

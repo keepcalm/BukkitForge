@@ -990,7 +990,7 @@ public enum Material {
     }
 
     private static Object getConstructorAccessor(Class<?> enumClass, Class<?>[] additionalParameterTypes) throws Exception {
-      Class[] parameterTypes = null;
+      Class<?>[] parameterTypes = null;
 
       parameterTypes = new Class[additionalParameterTypes.length + 2];
       parameterTypes[0] = String.class;
@@ -1035,7 +1035,8 @@ public enum Material {
       blankField(enumClass, "enumConstants");
     }
     
-    public static <T extends Enum<?>> T addEnum(Class<T> enumType, String enumName, Class<?>[] paramTypes, Object[] paramValues)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T extends Enum<?>> T addEnum(Class<T> enumType, String enumName, Class<?>[] paramTypes, Object[] paramValues)
     {
       if (!isSetup) setup();
       Field valuesField = null;

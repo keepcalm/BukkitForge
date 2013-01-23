@@ -20,7 +20,8 @@ public class UnsafeList<E> extends AbstractList<E> implements List<E>, RandomAcc
     private int size;
     private int initialCapacity;
 
-    private Iterator[] iterPool = new Iterator[1];
+    @SuppressWarnings("rawtypes")
+	private Iterator[] iterPool = new Iterator[1];
     private int maxPool;
     private int poolCounter;
 
@@ -155,7 +156,7 @@ public class UnsafeList<E> extends AbstractList<E> implements List<E>, RandomAcc
 
     public Iterator<E> iterator() {
         // Try to find an iterator that isn't in use
-        for (Iterator iter : iterPool) {
+        for (Iterator<?> iter : iterPool) {
             if (!((Itr) iter).valid) {
                 Itr iterator = (Itr) iter;
                 iterator.reset();
@@ -165,7 +166,7 @@ public class UnsafeList<E> extends AbstractList<E> implements List<E>, RandomAcc
 
         // Couldn't find one, see if we can grow our pool size
         if (iterPool.length < maxPool) {
-            Iterator[] newPool = new Iterator[iterPool.length + 1];
+            Iterator<?>[] newPool = new Iterator[iterPool.length + 1];
             System.arraycopy(iterPool, 0, newPool, 0, iterPool.length);
             iterPool = newPool;
 

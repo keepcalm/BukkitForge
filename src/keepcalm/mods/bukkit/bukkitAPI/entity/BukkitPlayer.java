@@ -95,13 +95,13 @@ import com.google.common.collect.MapMaker;
 public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSender {
     private long firstPlayed = 0;
     private long lastPlayed = 0;
-    private boolean hasPlayedBefore = false;
+    //private boolean hasPlayedBefore = false;
     private final BukkitConversationTracker conversationTracker = new BukkitConversationTracker();
     private final Set<String> channels = new HashSet<String>();
     private final Map<String, Player> hiddenPlayers = new MapMaker().softValues().makeMap();
     private int hash = 0;
     private long playerOffset;
-    private long playerCurrentTime;
+    //private long playerCurrentTime;
 	private boolean isTimeRelative;
 
     public BukkitPlayer(BukkitServer server, EntityPlayerMP entity) {
@@ -770,7 +770,6 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     }
 
     public void readExtraData(NBTTagCompound nbttagcompound) {
-        hasPlayedBefore = true;
         if (nbttagcompound.hasKey("bukkit")) {
             NBTTagCompound data = nbttagcompound.getCompoundTag("bukkit");
 
@@ -911,7 +910,8 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     public boolean setWindowProperty(Property prop, int value) {
     	
         Container container = getHandle().openContainer;
-        InventoryType type;
+        @SuppressWarnings("unused")
+		InventoryType type;
         if (container instanceof ContainerRepair) {
         	type = InventoryType.ANVIL;
         	// nothing to do
@@ -923,7 +923,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
         }
         else if (container instanceof ContainerBrewingStand) {
         	type = InventoryType.BREWING;
-        	ContainerBrewingStand brew = (ContainerBrewingStand) container;
+        	//ContainerBrewingStand brew = (ContainerBrewingStand) container;
         	
         }
         else if (container instanceof ContainerChest) {
