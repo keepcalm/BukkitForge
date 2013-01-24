@@ -256,8 +256,14 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
 
     public boolean teleport(Location location, TeleportCause cause) {
     	//if (!location.getWorld().equals(getWorld()))
-    	System.out.println("[BukkitForge temp debug - will be removed in next build] TP " + this + " from " + getWorld() + " to " + location.getWorld());
-    	server.getHandle().getConfigurationManager().transferEntityToWorld(entity, 1, (WorldServer) entity.worldObj, ((BukkitWorld)location.getWorld()).getHandle());
+    	if (this instanceof BukkitPlayer) {
+    		EntityPlayerMP fp = (EntityPlayerMP) entity;
+    		server.getHandle().getConfigurationManager().transferPlayerToDimension(fp, 1);
+    	}
+    	else {
+    	//System.out.println("[BukkitForge temp debug - will be removed in next build] TP " + this + " from " + getWorld() + " to " + location.getWorld());
+    		server.getHandle().getConfigurationManager().transferEntityToWorld(entity, 1, (WorldServer) entity.worldObj, ((BukkitWorld)location.getWorld()).getHandle());
+    	}
         entity.setLocationAndAngles(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         // entity.setLocation() throws no event, and so cannot be cancelled
         return true;
