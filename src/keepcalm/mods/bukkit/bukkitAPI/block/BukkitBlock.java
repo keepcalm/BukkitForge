@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 
 import keepcalm.mods.bukkit.bukkitAPI.BukkitChunk;
-import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.EnumHelper;
