@@ -4,5 +4,9 @@ bin
 MANIFEST.MF
 build
 downloads
+*.iml
+*.ipr
+*.iws
+BlockBreak
 
 
