@@ -164,10 +164,10 @@
 		<chmod file="${mcp.dir}/runtime/bin/astyle-osx" perm="+x" />
 		                <chmod file="${mcp.dir}/runtime/bin/jad-osx" perm="+x" />
 				<!-- Copy source -->
-				<mkdir dir="${mcpsrc.dir}/net" />
+				<!--<mkdir dir="${mcpsrc.dir}/net" />
 				<copy todir="${mcpsrc.dir}/net">
 					<fileset dir="${src.dir}/net" />
-				</copy>
+					</copy>-->
 				<mkdir dir="${mcpsrc.dir}/keepcalm" />
 			<copy todir="${mcpsrc.dir}/keepcalm">
 				<fileset dir="${src.dir}/keepcalm"/>
