@@ -25,7 +25,6 @@ import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.network.packet.Packet42RemoveEntityEffect;
-import net.minecraft.potion.PotionHelper;
 import net.minecraft.util.DamageSource;
 
 import org.apache.commons.lang.Validate;

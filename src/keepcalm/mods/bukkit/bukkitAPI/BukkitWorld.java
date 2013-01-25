@@ -76,7 +76,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -94,7 +93,6 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.ForgeChunkManager;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.BlockChangeDelegate;
@@ -437,7 +435,6 @@ public class BukkitWorld implements World {
 		return chunk != null;
 	}
 
-	@SuppressWarnings("unchecked")
 	private void chunkLoadPostProcess(net.minecraft.world.chunk.Chunk chunk, int x, int z) {
 		if (chunk != null) {
 			world.theChunkProviderServer.loadedChunkHashMap.add(LongHash.toLong(x, z), chunk);
