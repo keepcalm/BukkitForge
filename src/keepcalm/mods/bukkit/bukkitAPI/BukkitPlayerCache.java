@@ -17,8 +17,9 @@ public class BukkitPlayerCache {
 			BukkitPlayer ply = playerCache.get(player.username);
 			if (ply.getHandle().isDead) {
 				// new player needed
-				removePlayer(player.username);
-				
+				//removePlayer(player.username);
+				ply.setHandle(player);
+				return ply;
 			}
 			else {
 				return ply;
