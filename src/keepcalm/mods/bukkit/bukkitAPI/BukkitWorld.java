@@ -333,8 +333,14 @@ public class BukkitWorld implements World {
 	public boolean regenerateChunk(int x, int z) {
 		net.minecraft.world.chunk.Chunk orig = getHandle().getChunkFromChunkCoords(x, z);
 		
+		net.minecraft.world.chunk.Chunk chnk = getHandle().theChunkProviderServer.currentChunkProvider.provideChunk(x, z);
 		
-		
+		orig.setBiomeArray(chnk.getBiomeArray());
+		orig.setStorageArrays(chnk.getBlockStorageArray());
+		orig.chunkTileEntityMap = chnk.chunkTileEntityMap;
+		orig.isModified = true;
+		orig.generateHeightMap();
+		orig.generateSkylightMap();
 		return false;
 	}
 
