@@ -339,7 +339,6 @@ public class BukkitWorld implements World {
 		orig.setStorageArrays(chnk.getBlockStorageArray());
 		orig.chunkTileEntityMap = chnk.chunkTileEntityMap;
 		orig.isModified = true;
-		orig.generateHeightMap();
 		orig.generateSkylightMap();
 		return false;
 	}
