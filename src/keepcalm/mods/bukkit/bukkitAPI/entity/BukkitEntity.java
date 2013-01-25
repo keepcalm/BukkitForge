@@ -243,8 +243,7 @@ public class BukkitEntity implements org.bukkit.entity.Entity {
 	}
 
 	public World getWorld() {
-
-		return BukkitServer.instance().worlds.get(entity.dimension);
+		return BukkitServer.instance().getWorld(entity.worldObj.getWorldInfo().getDimension());
 	}
 
 	public boolean teleport(Location location) {

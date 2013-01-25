@@ -46,6 +46,12 @@ public class SchedulerTickHandler implements ITickHandler {
 			progress++;
 			return;
 		}
+		if (this.playerCheckerThread != null)
+			try {
+				playerCheckerThread.join();
+			} catch (InterruptedException e) {
+				return; // we don't want threads to be left running!
+			}
 		progress = 0;
 		this.playerCheckerThread = new Thread(new Runnable() {
 			@Override
