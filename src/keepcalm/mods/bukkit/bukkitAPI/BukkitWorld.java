@@ -331,6 +331,8 @@ public class BukkitWorld implements World {
 
 	// copied from simplemods - thanks dries007!
 	public boolean regenerateChunk(int x, int z) {
+		net.minecraft.world.chunk.Chunk orig = getHandle().getChunkFromChunkCoords(x, z);
+		
 		
 		
 		return false;

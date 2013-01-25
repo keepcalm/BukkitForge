@@ -109,7 +109,7 @@ public class PluginClassLoader extends URLClassLoader {
             }
             
             if (remapOBC147) {
-            	jarMapping.loadMappings(new BufferedReader(new InputStreamReader(loader.getClass().getResourceAsStream("147cb2bf.csrg"))), new ShadeRelocationSimulator(new HashMap<String, String>()));
+            	jarMapping.loadMappings(new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("147cb2bf.csrg"))), new ShadeRelocationSimulator(new HashMap<String, String>()));
             }
             
             //System.out.println("Loaded "+ jarMapping.classes.size()+" classes, "+ jarMapping.fields.size()+" fields, "+ jarMapping.methods.size()+" methods");
