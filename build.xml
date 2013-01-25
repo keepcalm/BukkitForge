@@ -67,7 +67,7 @@
 				  </fileset>
 				  		  <fileset dir="${package.srgs}">
 					  <patternset>
-						  <include name="*.srg" />
+						  <include name="*.csrg" />
 					  </patternset>
 				  </fileset>
 			  </copy>

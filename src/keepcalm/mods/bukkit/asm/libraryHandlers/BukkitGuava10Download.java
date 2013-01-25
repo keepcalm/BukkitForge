@@ -12,7 +12,7 @@ public class BukkitGuava10Download implements ILibrarySet {
 	@Override
 	public String[] getHashes() {
 		return new String[] {"be77eccdc699f3f8ec1623700ba0fa38270680fe", 
-				"4e74297853270b02eb00cdee6c92dc284a11e0e3"
+				"40b73f47d8e568d763c99d55d400ec0a9084a433"
 		};
 	}
 

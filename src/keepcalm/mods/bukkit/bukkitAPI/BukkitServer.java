@@ -142,7 +142,7 @@ public class BukkitServer implements Server {
 	private MinecraftServer theServer;
 	//private BukkitServer bukkitServer;
 	private ServerConfigurationManager configMan;
-	private YamlConfiguration bukkitConfig;
+	public YamlConfiguration bukkitConfig;
 	private Yaml yaml = new Yaml(new SafeConstructor());
 	private B4VScheduler scheduler = new B4VScheduler();
 	private Logger theLogger;
