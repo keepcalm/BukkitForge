@@ -26,6 +26,7 @@ import keepcalm.mods.bukkit.forgeHandler.VanishUtils;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerBeacon;
 import net.minecraft.inventory.ContainerBrewingStand;
@@ -977,7 +978,13 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
     private void updateAbilities(Packet202PlayerAbilities j) {
     	//Packet202PlayerAbilities j = new Packet202PlayerAbilities(getHandle().capabilities);
         getHandle().playerNetServerHandler.handlePlayerAbilities(j);
+        PlayerCapabilities pl = getHandle().capabilities;
+        pl.allowFlying = j.getAllowFlying();
+        pl.disableDamage = j.getDisableDamage();
+        pl.isCreativeMode = j.isCreativeMode();
+        //pl.setFlySpeed(j.getFlySpeed());
     }
+    
     private Packet202PlayerAbilities getAbilitiesPacket() {
     	return new Packet202PlayerAbilities(getHandle().capabilities);
     }
