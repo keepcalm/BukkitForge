@@ -547,7 +547,7 @@ public class BukkitWorld implements World {
 	public String getName() {
 		if (!this.useWorldName)
 		return world.provider.getDimensionName().replace(' ' , '_').toLowerCase();
-		return world.getWorldInfo().getWorldName().toLowerCase()t	}
+		return world.getWorldInfo().getWorldName().toLowerCase(); }
 
 	public long getId() {
 		return world.getWorldInfo().getSeed();
