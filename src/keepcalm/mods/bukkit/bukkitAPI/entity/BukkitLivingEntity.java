@@ -295,17 +295,23 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 			else {
 				launch = new EntityLargeFireball(world);
 			}
+
+			Location location = getEyeLocation();
+			Vector direction = location.getDirection().multiply(10);
+
+			((EntityFireball)launch).accelerationX = direction.getX();
+			((EntityFireball)launch).accelerationY = direction.getY();
+			((EntityFireball)launch).accelerationZ = direction.getZ();
 		}
-		Location location = getEyeLocation();
-		Vector direction = location.getDirection().multiply(10);
-
-		launch.setPositionAndRotation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-		((EntityFireball) launch).accelerationX = direction.getX();
-		((EntityFireball) launch).accelerationY = direction.getY();
-		((EntityFireball) launch).accelerationZ = direction.getZ();
-
 		//(direction.getX(), direction.getY(), direction.getZ());
 
+		Location location = getEyeLocation();
+		Vector direction = location.getDirection().multiply(10);
+		launch.motionX = direction.getX();
+		launch.motionY = direction.getY();
+		launch.motionZ = direction.getZ();
+		
+		launch.setPositionAndRotation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 		Validate.notNull(launch, "Projectile not supported");
 
 		world.spawnEntityInWorld(launch);
@@ -332,7 +338,7 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 
 	@Override
 	public EntityEquipment getEquipment() {
-	
+
 		return new BukkitEntityEquipment(getHandle());
 	}
 
@@ -354,6 +360,6 @@ public class BukkitLivingEntity extends BukkitEntity implements LivingEntity {
 	@Override
 	public void resetMaxHealth() {
 		// TODO
-		
+
 	}
 }

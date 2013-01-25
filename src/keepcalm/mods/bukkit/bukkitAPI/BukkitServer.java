@@ -220,7 +220,7 @@ public class BukkitServer implements Server {
 			BukkitWorld world = new BukkitWorld(x, this.getGenerator(x.getWorldInfo().getDimension()), this.wtToEnv(x), false);
 			worlds.put(i, world);
 			//if (!x.getWorldInfo().getWorldName().equals(vanillaName))
-			worldNameMapping.put(x.provider.getDimensionName().replace(' ', '_'), world);
+			worldNameMapping.put(x.provider.getDimensionName().toLowerCase().replace(' ', '_'), world);
 		}
 		this.theLogger = BukkitContainer.bukkitLogger;
 		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
@@ -684,6 +684,7 @@ public class BukkitServer implements Server {
 
 	@Override
 	public World getWorld(String name) {
+		name = name.toLowerCase();
 		if (worldNameMapping.containsKey(name))
 			return worldNameMapping.get(name);
 		/*String[] parts = name.split("@");
