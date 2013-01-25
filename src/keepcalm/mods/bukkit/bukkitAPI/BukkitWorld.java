@@ -69,6 +69,7 @@ import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityWitherSkull;
+import net.minecraft.network.packet.Packet51MapChunk;
 import net.minecraft.network.packet.Packet61DoorChange;
 import net.minecraft.src.ModLoader;
 import net.minecraft.tileentity.TileEntity;
@@ -329,7 +330,6 @@ public class BukkitWorld implements World {
 		return true;
 	}
 
-	// copied from simplemods - thanks dries007!
 	public boolean regenerateChunk(int x, int z) {
 		net.minecraft.world.chunk.Chunk orig = getHandle().getChunkFromChunkCoords(x, z);
 		
@@ -340,7 +340,10 @@ public class BukkitWorld implements World {
 		orig.chunkTileEntityMap = chnk.chunkTileEntityMap;
 		orig.isModified = true;
 		orig.generateSkylightMap();
-		return false;
+		
+		getHandle().getPlayerManager().getOrCreateChunkWatcher(x, z, false).sendChunkUpdate();
+		
+		return true;
 	}
 
 	public boolean refreshChunk(int x, int z) {
