@@ -14,17 +14,26 @@ public class BukkitPlayerCache {
 	public static BukkitPlayer getBukkitPlayer(EntityPlayerMP player) {
 		if (playerCache.containsKey(player.username))
 		{
-			return playerCache.get(player.username);
+			BukkitPlayer ply = playerCache.get(player.username);
+			if (ply.getHandle().isDead) {
+				// new player needed
+				removePlayer(player.username);
+				
+			}
+			else {
+				return ply;
+			}
 		}
 		playerCache.put(player.username, new BukkitPlayer(player));
 		return playerCache.get(player.username);
 	}
 	
 	public static BukkitPlayer getBukkitPlayer( BukkitServer server, EntityPlayerMP player) {
-		if (playerCache.containsKey(player.username))
+		/*if (playerCache.containsKey(player.username))
 			return playerCache.get(player.username);
 		playerCache.put(player.username, new BukkitPlayer(server, player));
-		return playerCache.get(player.username);
+		return playerCache.get(player.username);*/
+		return getBukkitPlayer(player);
 	}
 	
 	public static void removePlayer(String name) {
