@@ -331,62 +331,9 @@ public class BukkitWorld implements World {
 
 	// copied from simplemods - thanks dries007!
 	public boolean regenerateChunk(int x, int z) {
-		System.out.println("Regen chunk: " + x + ", " + z);
-		net.minecraft.world.chunk.Chunk oldChunk = getHandle().getChunkFromBlockCoords(x, z);
-
-		List<Integer[]> blockListOfChunk = new ArrayList<Integer[]>();
-		// x
-		for (int i = 0; i < 16; i++) {
-			// y
-			for (int j = 0; j < 256; j++ ) {
-				// z
-				for (int k = 0; k < 16; k++) {
-					Integer[] coords = new Integer[] {i, j, k};
-					// If the chunk wasn't already in the map, add it.
-					//if(!chunkMap.containsKey(chunk)) chunkMap.put(chunk, new ArrayList() {});
-					// Add this block to the chunck
-					blockListOfChunk.add(coords);
-					//chunkMap.put(chunk, blockList
-				}
-			}
-			//String[] coords = ((String)i.next()).split(";");
-		}
-		//Loop thrue every chunck that needs to be regend
-		//i = chunkMap.keySet().iterator();
 		
-
-		//Gen new chunk in memory
-		ChunkProviderServer chunkProviderServer = getHandle().theChunkProviderServer;
-		ChunkProviderGenerate chunkProviderGenerate = ((ChunkProviderGenerate)ModLoader.getPrivateValue(ChunkProviderServer.class, chunkProviderServer, "currentChunkProvider"));
-
-		net.minecraft.world.chunk.Chunk newChunk = chunkProviderGenerate.provideChunk(oldChunk.xPosition, oldChunk.zPosition);
-
-		//blockListOfChunk = (List) chunkMap.get(oldChunk);
-		//Replace only the blocks wanted from new chunk
-		@SuppressWarnings("rawtypes")
-		Iterator j = blockListOfChunk.iterator();
-		while(j.hasNext())
-		{
-			Integer[] coords = ((Integer[])j.next());
-			int inchunkX = coords[0];
-			int Y = (coords[1]);
-			int inchunkZ = (coords[2]);
-			int blockID = newChunk.getBlockID(inchunkX, Y, inchunkZ);
-			int meta = newChunk.getBlockMetadata(inchunkX, Y, inchunkZ);
-			//System.out.println("Setting chunk coord " + inchunkX + "," + Y + "," + inchunkZ + " to " + blockID + ":" + meta);
-			oldChunk.setBlockIDWithMetadata(inchunkX, Y, inchunkZ, blockID, meta);
-			
-
-			TileEntity tE = newChunk.getChunkBlockTileEntity(inchunkX, Y, inchunkZ); 
-			if(tE !=null)
-			{
-				oldChunk.setChunkBlockTileEntity(inchunkX, Y, inchunkZ, tE);
-			}
-			oldChunk.isModified = true;
-		}
-		oldChunk.isTerrainPopulated = false;
-		chunkProviderGenerate.populate(chunkProviderGenerate, oldChunk.xPosition, oldChunk.zPosition);
-		return true;
+		
+		return false;
 	}
 
 	public boolean refreshChunk(int x, int z) {
