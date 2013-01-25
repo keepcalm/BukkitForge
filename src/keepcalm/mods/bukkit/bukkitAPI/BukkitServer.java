@@ -579,7 +579,9 @@ public class BukkitServer implements Server {
 
 
 		boolean hardcore = false;
-
+		
+		DimensionManager.registerProviderType(dimension, DimensionManager.getProvider(creator.environment().getId()).getClass(), false);
+		
 		WorldServer internal = new WorldServer(theServer, new AnvilSaveHandler(getWorldContainer().getParentFile(), name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, hardcore, type), theServer.theProfiler);
 
 		if (!(worlds.containsKey(dimension))) {
