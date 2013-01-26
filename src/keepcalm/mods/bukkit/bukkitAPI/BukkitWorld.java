@@ -81,6 +81,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.EmptyChunk;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
@@ -331,17 +332,11 @@ public class BukkitWorld implements World {
 	}
 
 	public boolean regenerateChunk(int x, int z) {
-		net.minecraft.world.chunk.Chunk orig = getHandle().getChunkFromChunkCoords(x, z);
-		
-		net.minecraft.world.chunk.Chunk chnk = getHandle().theChunkProviderServer.currentChunkProvider.provideChunk(x, z);
-		
-		orig.setBiomeArray(chnk.getBiomeArray());
-		orig.setStorageArrays(chnk.getBlockStorageArray());
-		orig.chunkTileEntityMap = chnk.chunkTileEntityMap;
-		orig.isModified = true;
-		orig.generateSkylightMap();
-		
-		getHandle().getPlayerManager().getOrCreateChunkWatcher(x, z, false).sendChunkUpdate();
+		net.minecraft.world.chunk.Chunk newChunk = getHandle().getChunkFromChunkCoords(x, z);
+		IChunkProvider provider = getHandle().getChunkProvider();
+		provider.populate(provider, x, z);
+		newChunk.onChunkLoad();
+		newChunk.setChunkModified();
 		
 		return true;
 	}
