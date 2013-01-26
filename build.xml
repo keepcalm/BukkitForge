@@ -8,10 +8,6 @@
 	
 	
 	<property name="forge.version" value="1.4.7-6.6.0.504" />
-	<property file="${forge.dir}/forgeversion.properties" />
-	<condition property="forge.already.installed">
-		<equals arg1="${forge.build.number}" arg2="504" />
-	</condition>
 
 	<property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
 	<property name="mcp.version" value="723" />
@@ -31,6 +27,10 @@
 	
 	<property name="lib.dir" value="${src.dir}/lib" />
 	
+	<property file="${forge.dir}/forgeversion.properties" />
+	<condition property="forge.already.installed">
+		<equals arg1="${forge.build.number}" arg2="504" />
+	</condition>
 	
 	<mkdir dir="${download.dir}"/>
 		<mkdir dir="${build.dir}" />
