@@ -5,8 +5,15 @@
 	<property name="build.dir" value="build" />
 	<property name="classes.dir" value="${build.dir}/packaging" />
 	<property name="src.dir" value="src" />
+  
+  
 	<property name="forge.version" value="1.4.7-6.6.0.504" />
-	<property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
+  <property file="${forge.dir}/forgeversion.properties" />
+  <condition property="forge.already.installed">
+    <equals arg1="${forge.build.number}" arg2="504" />
+  </condition>
+
+  <property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
 	<property name="mcp.version" value="723" />
 	<property name="forge.dir" value="${build.dir}/forge" />
 	<property name="mcp.dir" value="${forge.dir}/mcp" />
@@ -125,7 +132,7 @@
 	   </exec>
    </target>
 
-	<target name="setup-forge" depends="download-forge,build-number-there,build-number-not-there" unless="already-compiled">
+	<target name="setup-forge" depends="download-forge,build-number-there,build-number-not-there" unless="forge.already.installed">
                  
     		<property name="build.full" value="${build.number}" />
 		        <unzip dest="${build.dir}">
