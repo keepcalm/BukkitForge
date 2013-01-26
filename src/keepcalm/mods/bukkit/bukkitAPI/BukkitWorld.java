@@ -183,6 +183,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.util.Vector;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public class BukkitWorld implements World {
 	private final WorldServer world;
 	private Environment environment;
@@ -333,10 +335,10 @@ public class BukkitWorld implements World {
 
 	public boolean regenerateChunk(int x, int z) {
 		net.minecraft.world.chunk.Chunk newChunk = getHandle().getChunkFromChunkCoords(x, z);
-		newChunk.onChunkUnload();
-		IChunkProvider provider = getHandle().getChunkProvider();
-		provider.populate(provider, x, z);
-		newChunk.onChunkLoad();
+		ChunkProviderServer provider = (ChunkProviderServer) getHandle().theChunkProviderServer;
+		provider.currentChunkProvider.populate(provider, x, z);
+		GameRegistry.generateWorld(x, z, getHandle(), provider, provider);
+		
 		newChunk.setChunkModified();
 		
 		return true;
