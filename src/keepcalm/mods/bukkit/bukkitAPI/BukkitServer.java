@@ -128,11 +128,7 @@ import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-
 import cpw.mods.fml.common.registry.GameRegistry;
-//import cpw.mods.fml.common.FMLCommonHandler;
-//import jline.console.ConsoleReader;
-
 
 public class BukkitServer implements Server {
 	public static final String apiVer = "1.4.5-R0.2";
@@ -140,7 +136,6 @@ public class BukkitServer implements Server {
 	
 	private static BukkitServer instance;
 	private MinecraftServer theServer;
-	//private BukkitServer bukkitServer;
 	private ServerConfigurationManager configMan;
 	public YamlConfiguration bukkitConfig;
 	private Yaml yaml = new Yaml(new SafeConstructor());
@@ -151,10 +146,6 @@ public class BukkitServer implements Server {
 	public BukkitCommandMap commandMap = new BukkitCommandMap(this);
 	private PluginManager pluginManager;// = new SimplePluginManager(this, commandMap);
 
-
-	//private BukkitClassLoader thePluginLoader;// = new BukkitClassLoader(((URLClassLoader) getClass().getClassLoader()).getURLs(), getClass().getClassLoader());
-	//private BukkitScheduler scheduler = new BukkitScheduler();
-	//	private ServicesManager servicesManager = new SimpleServicesManager();
 	public Map<Integer,BukkitWorld> worlds = new LinkedHashMap<Integer,BukkitWorld>();
 	private Map<String, OfflinePlayer> offlinePlayers = new HashMap<String, OfflinePlayer>();
 	private StandardMessenger theMessenger;
@@ -170,19 +161,7 @@ public class BukkitServer implements Server {
 	private PlayerMetadataStore playerMetadata;
 	private static String cbBuild;
 	private static Map<String,Boolean> fauxSleeping = new HashMap<String,Boolean>();
-
 	private HashMap<String,World> worldNameMapping = Maps.newHashMap();
-	/*public void setServer(MinecraftServer server) {
-		if (server == null) {
-			throw new RuntimeException("Server must be set before continuing!");
-		}
-		if (!server.isDedicatedServer()) {
-			theLogger.warning("Not for use in singleplayer! Giving up...");
-			return;
-		}
-		configMan = server.getConfigurationManager();
-		theServer = (DedicatedServer) server;
-	}*/
 
 
 	public BukkitServer(MinecraftServer server) {
@@ -242,12 +221,7 @@ public class BukkitServer implements Server {
 		loadPlugins();
 		enablePlugins(PluginLoadOrder.STARTUP);
 
-		
 		// load plugin worlds - TODO
-		
-		
-		
-		
 		
 		theLogger.info("Loading PostWorld plugins...");
 		enablePlugins(PluginLoadOrder.POSTWORLD);
@@ -264,9 +238,7 @@ public class BukkitServer implements Server {
 				theServer.getCommandManager().executeCommand(player, "/plugins");
 				(new PlayerTracker()).onPlayerLogin(player);
 			}
-
 		}
-
 	}
 
 	private Environment wtToEnv(WorldServer x) {
@@ -288,6 +260,7 @@ public class BukkitServer implements Server {
 	public MinecraftServer getHandle() {
 		return this.theServer;
 	}
+
 	@Override
 	public void sendPluginMessage(Plugin source, String channel, byte[] message) {
 		StandardMessenger.validatePluginMessage(getMessenger(), source, channel, message);
@@ -320,6 +293,7 @@ public class BukkitServer implements Server {
 	public WorldMetadataStore getWorldMetadata() {
 		return worldMetadata;
 	}
+
 	@Override
 	public String getName() {
 
@@ -428,7 +402,6 @@ public class BukkitServer implements Server {
 
 		//Set<OfflinePlayer> d = (Set<OfflinePlayer>) configMan.getWhiteListedPlayers();
 		//Set<OfflinePlayer> j = (Set<OfflinePlayer>) new ArrayList<OfflinePlayer>();
-
 		return ret;
 	}
 
@@ -551,10 +524,11 @@ public class BukkitServer implements Server {
 			throw new IllegalArgumentException("Creator may not be null");
 		}
 
+        int dimension = DimensionManager.getNextFreeDimId();
+
 		String name = creator.name();
+        String dimName = "DIM" + dimension;
 		ChunkGenerator generator = creator.generator();
-		File folder = new File(getWorldContainer().getParentFile(), name);
-		int dimension = DimensionManager.getNextFreeDimId();
 		World world = getWorld(dimension);
 		WorldType type = WorldType.parseWorldType(creator.type().getName());
 		boolean generateStructures = creator.generateStructures();
@@ -563,6 +537,14 @@ public class BukkitServer implements Server {
 			return world;
 		}
 
+        Environment env = creator.environment();
+        int envId = env.getId();
+        WorldProvider wp = DimensionManager.getProvider(envId);
+
+        DimensionManager.registerProviderType(dimension, wp.getClass(), false);
+        DimensionManager.registerDimension(dimension, type.getWorldTypeID());
+
+        File folder = new File(getWorldContainer(), dimName);
 		if ((folder.exists()) && (!folder.isDirectory())) {
 			throw new IllegalArgumentException("File exists with the name '" + name + "' and isn't a folder");
 		}
@@ -572,21 +554,26 @@ public class BukkitServer implements Server {
 		}
 
 		AnvilSaveConverter converter = new AnvilSaveConverter(getWorldContainer());
-		if (converter.isOldMapFormat(name)) {
+		if (converter.isOldMapFormat(dimName)) {
 			getLogger().info("Converting world '" + name + "'");
 			converter.convertMapFormat(name, new ConvertingProgressUpdate(theServer));
 		}
 
-
 		boolean hardcore = false;
-		
-		DimensionManager.registerProviderType(dimension, DimensionManager.getProvider(creator.environment().getId()).getClass(), false);
-		
-		WorldServer internal = new WorldServer(theServer, new AnvilSaveHandler(getWorldContainer().getParentFile(), name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, hardcore, type), theServer.theProfiler);
 
-		if (!(worlds.containsKey(dimension))) {
-			return null;
-		}
+        File wc = getWorldContainer();
+        AnvilSaveHandler ash = new AnvilSaveHandler(wc, dimName, true);
+
+        File fileTemp = ash.getSaveDirectory();
+        String nameTemp = ash.getSaveDirectoryName();
+        File mapTemp = ash.getMapFileFromName("zzz");
+
+        WorldSettings par5WorldSettings = new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, hardcore, type);
+        WorldServer internal = new WorldServer(theServer, ash, dimName, dimension, par5WorldSettings, theServer.theProfiler);
+
+		//if (!(worlds.containsKey(dimension))) {
+		//	return null;
+		//}
 
 		//internal.getWorldInfo().get = console.worldServerForDimension(0).worldMaps;
 
@@ -596,7 +583,11 @@ public class BukkitServer implements Server {
 		//internal.(true, true);
 		//theServer.worldServers[theServer.worldServers.length] = internal;
 		DimensionManager.setWorld(dimension, internal);
+
 		this.worlds.put(dimension, new BukkitWorld(internal, creator.generator(), creator.environment(), true));
+
+        worldNameMapping.put( name, worlds.get(dimension) );
+
 		if (generator != null) {
 			(worlds.get(dimension)).getPopulators().addAll(generator.getDefaultPopulators(worlds.get(dimension)));
 		}
@@ -625,12 +616,12 @@ public class BukkitServer implements Server {
 
 					ChunkCoordinates chunkcoordinates = internal.getSpawnPoint();
 					internal.theChunkProviderServer.provideChunk(chunkcoordinates.posX + j >> 4, chunkcoordinates.posZ + k >> 4);
-
-					//while (internal.updateLights()) {
-					//  ;
 				}//
 			}
 		}
+
+        worldNameMapping.put( name, worlds.get(dimension) );
+
 		pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
 		return worlds.get(dimension);
 	}
@@ -687,46 +678,6 @@ public class BukkitServer implements Server {
 		name = name.toLowerCase();
 		if (worldNameMapping.containsKey(name))
 			return worldNameMapping.get(name);
-		/*String[] parts = name.split("@");
-		if (parts.length == 1) {
-			theLogger.warning("A plugin is trying to access a world without specifying its name correctly! You need to remove configs from build 44 and older");
-			if (BukkitContainer.DEBUG) {
-				System.out.println("here is a stack trace:");
-				try {
-					throw new Exception("potato");
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-			return null;
-		}
-*/
-		
-	/*	if (!theServer.worldServerForDimension(0).getWorldInfo().getWorldName().equals(name) && pluginWorldMapping.containsKey(name)) {
-			return pluginWorldMapping.get(name);
-		}
-		
-		
-		if (name.contains("@")) {
-			String[] parts = name.split("@");
-			name = parts[1];
-		}
-		try {
-			int dim = Integer.parseInt(name);
-			return getWorld(dim);
-		}
-		catch (NumberFormatException e) {
-			theLogger.warning("Apparently " + name + " isn't an integer! Interesting! You may need to correct your configs, this WILL error.");
-			return null;
-		}/*
-		for (WorldServer w : theServer.worldServers) {
-			if (w.getWorldInfo().getWorldName().equals(name)) {
-				return this.getWorld(w.getWorldInfo().getDimension());
-			}
-		}
-		 */
 		return null;
 	}
 
