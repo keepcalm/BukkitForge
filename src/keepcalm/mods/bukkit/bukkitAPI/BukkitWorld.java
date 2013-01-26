@@ -333,6 +333,7 @@ public class BukkitWorld implements World {
 
 	public boolean regenerateChunk(int x, int z) {
 		net.minecraft.world.chunk.Chunk newChunk = getHandle().getChunkFromChunkCoords(x, z);
+		newChunk.onChunkUnload();
 		IChunkProvider provider = getHandle().getChunkProvider();
 		provider.populate(provider, x, z);
 		newChunk.onChunkLoad();
