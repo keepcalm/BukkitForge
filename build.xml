@@ -86,6 +86,26 @@
 	</target>
 	
 	<target name="build" depends="setup-forge" unless="already-compiled">
+		<!-- Copy source -->
+		<!--<mkdir dir="${mcpsrc.dir}/net" />
+				<copy todir="${mcpsrc.dir}/net">
+					<fileset dir="${src.dir}/net" />
+					</copy>-->
+		<mkdir dir="${mcpsrc.dir}/keepcalm" />
+		<copy todir="${mcpsrc.dir}/keepcalm">
+			<fileset dir="${src.dir}/keepcalm"/>
+		</copy>
+		<copy todir="${mcpsrc.dir}/keepcalm/mods">
+			<fileset dir="${blockbreak.src}" />
+		</copy>
+		<copy todir="${mcpsrc.dir}">
+			<fileset dir="${src.dir}/javax" />
+		</copy>
+
+		<copy todir="${mcpsrc.dir}/org">
+			<fileset dir="${src.dir}/org/bukkit" />
+		</copy>
+		
 		<!-- Recompile -->
 						<exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
 								<arg line="/c recompile.bat"/>
