@@ -5,8 +5,8 @@
 	<property name="build.dir" value="build" />
 	<property name="classes.dir" value="${build.dir}/packaging" />
 	<property name="src.dir" value="src" />
-	
-	
+
+
 	<property name="forge.version" value="1.4.7-6.6.0.504" />
 
 	<property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
@@ -22,69 +22,69 @@
 	<property name="blockbreak.src" value="blockbreak/src/keepcalm/mods" />
 	<!--<property name="files.minecraft.dir" value="jars" />-->
 	<property name="dist.dir" value="${build.dir}/dist" />
-	
+
 	<property name="download.dir" value="downloads" />
-	
+
 	<property name="lib.dir" value="${src.dir}/lib" />
-	
+
 	<property file="${forge.dir}/forgeversion.properties" />
 	<condition property="forge.already.installed">
 		<equals arg1="${forge.build.number}" arg2="504" />
 	</condition>
-	
+
 	<mkdir dir="${download.dir}"/>
-		<mkdir dir="${build.dir}" />
-	
-		 
-	
-		<available property="forge-exists" file="${download.dir}/minecraftforge-src-${forge.version}.zip" />
-		<available property="already-compiled" file="${classes.dir}/keepcalm" />
-		<available property="blockbreak-there" file="${blockbreak.src}" />
+	<mkdir dir="${build.dir}" />
+
+
+
+	<available property="forge-exists" file="${download.dir}/minecraftforge-src-${forge.version}.zip" />
+	<available property="already-compiled" file="${classes.dir}/keepcalm" />
+	<available property="blockbreak-there" file="${blockbreak.src}" />
 	<condition property="should-download-ant-contrib">
 		<or>
-					<available file="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
+			<available file="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
 			<available file="${download.dir}/minecraftforge-src-${forge.version}.zip"/>
-			</or>
-		</condition>
-		<available property="props-there" file="utils/obf.properties" />
-	
+		</or>
+	</condition>
+	<available property="props-there" file="utils/obf.properties" />
+
 	<target name="check-blockbreak" unless="blockbreak-there">
 		<echo message="You must first run 'git submodules sync' and git pull origin or download the BlockBreak sources into the blockbreak folder!!"/>
 		<fail/>
 	</target>
 
-	 <target name="install" depends="check-blockbreak,build,gen-props">
-		 <!--		 <delete dir="${classes.dir}/keepcalm/mods/blockbreak" />-->
-		 <copy todir="${classes.dir}">
-								<fileset file="${package.at}" />
-				</copy>
-				<mkdir dir="${classes.dir}/configurations" />
-				<copy todir="${classes.dir}/configurations" >
-					<fileset dir="${package.configs}" >
-						<patternset>
-							<include name="*.yml" />
-						</patternset>
-					</fileset>
-				</copy>
-				<copy todir="${classes.dir}" >
-					<fileset dir="utils">
-						<patternset>
-							<include name="*.properties" />
-						</patternset>
-					</fileset>
-								<fileset dir="${package.srgs}">
-						<patternset>
-							<include name="*.csrg" />
-						</patternset>
-					</fileset>
-				</copy>
-			 <manifest file="MANIFEST.MF" >
-				 <attribute name="FMLCorePlugin" value="keepcalm.mods.bukkit.asm.BukkitASMLoader" />
-			 </manifest>
-				<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="META-INF/MANIFEST.MF"/>
-				<delete dir="${classes.dir}" />
+	<target name="install" depends="check-blockbreak,build,gen-props">
+		<!--		 <delete dir="${classes.dir}/keepcalm/mods/blockbreak" />-->
+		<copy todir="${classes.dir}">
+			<fileset file="${package.at}" />
+		</copy>
+		<mkdir dir="${classes.dir}/configurations" />
+		<copy todir="${classes.dir}/configurations" >
+			<fileset dir="${package.configs}" >
+				<patternset>
+					<include name="*.yml" />
+				</patternset>
+			</fileset>
+		</copy>
+		<copy todir="${classes.dir}" >
+			<fileset dir="utils">
+				<patternset>
+					<include name="*.properties" />
+				</patternset>
+			</fileset>
+			<fileset dir="${package.srgs}">
+				<patternset>
+					<include name="*.csrg" />
+				</patternset>
+			</fileset>
+		</copy>
+		<manifest file="MANIFEST.MF" >
+			<attribute name="FMLCorePlugin" value="keepcalm.mods.bukkit.asm.BukkitASMLoader" />
+		</manifest>
+		<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="META-INF/MANIFEST.MF"/>
+		<delete dir="${classes.dir}" />
 	</target>
-	
+
 	<target name="build" depends="setup-forge" unless="already-compiled">
 		<!-- Copy source -->
 		<!--<mkdir dir="${mcpsrc.dir}/net" />
@@ -105,141 +105,142 @@
 		<copy todir="${mcpsrc.dir}/org">
 			<fileset dir="${src.dir}/org/bukkit" />
 		</copy>
-		
+
 		<!-- Recompile -->
-						<exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
-								<arg line="/c recompile.bat"/>
-						</exec>
+		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
+			<arg line="/c recompile.bat"/>
+		</exec>
 
-						<exec dir="${mcp.dir}" executable="sh" osfamily="unix" failonerror="true">
-								<arg value="recompile.sh" />
-						</exec>
+		<exec dir="${mcp.dir}" executable="sh" osfamily="unix" failonerror="true">
+			<arg value="recompile.sh" />
+		</exec>
 
-						<!-- Reobf -->
-						<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
-								<arg line="/c reobfuscate.bat"/>
-						</exec>
+		<!-- Reobf -->
+		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c reobfuscate.bat"/>
+		</exec>
 
-						<exec dir="${mcp.dir}" executable="sh" osfamily="unix">
-								<arg value="reobfuscate.sh" />
-						</exec>
+		<exec dir="${mcp.dir}" executable="sh" osfamily="unix">
+			<arg value="reobfuscate.sh" />
+		</exec>
 
-					
-						<copy todir="${classes.dir}">
-								<fileset dir="${mcp.dir}/reobf/minecraft"/>
-						</copy>
 
-		
-						
+		<copy todir="${classes.dir}">
+			<fileset dir="${mcp.dir}/reobf/minecraft"/>
+		</copy>
 
-					 
+    <!--Deleting sources so that they don't come back to haunt you-->
+    <delete dir="${mcpsrc.dir}/keepcalm" />
+    <delete dir="${mcpsrc.dir}/org" />
+    <delete dir="${mcpsrc.dir}/javax" />
+    
 	</target>
-		
+
 	<target name="build-number-there" if="env.BUILD_NUMBER" >
-		 <echo message="Using build number ${env.BUILD_NUMBER}..." />
-		 <property name="build.number" value="${env.BUILD_NUMBER}" />
+		<echo message="Using build number ${env.BUILD_NUMBER}..." />
+		<property name="build.number" value="${env.BUILD_NUMBER}" />
 	</target>
-		
-	<target name="build-number-not-there" unless="env.BUILD_NUMBER" >
-		 <echo message="!! No build number set !!" />
-		 <property name="build.number" value="CUSTOM_BUILD" />
-	 </target>
 
-	 <target name="gen-props" unless="props-there" >
-		 <get src="https://github.com/agaricusb/MinecraftRemapping/blob/master/${build.ver}/pkgmcp2obf.srg?raw=true" dest="utils/pkgmcp2obf.srg" />
-		 <exec dir="utils" executable="perl">
-			 <arg value="genprops.pl" />
-		 </exec>
-	 </target>
+	<target name="build-number-not-there" unless="env.BUILD_NUMBER" >
+		<echo message="!! No build number set !!" />
+		<property name="build.number" value="CUSTOM_BUILD" />
+	</target>
+
+	<target name="gen-props" unless="props-there" >
+		<get src="https://github.com/agaricusb/MinecraftRemapping/blob/master/${build.ver}/pkgmcp2obf.srg?raw=true" dest="utils/pkgmcp2obf.srg" />
+		<exec dir="utils" executable="perl">
+			<arg value="genprops.pl" />
+		</exec>
+	</target>
 
 	<target name="setup-forge" depends="download-forge,build-number-there,build-number-not-there" unless="forge.already.installed">
-								 
-				<property name="build.full" value="${build.number}" />
-						<unzip dest="${build.dir}">
-								<fileset dir="${download.dir}">
-										<include name="minecraftforge-src-${forge.version}.zip"/>
-								</fileset>
-						</unzip>
 
-					 
+		<property name="build.full" value="${build.number}" />
+		<unzip dest="${build.dir}">
+			<fileset dir="${download.dir}">
+				<include name="minecraftforge-src-${forge.version}.zip"/>
+			</fileset>
+		</unzip>
 
-						<!-- Change executables' permitions -->
-						
-						<chmod file="${forge.dir}/install.sh" perm="+x"/>
 
-						<!-- if your building on OSX these 2 should be executable -->
-						
 
-		
-						<mkdir dir="${forge.dir}/accesstransformers" />
-							<copy file="${package.at}" todir="${forge.dir}/accesstransformers" failonerror="yes"/>
-						<!-- Install forge -->
+		<!-- Change executables' permitions -->
+
+		<chmod file="${forge.dir}/install.sh" perm="+x"/>
+
+		<!-- if your building on OSX these 2 should be executable -->
+
+
+
+		<mkdir dir="${forge.dir}/accesstransformers" />
+		<copy file="${package.at}" todir="${forge.dir}/accesstransformers" failonerror="yes"/>
+		<!-- Install forge -->
 		<delete dir="${mcp.dir}" failonerror="no"/>
-						<exec dir="${forge.dir}" executable="cmd" osfamily="windows" inputstring="Yes\n">
-								<arg line="/c install.cmd"/>
-						</exec>
+		<exec dir="${forge.dir}" executable="cmd" osfamily="windows" inputstring="Yes\n">
+			<arg line="/c install.cmd"/>
+		</exec>
 
-						<exec dir="${forge.dir}" executable="sh" osfamily="unix" inputstring="Yes\n">
-								<arg value="install.sh" />
-							
-						</exec>
-								 
-							
-							<chmod file="${mcp.dir}/updatemd5.sh" perm="+x"/>
-									<chmod file="${mcp.dir}/recompile.sh" perm="+x"/>
-															<chmod file="${mcp.dir}/reobfuscate.sh" perm="+x"/>
+		<exec dir="${forge.dir}" executable="sh" osfamily="unix" inputstring="Yes\n">
+			<arg value="install.sh" />
+
+		</exec>
+
+
+		<chmod file="${mcp.dir}/updatemd5.sh" perm="+x"/>
+		<chmod file="${mcp.dir}/recompile.sh" perm="+x"/>
+		<chmod file="${mcp.dir}/reobfuscate.sh" perm="+x"/>
 		<chmod file="${mcp.dir}/runtime/bin/astyle-osx" perm="+x" />
-										<chmod file="${mcp.dir}/runtime/bin/jad-osx" perm="+x" />
+		<chmod file="${mcp.dir}/runtime/bin/jad-osx" perm="+x" />
 
-				 <!-- Copy libraries -->
-				 <copy todir="${mcp.dir}/lib" >
-					 <fileset dir="lib" >
-						 <patternset includes="*.jar" />
-					 </fileset>
-				 
-				 </copy>
+		<!-- Copy libraries -->
+		<copy todir="${mcp.dir}/lib" >
+			<fileset dir="lib" >
+				<patternset includes="*.jar" />
+			</fileset>
+
+		</copy>
 
 	</target>
-		
+
 	<target name="download-forge" depends="download-ant-contrib" unless="forge-exists">
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
-								<classpath>
-										<pathelement location="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
-										<fileset dir="${download.dir}/ant-contrib/lib">
-												<include name="*.jar"/>
-										</fileset>
-								 </classpath>
+			<classpath>
+				<pathelement location="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
+				<fileset dir="${download.dir}/ant-contrib/lib">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
 		</taskdef>
-			 <echo message="Downloading forge... " />
-						<getMethod url="http://files.minecraftforge.net/minecraftforge-src-${forge.version}.zip"
-											 responseDataFile="${download.dir}/minecraftforge-src-${forge.version}.zip">
-								<header name="User-Agent" value="Ant-${ant.version}/${ant.java.version}"/>
-						</getMethod>		
+		<echo message="Downloading forge... " />
+		<getMethod url="http://files.minecraftforge.net/minecraftforge-src-${forge.version}.zip"
+							 responseDataFile="${download.dir}/minecraftforge-src-${forge.version}.zip">
+			<header name="User-Agent" value="Ant-${ant.version}/${ant.java.version}"/>
+		</getMethod>
 	</target>
-	
+
 	<target name="download-ant-contrib" unless="should-download-ant-contrib">
-					<echo message="Getting: ant-contrib"/>
-					<mkdir dir="${download.dir}/tmp"/>
-				<mkdir dir="${download.dir}/ant-contrib/lib" />
-					<get src="http://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.zip/download" dest="${download.dir}/tmp/ant-contrib-1.0b3-bin.zip"/>
-					<get src="http://archive.apache.org/dist/commons/codec/binaries/commons-codec-1.6-bin.zip" dest="${download.dir}/tmp/commons-codec-1.6-bin.zip"/>
+		<echo message="Getting: ant-contrib"/>
+		<mkdir dir="${download.dir}/tmp"/>
+		<mkdir dir="${download.dir}/ant-contrib/lib" />
+		<get src="http://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.zip/download" dest="${download.dir}/tmp/ant-contrib-1.0b3-bin.zip"/>
+		<get src="http://archive.apache.org/dist/commons/codec/binaries/commons-codec-1.6-bin.zip" dest="${download.dir}/tmp/commons-codec-1.6-bin.zip"/>
 
-					<unzip src="${download.dir}/tmp/ant-contrib-1.0b3-bin.zip" dest="${download.dir}"/>
-					<unzip src="${download.dir}/tmp/commons-codec-1.6-bin.zip" dest="${download.dir}/tmp"/>
+		<unzip src="${download.dir}/tmp/ant-contrib-1.0b3-bin.zip" dest="${download.dir}"/>
+		<unzip src="${download.dir}/tmp/commons-codec-1.6-bin.zip" dest="${download.dir}/tmp"/>
 
-					<move todir="${download.dir}/ant-contrib/lib">
-							<fileset file="${download.dir}/tmp/commons-codec-1.6/commons-codec-1.6.jar"/>
-					</move>
+		<move todir="${download.dir}/ant-contrib/lib">
+			<fileset file="${download.dir}/tmp/commons-codec-1.6/commons-codec-1.6.jar"/>
+		</move>
 
-					<!-- Delete useless files -->
-					<delete dir="${download.dir}/ant-contrib/docs"/>
-					<delete dir="${download.dir}/tmp"/>
+		<!-- Delete useless files -->
+		<delete dir="${download.dir}/ant-contrib/docs"/>
+		<delete dir="${download.dir}/tmp"/>
 
 	</target>
 
 	<target name="clean" >
 		<delete dir="${build.dir}" />
 	</target>
-	
-	
+
+
 </project>
