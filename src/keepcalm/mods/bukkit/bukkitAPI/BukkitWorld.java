@@ -201,7 +201,7 @@ public class BukkitWorld implements World {
 		this.generator = gen;
 		this.server = BukkitServer.instance();
 		environment = env;
-		this.useWorldName = hasDifferentName;
+		this.useWorldName = !hasDifferentName;
 	}
 
 
