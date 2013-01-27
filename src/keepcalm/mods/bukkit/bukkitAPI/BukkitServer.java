@@ -524,18 +524,18 @@ public class BukkitServer implements Server {
 			throw new IllegalArgumentException("Creator may not be null");
 		}
 
-        int dimension = DimensionManager.getNextFreeDimId();
-
-		String name = creator.name();
-        String dimName = "DIM" + dimension;
+   		String name = creator.name();
 		ChunkGenerator generator = creator.generator();
-		World world = getWorld(dimension);
+		World world = getWorld(name);
 		WorldType type = WorldType.parseWorldType(creator.type().getName());
 		boolean generateStructures = creator.generateStructures();
 
 		if (world != null) {
 			return world;
 		}
+
+        int dimension = DimensionManager.getNextFreeDimId();
+        String dimName = "DIM" + dimension;
 
         Environment env = creator.environment();
         int envId = env.getId();

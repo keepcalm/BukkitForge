@@ -553,7 +553,7 @@ public class BukkitWorld implements World {
 	}
 
 	public UUID getUID() {
-		return new UUID(world.getSeed(), 60000);
+		return new UUID(world.getSeed(), world.getWorldInfo().getDimension());
 	}
 
 	@Override
