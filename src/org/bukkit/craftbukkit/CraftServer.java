@@ -579,7 +579,7 @@ public class CraftServer implements Server {
 		pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
 		System.out.print("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
 
-		/*if (DimensionManager.shouldLoadSpawn(dimension))*/ {
+		if (DimensionManager.shouldLoadSpawn(dimension)) {
 			short short1 = 196;
 			long i = System.currentTimeMillis();
 			for (int j = -short1; j <= short1; j += 16) {
