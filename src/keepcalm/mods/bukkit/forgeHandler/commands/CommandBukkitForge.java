@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.BukkitConsoleCommandSender;
+import org.bukkit.craftbukkit.BukkitPlayerCache;
 
 
 /**

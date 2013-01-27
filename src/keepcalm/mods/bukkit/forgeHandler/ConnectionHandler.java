@@ -3,7 +3,6 @@ package keepcalm.mods.bukkit.forgeHandler;
 import java.util.HashMap;
 
 import keepcalm.mods.bukkit.BukkitContainer;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
@@ -15,6 +14,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.BukkitPlayerCache;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerLoginEvent;

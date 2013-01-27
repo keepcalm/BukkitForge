@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import net.md_5.specialsource.IInheritanceProvider;
 import net.md_5.specialsource.JarMapping;
 import net.md_5.specialsource.JarRemapper;
@@ -25,6 +24,7 @@ import net.md_5.specialsource.URLClassLoaderInheritanceProvider;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.BukkitServer;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 /**

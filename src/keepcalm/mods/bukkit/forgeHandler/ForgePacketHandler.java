@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.craftbukkit.BukkitPlayerCache;
+import org.bukkit.craftbukkit.BukkitServer;
 import org.bukkit.plugin.messaging.StandardMessenger;
 
 import com.google.common.collect.Maps;
 
-import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

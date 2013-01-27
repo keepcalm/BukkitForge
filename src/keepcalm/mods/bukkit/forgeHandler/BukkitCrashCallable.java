@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 
+import org.bukkit.craftbukkit.BukkitServer;
 import org.bukkit.plugin.Plugin;
 
 import cpw.mods.fml.common.ICrashCallable;

@@ -14,8 +14,9 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.craftbukkit.BukkitServer;
+
 import keepcalm.mods.bukkit.asm.BukkitStarter;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
 import keepcalm.mods.bukkit.common.CommonProxy;
 import keepcalm.mods.bukkit.forgeHandler.BlockBreakEventHandler;

@@ -2,8 +2,9 @@ package keepcalm.mods.bukkit.asm;
 
 import java.util.logging.Level;
 
+import org.bukkit.craftbukkit.BukkitServer;
+
 import keepcalm.mods.bukkit.BukkitContainer;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitServer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandConsole;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandHelp;

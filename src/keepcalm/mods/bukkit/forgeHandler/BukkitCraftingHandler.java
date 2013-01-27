@@ -6,7 +6,6 @@ import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCrafting;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryView;
 import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitRecipe;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ContainerWorkbench;
@@ -18,6 +17,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.BukkitPlayerCache;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.InventoryView;

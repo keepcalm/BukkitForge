@@ -1,8 +1,6 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
 import keepcalm.mods.bukkit.BukkitContainer;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitConsoleCommandSender;
-import keepcalm.mods.bukkit.bukkitAPI.BukkitPlayerCache;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandServerStop;
 import net.minecraft.command.ICommandSender;
@@ -10,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.StopCommand;
+import org.bukkit.craftbukkit.BukkitConsoleCommandSender;
+import org.bukkit.craftbukkit.BukkitPlayerCache;
 /**
  * Shuts down the server in a bukkit-friendly way.
  * @author keepcalm
