@@ -524,66 +524,51 @@ public class CraftServer implements Server {
 		}
 
    		String name = creator.name();
-		ChunkGenerator generator = creator.generator();
 		World world = getWorld(name);
 		WorldType type = WorldType.parseWorldType(creator.type().getName());
-		boolean generateStructures = creator.generateStructures();
 
 		if (world != null) {
 			return world;
 		}
 
         int dimension = DimensionManager.getNextFreeDimId();
-        String dimName = "DIM" + dimension;
 
         Environment env = creator.environment();
         int envId = env.getId();
-        WorldProvider wp = DimensionManager.getProvider(envId);
 
-        DimensionManager.registerProviderType(dimension, wp.getClass(), false);
-        DimensionManager.registerDimension(dimension, type.getWorldTypeID());
+        // No way to check if provider type is already registered, so register every time
+        DimensionManager.registerProviderType(CraftWorldProvider.ProviderID, CraftWorldProvider.class, false);
+        DimensionManager.registerDimension(dimension, CraftWorldProvider.ProviderID);
+        WorldProvider wp = DimensionManager.createProviderFor(dimension);
+        ((CraftWorldProvider)wp).setName(creator.name());
+        wp.setDimension(dimension);
 
-        File folder = new File(getWorldContainer(), dimName);
+        File folder = new File(getWorldContainer(), wp.getSaveFolder());
 		if ((folder.exists()) && (!folder.isDirectory())) {
 			throw new IllegalArgumentException("File exists with the name '" + name + "' and isn't a folder");
 		}
 
-		if (generator == null) {
+        ChunkGenerator generator = creator.generator();
+
+        if (generator == null) {
 			generator = getGenerator(dimension);
 		}
 
-		AnvilSaveConverter converter = new AnvilSaveConverter(getWorldContainer());
-		if (converter.isOldMapFormat(dimName)) {
+        boolean generateStructures = creator.generateStructures();
+
+		AnvilSaveConverter converter = new AnvilSaveConverter(folder);
+		if (converter.isOldMapFormat(wp.getDimensionName())) {
 			getLogger().info("Converting world '" + name + "'");
 			converter.convertMapFormat(name, new ConvertingProgressUpdate(theServer));
 		}
 
-		boolean hardcore = false;
+        DimensionManager.initDimension(dimension);
 
-        File wc = getWorldContainer();
-        AnvilSaveHandler ash = new AnvilSaveHandler(wc, dimName, true);
+        WorldServer internal = theServer.worldServerForDimension(dimension);
 
-        File fileTemp = ash.getSaveDirectory();
-        String nameTemp = ash.getSaveDirectoryName();
-        File mapTemp = ash.getMapFileFromName("zzz");
+        this.worlds.put(dimension, new CraftWorld(internal, creator.generator(), creator.environment(), true));
 
-        WorldSettings par5WorldSettings = new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, hardcore, type);
-        WorldServer internal = new WorldServer(theServer, ash, dimName, dimension, par5WorldSettings, theServer.theProfiler);
-
-		//if (!(worlds.containsKey(dimension))) {
-		//	return null;
-		//}
-
-		//internal.getWorldInfo().get = console.worldServerForDimension(0).worldMaps;
-
-		//internal. = new EntityTracker(internal); // CraftCraft
-		internal.addWorldAccess((IWorldAccess) new WorldManager(theServer, internal));
-		internal.difficultySetting = 1;
-		//internal.(true, true);
-		//theServer.worldServers[theServer.worldServers.length] = internal;
-		DimensionManager.setWorld(dimension, internal);
-
-		this.worlds.put(dimension, new CraftWorld(internal, creator.generator(), creator.environment(), true));
+        DimensionManager.setWorld(dimension, internal);
 
         worldNameMapping.put( name, worlds.get(dimension) );
 
@@ -594,7 +579,7 @@ public class CraftServer implements Server {
 		pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
 		System.out.print("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
 
-		if (DimensionManager.shouldLoadSpawn(dimension)) {
+		/*if (DimensionManager.shouldLoadSpawn(dimension))*/ {
 			short short1 = 196;
 			long i = System.currentTimeMillis();
 			for (int j = -short1; j <= short1; j += 16) {
@@ -705,7 +690,7 @@ public class CraftServer implements Server {
 		for (WorldServer w : theServer.worldServers) {
 			//return null;
 			UUID wUUID = new UUID(w.getSeed(), w.getWorldInfo().getDimension());
-			if (wUUID == uid) {
+			if (wUUID.equals(uid)) {
 				return worlds.get(w.getWorldInfo().getDimension());
 			}
 			//if (w.getWorldInfo().)
