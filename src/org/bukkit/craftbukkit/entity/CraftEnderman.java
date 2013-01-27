@@ -3,14 +3,14 @@ package org.bukkit.craftbukkit.entity;
 import net.minecraft.entity.monster.EntityEnderman;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.MaterialData;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftEnderman extends BukkitMonster implements Enderman {
-    public CraftEnderman(BukkitServer server, EntityEnderman entity) {
+public class CraftEnderman extends CraftMonster implements Enderman {
+    public CraftEnderman(CraftServer server, EntityEnderman entity) {
         super(server, entity);
     }
 
@@ -30,7 +30,7 @@ public class CraftEnderman extends BukkitMonster implements Enderman {
 
     @Override
     public String toString() {
-        return "BukkitEnderman";
+        return "CraftEnderman";
     }
 
     public EntityType getType() {

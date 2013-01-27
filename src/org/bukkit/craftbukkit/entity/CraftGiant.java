@@ -2,14 +2,14 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntityGiantZombie;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Giant;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftGiant extends BukkitMonster implements Giant {
+public class CraftGiant extends CraftMonster implements Giant {
 
-    public CraftGiant(BukkitServer server, EntityGiantZombie entity) {
+    public CraftGiant(CraftServer server, EntityGiantZombie entity) {
         super(server, entity);
     }
 
@@ -20,7 +20,7 @@ public class CraftGiant extends BukkitMonster implements Giant {
 
     @Override
     public String toString() {
-        return "BukkitGiant";
+        return "CraftGiant";
     }
 
     public EntityType getType() {

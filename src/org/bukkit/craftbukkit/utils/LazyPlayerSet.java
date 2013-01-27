@@ -7,8 +7,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.entity.BukkitEntity;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Player;
 
 public class LazyPlayerSet extends LazyHashSet<Player> {
@@ -21,7 +21,7 @@ public class LazyPlayerSet extends LazyHashSet<Player> {
         List<EntityPlayerMP> players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
         HashSet<Player> reference = new HashSet<Player>(players.size());
         for (EntityPlayerMP player : players) {
-            reference.add((Player) CraftEntity.getEntity((BukkitServer) Bukkit.getServer(), player));
+            reference.add((Player) CraftEntity.getEntity((CraftServer) Bukkit.getServer(), player));
         }
         return reference;
     }

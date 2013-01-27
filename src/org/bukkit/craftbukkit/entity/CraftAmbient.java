@@ -2,12 +2,12 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.passive.EntityAmbientCreature;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Ambient;
 import org.bukkit.entity.EntityType;
 
-public class CraftAmbient extends BukkitLivingEntity implements Ambient {
-    public CraftAmbient(BukkitServer server, EntityAmbientCreature entity) {
+public class CraftAmbient extends CraftLivingEntity implements Ambient {
+    public CraftAmbient(CraftServer server, EntityAmbientCreature entity) {
         super(server, entity);
     }
 
@@ -18,7 +18,7 @@ public class CraftAmbient extends BukkitLivingEntity implements Ambient {
 
     @Override
     public String toString() {
-        return "BukkitAmbient";
+        return "CraftAmbient";
     }
 
     public EntityType getType() {

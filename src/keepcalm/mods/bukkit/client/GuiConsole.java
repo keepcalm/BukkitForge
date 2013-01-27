@@ -1,9 +1,9 @@
 package keepcalm.mods.bukkit.client;
 
 import net.minecraft.client.Minecraft;
-//import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+//import net.minecraft.client.gui.FontRenderer;
 
 public class GuiConsole extends GuiScreen {
 	//private GuiTextField theEntryTextField;

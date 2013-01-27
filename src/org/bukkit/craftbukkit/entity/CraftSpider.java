@@ -2,14 +2,14 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntitySpider;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Spider;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftSpider extends BukkitMonster implements Spider {
+public class CraftSpider extends CraftMonster implements Spider {
 
-    public CraftSpider(BukkitServer server, EntitySpider entity) {
+    public CraftSpider(CraftServer server, EntitySpider entity) {
         super(server, entity);
     }
 
@@ -20,7 +20,7 @@ public class CraftSpider extends BukkitMonster implements Spider {
 
     @Override
     public String toString() {
-        return "BukkitSpider";
+        return "CraftSpider";
     }
 
     public EntityType getType() {

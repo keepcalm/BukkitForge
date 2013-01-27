@@ -112,7 +112,7 @@ public class CraftEnchantment extends Enchantment {
         }
 
         if (enchantment instanceof CraftEnchantment) {
-            return ((BukkitEnchantment) enchantment).target;
+            return ((CraftEnchantment) enchantment).target;
         }
 
         return null;
@@ -126,7 +126,7 @@ public class CraftEnchantment extends Enchantment {
         if (!(other instanceof CraftEnchantment)) {
             return false;
         }
-        CraftEnchantment ench = (BukkitEnchantment) other;
+        CraftEnchantment ench = (CraftEnchantment) other;
         return !target.canApplyTogether(ench.target);
     }
 }

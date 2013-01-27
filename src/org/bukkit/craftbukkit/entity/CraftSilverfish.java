@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntitySilverfish;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Silverfish;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftSilverfish extends BukkitMonster implements Silverfish {
-    public CraftSilverfish(BukkitServer server, EntitySilverfish entity) {
+public class CraftSilverfish extends CraftMonster implements Silverfish {
+    public CraftSilverfish(CraftServer server, EntitySilverfish entity) {
         super(server, entity);
     }
 
@@ -19,7 +19,7 @@ public class CraftSilverfish extends BukkitMonster implements Silverfish {
 
     @Override
     public String toString() {
-        return "BukkitSilverfish";
+        return "CraftSilverfish";
     }
 
     public EntityType getType() {

@@ -22,11 +22,11 @@ public class CraftShapelessRecipe extends ShapelessRecipe implements CraftRecipe
         //this.recipe = recipe;
     }
 
-    public static CraftShapelessRecipe fromBukkitRecipe(ShapelessRecipe recipe) {
+    public static CraftShapelessRecipe fromCraftRecipe(ShapelessRecipe recipe) {
         if (recipe instanceof CraftShapelessRecipe) {
-            return (BukkitShapelessRecipe) recipe;
+            return (CraftShapelessRecipe) recipe;
         }
-        CraftShapelessRecipe ret = new BukkitShapelessRecipe(recipe.getResult());
+        CraftShapelessRecipe ret = new CraftShapelessRecipe(recipe.getResult());
         for (ItemStack ingred : recipe.getIngredientList()) {
             ret.addIngredient(ingred.getType(), ingred.getDurability());
         }
@@ -43,6 +43,6 @@ public class CraftShapelessRecipe extends ShapelessRecipe implements CraftRecipe
             data[i] = new net.minecraft.item.ItemStack(id, 1, dmg);
             i++;
         }
-        GameRegistry.addShapelessRecipe(BukkitItemStack.createNMSItemStack(this.getResult()), data);
+        GameRegistry.addShapelessRecipe(CraftItemStack.createNMSItemStack(this.getResult()), data);
     }
 }

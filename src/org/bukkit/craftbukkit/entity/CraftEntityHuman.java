@@ -21,15 +21,15 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.event.BukkitEventFactory;
-import org.bukkit.craftbukkit.inventory.BukkitContainer;
-import org.bukkit.craftbukkit.inventory.BukkitInventory;
-import org.bukkit.craftbukkit.inventory.BukkitInventoryCrafting;
-import org.bukkit.craftbukkit.inventory.BukkitInventoryEnchanting;
-import org.bukkit.craftbukkit.inventory.BukkitInventoryPlayer;
-import org.bukkit.craftbukkit.inventory.BukkitInventoryView;
-import org.bukkit.craftbukkit.inventory.BukkitItemStack;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.craftbukkit.inventory.CraftContainer;
+import org.bukkit.craftbukkit.inventory.CraftInventory;
+import org.bukkit.craftbukkit.inventory.CraftInventoryCrafting;
+import org.bukkit.craftbukkit.inventory.CraftInventoryEnchanting;
+import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.inventory.CraftInventoryView;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -42,14 +42,14 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 
-public class CraftEntityHuman extends BukkitLivingEntity implements HumanEntity  {
+public class CraftEntityHuman extends CraftLivingEntity implements HumanEntity  {
 	private CraftInventoryPlayer inventory;
 	private final CraftInventory enderChest;
 	protected final PermissibleBase perm = new PermissibleBase(this);
 	private boolean op;
 	private GameMode mode;
 
-	public CraftEntityHuman(BukkitServer server, EntityLiving entity) {
+	public CraftEntityHuman(CraftServer server, EntityLiving entity) {
 		super(server, entity);
 		this.inventory = new CraftInventoryPlayer(((EntityPlayer) entity).inventory);
 		this.enderChest = new CraftInventory(((EntityPlayer) entity).getInventoryEnderChest());
@@ -175,7 +175,7 @@ public class CraftEntityHuman extends BukkitLivingEntity implements HumanEntity 
 
 	@Override
 	public String toString() {
-		return "BukkitHumanEntity{" + "id=" + getEntityId() + "name=" + getName() + '}';
+		return "CraftHumanEntity{" + "id=" + getEntityId() + "name=" + getName() + '}';
 	}
 
 	public InventoryView getOpenInventory() {
@@ -183,7 +183,7 @@ public class CraftEntityHuman extends BukkitLivingEntity implements HumanEntity 
 		for (int i = 0; i < nms.getSizeInventory(); i++) {
 			nms.setInventorySlotContents(i, (net.minecraft.item.ItemStack) getHandle().openContainer.inventoryItemStacks.get(i));
 		}
-		BukkitInventoryView inv = new CraftInventoryView(this, new BukkitInventory(nms), getHandle().openContainer);
+		CraftInventoryView inv = new CraftInventoryView(this, new CraftInventory(nms), getHandle().openContainer);
 		
 		return inv;
 	}
@@ -194,10 +194,10 @@ public class CraftEntityHuman extends BukkitLivingEntity implements HumanEntity 
 		InventoryType type = inventory.getType();
 		Container formerContainer = getHandle().openContainer;
 		if (!(inventory instanceof CraftInventory)) {
-			BukkitServer.instance().getLogger().warning("The inventory " + inventory + " is not an instance of CraftInventory, ignoring open attempt...");
+			CraftServer.instance().getLogger().warning("The inventory " + inventory + " is not an instance of CraftInventory, ignoring open attempt...");
 			return null;
 		}
-		BukkitInventory craftinv = (BukkitInventory) inventory;
+		CraftInventory craftinv = (CraftInventory) inventory;
 		switch(type) {
 		case PLAYER:
 		case CHEST:
@@ -266,9 +266,9 @@ public class CraftEntityHuman extends BukkitLivingEntity implements HumanEntity 
 
 		container = CraftEventFactory.callInventoryOpenEvent(player, container);
 		if(container == null) return;
-		BukkitContainer cont = new CraftContainer(inventory, (HumanEntity) player, windowType);
-		String title = cont.getBukkitView().getTitle();// container.();
-		int size = cont.getBukkitView().getTopInventory().getSize();
+		CraftContainer cont = new CraftContainer(inventory, (HumanEntity) player, windowType);
+		String title = cont.getCraftView().getTitle();// container.();
+		int size = cont.getCraftView().getTopInventory().getSize();
 
 		player.playerNetServerHandler.handleOpenWindow(new Packet100OpenWindow(container.windowId, windowType, title, size));
 		getHandle().openContainer = container;
@@ -323,7 +323,7 @@ public class CraftEntityHuman extends BukkitLivingEntity implements HumanEntity 
 		EntityPlayerMP player = (EntityPlayerMP) getHandle();
 		Container container;
 		if (inventory instanceof CraftInventoryView) {
-			container = ((BukkitInventoryView) inventory).getHandle();
+			container = ((CraftInventoryView) inventory).getHandle();
 		} else {
 			container = new CraftContainer(inventory, player.currentWindowId + 1);
 		}

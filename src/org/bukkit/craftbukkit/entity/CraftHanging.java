@@ -4,12 +4,12 @@ import net.minecraft.entity.EntityHanging;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Hanging;
 
-public class CraftHanging extends BukkitEntity implements Hanging {
-    public CraftHanging(BukkitServer server, EntityHanging entity) {
+public class CraftHanging extends CraftEntity implements Hanging {
+    public CraftHanging(CraftServer server, EntityHanging entity) {
         super(server, entity);
     }
 
@@ -75,7 +75,7 @@ public class CraftHanging extends BukkitEntity implements Hanging {
 
     @Override
     public String toString() {
-        return "BukkitHanging";
+        return "CraftHanging";
     }
 
     public EntityType getType() {

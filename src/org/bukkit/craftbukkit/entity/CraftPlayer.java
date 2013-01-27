@@ -68,13 +68,13 @@ import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
-import org.bukkit.craftbukkit.BukkitConversationTracker;
-import org.bukkit.craftbukkit.BukkitEffect;
-import org.bukkit.craftbukkit.BukkitOfflinePlayer;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.BukkitSound;
-import org.bukkit.craftbukkit.BukkitWorld;
-import org.bukkit.craftbukkit.map.BukkitMapView;
+import org.bukkit.craftbukkit.CraftConversationTracker;
+import org.bukkit.craftbukkit.CraftEffect;
+import org.bukkit.craftbukkit.CraftOfflinePlayer;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftSound;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.map.CraftMapView;
 import org.bukkit.craftbukkit.map.RenderData;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -94,12 +94,12 @@ import com.google.common.collect.MapMaker;
 
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 
-@DelegateDeserialization(BukkitOfflinePlayer.class)
-public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSender {
+@DelegateDeserialization(CraftOfflinePlayer.class)
+public class CraftPlayer extends CraftEntityHuman implements Player, CommandSender {
     private long firstPlayed = 0;
     private long lastPlayed = 0;
     //private boolean hasPlayedBefore = false;
-    private final CraftConversationTracker conversationTracker = new BukkitConversationTracker();
+    private final CraftConversationTracker conversationTracker = new CraftConversationTracker();
     private final Set<String> channels = new HashSet<String>();
     private final Map<String, Player> hiddenPlayers = new MapMaker().softValues().makeMap();
     private int hash = 0;
@@ -107,13 +107,13 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
     //private long playerCurrentTime;
 	private boolean isTimeRelative;
 
-    public CraftPlayer(BukkitServer server, EntityPlayerMP entity) {
+    public CraftPlayer(CraftServer server, EntityPlayerMP entity) {
         super(server, entity);
         perm.recalculatePermissions();
     }
 
     public CraftPlayer(EntityPlayerMP player) {
-		this((BukkitServer) Craft.getServer(), player);
+		this((CraftServer) Bukkit.getServer(), player);
 	}
     
     @Override
@@ -265,7 +265,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
         boolean idEquals = true;
 
         if (other instanceof CraftPlayer) {
-            idEquals = this.getEntityId() == ((BukkitPlayer) other).getEntityId();
+            idEquals = this.getEntityId() == ((CraftPlayer) other).getEntityId();
         }
 
         return nameEquals && idEquals;
@@ -285,7 +285,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
     }
 
     public Location getCompassTarget() {
-        return new Location(BukkitServer.instance().getWorld(getHandle().worldObj.getWorldInfo().getDimension()), getHandle().getHomePosition().posX, getHandle().getHomePosition().posY, getHandle().getHomePosition().posZ);
+        return new Location(CraftServer.instance().getWorld(getHandle().worldObj.getWorldInfo().getDimension()), getHandle().getHomePosition().posX, getHandle().getHomePosition().posY, getHandle().getHomePosition().posZ);
     }
 
     public void chat(String msg) {
@@ -319,7 +319,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
         double y = loc.getBlockY() + 0.5;
         double z = loc.getBlockZ() + 0.5;
 
-        Packet62LevelSound packet = new Packet62LevelSound(BukkitSound.getSound(sound), x, y, z, volume, pitch);
+        Packet62LevelSound packet = new Packet62LevelSound(CraftSound.getSound(sound), x, y, z, volume, pitch);
         getHandle().playerNetServerHandler.sendPacketToPlayer(packet);
     }
 
@@ -349,7 +349,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
     public void sendBlockChange(Location loc, int material, byte data) {
         if (getHandle().playerNetServerHandler == null) return;
 
-        Packet53BlockChange packet = new Packet53BlockChange(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), ((BukkitWorld) loc.getWorld()).getHandle());
+        Packet53BlockChange packet = new Packet53BlockChange(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), ((CraftWorld) loc.getWorld()).getHandle());
 
         packet.type = material;
         packet.metadata = data;
@@ -392,7 +392,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
     public void sendMap(MapView map) {
         if (getHandle().playerNetServerHandler == null) return;
 
-        RenderData data = ((BukkitMapView) map).render(this);
+        RenderData data = ((CraftMapView) map).render(this);
         for (int x = 0; x < 128; ++x) {
             byte[] bytes = new byte[131];
             bytes[1] = (byte) x;
@@ -424,8 +424,8 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
         // Grab the new To Location dependent on whether the event was cancelled.
         to = event.getTo();
         // Grab the To and From World Handles.
-        WorldServer fromWorld = ((BukkitWorld) from.getWorld()).getHandle();
-        WorldServer toWorld = ((BukkitWorld) to.getWorld()).getHandle();
+        WorldServer fromWorld = ((CraftWorld) from.getWorld()).getHandle();
+        WorldServer toWorld = ((CraftWorld) to.getWorld()).getHandle();
         // Grab the EntityPlayerMP
         EntityPlayerMP entity = getHandle();
 
@@ -474,8 +474,8 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
     public void setSleepingIgnored(boolean isSleeping) {
     	// FIXME - this will explode MC
         //getHandle().sleeping = isSleeping;
-        //((BukkitWorld) getWorld()).getHandle().updateAllPlayersSleepingFlag();
-    	BukkitServer.setPlayerFauxSleeping(getName(), isSleeping);
+        //((CraftWorld) getWorld()).getHandle().updateAllPlayersSleepingFlag();
+    	CraftServer.setPlayerFauxSleeping(getName(), isSleeping);
     }
 
     public boolean isSleepingIgnored() {
@@ -661,7 +661,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
     }
 
     public Location getBedSpawnLocation() {
-        World world = ((BukkitServer)getServer()).getWorld(0);
+        World world = ((CraftServer)getServer()).getWorld(0);
         if ((world != null) && (getHandle().getHomePosition() != null)) {
             return new Location(world, getHandle().getHomePosition().posX, getHandle().getHomePosition().posY, getHandle().getHomePosition().posZ);
         }
@@ -683,7 +683,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
 
         //remove this player from the hidden player's EntityTrackerEntry
         EntityTracker tracker = ((WorldServer) entity.worldObj).getEntityTracker();
-        EntityPlayerMP other = ((BukkitPlayer) player).getHandle();
+        EntityPlayerMP other = ((CraftPlayer) player).getHandle();
         // TODO: Does this work?
         EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntityIDs.lookup(getHandle().entityId);
         entry.removePlayerFromTracker(other);
@@ -705,7 +705,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
         hiddenPlayers.remove(player.getName());
 
         EntityTracker tracker = ((WorldServer) entity.worldObj).getEntityTracker();
-        EntityPlayerMP other = ((BukkitPlayer) player).getHandle();
+        EntityPlayerMP other = ((CraftPlayer) player).getHandle();
         EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntityIDs.lookup(getHandle().entityId);
         
         // FIXME: What does this do???
@@ -745,7 +745,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
 
     @Override
     public String toString() {
-        return "BukkitPlayer{" + "name=" + getName() + '}';
+        return "CraftPlayer{" + "name=" + getName() + '}';
     }
 
     @Override
@@ -765,7 +765,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
     }
 
     public boolean hasPlayedBefore() {
-        return CraftContainer.users.containsKey(getName().toLowerCase());
+        return BukkitContainer.users.containsKey(getName().toLowerCase());
     }
 
     public void setFirstPlayed(long firstPlayed) {
@@ -877,7 +877,7 @@ public class CraftPlayer extends BukkitEntityHuman implements Player, CommandSen
                     stream.write(channel.getBytes("UTF8"));
                     stream.write((byte) 0);
                 } catch (IOException ex) {
-                    Logger.getLogger(BukkitPlayer.class.getName()).log(Level.SEVERE, "Could not send Plugin Channel REGISTER to " + getName(), ex);
+                    Logger.getLogger(CraftPlayer.class.getName()).log(Level.SEVERE, "Could not send Plugin Channel REGISTER to " + getName(), ex);
                 }
             }
 

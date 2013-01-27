@@ -2,7 +2,7 @@ package org.bukkit.craftbukkit.entity;
 
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Projectile;
 //import org.bukkit.craftbukkit.CraftServer;
 
@@ -10,7 +10,7 @@ public abstract class AbstractProjectile extends CraftEntity implements Projecti
 
     private boolean doesBounce;
 
-    public AbstractProjectile(BukkitServer server, net.minecraft.entity.Entity entity) {
+    public AbstractProjectile(CraftServer server, net.minecraft.entity.Entity entity) {
         super(server, entity);
         doesBounce = false;
     }

@@ -1,11 +1,11 @@
 package org.bukkit.craftbukkit;
 
-import static keepcalm.mods.bukkit.CraftContainer.DEBUG;
+import static keepcalm.mods.bukkit.BukkitContainer.DEBUG;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import keepcalm.mods.bukkit.CraftContainer;
+import keepcalm.mods.bukkit.BukkitContainer;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -13,7 +13,7 @@ import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
-import org.bukkit.Craft;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.World;
@@ -51,7 +51,7 @@ public class CraftChunk implements Chunk {
 	}
 
 	public World getWorld() {
-		if (CraftContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension()) == null) {
+		if (BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension()) == null) {
 			Environment env;
 			if (worldServer.provider.isHellWorld) {
 				env = Environment.NETHER;
@@ -60,14 +60,14 @@ public class CraftChunk implements Chunk {
 				env = Environment.NORMAL;
 			}
 			CraftWorld bw = new CraftWorld(worldServer, new NormalChunkGenerator(worldServer), env, false );
-			CraftContainer.bServer.worlds.put(worldServer.getWorldInfo().getDimension(), bw);
+			BukkitContainer.bServer.worlds.put(worldServer.getWorldInfo().getDimension(), bw);
 		}
 		
-		return CraftContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension());
+		return BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension());
 		
 	}
 
-	public CraftWorld getBukkitWorld() {
+	public CraftWorld getCraftWorld() {
 		return (CraftWorld) getWorld();
 	}
 
@@ -122,7 +122,7 @@ public class CraftChunk implements Chunk {
 					continue;
 				}
 
-				entities[index++] = CraftEntity.getEntity((CraftServer) Craft.getServer(), (net.minecraft.entity.Entity) obj);
+				entities[index++] = CraftEntity.getEntity((CraftServer) Bukkit.getServer(), (net.minecraft.entity.Entity) obj);
 			}
 		}
 

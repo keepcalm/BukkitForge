@@ -9,6 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class CraftDummyPlugin extends JavaPlugin {
 
-	public static final CraftDummyPlugin INSTANCE = new BukkitDummyPlugin(); 
+	public static final CraftDummyPlugin INSTANCE = new CraftDummyPlugin(); 
 	
 }

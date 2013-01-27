@@ -14,17 +14,17 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.ItemMetaKey.Specific;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.ItemMetaKey.Specific.To;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.SerializableMeta;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.SerializableMeta.Deserializers;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.ItemMetaKey.Specific;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.ItemMetaKey.Specific.To;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta.Deserializers;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap.Builder;
 
 @DelegateDeserialization(SerializableMeta.class)
-class CraftMetaFirework extends BukkitMetaItem implements FireworkMeta {
+class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
     /*
        "Fireworks", "Explosion", "Explosions", "Flight", "Type", "Trail", "Flicker", "Colors", "FadeColors";
 
@@ -58,14 +58,14 @@ class CraftMetaFirework extends BukkitMetaItem implements FireworkMeta {
     private List<FireworkEffect> effects;
     private int power;
 
-    CraftMetaFirework(BukkitMetaItem meta) {
+    CraftMetaFirework(CraftMetaItem meta) {
         super(meta);
 
         if (!(meta instanceof CraftMetaFirework)) {
             return;
         }
 
-        CraftMetaFirework that = (BukkitMetaFirework) meta;
+        CraftMetaFirework that = (CraftMetaFirework) meta;
 
         this.power = that.power;
 
@@ -266,13 +266,13 @@ class CraftMetaFirework extends BukkitMetaItem implements FireworkMeta {
     }
 
     @Override
-    boolean equalsCommon(BukkitMetaItem meta) {
+    boolean equalsCommon(CraftMetaItem meta) {
         if (!super.equalsCommon(meta)) {
             return false;
         }
 
         if (meta instanceof CraftMetaFirework) {
-            CraftMetaFirework that = (BukkitMetaFirework) meta;
+            CraftMetaFirework that = (CraftMetaFirework) meta;
 
             return (hasPower() ? that.hasPower() && this.power == that.power : !that.hasPower())
                     && (hasEffects() ? that.hasEffects() && this.effects.equals(that.effects) : !that.hasEffects());
@@ -282,7 +282,7 @@ class CraftMetaFirework extends BukkitMetaItem implements FireworkMeta {
     }
 
     @Override
-    boolean notUncommon(BukkitMetaItem meta) {
+    boolean notUncommon(CraftMetaItem meta) {
         return super.notUncommon(meta) && (meta instanceof CraftMetaFirework || isFireworkEmpty());
     }
 
@@ -321,7 +321,7 @@ class CraftMetaFirework extends BukkitMetaItem implements FireworkMeta {
 
     @Override
     public CraftMetaFirework clone() {
-        CraftMetaFirework meta = (BukkitMetaFirework) super.clone();
+        CraftMetaFirework meta = (CraftMetaFirework) super.clone();
 
         if (this.effects != null) {
             meta.effects = new ArrayList<FireworkEffect>(this.effects);

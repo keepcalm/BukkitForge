@@ -3,19 +3,19 @@ package org.bukkit.craftbukkit.entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityFireball;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
 public class CraftFireball extends AbstractProjectile implements Fireball {
 	// FIXME: Implement these for real!
 	private float theYield = 1.0F; // seems to be default.
 	private boolean makeFire = true;
 	
-    public CraftFireball(BukkitServer server, EntityFireball entity) {
+    public CraftFireball(CraftServer server, EntityFireball entity) {
         super(server, entity);
     }
 
@@ -45,7 +45,7 @@ public class CraftFireball extends AbstractProjectile implements Fireball {
 
     public void setShooter(LivingEntity shooter) {
         if (shooter instanceof CraftLivingEntity) {
-            getHandle().shootingEntity = (EntityLiving) ((BukkitLivingEntity) shooter).entity;
+            getHandle().shootingEntity = (EntityLiving) ((CraftLivingEntity) shooter).entity;
         }
     }
 
@@ -65,7 +65,7 @@ public class CraftFireball extends AbstractProjectile implements Fireball {
 
     @Override
     public String toString() {
-        return "BukkitFireball";
+        return "CraftFireball";
     }
 
     public EntityType getType() {

@@ -6,7 +6,7 @@ import org.bukkit.Art;
 
 // Safety class, will break if either side changes
 public class CraftArt {
-    public static Art NotchToBukkit(EnumArt art) {
+    public static Art NotchToCraft(EnumArt art) {
         switch (art) {
             case Kebab: return Art.KEBAB;
             case Aztec: return Art.AZTEC;

@@ -3,9 +3,6 @@ package keepcalm.mods.bukkit.forgeHandler;
 import java.util.Iterator;
 
 import keepcalm.mods.bukkit.BukkitContainer;
-import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryCrafting;
-import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitInventoryView;
-import keepcalm.mods.bukkit.bukkitAPI.inventory.BukkitRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ContainerWorkbench;
@@ -17,7 +14,9 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.BukkitPlayerCache;
+import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.craftbukkit.inventory.CraftInventoryCrafting;
+import org.bukkit.craftbukkit.inventory.CraftInventoryView;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.InventoryView;
@@ -58,7 +57,7 @@ public class BukkitCraftingHandler implements ICraftingHandler {
 			Recipe recipe = new BukkitRecipe(targ);
 			
 			
-			InventoryView what = new BukkitInventoryView(BukkitPlayerCache.getBukkitPlayer(fp), new BukkitInventoryCrafting(inv, player.inventory), inv.eventHandler);
+			InventoryView what = new CraftInventoryView(CraftPlayerCache.getCraftPlayer(fp), new CraftInventoryCrafting(inv, player.inventory), inv.eventHandler);
 			CraftItemEvent ev = new CraftItemEvent(recipe, what, SlotType.CRAFTING, -1, false, false);
 			Bukkit.getPluginManager().callEvent(ev);
 			if (ev.isCancelled()) {

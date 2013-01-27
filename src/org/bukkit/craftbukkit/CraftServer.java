@@ -17,6 +17,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
 import net.minecraft.command.ICommandSender;
@@ -55,8 +56,8 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Craft;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
@@ -79,7 +80,6 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
 import org.bukkit.craftbukkit.help.CommandHelpTopic;
 import org.bukkit.craftbukkit.help.SimpleHelpMap;
-import org.bukkit.craftbukkit.inventory.CraftContainer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
 import org.bukkit.craftbukkit.inventory.CraftItemFactory;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -115,7 +115,7 @@ import org.bukkit.plugin.SimpleServicesManager;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.StandardMessenger;
-import org.bukkit.scheduler.CraftWorker;
+import org.bukkit.scheduler.BukkitWorker;
 import org.bukkit.util.permissions.DefaultPermissions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -200,10 +200,10 @@ public class CraftServer implements Server {
 			//if (!x.getWorldInfo().getWorldName().equals(vanillaName))
 			worldNameMapping.put(x.provider.getDimensionName().toLowerCase().replace(' ', '_'), world);
 		}
-		this.theLogger = CraftContainer.bukkitLogger;
-		theLogger.info("Craft API for Vanilla, version " + apiVer + " starting up...");
+		this.theLogger = BukkitContainer.bukkitLogger;
+		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
 		
-		Craft.setServer(this);
+		Bukkit.setServer(this);
 		this.theHelpMap = new SimpleHelpMap(this);
 		this.theMessenger = new StandardMessenger();
 		this.entityMetadata = new EntityMetadataStore();
@@ -215,7 +215,7 @@ public class CraftServer implements Server {
 		CraftModRecipeHelper.saveCraftingManagerRecipes();
 
 		HelpTopic myHelp = new CommandHelpTopic("bexec", "Run a command forcibly bukkit aliases", "", "");
-		Craft.getServer().getHelpMap().addTopic(myHelp);
+		Bukkit.getServer().getHelpMap().addTopic(myHelp);
 		
 		loadPlugins();
 		enablePlugins(PluginLoadOrder.STARTUP);
@@ -302,11 +302,11 @@ public class CraftServer implements Server {
 	@Override
 	public String getVersion() {
 		// towny fix?
-		return CraftContainer.CRAFT_VERSION;
+		return BukkitContainer.CRAFT_VERSION;
 	}
 
 	@Override
-	public String getCraftVersion() {
+	public String getBukkitVersion() {
 
 		return CraftServer.apiVer;
 	}
@@ -352,7 +352,7 @@ public class CraftServer implements Server {
 
 	@Override
 	public String getServerId() {
-		return CraftContainer.serverUUID;
+		return BukkitContainer.serverUUID;
 	}
 
 	@Override
@@ -810,8 +810,8 @@ public class CraftServer implements Server {
 			pollCount++;
 		}
 
-		List<CraftWorker> overdueWorkers = getScheduler().getActiveWorkers();
-		for (CraftWorker worker : overdueWorkers) {
+		List<BukkitWorker> overdueWorkers = getScheduler().getActiveWorkers();
+		for (BukkitWorker worker : overdueWorkers) {
 			Plugin plugin = worker.getOwner();
 			String author = "<NoAuthorGiven>";
 			if (plugin.getDescription().getAuthors().size() > 0) {
@@ -1164,8 +1164,8 @@ public class CraftServer implements Server {
 			pollCount++;
 		}
 
-		List<CraftWorker> overdueWorkers = getScheduler().getActiveWorkers();
-		for (CraftWorker worker : overdueWorkers) {
+		List<BukkitWorker> overdueWorkers = getScheduler().getActiveWorkers();
+		for (BukkitWorker worker : overdueWorkers) {
 			Plugin plugin = worker.getOwner();
 			String author = "<NoAuthorGiven>";
 			if (plugin.getDescription().getAuthors().size() > 0) {

@@ -3,13 +3,13 @@ package org.bukkit.craftbukkit.entity;
 import net.minecraft.entity.passive.EntitySheep;
 
 import org.bukkit.DyeColor;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Sheep;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftSheep extends BukkitAnimals implements Sheep {
-    public CraftSheep(BukkitServer server, EntitySheep entity) {
+public class CraftSheep extends CraftAnimals implements Sheep {
+    public CraftSheep(CraftServer server, EntitySheep entity) {
         super(server, entity);
     }
 
@@ -36,7 +36,7 @@ public class CraftSheep extends BukkitAnimals implements Sheep {
 
     @Override
     public String toString() {
-        return "BukkitSheep";
+        return "CraftSheep";
     }
 
     public EntityType getType() {

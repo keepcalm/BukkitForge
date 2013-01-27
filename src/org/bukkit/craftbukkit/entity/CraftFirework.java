@@ -7,16 +7,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.inventory.BukkitItemStack;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-public class CraftFirework extends BukkitEntity implements Firework {
+public class CraftFirework extends CraftEntity implements Firework {
 	private final CraftItemStack item;
 	
-	public CraftFirework(BukkitServer server, EntityFireworkRocket entity) {
+	public CraftFirework(CraftServer server, EntityFireworkRocket entity) {
 		super(server, entity);
 		ItemStack item = getHandle().getDataWatcher().getWatchableObjectItemStack(8);
 		
@@ -38,7 +38,7 @@ public class CraftFirework extends BukkitEntity implements Firework {
 	
 	@Override
 	public String toString() {
-		return "BukkitFirework{vanillaFirework=" + getHandle() + "}";
+		return "CraftFirework{vanillaFirework=" + getHandle() + "}";
 	}
 
 	@Override

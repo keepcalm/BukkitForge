@@ -2,8 +2,8 @@ package org.bukkit.craftbukkit.inventory;
 
 import net.minecraft.entity.EntityLiving;
 
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.entity.BukkitEntity;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -160,7 +160,7 @@ public class CraftEntityEquipment implements EntityEquipment {
 
 	@Override
 	public Entity getHolder() {
-		return CraftEntity.getEntity(BukkitServer.instance(), owner);
+		return CraftEntity.getEntity(CraftServer.instance(), owner);
 	}
 
 }

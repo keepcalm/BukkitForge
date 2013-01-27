@@ -2,12 +2,12 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.boss.EntityDragon;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.ComplexLivingEntity;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public abstract class CraftComplexLivingEntity extends BukkitLivingEntity implements ComplexLivingEntity {
-    public CraftComplexLivingEntity(BukkitServer server, EntityDragon entity) {
+public abstract class CraftComplexLivingEntity extends CraftLivingEntity implements ComplexLivingEntity {
+    public CraftComplexLivingEntity(CraftServer server, EntityDragon entity) {
         super(server, entity);
     }
 
@@ -18,6 +18,6 @@ public abstract class CraftComplexLivingEntity extends BukkitLivingEntity implem
 
     @Override
     public String toString() {
-        return "BukkitComplexLivingEntity";
+        return "CraftComplexLivingEntity";
     }
 }

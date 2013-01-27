@@ -7,23 +7,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.SerializableMeta;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.SerializableMeta.Deserializers;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta.Deserializers;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 
 import com.google.common.collect.ImmutableMap.Builder;
 
 @DelegateDeserialization(SerializableMeta.class)
-class CraftMetaCharge extends BukkitMetaItem implements FireworkEffectMeta {
+class CraftMetaCharge extends CraftMetaItem implements FireworkEffectMeta {
     static final ItemMetaKey EXPLOSION = new ItemMetaKey("Explosion", "firework-effect");
 
     private FireworkEffect effect;
 
-    CraftMetaCharge(BukkitMetaItem meta) {
+    CraftMetaCharge(CraftMetaItem meta) {
         super(meta);
 
         if (meta instanceof CraftMetaCharge) {
-            effect = ((BukkitMetaCharge) meta).effect;
+            effect = ((CraftMetaCharge) meta).effect;
         }
     }
 
@@ -82,12 +82,12 @@ class CraftMetaCharge extends BukkitMetaItem implements FireworkEffectMeta {
     }
 
     @Override
-    boolean equalsCommon(BukkitMetaItem meta) {
+    boolean equalsCommon(CraftMetaItem meta) {
         if (!super.equalsCommon(meta)) {
             return false;
         }
         if (meta instanceof CraftMetaCharge) {
-            CraftMetaCharge that = (BukkitMetaCharge) meta;
+            CraftMetaCharge that = (CraftMetaCharge) meta;
 
             return (hasEffect() ? that.hasEffect() && this.effect.equals(that.effect) : !that.hasEffect());
         }
@@ -95,7 +95,7 @@ class CraftMetaCharge extends BukkitMetaItem implements FireworkEffectMeta {
     }
 
     @Override
-    boolean notUncommon(BukkitMetaItem meta) {
+    boolean notUncommon(CraftMetaItem meta) {
         return super.notUncommon(meta) && (meta instanceof CraftMetaCharge || !hasChargeMeta());
     }
 
@@ -113,7 +113,7 @@ class CraftMetaCharge extends BukkitMetaItem implements FireworkEffectMeta {
 
     @Override
     public CraftMetaCharge clone() {
-        return (BukkitMetaCharge) super.clone();
+        return (CraftMetaCharge) super.clone();
     }
 
     @Override

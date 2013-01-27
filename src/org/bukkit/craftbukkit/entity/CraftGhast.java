@@ -2,14 +2,14 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntityGhast;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ghast;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftGhast extends BukkitFlying implements Ghast {
+public class CraftGhast extends CraftFlying implements Ghast {
 
-    public CraftGhast(BukkitServer server, EntityGhast entity) {
+    public CraftGhast(CraftServer server, EntityGhast entity) {
         super(server, entity);
     }
 
@@ -20,7 +20,7 @@ public class CraftGhast extends BukkitFlying implements Ghast {
 
     @Override
     public String toString() {
-        return "BukkitGhast";
+        return "CraftGhast";
     }
 
     public EntityType getType() {

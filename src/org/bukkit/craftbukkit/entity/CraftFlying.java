@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.EntityFlying;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Flying;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftFlying extends BukkitLivingEntity implements Flying {
+public class CraftFlying extends CraftLivingEntity implements Flying {
 
-    public CraftFlying(BukkitServer server, EntityFlying entity) {
+    public CraftFlying(CraftServer server, EntityFlying entity) {
         super(server, entity);
     }
 
@@ -19,6 +19,6 @@ public class CraftFlying extends BukkitLivingEntity implements Flying {
 
     @Override
     public String toString() {
-        return "BukkitFlying";
+        return "CraftFlying";
     }
 }

@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.passive.EntityWaterMob;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.WaterMob;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftWaterMob extends BukkitCreature implements WaterMob {
+public class CraftWaterMob extends CraftCreature implements WaterMob {
 
-    public CraftWaterMob(BukkitServer server, EntityWaterMob entity) {
+    public CraftWaterMob(CraftServer server, EntityWaterMob entity) {
         super(server, entity);
     }
 
@@ -19,6 +19,6 @@ public class CraftWaterMob extends BukkitCreature implements WaterMob {
 
     @Override
     public String toString() {
-        return "BukkitWaterMob";
+        return "CraftWaterMob";
     }
 }

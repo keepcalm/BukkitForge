@@ -7,12 +7,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.entity.BukkitEntity;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 
-public class CraftInventoryPlayer extends BukkitInventory implements org.bukkit.inventory.PlayerInventory {
+public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.inventory.PlayerInventory {
 	private EntityPlayer player;
 	private InventoryPlayer realInv;
 	public CraftInventoryPlayer(InventoryPlayer inventory) {
@@ -56,30 +56,30 @@ public class CraftInventoryPlayer extends BukkitInventory implements org.bukkit.
 	public void setArmorContents(ItemStack[] items) {
 		
 		for (int i = 0; i < 4; i++) {
-			realInv.armorInventory[i] = ((BukkitItemStack) items[i]).getHandle();
+			realInv.armorInventory[i] = ((CraftItemStack) items[i]).getHandle();
 		}
 		
 	}
 
 	@Override
 	public void setHelmet(ItemStack helmet) {
-		realInv.armorInventory[3] = ((BukkitItemStack) helmet).getHandle();
+		realInv.armorInventory[3] = ((CraftItemStack) helmet).getHandle();
 		
 	}
 
 	@Override
 	public void setChestplate(ItemStack chestplate) {
-		realInv.armorInventory[2] = ((BukkitItemStack) chestplate).getHandle();		
+		realInv.armorInventory[2] = ((CraftItemStack) chestplate).getHandle();		
 	}
 
 	@Override
 	public void setLeggings(ItemStack leggings) {
-		realInv.armorInventory[1] = ((BukkitItemStack) leggings).getHandle();		
+		realInv.armorInventory[1] = ((CraftItemStack) leggings).getHandle();		
 	}
 
 	@Override
 	public void setBoots(ItemStack boots) {
-		realInv.armorInventory[0] = ((BukkitItemStack) boots).getHandle();		
+		realInv.armorInventory[0] = ((CraftItemStack) boots).getHandle();		
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class CraftInventoryPlayer extends BukkitInventory implements org.bukkit.
 	
 	@Override
 	public HumanEntity getHolder() {
-		return (HumanEntity) CraftEntity.getEntity((BukkitServer) Bukkit.getServer(), (Entity) this.player);
+		return (HumanEntity) CraftEntity.getEntity((CraftServer) Bukkit.getServer(), (Entity) this.player);
 	}
 
 	@Override

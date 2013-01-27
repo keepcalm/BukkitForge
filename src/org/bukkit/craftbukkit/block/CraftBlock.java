@@ -461,7 +461,7 @@ public class CraftBlock implements Block {
 				//int id = BiomeGenBase.biomeList[i].biomeID;
 
 				System.out.println("Adding mod biome mapping "+BiomeGenBase.biomeList[i].biomeID+" "+name+" at BiomeGenBase["+i+"]");
-				addBukkitBiome(name);
+				addCraftBiome(name);
 				BIOME_MAPPING[BiomeGenBase.biomeList[i].biomeID] = Enum.valueOf(Biome.class, name);
 			}
 			if (BIOME_MAPPING[i] != null) {  /* Build reverse mapping for setBiome */
@@ -471,23 +471,23 @@ public class CraftBlock implements Block {
 	}
 
 	public void setMetadata(String metadataKey, MetadataValue newMetadataValue) {
-		chunk.getBukkitWorld().getBlockMetadata().setMetadata(this, metadataKey, newMetadataValue);
+		chunk.getCraftWorld().getBlockMetadata().setMetadata(this, metadataKey, newMetadataValue);
 	}
 
 	public List<MetadataValue> getMetadata(String metadataKey) {
-		return chunk.getBukkitWorld().getBlockMetadata().getMetadata(this, metadataKey);
+		return chunk.getCraftWorld().getBlockMetadata().getMetadata(this, metadataKey);
 	}
 
 	public boolean hasMetadata(String metadataKey) {
-		return chunk.getBukkitWorld().getBlockMetadata().hasMetadata(this, metadataKey);
+		return chunk.getCraftWorld().getBlockMetadata().hasMetadata(this, metadataKey);
 	}
 
 	public void removeMetadata(String metadataKey, Plugin owningPlugin) {
-		chunk.getBukkitWorld().getBlockMetadata().removeMetadata(this, metadataKey, owningPlugin);
+		chunk.getCraftWorld().getBlockMetadata().removeMetadata(this, metadataKey, owningPlugin);
 	}
 
 
-	public static org.bukkit.block.Biome addBukkitBiome(String name) {
+	public static org.bukkit.block.Biome addCraftBiome(String name) {
 
 		return EnumHelper.addEnum(org.bukkit.block.Biome.class, name,
 				new Class[] {},

@@ -1,7 +1,5 @@
 package org.bukkit.craftbukkit.command;
 
-import keepcalm.mods.bukkit.BukkitContainer;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
@@ -17,7 +15,7 @@ public class CraftConsoleCommandSender extends ServerCommandSender implements Co
 
     protected final ConversationTracker conversationTracker = new ConversationTracker();
 
-    private static final CraftConsoleCommandSender instance = (BukkitConsoleCommandSender) (BukkitContainer.allowAnsi ? new ColouredConsoleSender() : new BukkitConsoleCommandSender());
+    private static final ColouredConsoleSender instance = new ColouredConsoleSender();
     
     protected CraftConsoleCommandSender() {
         super();
@@ -70,7 +68,7 @@ public class CraftConsoleCommandSender extends ServerCommandSender implements Co
         return conversationTracker.isConversing();
     }
     
-    public static CraftConsoleCommandSender instance() {
+    public static ConsoleCommandSender instance() {
     	return instance;
     }
     

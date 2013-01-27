@@ -7,24 +7,24 @@ import net.minecraft.world.WorldServer;
 import org.bukkit.Art;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.BukkitArt;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.BukkitWorld;
+import org.bukkit.craftbukkit.CraftArt;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Painting;
-//import org.bukkit.craftbukkit.BukkitArt;
-//import org.bukkit.craftbukkit.BukkitServer;
-//import org.bukkit.craftbukkit.BukkitWorld;
+//import org.bukkit.craftbukkit.CraftArt;
+//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.CraftWorld;
 
-public class CraftPainting extends BukkitEntity implements Painting {
+public class CraftPainting extends CraftEntity implements Painting {
 
-    public CraftPainting(BukkitServer server, EntityPainting entity) {
+    public CraftPainting(CraftServer server, EntityPainting entity) {
         super(server, entity);
     }
 
     public Art getArt() {
         EnumArt art = getHandle().art;
-        return CraftArt.NotchToBukkit(art);
+        return CraftArt.NotchToCraft(art);
     }
 
     public boolean setArt(Art art) {
@@ -34,7 +34,7 @@ public class CraftPainting extends BukkitEntity implements Painting {
     public boolean setArt(Art art, boolean force) {
         EntityPainting painting = this.getHandle();
         EnumArt oldArt = painting.art;
-        painting.art = CraftArt.BukkitToNotch(art);
+        painting.art = CraftArt.CraftToNotch(art);
         
         if (!force && painting.isDead) {
             // Revert painting since it doesn't fit
@@ -103,7 +103,7 @@ public class CraftPainting extends BukkitEntity implements Painting {
     }
 
     private void update() {
-        WorldServer world = ((BukkitWorld) getWorld()).getHandle();
+        WorldServer world = ((CraftWorld) getWorld()).getHandle();
         EntityPainting painting = new EntityPainting(world);
         painting.posX = getHandle().posX;
         painting.posY = getHandle().posY;
@@ -123,7 +123,7 @@ public class CraftPainting extends BukkitEntity implements Painting {
 
     @Override
     public String toString() {
-        return "BukkitPainting{art=" + getArt() + "}";
+        return "CraftPainting{art=" + getArt() + "}";
     }
 
     public EntityType getType() {

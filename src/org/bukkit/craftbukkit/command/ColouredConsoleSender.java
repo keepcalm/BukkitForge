@@ -7,13 +7,13 @@ import keepcalm.mods.bukkit.BukkitContainer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.BukkitConsoleCommandSender;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.CraftServer;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
 //import jline.Terminal;
 //import jline.console.ConsoleReader;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
 public class ColouredConsoleSender extends CraftConsoleCommandSender {
     //private final ConsoleReader reader;
@@ -22,8 +22,8 @@ public class ColouredConsoleSender extends CraftConsoleCommandSender {
     private final ChatColor[] colors = ChatColor.values();
 
     public ColouredConsoleSender() {
-        super((BukkitServer) Craft.getServer());
-        //this.reader = ((BukkitServer) getServer()).getReader();
+        super((CraftServer) Bukkit.getServer());
+        //this.reader = ((CraftServer) getServer()).getReader();
         //this.terminal = reader.getTerminal();
 
         replacements.put(ChatColor.BLACK, Ansi.ansi().fg(Ansi.Color.BLACK).boldOff().toString());
@@ -71,7 +71,7 @@ public class ColouredConsoleSender extends CraftConsoleCommandSender {
     
     /*public ConsoleCommandSender getInstance() {
         if (Bukkit.getConsoleSender() != null) {
-            return Craft.getConsoleSender();
+            return Bukkit.getConsoleSender();
         } else {
             return new ColouredConsoleSender();
         }

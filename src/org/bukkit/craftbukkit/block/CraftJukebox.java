@@ -9,17 +9,17 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Jukebox;
-import org.bukkit.craftbukkit.BukkitWorld;
-//import org.bukkit.craftbukkit.BukkitWorld;
+import org.bukkit.craftbukkit.CraftWorld;
+//import org.bukkit.craftbukkit.CraftWorld;
 
-public class CraftJukebox extends BukkitBlockState implements Jukebox {
+public class CraftJukebox extends CraftBlockState implements Jukebox {
     private final CraftWorld world;
     private final TileEntityRecordPlayer jukebox;
 
     public CraftJukebox(final Block block) {
         super(block);
 
-        world = (BukkitWorld) block.getWorld();
+        world = (CraftWorld) block.getWorld();
         jukebox = (TileEntityRecordPlayer) world.getTileEntityAt(getX(), getY(), getZ());
     }
 

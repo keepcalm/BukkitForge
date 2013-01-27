@@ -3,13 +3,13 @@ package org.bukkit.craftbukkit.entity;
 import net.minecraft.entity.passive.EntityWolf;
 
 import org.bukkit.DyeColor;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Wolf;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftWolf extends BukkitTameableAnimal implements Wolf {
-    public CraftWolf(BukkitServer server, EntityWolf wolf) {
+public class CraftWolf extends CraftTameableAnimal implements Wolf {
+    public CraftWolf(CraftServer server, EntityWolf wolf) {
         super(server, wolf);
     }
 

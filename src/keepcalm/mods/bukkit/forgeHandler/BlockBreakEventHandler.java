@@ -1,14 +1,14 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
 import keepcalm.mods.bukkit.BukkitContainer;
-import keepcalm.mods.bukkit.bukkitAPI.block.BukkitBlock;
 import keepcalm.mods.events.PlayerBreakBlockEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.ForgeSubscribe;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.BukkitChunk;
-import org.bukkit.craftbukkit.BukkitPlayerCache;
+import org.bukkit.craftbukkit.CraftChunk;
+import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.craftbukkit.block.CraftBlock;
 
 
 /**
@@ -28,7 +28,7 @@ public class BlockBreakEventHandler {
 			fp = BukkitContainer.MOD_PLAYER;
 		}
 		
-		org.bukkit.event.block.BlockBreakEvent bb = new org.bukkit.event.block.BlockBreakEvent(new BukkitBlock(new BukkitChunk(ev.world.getChunkFromBlockCoords(ev.blockX, ev.blockZ)), ev.blockX, ev.blockY, ev.blockZ), BukkitPlayerCache.getBukkitPlayer(fp));
+		org.bukkit.event.block.BlockBreakEvent bb = new org.bukkit.event.block.BlockBreakEvent(new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.blockX, ev.blockZ)), ev.blockX, ev.blockY, ev.blockZ), CraftPlayerCache.getCraftPlayer(fp));
 		Bukkit.getPluginManager().callEvent(bb);
 		if (bb.isCancelled()) {
 			ev.setCanceled(true);

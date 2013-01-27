@@ -21,22 +21,22 @@ public class CraftConsoleCommandSender implements ConsoleCommandSender {
 	//private MinecraftServer theServer;
 	private CraftServer bServer;
 	private final PermissibleBase perms = new PermissibleBase(this);
-	protected final CraftConversationTracker convo = new BukkitConversationTracker();
+	protected final CraftConversationTracker convo = new CraftConversationTracker();
 	
 	public static ConsoleCommandSender getInstance() {
-		if (instance == null && CraftContainer.allowAnsi)
+		if (instance == null && BukkitContainer.allowAnsi)
 			instance = new ColouredConsoleSender();
 		else if (instance == null)
-			instance = new CraftConsoleCommandSender(BukkitServer.instance());
+			instance = new CraftConsoleCommandSender(CraftServer.instance());
 		
 		return instance;
 	}
 	
-	public CraftConsoleCommandSender(BukkitServer server) {
-		if (BukkitConsoleCommandSender.instance == null) {
+	public CraftConsoleCommandSender(CraftServer server) {
+		if (CraftConsoleCommandSender.instance == null) {
 			this.bServer = server;
 			//this.theServer = server.getHandle();
-			BukkitConsoleCommandSender.instance = this;
+			CraftConsoleCommandSender.instance = this;
 		}
 		else {
 			// ignore
@@ -47,7 +47,7 @@ public class CraftConsoleCommandSender implements ConsoleCommandSender {
 	
 	@Override
 	public void sendMessage(String message) {
-	//	C//onsoleLogManager.loggerLogManager.info("[Bukkit API]: " + message);
+	//	C//onsoleLogManager.loggerLogManager.info("[Craft API]: " + message);
 		sendRawMessage(message);
 
 	}
@@ -55,7 +55,7 @@ public class CraftConsoleCommandSender implements ConsoleCommandSender {
 	@Override
 	public void sendMessage(String[] messages) {
 		for (String j : messages) {
-			//ConsoleLogManager.loggerLogManager.info("[Bukkit API]: " + j );
+			//ConsoleLogManager.loggerLogManager.info("[Craft API]: " + j );
 			sendMessage(j);
 		}
 	}
@@ -166,7 +166,7 @@ public class CraftConsoleCommandSender implements ConsoleCommandSender {
 
 	@Override
 	public void sendRawMessage(String message) {
-		BukkitServer.instance().getLogger().info(ChatColor.stripColor(message));
+		CraftServer.instance().getLogger().info(ChatColor.stripColor(message));
 	}
 
 }

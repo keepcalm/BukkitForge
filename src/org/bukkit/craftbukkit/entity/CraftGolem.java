@@ -2,12 +2,12 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntityGolem;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Golem;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftGolem extends BukkitCreature implements Golem {
-    public CraftGolem(BukkitServer server, EntityGolem entity) {
+public class CraftGolem extends CraftCreature implements Golem {
+    public CraftGolem(CraftServer server, EntityGolem entity) {
         super(server, entity);
     }
 
@@ -18,6 +18,6 @@ public class CraftGolem extends BukkitCreature implements Golem {
 
     @Override
     public String toString() {
-        return "BukkitGolem";
+        return "CraftGolem";
     }
 }

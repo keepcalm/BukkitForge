@@ -6,7 +6,7 @@ import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.conversations.ConversationTracker;
 
 public class FakeConsoleSender extends ServerCommandSender implements ConsoleCommandSender {
@@ -17,7 +17,7 @@ public class FakeConsoleSender extends ServerCommandSender implements ConsoleCom
 	protected final ConversationTracker convo = new ConversationTracker();
 	
 	public FakeConsoleSender(Server server, EntityPlayerMP player) {
-		theServer = (BukkitServer) server;
+		theServer = (CraftServer) server;
 		thePlayer = player;
 	}
 	

@@ -18,7 +18,6 @@ import keepcalm.mods.bukkit.BukkitContainer;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
 
@@ -40,7 +39,7 @@ import org.bukkit.scheduler.BukkitWorker;
  * <li>Most of the design in this scheduler relies on queuing special tasks to perform any data changes on the main thread.
  *     When executed from inside a synchronous method, the scheduler will be updated before next execution by virtue of the frequent {@link #parsePending()} calls.</li>
  */
-public class CraftScheduler implements CraftScheduler {
+public class CraftScheduler implements org.bukkit.scheduler.BukkitScheduler {
 
 	/**
 	 * Counter for IDs. Order doesn't matter, only uniqueness.

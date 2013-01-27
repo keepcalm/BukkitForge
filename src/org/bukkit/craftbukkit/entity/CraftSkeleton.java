@@ -2,14 +2,14 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntitySkeleton;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Skeleton;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftSkeleton extends BukkitMonster implements Skeleton {
+public class CraftSkeleton extends CraftMonster implements Skeleton {
 
-    public CraftSkeleton(BukkitServer server, EntitySkeleton entity) {
+    public CraftSkeleton(CraftServer server, EntitySkeleton entity) {
         super(server, entity);
     }
 

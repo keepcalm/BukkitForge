@@ -4,19 +4,19 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.craftbukkit.BukkitWorld;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.EntityType;
-//import org.bukkit.craftbukkit.BukkitWorld;
+//import org.bukkit.craftbukkit.CraftWorld;
 
-public class CraftCreatureSpawner extends BukkitBlockState implements CreatureSpawner {
+public class CraftCreatureSpawner extends CraftBlockState implements CreatureSpawner {
     private final CraftWorld world;
     private final TileEntityMobSpawner spawner;
 
     public CraftCreatureSpawner(final Block block) {
         super(block);
 
-        world = (BukkitWorld) block.getWorld();
+        world = (CraftWorld) block.getWorld();
         spawner = (TileEntityMobSpawner) world.getTileEntityAt(getX(), getY(), getZ());
     }
 

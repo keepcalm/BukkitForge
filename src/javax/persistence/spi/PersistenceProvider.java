@@ -23,6 +23,7 @@
 package javax.persistence.spi;
 
 import java.util.Map;
+
 import javax.persistence.EntityManagerFactory;
 /**
  * Interface implemented by a persistence provider.

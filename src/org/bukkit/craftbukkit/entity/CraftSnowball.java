@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.projectile.EntitySnowball;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Snowball;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftSnowball extends BukkitProjectile implements Snowball {
-    public CraftSnowball(BukkitServer server, EntitySnowball entity) {
+public class CraftSnowball extends CraftProjectile implements Snowball {
+    public CraftSnowball(CraftServer server, EntitySnowball entity) {
         super(server, entity);
     }
 
@@ -19,7 +19,7 @@ public class CraftSnowball extends BukkitProjectile implements Snowball {
 
     @Override
     public String toString() {
-        return "BukkitSnowball";
+        return "CraftSnowball";
     }
 
     public EntityType getType() {

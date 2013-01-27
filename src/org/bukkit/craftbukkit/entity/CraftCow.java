@@ -2,14 +2,14 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.passive.EntityCow;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Cow;
 import org.bukkit.entity.EntityType;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftCow extends BukkitAnimals implements Cow {
+public class CraftCow extends CraftAnimals implements Cow {
 
-    public CraftCow(BukkitServer server, EntityCow entity) {
+    public CraftCow(CraftServer server, EntityCow entity) {
         super(server, entity);
     }
 
@@ -20,7 +20,7 @@ public class CraftCow extends BukkitAnimals implements Cow {
 
     @Override
     public String toString() {
-        return "BukkitCow";
+        return "CraftCow";
     }
 
     public EntityType getType() {

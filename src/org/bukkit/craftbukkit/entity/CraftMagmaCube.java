@@ -2,14 +2,14 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntityMagmaCube;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.MagmaCube;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftMagmaCube extends BukkitSlime implements MagmaCube {
+public class CraftMagmaCube extends CraftSlime implements MagmaCube {
 
-    public CraftMagmaCube(BukkitServer server, EntityMagmaCube entity) {
+    public CraftMagmaCube(CraftServer server, EntityMagmaCube entity) {
         super(server, entity);
     }
 
@@ -19,7 +19,7 @@ public class CraftMagmaCube extends BukkitSlime implements MagmaCube {
 
     @Override
     public String toString() {
-        return "BukkitMagmaCube";
+        return "CraftMagmaCube";
     }
 
     public EntityType getType() {

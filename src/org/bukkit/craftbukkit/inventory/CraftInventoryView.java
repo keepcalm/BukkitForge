@@ -3,14 +3,14 @@ package org.bukkit.craftbukkit.inventory;
 import net.minecraft.inventory.Container;
 
 import org.bukkit.GameMode;
-import org.bukkit.craftbukkit.entity.BukkitEntityHuman;
+import org.bukkit.craftbukkit.entity.CraftEntityHuman;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-//import org.bukkit.craftbukkit.entity.BukkitHumanEntity;
+//import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 
 public class CraftInventoryView extends InventoryView {
     private final Container container;
@@ -18,8 +18,8 @@ public class CraftInventoryView extends InventoryView {
     private final CraftInventory viewing;
 
     public CraftInventoryView(HumanEntity player, Inventory viewing, Container container) {
-        this.player = (BukkitEntityHuman) player;
-        this.viewing = (BukkitInventory) viewing;
+        this.player = (CraftEntityHuman) player;
+        this.viewing = (CraftInventory) viewing;
         this.container = container;
     }
 

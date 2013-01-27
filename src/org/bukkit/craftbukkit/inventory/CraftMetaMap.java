@@ -6,13 +6,13 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.SerializableMeta;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
 import org.bukkit.inventory.meta.MapMeta;
 
 import com.google.common.collect.ImmutableMap;
 
 @DelegateDeserialization(SerializableMeta.class)
-class CraftMetaMap extends BukkitMetaItem implements MapMeta {
+class CraftMetaMap extends CraftMetaItem implements MapMeta {
     static final ItemMetaKey MAP_SCALING = new ItemMetaKey("map_is_scaling", "scaling");
     static final byte SCALING_EMPTY = (byte) 0;
     static final byte SCALING_TRUE = (byte) 1;
@@ -20,14 +20,14 @@ class CraftMetaMap extends BukkitMetaItem implements MapMeta {
 
     private byte scaling = SCALING_EMPTY;
 
-    CraftMetaMap(BukkitMetaItem meta) {
+    CraftMetaMap(CraftMetaItem meta) {
         super(meta);
 
         if (!(meta instanceof CraftMetaMap)) {
             return;
         }
 
-        CraftMetaMap map = (BukkitMetaMap) meta;
+        CraftMetaMap map = (CraftMetaMap) meta;
         this.scaling = map.scaling;
     }
 
@@ -88,12 +88,12 @@ class CraftMetaMap extends BukkitMetaItem implements MapMeta {
     }
 
     @Override
-    boolean equalsCommon(BukkitMetaItem meta) {
+    boolean equalsCommon(CraftMetaItem meta) {
         if (!super.equalsCommon(meta)) {
             return false;
         }
         if (meta instanceof CraftMetaMap) {
-            CraftMetaMap that = (BukkitMetaMap) meta;
+            CraftMetaMap that = (CraftMetaMap) meta;
 
             return (this.scaling == that.scaling);
         }
@@ -101,7 +101,7 @@ class CraftMetaMap extends BukkitMetaItem implements MapMeta {
     }
 
     @Override
-    boolean notUncommon(BukkitMetaItem meta) {
+    boolean notUncommon(CraftMetaItem meta) {
         return super.notUncommon(meta) && (meta instanceof CraftMetaMap || isMapEmpty());
     }
 
@@ -118,7 +118,7 @@ class CraftMetaMap extends BukkitMetaItem implements MapMeta {
     }
 
     public CraftMetaMap clone() {
-        return (BukkitMetaMap) super.clone();
+        return (CraftMetaMap) super.clone();
     }
 
     @Override

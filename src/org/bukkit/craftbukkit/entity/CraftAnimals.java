@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.passive.EntityAnimal;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Animals;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftAnimals extends BukkitAgeable implements Animals {
+public class CraftAnimals extends CraftAgeable implements Animals {
 
-    public CraftAnimals(BukkitServer server, EntityAnimal entity) {
+    public CraftAnimals(CraftServer server, EntityAnimal entity) {
         super(server, entity);
     }
 
@@ -19,6 +19,6 @@ public class CraftAnimals extends BukkitAgeable implements Animals {
 
     @Override
     public String toString() {
-        return "BukkitAnimals";
+        return "CraftAnimals";
     }
 }

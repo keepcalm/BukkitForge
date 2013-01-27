@@ -3,13 +3,13 @@ package org.bukkit.craftbukkit.entity;
 import net.minecraft.entity.passive.EntityOcelot;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ocelot;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftOcelot extends BukkitTameableAnimal implements Ocelot {
-    public CraftOcelot(BukkitServer server, EntityOcelot wolf) {
+public class CraftOcelot extends CraftTameableAnimal implements Ocelot {
+    public CraftOcelot(CraftServer server, EntityOcelot wolf) {
         super(server, wolf);
     }
 

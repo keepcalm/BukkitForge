@@ -2,15 +2,13 @@ package keepcalm.mods.bukkit.forgeHandler;
 
 import java.util.EnumSet;
 
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.BukkitPlayerCache;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.event.player.PlayerQuitEvent;
-
-import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
 import keepcalm.mods.bukkit.utils.CaseInsensitiveArrayList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+
+import org.bukkit.Bukkit;
+import org.bukkit.event.player.PlayerQuitEvent;
+
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 

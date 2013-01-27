@@ -18,12 +18,12 @@ import net.minecraft.world.gen.structure.MapGenStronghold;
 import net.minecraft.world.gen.structure.MapGenVillage;
 
 import org.bukkit.block.Biome;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 //import net.minecraft.src.ChunkSection;
-//import org.bukkit.craftbukkit.block.BukkitBlock;
+//import org.bukkit.craftbukkit.block.CraftBlock;
 
 public class CustomChunkGenerator extends InternalChunkGenerator {
     private final ChunkGenerator generator;
@@ -71,7 +71,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
         world.getWorldChunkManager().getBiomeGenAt(biomegrid.biome, x << 4, z << 4, 16, 16, false);
 
         // Try extended block method (1.2+)
-        short[][] xbtypes = generator.generateExtBlockSections(BukkitServer.instance().getWorld(world.getWorldInfo().getDimension()), this.random, x, z, biomegrid);
+        short[][] xbtypes = generator.generateExtBlockSections(CraftServer.instance().getWorld(world.getWorldInfo().getDimension()), this.random, x, z, biomegrid);
         if (xbtypes != null) {
             chunk = new Chunk(this.world, x, z);
 

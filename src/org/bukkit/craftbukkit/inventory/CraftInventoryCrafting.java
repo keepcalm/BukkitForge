@@ -5,13 +5,13 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.ShapedRecipes;
 
-import org.bukkit.craftbukkit.entity.BukkitEntityHuman;
+import org.bukkit.craftbukkit.entity.CraftEntityHuman;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.util.Java15Compat;
 
-public class CraftInventoryCrafting extends BukkitInventory implements CraftingInventory {
+public class CraftInventoryCrafting extends CraftInventory implements CraftingInventory {
     private final IInventory resultInventory;
 
     public CraftInventoryCrafting(InventoryCrafting inventory, IInventory resultInventory) {
@@ -168,12 +168,12 @@ public class CraftInventoryCrafting extends BukkitInventory implements CraftingI
     	if (getViewers().isEmpty()) {
     		return null;
     	}
-    	net.minecraft.item.ItemStack recipe = CraftingManager.getInstance().findMatchingRecipe((InventoryCrafting) getInventory(), ((BukkitEntityHuman) this.getViewers().get(0)).getHandle().worldObj);
+    	net.minecraft.item.ItemStack recipe = CraftingManager.getInstance().findMatchingRecipe((InventoryCrafting) getInventory(), ((CraftEntityHuman) this.getViewers().get(0)).getHandle().worldObj);
     	if (recipe == null) {
     		return null;
     	}
     	ShapedRecipes j = new ShapedRecipes(width, height, stacks, recipe);
-    	return new CraftRecipe(j);
+    	return new CraftShapedRecipe(new CraftItemStack(j.getRecipeOutput()), j);
         
         //return recipe == null ? null : new CraftRecipe();
     }

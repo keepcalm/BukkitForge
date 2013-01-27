@@ -59,7 +59,7 @@ public class CraftItemStack extends ItemStack {
         if (original == null || original.getTypeId() <= 0) {
             return null;
         } else if (original instanceof CraftItemStack) {
-            return ((BukkitItemStack) original).getHandle();
+            return ((CraftItemStack) original).getHandle();
         }
         return new CraftItemStack(original).getHandle();
     }

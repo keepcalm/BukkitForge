@@ -1,6 +1,5 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
-import keepcalm.mods.bukkit.bukkitAPI.entity.BukkitPlayer;
 import keepcalm.mods.bukkit.forgeHandler.VanishUtils;
 
 import org.bukkit.command.Command;

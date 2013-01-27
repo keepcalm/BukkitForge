@@ -1,6 +1,5 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
-import keepcalm.mods.bukkit.bukkitAPI.help.SimpleHelpMap;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,9 +9,7 @@ import net.minecraft.util.MathHelper;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.BukkitConsoleCommandSender;
-import org.bukkit.craftbukkit.BukkitPlayerCache;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.help.SimpleHelpMap;
 import org.bukkit.help.HelpTopic;
 
 public class BukkitCommandHelp extends CommandBase {

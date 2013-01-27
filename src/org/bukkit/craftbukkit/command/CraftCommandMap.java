@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandVanish;
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandExecutor2CommandBase;
 import net.minecraft.command.ServerCommandManager;
 
@@ -51,7 +50,7 @@ public class CraftCommandMap extends SimpleCommandMap implements CommandMap  {
         register("bukkit", new ReloadCommand("reload"));
         register("bukkit", new PluginsCommand("plugins"));
         register("bukkit", new TimingsCommand("timings"));
-        register("bukkit", new CraftCommandVanish());
+        //register("bukkit", new CraftCommandVanish());
     }
 
     /**

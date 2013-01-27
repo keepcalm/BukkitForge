@@ -21,7 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.configuration.serialization.SerializableAs;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.ItemMetaKey.Specific;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.ItemMetaKey.Specific;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.Repairable;
@@ -33,15 +33,15 @@ import com.google.common.collect.ImmutableMap;
 /**
  * Children must include the following:
  *
- * <li> Constructor(BukkitMetaItem meta)
+ * <li> Constructor(CraftMetaItem meta)
  * <li> Constructor(NBTTagCompound tag)
  * <li> Constructor(Map<String, Object> map)
  * <br><br>
  * <li> void applyToItem(NBTTagCompound tag)
  * <li> boolean applicableTo(Material type)
  * <br><br>
- * <li> boolean equalsCommon(BukkitMetaItem meta)
- * <li> boolean notUncommon(BukkitMetaItem meta)
+ * <li> boolean equalsCommon(CraftMetaItem meta)
+ * <li> boolean notUncommon(CraftMetaItem meta)
  * <br><br>
  * <li> boolean isEmpty()
  * <li> boolean is{Type}Empty()
@@ -52,7 +52,7 @@ import com.google.common.collect.ImmutableMap;
  * <li> Builder<String, Object> serialize(Builder<String, Object> builder)
  * <li> SerializableMeta.Deserializers deserializer()
  */
-@DelegateDeserialization(BukkitMetaItem.SerializableMeta.class)
+@DelegateDeserialization(CraftMetaItem.SerializableMeta.class)
 class CraftMetaItem implements ItemMeta, Repairable {
 
     static class ItemMetaKey {
@@ -205,7 +205,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
     private Map<Enchantment, Integer> enchantments;
     private int repairCost;
 
-    CraftMetaItem(BukkitMetaItem meta) {
+    CraftMetaItem(CraftMetaItem meta) {
         if (meta == null) {
             return;
         }
@@ -471,7 +471,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
      * Checking your own internals is redundant if you are not common, as notUncommon is meant for checking those 'not common' variables.
      */
    // @Overriden
-    boolean equalsCommon(BukkitMetaItem that) {
+    boolean equalsCommon(CraftMetaItem that) {
         return ((this.hasDisplayName() ? that.hasDisplayName() && this.displayName.equals(that.displayName) : !that.hasDisplayName()))
                 && (this.hasEnchants() ? that.hasEnchants() && this.enchantments.equals(that.enchantments) : !that.hasEnchants())
                 && (this.hasLore() ? that.hasLore() && this.lore.equals(that.lore) : !that.hasLore())
@@ -484,7 +484,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
      * Empty uncommon parts implies the NBT data would be equivalent if both were applied to an item
      */
     //@Overridden TODO fix this - represents a library change in CB that I haven't matched
-    boolean notUncommon(BukkitMetaItem meta) {
+    boolean notUncommon(CraftMetaItem meta) {
         return true;
     }
 
@@ -507,7 +507,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
     @Override
     public CraftMetaItem clone() {
         try {
-            return (BukkitMetaItem) super.clone();
+            return (CraftMetaItem) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new Error(e);
         }

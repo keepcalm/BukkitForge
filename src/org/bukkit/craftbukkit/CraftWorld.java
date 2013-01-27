@@ -97,12 +97,12 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.block.CraftBlock;
-import org.bukkit.craftbukkit.entity.BukkitEntity;
-import org.bukkit.craftbukkit.entity.BukkitItem;
-import org.bukkit.craftbukkit.entity.BukkitLightningStrike;
-import org.bukkit.craftbukkit.entity.BukkitMinecart;
-import org.bukkit.craftbukkit.entity.BukkitPlayer;
-import org.bukkit.craftbukkit.inventory.BukkitItemStack;
+import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftItem;
+import org.bukkit.craftbukkit.entity.CraftLightningStrike;
+import org.bukkit.craftbukkit.entity.CraftMinecart;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.metadata.BlockMetadataStore;
 import org.bukkit.craftbukkit.utils.LongHash;
 import org.bukkit.entity.Ambient;
@@ -183,7 +183,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class CraftWorld implements World {
 	private final WorldServer world;
 	private Environment environment;
-	private final CraftServer server ;//= (BukkitServer) Bukkit.getServer();
+	private final CraftServer server ;//= (CraftServer) Bukkit.getServer();
 	private ChunkGenerator generator;
 	private final List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
 	private final BlockMetadataStore blockMetadata = new BlockMetadataStore(this);
@@ -418,7 +418,7 @@ public class CraftWorld implements World {
 
 	public void loadChunk(Chunk chunk) {
 		loadChunk(chunk.getX(), chunk.getZ());
-		//((BukkitChunk) getChunkAt(chunk.getX(), chunk.getZ())).getHandle().bukkitChunk = chunk;
+		//((CraftChunk) getChunkAt(chunk.getX(), chunk.getZ())).getHandle().bukkitChunk = chunk;
 	}
 
 	public WorldServer getHandle() {
@@ -428,11 +428,11 @@ public class CraftWorld implements World {
 	public org.bukkit.entity.Item dropItem(Location loc, ItemStack item) {
 		Validate.notNull(item, "Cannot drop a Null item.");
 		Validate.isTrue(item.getTypeId() != 0, "Cannot drop AIR.");
-		BukkitItemStack clone = new CraftItemStack(item);
+		CraftItemStack clone = new CraftItemStack(item);
 		EntityItem entity = new EntityItem(world, loc.getX(), loc.getY(), loc.getZ(), clone.getHandle());
 		entity.delayBeforeCanPickup = 10;
 		world.spawnEntityInWorld(entity);
-		return new CraftItem((BukkitServer) Bukkit.getServer(), entity);
+		return new CraftItem((CraftServer) Bukkit.getServer(), entity);
 	}
 
 	public org.bukkit.entity.Item dropItemNaturally(Location loc, ItemStack item) {
@@ -454,7 +454,7 @@ public class CraftWorld implements World {
 		arrow.motionZ = velocity.getZ();
 		world.spawnEntityInWorld(arrow);
 		//arrow.fire(velocity.getX(), velocity.getY(), velocity.getZ(), speed, spread);
-		return (Arrow)BukkitEntity.getEntity((BukkitServer) Craft.getServer(), arrow);
+		return (Arrow)CraftEntity.getEntity((CraftServer) Bukkit.getServer(), arrow);
 	}
 
 	@Deprecated
@@ -489,7 +489,7 @@ public class CraftWorld implements World {
 	}
 
 	public boolean generateTree(Location loc, TreeType type, World delegate) {
-		net.minecraft.world.World world = ((BukkitWorld) delegate).getHandle();
+		net.minecraft.world.World world = ((CraftWorld) delegate).getHandle();
 		WorldGenerator gen;
 		switch (type) {
 		case BIG_TREE:
@@ -556,7 +556,7 @@ public class CraftWorld implements World {
 
 	@Override
 	public String toString() {
-		return "BukkitWorld{name=" + getName() + "}";
+		return "CraftWorld{name=" + getName() + "}";
 	}
 
 	public long getTime() {
@@ -580,7 +580,7 @@ public class CraftWorld implements World {
 
 		// Forces the client to update to the new time immediately
 		for (Player p : getPlayers()) {
-			BukkitPlayer cp = (BukkitPlayer) p;
+			CraftPlayer cp = (CraftPlayer) p;
 			if (cp.getHandle().playerNetServerHandler == null) continue;
 
 			(server).getHandle().getConfigurationManager().updateTimeAndWeatherForPlayer(cp.getHandle(), world);
@@ -821,7 +821,7 @@ public class CraftWorld implements World {
 	}
 
 	public void setStorm(boolean hasStorm) {
-		BukkitServer server = this.server;
+		CraftServer server = this.server;
 
 		WeatherChangeEvent weather = new WeatherChangeEvent(this, hasStorm);
 		server.getPluginManager().callEvent(weather);
@@ -848,7 +848,7 @@ public class CraftWorld implements World {
 
 	public void setThundering(boolean thundering) {
 		if (thundering && !hasStorm()) setStorm(true);
-		BukkitServer server = this.server;
+		CraftServer server = this.server;
 
 		ThunderChangeEvent thunder = new ThunderChangeEvent((org.bukkit.World) this, thundering);
 		server.getPluginManager().callEvent(thunder);
@@ -911,12 +911,12 @@ public class CraftWorld implements World {
 		radius *= radius;
 
 		for (Player player : getPlayers()) {
-			if (((EntityPlayerMP) ((BukkitPlayer) player).getHandle()).playerNetServerHandler == null) continue;
+			if (((EntityPlayerMP) ((CraftPlayer) player).getHandle()).playerNetServerHandler == null) continue;
 			if (!location.getWorld().equals(player.getWorld())) continue;
 
 			distance = (int) player.getLocation().distanceSquared(location);
 			if (distance <= radius) {
-				((EntityPlayerMP) ((BukkitPlayer) player).getHandle()).playerNetServerHandler.sendPacketToPlayer(packet);
+				((EntityPlayerMP) ((CraftPlayer) player).getHandle()).playerNetServerHandler.sendPacketToPlayer(packet);
 			}
 		}
 	}
@@ -1143,7 +1143,7 @@ public class CraftWorld implements World {
 
 		if (entity != null) {
 			world.spawnEntityInWorld(entity);
-			return (T) CraftEntity.getEntity(BukkitServer.instance(), entity);
+			return (T) CraftEntity.getEntity(CraftServer.instance(), entity);
 		}
 		// mcpc does this as well!
 		throw new IllegalArgumentException("Cannot spawn an entity for " + clazz.getName());
@@ -1197,7 +1197,7 @@ public class CraftWorld implements World {
 			 return false;
 		 }
 
-		 final CraftWorld other = (BukkitWorld) obj;
+		 final CraftWorld other = (CraftWorld) obj;
 		 return other.hashCode() == this.hashCode();
 		// return other.getHandle().getWorldInfo().getDimension() == world.getWorldInfo().getDimension() ||
 			//	 other.getHandle().equals(this.getHandle());
@@ -1381,7 +1381,7 @@ public class CraftWorld implements World {
 		  Explosion exp = new Explosion(world, null, x, y, z, power);
 		  exp.isFlaming = setFire;
 		  ExplosionPrimeEvent ev = new ExplosionPrimeEvent(null, power, setFire);
-		  Craft.getPluginManager().callEvent(ev);
+		  Bukkit.getPluginManager().callEvent(ev);
 		  if (ev.isCancelled()) {
 			  return false;
 		  }

@@ -7,8 +7,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.SerializableMeta;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.SerializableMeta.Deserializers;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta.Deserializers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
@@ -16,19 +16,19 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 @DelegateDeserialization(SerializableMeta.class)
-class CraftMetaEnchantedBook extends BukkitMetaItem implements EnchantmentStorageMeta {
+class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorageMeta {
     static final ItemMetaKey STORED_ENCHANTMENTS = new ItemMetaKey("StoredEnchantments", "stored-enchants");
 
     private Map<Enchantment, Integer> enchantments;
 
-    CraftMetaEnchantedBook(BukkitMetaItem meta) {
+    CraftMetaEnchantedBook(CraftMetaItem meta) {
         super(meta);
 
         if (!(meta instanceof CraftMetaEnchantedBook)) {
             return;
         }
 
-        CraftMetaEnchantedBook that = (BukkitMetaEnchantedBook) meta;
+        CraftMetaEnchantedBook that = (CraftMetaEnchantedBook) meta;
 
         if (that.hasEnchants()) {
             this.enchantments = new HashMap<Enchantment, Integer>(that.enchantments);
@@ -74,12 +74,12 @@ class CraftMetaEnchantedBook extends BukkitMetaItem implements EnchantmentStorag
     }
 
     @Override
-    boolean equalsCommon(BukkitMetaItem meta) {
+    boolean equalsCommon(CraftMetaItem meta) {
         if (!super.equalsCommon(meta)) {
             return false;
         }
         if (meta instanceof CraftMetaEnchantedBook) {
-            CraftMetaEnchantedBook that = (BukkitMetaEnchantedBook) meta;
+            CraftMetaEnchantedBook that = (CraftMetaEnchantedBook) meta;
 
             return (hasStoredEnchants() ? that.hasStoredEnchants() && this.enchantments.equals(that.enchantments) : !that.hasStoredEnchants());
         }
@@ -87,7 +87,7 @@ class CraftMetaEnchantedBook extends BukkitMetaItem implements EnchantmentStorag
     }
 
     @Override
-    boolean notUncommon(BukkitMetaItem meta) {
+    boolean notUncommon(CraftMetaItem meta) {
         return super.notUncommon(meta) && (meta instanceof CraftMetaEnchantedBook || isEnchantedEmpty());
     }
 
@@ -105,7 +105,7 @@ class CraftMetaEnchantedBook extends BukkitMetaItem implements EnchantmentStorag
 
     @Override
     public CraftMetaEnchantedBook clone() {
-        CraftMetaEnchantedBook meta = (BukkitMetaEnchantedBook) super.clone();
+        CraftMetaEnchantedBook meta = (CraftMetaEnchantedBook) super.clone();
 
         if (hasStoredEnchants()) {
             meta.enchantments = new HashMap<Enchantment, Integer>(enchantments);

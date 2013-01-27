@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.passive.EntityMooshroom;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.MushroomCow;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftMushroomCow extends BukkitCow implements MushroomCow {
-    public CraftMushroomCow(BukkitServer server, EntityMooshroom entity) {
+public class CraftMushroomCow extends CraftCow implements MushroomCow {
+    public CraftMushroomCow(CraftServer server, EntityMooshroom entity) {
         super(server, entity);
     }
 
@@ -19,7 +19,7 @@ public class CraftMushroomCow extends BukkitCow implements MushroomCow {
 
     @Override
     public String toString() {
-        return "BukkitMushroomCow";
+        return "CraftMushroomCow";
     }
 
     public EntityType getType() {

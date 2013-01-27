@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.effect.EntityWeatherEffect;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Weather;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftWeather extends BukkitEntity implements Weather {
-    public CraftWeather(final BukkitServer server, final EntityWeatherEffect entity) {
+public class CraftWeather extends CraftEntity implements Weather {
+    public CraftWeather(final CraftServer server, final EntityWeatherEffect entity) {
         super(server, entity);
     }
 
@@ -19,7 +19,7 @@ public class CraftWeather extends BukkitEntity implements Weather {
 
     @Override
     public String toString() {
-        return "BukkitWeather";
+        return "CraftWeather";
     }
 
     public EntityType getType() {

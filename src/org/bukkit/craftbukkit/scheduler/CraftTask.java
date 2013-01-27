@@ -2,10 +2,9 @@ package org.bukkit.craftbukkit.scheduler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.CraftTask;
 
 
-class CraftTask implements org.bukkit.scheduler.CraftTask, Runnable {
+class CraftTask implements org.bukkit.scheduler.BukkitTask, Runnable {
 
     private volatile CraftTask next = null;
     /**

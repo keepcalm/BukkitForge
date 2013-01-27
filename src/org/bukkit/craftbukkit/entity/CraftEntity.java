@@ -74,9 +74,9 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.BukkitPlayerCache;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.BukkitWorld;
+import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -90,19 +90,19 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 	protected Entity entity;
 	private EntityDamageEvent lastDamageEvent;
 
-	public CraftEntity(final BukkitServer server, final Entity entity) {
+	public CraftEntity(final CraftServer server, final Entity entity) {
 		this.server = server;
 		this.entity = entity;
 	}
 
-	public static CraftEntity getEntity(BukkitServer server, Entity entity) {
+	public static CraftEntity getEntity(CraftServer server, Entity entity) {
 		/**
 		 * Order is *EXTREMELY* important -- keep it right! =D
 		 */
 		if (entity instanceof EntityLiving) {
 			// Players
 			if (entity instanceof EntityPlayer) {
-				if (entity instanceof EntityPlayerMP) { return CraftPlayerCache.getBukkitPlayer(server, (EntityPlayerMP) entity); }
+				if (entity instanceof EntityPlayerMP) { return CraftPlayerCache.getCraftPlayer(server, (EntityPlayerMP) entity); }
 				else { return new CraftEntityHuman(server, (EntityPlayer) entity); }
 			}
 			else if (entity instanceof EntityCreature) {
@@ -197,8 +197,8 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 		}
 		else if (entity instanceof EntityMinecart) {
 			EntityMinecart mc = (EntityMinecart) entity;
-			if (mc.minecartType == CraftMinecart.Type.StorageMinecart.getId()) { return new BukkitStorageMinecart(server, mc); }
-			else if (mc.minecartType == CraftMinecart.Type.PoweredMinecart.getId()) { return new BukkitPoweredMinecart(server, mc); }
+			if (mc.minecartType == CraftMinecart.Type.StorageMinecart.getId()) { return new CraftStorageMinecart(server, mc); }
+			else if (mc.minecartType == CraftMinecart.Type.PoweredMinecart.getId()) { return new CraftPoweredMinecart(server, mc); }
 			else { return new CraftMinecart(server, mc); }
 		}
 		else if (entity instanceof EntityPainting) { return new CraftPainting(server, (EntityPainting) entity); }
@@ -220,7 +220,7 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 		}
 
 		if (BukkitContainer.DEBUG) 
-			BukkitServer.instance().getLogger().warning("Unknown entity: " + entity.getClass().getCanonicalName() + " - returning a dummy instance of CraftEntity...");
+			CraftServer.instance().getLogger().warning("Unknown entity: " + entity.getClass().getCanonicalName() + " - returning a dummy instance of CraftEntity...");
 
 		return new CraftEntity(server,entity);
 	}
@@ -256,8 +256,8 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 			server.getHandle().getConfigurationManager().transferPlayerToDimension(fp, 1);
 		}
 		else {
-			//System.out.println("[BukkitForge temp debug - will be removed in next build] TP " + this + " from " + getWorld() + " to " + location.getWorld());
-			server.getHandle().getConfigurationManager().transferEntityToWorld(entity, 1, (WorldServer) entity.worldObj, ((BukkitWorld)location.getWorld()).getHandle());
+			//System.out.println("[CraftForge temp debug - will be removed in next build] TP " + this + " from " + getWorld() + " to " + location.getWorld());
+			server.getHandle().getConfigurationManager().transferEntityToWorld(entity, 1, (WorldServer) entity.worldObj, ((CraftWorld)location.getWorld()).getHandle());
 		}
 		//}
 		entity.setLocationAndAngles(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
@@ -279,7 +279,7 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 		List<org.bukkit.entity.Entity> bukkitEntityList = new java.util.ArrayList<org.bukkit.entity.Entity>(notchEntityList.size());
 
 		for (Entity e : notchEntityList) {
-			bukkitEntityList.add(BukkitEntity.getEntity(this.server, e));
+			bukkitEntityList.add(CraftEntity.getEntity(this.server, e));
 		}
 		return bukkitEntityList;
 	}
@@ -335,7 +335,7 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 
 	public boolean setPassenger(org.bukkit.entity.Entity passenger) {
 		if (passenger instanceof CraftEntity) {
-			((BukkitEntity) passenger).getHandle().ridingEntity = (getHandle());
+			((CraftEntity) passenger).getHandle().ridingEntity = (getHandle());
 			return true;
 		} else {
 			return false;
@@ -397,7 +397,7 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 		int posZ = getHandle().serverPosZ;
 
 		Packet61DoorChange pack = new Packet61DoorChange(type.getData(), posX, posY, posZ, 0, false);
-		BukkitServer.instance().getHandle().getConfigurationManager().sendToAllNear((double) posX, (double) posY, (double) posZ, 64.0D, getHandle().dimension, pack);
+		CraftServer.instance().getHandle().getConfigurationManager().sendToAllNear((double) posX, (double) posY, (double) posZ, 64.0D, getHandle().dimension, pack);
 	}
 
 	public void setHandle(final Entity entity) {
@@ -406,7 +406,7 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 
 	@Override
 	public String toString() {
-		return "BukkitEntity{" + "id=" + getEntityId() + '}';
+		return "CraftEntity{" + "id=" + getEntityId() + '}';
 	}
 
 	@Override
@@ -417,7 +417,7 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final CraftEntity other = (BukkitEntity) obj;
+		final CraftEntity other = (CraftEntity) obj;
 		return (this.getEntityId() == other.getEntityId());
 	}
 
@@ -461,11 +461,11 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 		if (getHandle().ridingEntity == null || !(getHandle().ridingEntity instanceof EntityMinecart)) {
 			return null;
 		}
-		BukkitEntity j = CraftEntity.getEntity(this.server, getHandle().ridingEntity);
+		CraftEntity j = CraftEntity.getEntity(this.server, getHandle().ridingEntity);
 		return j;
 	}
 
-	public boolean canSee(BukkitPlayer bukkitPlayer) {
+	public boolean canSee(CraftPlayer bukkitPlayer) {
 		EntityPlayerMP j = bukkitPlayer.getHandle();
 		if (j.canEntityBeSeen(getHandle())) {
 			return true;

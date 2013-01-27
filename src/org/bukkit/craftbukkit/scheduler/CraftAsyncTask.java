@@ -35,7 +35,7 @@ class CraftAsyncTask extends CraftTask {
                 return;
             }
             workers.add(
-                new CraftWorker() {
+                new BukkitWorker() {
                     public Thread getThread() {
                         return thread;
                     }

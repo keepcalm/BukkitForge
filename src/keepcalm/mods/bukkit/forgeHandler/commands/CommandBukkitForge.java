@@ -9,8 +9,6 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.BukkitConsoleCommandSender;
-import org.bukkit.craftbukkit.BukkitPlayerCache;
 
 
 /**

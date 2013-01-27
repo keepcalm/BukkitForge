@@ -2,14 +2,14 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.item.EntityTNTPrimed;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftTNTPrimed extends BukkitEntity implements TNTPrimed {
+public class CraftTNTPrimed extends CraftEntity implements TNTPrimed {
 
-    public CraftTNTPrimed(BukkitServer server, EntityTNTPrimed entity) {
+    public CraftTNTPrimed(CraftServer server, EntityTNTPrimed entity) {
         super(server, entity);
     }
     
@@ -48,7 +48,7 @@ public class CraftTNTPrimed extends BukkitEntity implements TNTPrimed {
 
     @Override
     public String toString() {
-        return "BukkitTNTPrimed";
+        return "CraftTNTPrimed";
     }
 
     public EntityType getType() {

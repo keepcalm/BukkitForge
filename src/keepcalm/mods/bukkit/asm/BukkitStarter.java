@@ -2,8 +2,6 @@ package keepcalm.mods.bukkit.asm;
 
 import java.util.logging.Level;
 
-import org.bukkit.craftbukkit.BukkitServer;
-
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandConsole;
@@ -19,6 +17,9 @@ import net.minecraft.command.CommandServerOp;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
+
+import org.bukkit.craftbukkit.CraftServer;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class BukkitStarter implements Runnable {
@@ -44,7 +45,7 @@ public class BukkitStarter implements Runnable {
 			CommandRequirementRegistry.load();
 			scm.registerCommand(new CommandSetLevel());
 			
-			BukkitContainer.bServer = new BukkitServer(MinecraftServer.getServer());
+			BukkitContainer.bServer = new CraftServer(MinecraftServer.getServer());
 			scm.registerCommand(new BukkitCommandStop());
 		}
 		catch (Exception e) {

@@ -1,8 +1,6 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
 import static keepcalm.mods.bukkit.BukkitContainer.DEBUG;
-
-
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.utils.CaseInsensitiveArrayList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,13 +9,10 @@ import net.minecraft.util.ChunkCoordinates;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.BukkitPlayerCache;
-import org.bukkit.craftbukkit.BukkitServer;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-
 
 import cpw.mods.fml.common.IPlayerTracker;
 

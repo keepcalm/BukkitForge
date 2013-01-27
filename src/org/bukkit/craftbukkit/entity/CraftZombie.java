@@ -2,14 +2,14 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntityZombie;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Zombie;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftZombie extends BukkitMonster implements Zombie {
+public class CraftZombie extends CraftMonster implements Zombie {
 
-    public CraftZombie(BukkitServer server, EntityZombie entity) {
+    public CraftZombie(CraftServer server, EntityZombie entity) {
         super(server, entity);
     }
 

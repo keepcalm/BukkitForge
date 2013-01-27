@@ -13,7 +13,7 @@ public class CraftMapRenderer extends MapRenderer {
 
     private final MapData worldMap;
 
-    public CraftMapRenderer(BukkitMapView mapView, MapData worldMap) {
+    public CraftMapRenderer(CraftMapView mapView, MapData worldMap) {
         super(false);
         this.worldMap = worldMap;
     }

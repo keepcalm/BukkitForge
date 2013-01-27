@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.item.EntityEnderPearl;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.EntityType;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftEnderPearl extends BukkitProjectile implements EnderPearl {
-    public CraftEnderPearl(BukkitServer server, EntityEnderPearl entity) {
+public class CraftEnderPearl extends CraftProjectile implements EnderPearl {
+    public CraftEnderPearl(CraftServer server, EntityEnderPearl entity) {
         super(server, entity);
     }
 
@@ -19,7 +19,7 @@ public class CraftEnderPearl extends BukkitProjectile implements EnderPearl {
 
     @Override
     public String toString() {
-        return "BukkitEnderPearl";
+        return "CraftEnderPearl";
     }
 
     public EntityType getType() {

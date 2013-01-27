@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntitySnowman;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Snowman;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftSnowman extends BukkitGolem implements Snowman {
-    public CraftSnowman(BukkitServer server, EntitySnowman entity) {
+public class CraftSnowman extends CraftGolem implements Snowman {
+    public CraftSnowman(CraftServer server, EntitySnowman entity) {
         super(server, entity);
     }
 
@@ -19,7 +19,7 @@ public class CraftSnowman extends BukkitGolem implements Snowman {
 
     @Override
     public String toString() {
-        return "BukkitSnowman";
+        return "CraftSnowman";
     }
 
     public EntityType getType() {

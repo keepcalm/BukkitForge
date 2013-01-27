@@ -66,6 +66,6 @@ public abstract class ServerCommandSender implements CommandSender {
     }
 
     public Server getServer() {
-        return Craft.getServer();
+        return Bukkit.getServer();
     }
 }

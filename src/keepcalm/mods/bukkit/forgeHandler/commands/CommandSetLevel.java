@@ -1,7 +1,5 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
-import org.bukkit.craftbukkit.BukkitServer;
-
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandRequirementRegistry.Level;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;

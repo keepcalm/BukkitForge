@@ -2,12 +2,12 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntityWitch;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Witch;
 
-public class CraftWitch extends BukkitMonster implements Witch {
-    public CraftWitch(BukkitServer server, EntityWitch entity) {
+public class CraftWitch extends CraftMonster implements Witch {
+    public CraftWitch(CraftServer server, EntityWitch entity) {
         super(server, entity);
     }
 
@@ -18,7 +18,7 @@ public class CraftWitch extends BukkitMonster implements Witch {
 
     @Override
     public String toString() {
-        return "BukkitWitch";
+        return "CraftWitch";
     }
 
     public EntityType getType() {

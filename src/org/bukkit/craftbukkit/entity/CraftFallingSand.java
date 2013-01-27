@@ -3,15 +3,15 @@ package org.bukkit.craftbukkit.entity;
 import net.minecraft.entity.item.EntityFallingSand;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftFallingSand extends BukkitEntity implements FallingBlock {
+public class CraftFallingSand extends CraftEntity implements FallingBlock {
 	private boolean drop = true;
 	
-    public CraftFallingSand(BukkitServer server, EntityFallingSand entity) {
+    public CraftFallingSand(CraftServer server, EntityFallingSand entity) {
         super(server, entity);
     }
 
@@ -22,7 +22,7 @@ public class CraftFallingSand extends BukkitEntity implements FallingBlock {
 
     @Override
     public String toString() {
-        return "BukkitFallingSand";
+        return "CraftFallingSand";
     }
 
     public EntityType getType() {

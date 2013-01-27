@@ -22,11 +22,11 @@ public class CraftShapedRecipe extends ShapedRecipe implements CraftRecipe {
         //this.recipe = recipe;
     }
 
-    public static CraftShapedRecipe fromBukkitRecipe(ShapedRecipe recipe) {
+    public static CraftShapedRecipe fromCraftRecipe(ShapedRecipe recipe) {
         if (recipe instanceof CraftShapedRecipe) {
-            return (BukkitShapedRecipe) recipe;
+            return (CraftShapedRecipe) recipe;
         }
-        CraftShapedRecipe ret = new BukkitShapedRecipe(recipe.getResult());
+        CraftShapedRecipe ret = new CraftShapedRecipe(recipe.getResult());
         String[] shape = recipe.getShape();
         ret.shape(shape);
         Map<Character, ItemStack> ingredientMap = recipe.getIngredientMap();
@@ -60,6 +60,6 @@ public class CraftShapedRecipe extends ShapedRecipe implements CraftRecipe {
             data[i] = new net.minecraft.item.ItemStack(id, 1, dmg);
             i++;
         }
-        GameRegistry.addRecipe(BukkitItemStack.createNMSItemStack(this.getResult()), data);
+        GameRegistry.addRecipe(CraftItemStack.createNMSItemStack(this.getResult()), data);
     }
 }

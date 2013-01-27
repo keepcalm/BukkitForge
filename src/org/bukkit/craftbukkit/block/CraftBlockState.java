@@ -196,19 +196,19 @@ public class CraftBlockState implements BlockState {
     }
 
     public void setMetadata(String metadataKey, MetadataValue newMetadataValue) {
-        chunk.getBukkitWorld().getBlockMetadata().setMetadata(getBlock(), metadataKey, newMetadataValue);
+        chunk.getCraftWorld().getBlockMetadata().setMetadata(getBlock(), metadataKey, newMetadataValue);
     }
 
     public List<MetadataValue> getMetadata(String metadataKey) {
-        return chunk.getBukkitWorld().getBlockMetadata().getMetadata(getBlock(), metadataKey);
+        return chunk.getCraftWorld().getBlockMetadata().getMetadata(getBlock(), metadataKey);
     }
 
     public boolean hasMetadata(String metadataKey) {
-        return chunk.getBukkitWorld().getBlockMetadata().hasMetadata(getBlock(), metadataKey);
+        return chunk.getCraftWorld().getBlockMetadata().hasMetadata(getBlock(), metadataKey);
     }
 
     public void removeMetadata(String metadataKey, Plugin owningPlugin) {
-        chunk.getBukkitWorld().getBlockMetadata().removeMetadata(getBlock(), metadataKey, owningPlugin);
+        chunk.getCraftWorld().getBlockMetadata().removeMetadata(getBlock(), metadataKey, owningPlugin);
     }
 
 	@Override

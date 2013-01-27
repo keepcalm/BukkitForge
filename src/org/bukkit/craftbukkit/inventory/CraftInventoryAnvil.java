@@ -4,7 +4,7 @@ import net.minecraft.inventory.IInventory;
 
 import org.bukkit.inventory.AnvilInventory;
 
-public class CraftInventoryAnvil extends BukkitInventory implements AnvilInventory {
+public class CraftInventoryAnvil extends CraftInventory implements AnvilInventory {
     public CraftInventoryAnvil(IInventory anvil) {
         super(anvil);
     }

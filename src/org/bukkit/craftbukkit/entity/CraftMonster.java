@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntityMob;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Monster;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftMonster extends BukkitCreature implements Monster {
+public class CraftMonster extends CraftCreature implements Monster {
 
-    public CraftMonster(BukkitServer server, EntityMob entity) {
+    public CraftMonster(CraftServer server, EntityMob entity) {
         super(server, entity);
     }
 
@@ -19,6 +19,6 @@ public class CraftMonster extends BukkitCreature implements Monster {
 
     @Override
     public String toString() {
-        return "BukkitMonster";
+        return "CraftMonster";
     }
 }

@@ -1,33 +1,33 @@
 package org.bukkit.craftbukkit.inventory;
 
+import static org.bukkit.craftbukkit.inventory.CraftItemFactory.DEFAULT_LEATHER_COLOR;
+
 import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 
-import static org.bukkit.craftbukkit.inventory.BukkitItemFactory.DEFAULT_LEATHER_COLOR;
-
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.SerializableMeta;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import com.google.common.collect.ImmutableMap.Builder;
 
 @DelegateDeserialization(SerializableMeta.class)
-class CraftMetaLeatherArmor extends BukkitMetaItem implements LeatherArmorMeta {
+class CraftMetaLeatherArmor extends CraftMetaItem implements LeatherArmorMeta {
     static final ItemMetaKey COLOR = new ItemMetaKey("color");
 
     private Color color = DEFAULT_LEATHER_COLOR;
 
-    CraftMetaLeatherArmor(BukkitMetaItem meta) {
+    CraftMetaLeatherArmor(CraftMetaItem meta) {
         super(meta);
         if (!(meta instanceof CraftMetaLeatherArmor)) {
             return;
         }
 
-        CraftMetaLeatherArmor armorMeta = (BukkitMetaLeatherArmor) meta;
+        CraftMetaLeatherArmor armorMeta = (CraftMetaLeatherArmor) meta;
         this.color = armorMeta.color;
     }
 
@@ -77,7 +77,7 @@ class CraftMetaLeatherArmor extends BukkitMetaItem implements LeatherArmorMeta {
 
     @Override
     public CraftMetaLeatherArmor clone() {
-        return (BukkitMetaLeatherArmor) super.clone();
+        return (CraftMetaLeatherArmor) super.clone();
     }
 
     public Color getColor() {
@@ -109,12 +109,12 @@ class CraftMetaLeatherArmor extends BukkitMetaItem implements LeatherArmorMeta {
     }
 
     @Override
-    boolean equalsCommon(BukkitMetaItem meta) {
+    boolean equalsCommon(CraftMetaItem meta) {
         if (!super.equalsCommon(meta)) {
             return false;
         }
         if (meta instanceof CraftMetaLeatherArmor) {
-            CraftMetaLeatherArmor that = (BukkitMetaLeatherArmor) meta;
+            CraftMetaLeatherArmor that = (CraftMetaLeatherArmor) meta;
 
             return color.equals(that.color);
         }
@@ -122,7 +122,7 @@ class CraftMetaLeatherArmor extends BukkitMetaItem implements LeatherArmorMeta {
     }
 
     @Override
-    boolean notUncommon(BukkitMetaItem meta) {
+    boolean notUncommon(CraftMetaItem meta) {
         return super.notUncommon(meta) && (meta instanceof CraftMetaLeatherArmor || isLeatherArmorEmpty());
     }
 

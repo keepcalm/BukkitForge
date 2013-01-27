@@ -16,7 +16,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.command.defaults.VanillaCommand;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.help.GenericCommandHelpTopic;
 import org.bukkit.help.HelpMap;
 import org.bukkit.help.HelpTopic;
@@ -29,7 +29,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
 /**
- * Standard implementation of {@link HelpMap} for CraftBukkit servers.
+ * Standard implementation of {@link HelpMap} for CraftCraft servers.
  */
 public class SimpleHelpMap implements HelpMap {
 
@@ -40,7 +40,7 @@ public class SimpleHelpMap implements HelpMap {
     private HelpYamlReader yaml;
 
     @SuppressWarnings("unchecked")
-    public SimpleHelpMap(BukkitServer server) {
+    public SimpleHelpMap(CraftServer server) {
         this.helpTopics = new TreeMap<String, HelpTopic>(HelpTopicComparator.topicNameComparatorInstance()); // Using a TreeMap for its explicit sorting on key
         this.topicFactoryMap = new HashMap<Class, HelpTopicFactory<Command>>();
         this.server = server;
@@ -200,7 +200,7 @@ public class SimpleHelpMap implements HelpMap {
     }
 
     private String getCommandPluginName(Command command) {
-        if (command instanceof CraftCommand || command instanceof VanillaCommand) {
+        if (command instanceof BukkitCommand || command instanceof VanillaCommand) {
             return "Bukkit";
         }
         if (command instanceof PluginIdentifiableCommand) {
@@ -210,7 +210,7 @@ public class SimpleHelpMap implements HelpMap {
     }
 
     private boolean commandInIgnoredPlugin(Command command, Set<String> ignoredPlugins) {
-        if ((command instanceof CraftCommand || command instanceof VanillaCommand) && ignoredPlugins.contains("Bukkit")) {
+        if ((command instanceof BukkitCommand || command instanceof VanillaCommand) && ignoredPlugins.contains("Craft")) {
             return true;
         }
         if (command instanceof PluginIdentifiableCommand && ignoredPlugins.contains(((PluginIdentifiableCommand)command).getPlugin().getName())) {

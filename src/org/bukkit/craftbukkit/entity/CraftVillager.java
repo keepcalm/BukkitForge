@@ -3,13 +3,13 @@ package org.bukkit.craftbukkit.entity;
 import net.minecraft.entity.passive.EntityVillager;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftVillager extends BukkitAgeable implements Villager {
-    public CraftVillager(BukkitServer server, EntityVillager entity) {
+public class CraftVillager extends CraftAgeable implements Villager {
+    public CraftVillager(CraftServer server, EntityVillager entity) {
         super(server, entity);
     }
 
@@ -20,7 +20,7 @@ public class CraftVillager extends BukkitAgeable implements Villager {
 
     @Override
     public String toString() {
-        return "BukkitVillager";
+        return "CraftVillager";
     }
 
     public EntityType getType() {

@@ -2,14 +2,14 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.passive.EntityTameable;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Tameable;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftTameableAnimal extends BukkitAnimals implements Tameable, Creature {
-    public CraftTameableAnimal(BukkitServer server, EntityTameable entity) {
+public class CraftTameableAnimal extends CraftAnimals implements Tameable, Creature {
+    public CraftTameableAnimal(CraftServer server, EntityTameable entity) {
         super(server, entity);
     }
 

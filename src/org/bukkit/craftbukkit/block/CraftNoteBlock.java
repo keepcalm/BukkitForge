@@ -7,17 +7,17 @@ import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.block.Block;
 import org.bukkit.block.NoteBlock;
-import org.bukkit.craftbukkit.BukkitWorld;
-//import org.bukkit.craftbukkit.BukkitWorld;
+import org.bukkit.craftbukkit.CraftWorld;
+//import org.bukkit.craftbukkit.CraftWorld;
 
-public class CraftNoteBlock extends BukkitBlockState implements NoteBlock {
+public class CraftNoteBlock extends CraftBlockState implements NoteBlock {
     private final CraftWorld world;
     private final TileEntityNote note;
 
     public CraftNoteBlock(final Block block) {
         super(block);
 
-        world = (BukkitWorld) block.getWorld();
+        world = (CraftWorld) block.getWorld();
         note = (TileEntityNote) world.getTileEntityAt(getX(), getY(), getZ());
     }
 
@@ -78,7 +78,7 @@ public class CraftNoteBlock extends BukkitBlockState implements NoteBlock {
         synchronized (block) {
             if (block.getType() == Material.NOTE_BLOCK) {
             	//BlockNote nb = (BlockNote) block;
-            	TileEntityNote t = (TileEntityNote) ((BukkitWorld) block.getWorld()).getTileEntityAt(getX(), getY(), getZ());
+            	TileEntityNote t = (TileEntityNote) ((CraftWorld) block.getWorld()).getTileEntityAt(getX(), getY(), getZ());
             	byte oldNote = t.note;
             	t.note = note.getId();
             	net.minecraft.block.Block targ;
@@ -99,8 +99,8 @@ public class CraftNoteBlock extends BukkitBlockState implements NoteBlock {
             		throw new IllegalArgumentException("Invalid instrument: " + instrument.getType());
 
             	}
-            	((BukkitWorld)block.getWorld()).getHandle().setBlock(getX(), getY() - 1, getZ(), targ.blockID);
-            	t.triggerNote(((BukkitWorld) block.getWorld()).getHandle(), getX(), getY(), getZ());
+            	((CraftWorld)block.getWorld()).getHandle().setBlock(getX(), getY() - 1, getZ(), targ.blockID);
+            	t.triggerNote(((CraftWorld) block.getWorld()).getHandle(), getX(), getY(), getZ());
             	t.note = oldNote;
             	//world.getHandle().playNote(getX(), getY(), getZ(), block.getTypeId(), instrument.getType(), note.getId());
                 return true;

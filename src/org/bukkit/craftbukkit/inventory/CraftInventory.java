@@ -268,7 +268,7 @@ public class CraftInventory implements Inventory {
                     } else {
                         // More than a single stack!
                         if (item.getAmount() > getMaxItemStack()) {
-                            CraftItemStack stack = new BukkitItemStack(item.getTypeId(), getMaxItemStack(), item.getDurability());
+                            CraftItemStack stack = new CraftItemStack(item.getTypeId(), getMaxItemStack(), item.getDurability());
                             stack.addUnsafeEnchantments(item.getEnchantments());
                             setItem(firstFree, stack);
                             item.setAmount(item.getAmount() - getMaxItemStack());
@@ -413,7 +413,7 @@ public class CraftInventory implements Inventory {
         } else if (inventory instanceof TileEntityBrewingStand) {
             return InventoryType.BREWING;
         } else if (inventory instanceof CraftInventoryCustom.MinecraftInventory) {
-            return ((BukkitInventoryCustom.MinecraftInventory) inventory).getType();
+            return ((CraftInventoryCustom.MinecraftInventory) inventory).getType();
         } else if (inventory instanceof InventoryEnderChest) {
             return InventoryType.ENDER_CHEST;
         } else if (inventory instanceof InventoryMerchant) {

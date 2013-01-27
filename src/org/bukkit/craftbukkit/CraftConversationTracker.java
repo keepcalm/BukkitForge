@@ -7,7 +7,7 @@ import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
 
 /*
- * @author CraftBukkit
+ * @author CraftCraft
  */
 public class CraftConversationTracker {
 

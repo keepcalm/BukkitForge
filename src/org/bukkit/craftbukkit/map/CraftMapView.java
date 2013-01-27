@@ -10,18 +10,18 @@ import net.minecraft.world.storage.MapData;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.BukkitWorld;
-import org.bukkit.craftbukkit.entity.BukkitPlayer;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
-//import org.bukkit.craftbukkit.BukkitWorld;
-//import org.bukkit.craftbukkit.entity.BukkitPlayer;
+//import org.bukkit.craftbukkit.CraftWorld;
+//import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 public final class CraftMapView implements MapView {
 
-    private final Map<BukkitPlayer, RenderData> renderCache = new HashMap<BukkitPlayer, RenderData>();
+    private final Map<CraftPlayer, RenderData> renderCache = new HashMap<CraftPlayer, RenderData>();
     private final List<MapRenderer> renderers = new ArrayList<MapRenderer>();
-    private final Map<MapRenderer, Map<BukkitPlayer, CraftMapCanvas>> canvases = new HashMap<MapRenderer, Map<BukkitPlayer, BukkitMapCanvas>>();
+    private final Map<MapRenderer, Map<CraftPlayer, CraftMapCanvas>> canvases = new HashMap<MapRenderer, Map<CraftPlayer, CraftMapCanvas>>();
     protected final MapData worldMap;
 
     public CraftMapView(MapData worldMap) {
@@ -57,8 +57,8 @@ public final class CraftMapView implements MapView {
 
     public World getWorld() {
         byte dimension = (byte) worldMap.dimension;
-        for (World world : Craft.getServer().getWorlds()) {
-            if (((BukkitWorld) world).getHandle().getWorldInfo().getDimension() == dimension) {
+        for (World world : Bukkit.getServer().getWorlds()) {
+            if (((CraftWorld) world).getHandle().getWorldInfo().getDimension() == dimension) {
                 return world;
             }
         }
@@ -66,7 +66,7 @@ public final class CraftMapView implements MapView {
     }
 
     public void setWorld(World world) {
-        worldMap.dimension = (int) ((BukkitWorld) world).getHandle().getWorldInfo().getDimension();
+        worldMap.dimension = (int) ((CraftWorld) world).getHandle().getWorldInfo().getDimension();
     }
 
     public int getCenterX() {
@@ -92,7 +92,7 @@ public final class CraftMapView implements MapView {
     public void addRenderer(MapRenderer renderer) {
         if (!renderers.contains(renderer)) {
             renderers.add(renderer);
-            canvases.put(renderer, new HashMap<BukkitPlayer, CraftMapCanvas>());
+            canvases.put(renderer, new HashMap<CraftPlayer, CraftMapCanvas>());
             renderer.initialize(this);
         }
     }
@@ -100,7 +100,7 @@ public final class CraftMapView implements MapView {
     public boolean removeRenderer(MapRenderer renderer) {
         if (renderers.contains(renderer)) {
             renderers.remove(renderer);
-            for (Map.Entry<BukkitPlayer, CraftMapCanvas> entry : canvases.get(renderer).entrySet()) {
+            for (Map.Entry<CraftPlayer, CraftMapCanvas> entry : canvases.get(renderer).entrySet()) {
                 for (int x = 0; x < 128; ++x) {
                     for (int y = 0; y < 128; ++y) {
                         entry.getValue().setPixel(x, y, (byte) -1);
@@ -121,7 +121,7 @@ public final class CraftMapView implements MapView {
         return false;
     }
 
-    public RenderData render(BukkitPlayer player) {
+    public RenderData render(CraftPlayer player) {
         boolean context = isContextual();
         RenderData render = renderCache.get(context ? player : null);
 

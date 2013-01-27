@@ -16,7 +16,7 @@ public class CraftMapCanvas implements MapCanvas {
     private byte[] base;
     private MapCursorCollection cursors = new MapCursorCollection();
 
-    protected CraftMapCanvas(BukkitMapView mapView) {
+    protected CraftMapCanvas(CraftMapView mapView) {
         this.mapView = mapView;
         Arrays.fill(buffer, (byte) -1);
     }

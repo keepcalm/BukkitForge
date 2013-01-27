@@ -7,11 +7,11 @@ import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class CraftInventoryDoubleChest extends BukkitInventory implements DoubleChestInventory {
+public class CraftInventoryDoubleChest extends CraftInventory implements DoubleChestInventory {
     private final CraftInventory left;
     private final CraftInventory right;
 
-    public CraftInventoryDoubleChest(BukkitInventory left, BukkitInventory right) {
+    public CraftInventoryDoubleChest(CraftInventory left, CraftInventory right) {
         super(new InventoryLargeChest("Large chest", left.getInventory(), right.getInventory()));
         this.left = left;
         this.right = right;

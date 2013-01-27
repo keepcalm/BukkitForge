@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.item.EntityEnderPearl;
@@ -26,10 +27,11 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.BukkitPlayerCache;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.BukkitWorld;
-import org.bukkit.craftbukkit.inventory.BukkitEntityEquipment;
+import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.inventory.CraftContainer;
+import org.bukkit.craftbukkit.inventory.CraftEntityEquipment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.EnderPearl;
@@ -49,8 +51,8 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 //import net.minecraft.src.PotionEffect;
 
-public class CraftLivingEntity extends BukkitEntity implements LivingEntity {
-	public CraftLivingEntity(final BukkitServer server, final EntityLiving entity) {
+public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+	public CraftLivingEntity(final CraftServer server, final EntityLiving entity) {
 		super(server, entity);
 	}
 
@@ -160,9 +162,9 @@ public class CraftLivingEntity extends BukkitEntity implements LivingEntity {
 		DamageSource reason = DamageSource.generic;
 
 		if (source instanceof HumanEntity) {
-			reason = DamageSource.causePlayerDamage(((BukkitEntityHuman) source).getHandle());
+			reason = DamageSource.causePlayerDamage(((CraftEntityHuman) source).getHandle());
 		} else if (source instanceof LivingEntity) {
-			reason = DamageSource.causeMobDamage(((BukkitLivingEntity) source).getHandle());
+			reason = DamageSource.causeMobDamage(((CraftLivingEntity) source).getHandle());
 		}
 
 		if (entity instanceof EntityDragon) {
@@ -223,9 +225,9 @@ public class CraftLivingEntity extends BukkitEntity implements LivingEntity {
 			fp = (EntityPlayerMP) getHandle().attackingPlayer;
 		}
 		else {
-			fp = CraftContainer.MOD_PLAYER;
+			fp = BukkitContainer.MOD_PLAYER;
 		}
-		return getHandle().attackingPlayer == null && getHandle().isDead ? null : CraftPlayerCache.getBukkitPlayer(fp);
+		return getHandle().attackingPlayer == null && getHandle().isDead ? null : CraftPlayerCache.getCraftPlayer(fp);
 	}
 
 	public boolean addPotionEffect(PotionEffect effect) {
@@ -277,7 +279,7 @@ public class CraftLivingEntity extends BukkitEntity implements LivingEntity {
 
 	@SuppressWarnings("unchecked")
 	public <T extends Projectile> T launchProjectile(Class<? extends T> projectile) {
-		net.minecraft.world.World world = ((BukkitWorld) getWorld()).getHandle();
+		net.minecraft.world.World world = ((CraftWorld) getWorld()).getHandle();
 		net.minecraft.entity.Entity launch = null;
 
 		if (Snowball.class.isAssignableFrom(projectile)) {
@@ -323,7 +325,7 @@ public class CraftLivingEntity extends BukkitEntity implements LivingEntity {
 	}
 
 	public boolean hasLineOfSight(Entity other) {
-		return getHandle().getEntitySenses().canSee(((BukkitEntity) other).getHandle()); // am should be getEntitySenses
+		return getHandle().getEntitySenses().canSee(((CraftEntity) other).getHandle()); // am should be getEntitySenses
 	}
 
 	@Override

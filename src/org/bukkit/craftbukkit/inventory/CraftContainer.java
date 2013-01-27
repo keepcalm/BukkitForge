@@ -1,8 +1,9 @@
 package org.bukkit.craftbukkit.inventory;
 
-//import org.bukkit.craftbukkit.entity.BukkitPlayer;
+//import org.bukkit.craftbukkit.entity.CraftPlayer;
 import java.util.List;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IMerchant;
@@ -17,7 +18,7 @@ import net.minecraft.inventory.SlotMerchantResult;
 import net.minecraft.network.packet.Packet100OpenWindow;
 import net.minecraft.util.AxisAlignedBB;
 
-import org.bukkit.craftbukkit.entity.BukkitPlayer;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -33,8 +34,8 @@ public class CraftContainer extends Container {
         this.view = view;
         this.windowId = id;
         // TODO: Do we need to check that it really is a CraftInventory?
-        IInventory top = ((BukkitInventory)view.getTopInventory()).getInventory();
-        IInventory bottom = ((BukkitInventory)view.getBottomInventory()).getInventory();
+        IInventory top = ((CraftInventory)view.getTopInventory()).getInventory();
+        IInventory bottom = ((CraftInventory)view.getBottomInventory()).getInventory();
         cachedType = view.getType();
         cachedTitle = view.getTitle();
         cachedSize = getSize();
@@ -65,7 +66,7 @@ public class CraftContainer extends Container {
         }, id);
     }
 
-	public InventoryView getBukkitView() {
+	public InventoryView getCraftView() {
         return view;
     }
 
@@ -84,10 +85,10 @@ public class CraftContainer extends Container {
         cachedType = view.getType();
         cachedTitle = view.getTitle();
         if (view.getPlayer() instanceof CraftPlayer) {
-            CraftPlayer player = (BukkitPlayer) view.getPlayer();
+            CraftPlayer player = (CraftPlayer) view.getPlayer();
             int type = getNotchInventoryType(cachedType);
-            IInventory top = ((BukkitInventory)view.getTopInventory()).getInventory();
-            IInventory bottom = ((BukkitInventory)view.getBottomInventory()).getInventory();
+            IInventory top = ((CraftInventory)view.getTopInventory()).getInventory();
+            IInventory bottom = ((CraftInventory)view.getBottomInventory()).getInventory();
             // FIXME: is this all the slots?
             this.inventorySlots.clear();
             //this.slot.clear();
@@ -176,7 +177,7 @@ public class CraftContainer extends Container {
         	}
         }
         if (chosen == null) {
-        	keepcalm.mods.bukkit.BukkitContainer.bukkitLogger.severe("No valid villagers found!");
+        	BukkitContainer.bukkitLogger.severe("No valid villagers found!");
         }
         this.addSlotToContainer(new SlotMerchantResult(((InventoryPlayer) bottom).player, chosen, (InventoryMerchant) top, 2, 120, 53));
         int var4;

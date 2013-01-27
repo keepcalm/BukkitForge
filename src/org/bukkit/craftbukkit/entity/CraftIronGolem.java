@@ -2,14 +2,14 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntityIronGolem;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftIronGolem extends BukkitGolem implements IronGolem {
+public class CraftIronGolem extends CraftGolem implements IronGolem {
 	private boolean playerCreated = false;
-    public CraftIronGolem(BukkitServer server, EntityIronGolem entity) {
+    public CraftIronGolem(CraftServer server, EntityIronGolem entity) {
         super(server, entity);
     }
 
@@ -20,7 +20,7 @@ public class CraftIronGolem extends BukkitGolem implements IronGolem {
 
     @Override
     public String toString() {
-        return "BukkitIronGolem";
+        return "CraftIronGolem";
     }
 
     public boolean isPlayerCreated() {

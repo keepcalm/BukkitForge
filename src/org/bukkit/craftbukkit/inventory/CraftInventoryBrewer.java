@@ -4,11 +4,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 
 import org.bukkit.block.BrewingStand;
-import org.bukkit.craftbukkit.block.BukkitBrewingStand;
+import org.bukkit.craftbukkit.block.CraftBrewingStand;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.ItemStack;
 
-public class CraftInventoryBrewer extends BukkitInventory implements BrewerInventory {
+public class CraftInventoryBrewer extends CraftInventory implements BrewerInventory {
     public CraftInventoryBrewer(IInventory inventory) {
         super(inventory);
     }

@@ -4,17 +4,17 @@ import net.minecraft.tileentity.TileEntitySign;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.craftbukkit.BukkitWorld;
-//import org.bukkit.craftbukkit.BukkitWorld;
+import org.bukkit.craftbukkit.CraftWorld;
+//import org.bukkit.craftbukkit.CraftWorld;
 
-public class CraftSign extends BukkitBlockState implements Sign {
+public class CraftSign extends CraftBlockState implements Sign {
     private final TileEntitySign sign;
     private final String[] lines;
 
     public CraftSign(final Block block) {
         super(block);
 
-        CraftWorld world = (BukkitWorld) block.getWorld();
+        CraftWorld world = (CraftWorld) block.getWorld();
         sign = (TileEntitySign) world.getTileEntityAt(getX(), getY(), getZ());
         lines = new String[sign.signText.length];
         System.arraycopy(sign.signText, 0, lines, 0, lines.length);

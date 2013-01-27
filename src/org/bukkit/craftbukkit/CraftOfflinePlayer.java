@@ -16,7 +16,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
-import org.bukkit.craftbukkit.entity.BukkitEntity;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
@@ -26,7 +26,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
     private final CraftServer server;
     private final AnvilSaveHandler storage;
 
-    public CraftOfflinePlayer(BukkitServer server, String name) {
+    public CraftOfflinePlayer(CraftServer server, String name) {
         this.server = server;
         this.name = name;
         this.storage = (AnvilSaveHandler) server.getHandle().getConfigurationManager().playerNBTManagerObj;
@@ -94,7 +94,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
     }
 
     public static OfflinePlayer deserialize(Map<String, Object> args) {
-        return Craft.getServer().getOfflinePlayer((String) args.get("name"));
+        return Bukkit.getServer().getOfflinePlayer((String) args.get("name"));
     }
 
     @Override
@@ -140,7 +140,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
     	
     }
 
-    private NBTTagCompound getBukkitData() {
+    private NBTTagCompound getCraftData() {
         NBTTagCompound result = getData();
 
         if (result != null) {
@@ -161,7 +161,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
         Player player = getPlayer();
         if (player != null) return player.getFirstPlayed();
 
-        NBTTagCompound data = getBukkitData();
+        NBTTagCompound data = getCraftData();
 
         if (data != null) {
             if (data.hasKey("firstPlayed")) {
@@ -179,7 +179,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
         Player player = getPlayer();
         if (player != null) return player.getLastPlayed();
 
-        NBTTagCompound data = getBukkitData();
+        NBTTagCompound data = getCraftData();
 
         if (data != null) {
             if (data.hasKey("lastPlayed")) {
@@ -194,8 +194,8 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
     }
 
     public boolean hasPlayedBefore() {
-    	System.out.println("Has " + name + " played before? " + CraftContainer.users.containsKey(name));
-        return CraftContainer.users.containsKey(name);// != null;
+    	//System.out.println("Has " + name + " played before? " + BukkitContainer.users.containsKey(name));
+        return BukkitContainer.users.containsKey(name);// != null;
     }
 
     public Location getBedSpawnLocation() {

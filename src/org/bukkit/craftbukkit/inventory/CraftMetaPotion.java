@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagList;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
-import org.bukkit.craftbukkit.inventory.BukkitMetaItem.SerializableMeta;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -20,7 +20,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap.Builder;
 
 @DelegateDeserialization(SerializableMeta.class)
-class CraftMetaPotion extends BukkitMetaItem implements PotionMeta {
+class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
     static final ItemMetaKey AMPLIFIER = new ItemMetaKey("Amplifier", "amplifier");
     static final ItemMetaKey AMBIENT = new ItemMetaKey("Ambient", "ambient");
     static final ItemMetaKey DURATION = new ItemMetaKey("Duration", "duration");
@@ -29,12 +29,12 @@ class CraftMetaPotion extends BukkitMetaItem implements PotionMeta {
 
     private List<PotionEffect> customEffects;
 
-    CraftMetaPotion(BukkitMetaItem meta) {
+    CraftMetaPotion(CraftMetaItem meta) {
         super(meta);
         if (!(meta instanceof CraftMetaPotion)) {
             return;
         }
-        CraftMetaPotion potionMeta = (BukkitMetaPotion) meta;
+        CraftMetaPotion potionMeta = (CraftMetaPotion) meta;
         if (potionMeta.hasCustomEffects()) {
             this.customEffects = new ArrayList<PotionEffect>(potionMeta.customEffects);
         }
@@ -116,7 +116,7 @@ class CraftMetaPotion extends BukkitMetaItem implements PotionMeta {
 
     @Override
     public CraftMetaPotion clone() {
-        CraftMetaPotion clone = (BukkitMetaPotion) super.clone();
+        CraftMetaPotion clone = (CraftMetaPotion) super.clone();
         if (hasCustomEffects()) {
             clone.customEffects = new ArrayList<PotionEffect>(customEffects);
         }
@@ -225,12 +225,12 @@ class CraftMetaPotion extends BukkitMetaItem implements PotionMeta {
     }
 
     @Override
-    public boolean equalsCommon(BukkitMetaItem meta) {
+    public boolean equalsCommon(CraftMetaItem meta) {
         if (!super.equalsCommon(meta)) {
             return false;
         }
         if (meta instanceof CraftMetaPotion) {
-            CraftMetaPotion that = (BukkitMetaPotion) meta;
+            CraftMetaPotion that = (CraftMetaPotion) meta;
 
             return (this.hasCustomEffects() ? that.hasCustomEffects() && this.customEffects.equals(that.customEffects) : !that.hasCustomEffects());
         }
@@ -238,7 +238,7 @@ class CraftMetaPotion extends BukkitMetaItem implements PotionMeta {
     }
 
     @Override
-    boolean notUncommon(BukkitMetaItem meta) {
+    boolean notUncommon(CraftMetaItem meta) {
         return super.notUncommon(meta) && (meta instanceof CraftMetaPotion || isPotionEmpty());
     }
 

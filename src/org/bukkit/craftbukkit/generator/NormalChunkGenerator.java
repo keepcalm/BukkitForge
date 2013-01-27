@@ -11,9 +11,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import org.bukkit.craftbukkit.BukkitWorld;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.generator.BlockPopulator;
-//import org.bukkit.craftbukkit.BukkitWorld;
+//import org.bukkit.craftbukkit.CraftWorld;
 
 public class NormalChunkGenerator extends InternalChunkGenerator {
     private final IChunkProvider provider;
@@ -31,7 +31,7 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
     }
 
     public boolean canSpawn(org.bukkit.World world, int x, int z) {
-        return ((BukkitWorld) world).getHandle().provider.canCoordinateBeSpawn(x, z);
+        return ((CraftWorld) world).getHandle().provider.canCoordinateBeSpawn(x, z);
     }
 
     public List<BlockPopulator> getDefaultPopulators(org.bukkit.World world) {

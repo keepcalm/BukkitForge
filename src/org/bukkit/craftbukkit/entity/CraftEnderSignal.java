@@ -4,7 +4,7 @@ package org.bukkit.craftbukkit.entity;
 //import org.bukkit.craftbukkit.CraftServer;
 import net.minecraft.entity.Entity;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.EntityType;
 /**
@@ -15,8 +15,8 @@ import org.bukkit.entity.EntityType;
  * 
  *
  */
-public class CraftEnderSignal extends BukkitEntity implements EnderSignal {
-    public CraftEnderSignal(BukkitServer server, Entity entity) {
+public class CraftEnderSignal extends CraftEntity implements EnderSignal {
+    public CraftEnderSignal(CraftServer server, Entity entity) {
         super(server, entity);
     }
 
@@ -27,7 +27,7 @@ public class CraftEnderSignal extends BukkitEntity implements EnderSignal {
 
     @Override
     public String toString() {
-        return "BukkitEnderSignal";
+        return "CraftEnderSignal";
     }
 
     public EntityType getType() {

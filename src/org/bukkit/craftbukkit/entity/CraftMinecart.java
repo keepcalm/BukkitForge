@@ -2,18 +2,18 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.item.EntityMinecart;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Minecart;
 import org.bukkit.util.Vector;
-//import org.bukkit.craftbukkit.BukkitServer;
+//import org.bukkit.craftbukkit.CraftServer;
 /**
  * 
  * @author keepcalm
- * @author CraftBukkit
+ * @author CraftCraft
  *
  */
-public class CraftMinecart extends BukkitVehicle implements Minecart {
+public class CraftMinecart extends CraftVehicle implements Minecart {
     /**
      * Stores the minecart type id, which is used by Minecraft to differentiate
      * minecart types. Here we use subclasses.
@@ -37,7 +37,7 @@ public class CraftMinecart extends BukkitVehicle implements Minecart {
     private Vector minecartVelocityAir = new Vector(1,1,1);
     private boolean slowWhenEmpty = true;
     
-    public CraftMinecart(BukkitServer server, EntityMinecart entity) {
+    public CraftMinecart(CraftServer server, EntityMinecart entity) {
         super(server, entity);
     }
 
@@ -92,7 +92,7 @@ public class CraftMinecart extends BukkitVehicle implements Minecart {
 
     @Override
     public String toString() {
-        return "BukkitMinecart";
+        return "CraftMinecart";
     }
 
     public EntityType getType() {

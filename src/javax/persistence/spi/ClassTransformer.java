@@ -22,8 +22,8 @@
  */
 package javax.persistence.spi;
 
-import java.security.ProtectionDomain;
 import java.lang.instrument.IllegalClassFormatException;
+import java.security.ProtectionDomain;
 /**
  * A persistence provider supplies an instance of this
  * interface to the {@link PersistenceUnitInfo#addTransformer 

@@ -5,28 +5,28 @@ import net.minecraft.world.World;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
-import org.bukkit.craftbukkit.BukkitChunk;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.BukkitWorld;
-import org.bukkit.craftbukkit.inventory.BukkitInventoryFurnace;
+import org.bukkit.craftbukkit.CraftChunk;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.inventory.CraftInventoryFurnace;
 import org.bukkit.inventory.FurnaceInventory;
-//import org.bukkit.craftbukkit.BukkitWorld;
-//import org.bukkit.craftbukkit.inventory.BukkitInventoryFurnace;
+//import org.bukkit.craftbukkit.CraftWorld;
+//import org.bukkit.craftbukkit.inventory.CraftInventoryFurnace;
 
-public class CraftFurnace extends BukkitBlockState implements Furnace {
+public class CraftFurnace extends CraftBlockState implements Furnace {
     private final CraftWorld world;
     private final TileEntityFurnace furnace;
 
     public CraftFurnace(final Block block) {
         super(block);
 
-        world = (BukkitWorld) block.getWorld();
+        world = (CraftWorld) block.getWorld();
         furnace = (TileEntityFurnace) world.getTileEntityAt(getX(), getY(), getZ());
     }
 
     public CraftFurnace(int xCoord, int yCoord, int zCoord, World worldObj) {
 		super( new CraftBlock(new CraftChunk(worldObj.getChunkFromBlockCoords(yCoord, zCoord)), xCoord, yCoord, zCoord));
-		world = (BukkitWorld) CraftServer.instance().getWorld(worldObj.getWorldInfo().getDimension());
+		world = (CraftWorld) CraftServer.instance().getWorld(worldObj.getWorldInfo().getDimension());
 		furnace = (TileEntityFurnace) world.getTileEntityAt(xCoord, yCoord, zCoord);
 	}
 

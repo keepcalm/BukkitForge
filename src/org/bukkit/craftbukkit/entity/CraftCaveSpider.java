@@ -2,13 +2,13 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.EntityCaveSpider;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.CaveSpider;
 import org.bukkit.entity.EntityType;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftCaveSpider extends BukkitSpider implements CaveSpider {
-    public CraftCaveSpider(BukkitServer server, EntityCaveSpider entity) {
+public class CraftCaveSpider extends CraftSpider implements CaveSpider {
+    public CraftCaveSpider(CraftServer server, EntityCaveSpider entity) {
         super(server, entity);
     }
 
@@ -19,7 +19,7 @@ public class CraftCaveSpider extends BukkitSpider implements CaveSpider {
 
     @Override
     public String toString() {
-        return "BukkitCaveSpider";
+        return "CraftCaveSpider";
     }
 
     public EntityType getType() {

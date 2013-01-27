@@ -23,20 +23,20 @@
 package javax.persistence;
 
 // J2SE imports
-import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Set;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.Enumeration;
 import java.net.URL;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// persistence imports
 import javax.persistence.spi.PersistenceProvider;
+// persistence imports
 
 /**
  * Bootstrap class that is used to obtain an {@link EntityManagerFactory}.

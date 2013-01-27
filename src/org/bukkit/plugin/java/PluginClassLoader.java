@@ -24,7 +24,7 @@ import net.md_5.specialsource.URLClassLoaderInheritanceProvider;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 /**
@@ -48,7 +48,7 @@ public class PluginClassLoader extends URLClassLoader {
         String pluginName = pluginDescriptionFile.getName();
 
         // configure default remapper settings
-        YamlConfiguration config = ((BukkitServer)Bukkit.getServer()).bukkitConfig;
+        YamlConfiguration config = ((CraftServer)Bukkit.getServer()).bukkitConfig;
         boolean useCustomClassLoader = config.getBoolean("bukkitforge.plugin-settings.default.custom-class-loader", true);
         boolean useGuava10 = config.getBoolean("bukkitforge.plugin-settings.default.use-guava10", true);
         boolean remapNMS147 = config.getBoolean("bukkitforge.plugin-settings.default.remap-nms-v1_4_R1", true);

@@ -14,7 +14,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.BukkitPlayerCache;
+import org.bukkit.craftbukkit.CraftPlayerCache;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -118,7 +118,7 @@ public class ConnectionHandler implements IConnectionHandler {
 		PlayerLoginEvent x;
 		if (manager instanceof TcpConnection) {
 			TcpConnection j = (TcpConnection) manager;
-			x = new PlayerLoginEvent(BukkitPlayerCache.getBukkitPlayer(dude), MinecraftServer.getServer().getHostname(), j.getSocket().getInetAddress());
+			x = new PlayerLoginEvent(CraftPlayerCache.getCraftPlayer(dude), MinecraftServer.getServer().getHostname(), j.getSocket().getInetAddress());
 		}
 		else {
 			// logging in events on single player are presently broken, TODO

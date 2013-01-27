@@ -1,7 +1,5 @@
 package keepcalm.mods.bukkit;
 
-import com.google.common.base.Joiner;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,10 +12,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.craftbukkit.BukkitServer;
-
 import keepcalm.mods.bukkit.asm.BukkitStarter;
-import keepcalm.mods.bukkit.bukkitAPI.scheduler.B4VScheduler;
 import keepcalm.mods.bukkit.common.CommonProxy;
 import keepcalm.mods.bukkit.forgeHandler.BlockBreakEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.BukkitCraftingHandler;
@@ -35,6 +30,10 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.scheduler.CraftScheduler;
+
+import com.google.common.base.Joiner;
 import com.google.common.eventbus.EventBus;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -56,8 +55,8 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -69,7 +68,7 @@ import cpw.mods.fml.relauncher.Side;
 public class BukkitContainer {
 	public static Properties users;
 	
-	public static BukkitServer bServer;
+	public static CraftServer bServer;
 	public File myConfigurationFile;
 	public static boolean allowAnsi;
 	public String pluginFolder;
@@ -127,7 +126,7 @@ public class BukkitContainer {
 
 		meta.modId = "BukkitForge";
 		meta.name = "BukkitForge";
-		meta.version = BukkitServer.version + ", implementing Bukkit version " + BukkitServer.apiVer;
+		meta.version = CraftServer.version + ", implementing Bukkit version " + CraftServer.apiVer;
 		meta.authorList = Arrays.asList(new String[]{"keepcalm"});
 		meta.description = "An implementation Bukkit API for vanilla Minecraft.";
 		
@@ -249,7 +248,7 @@ public class BukkitContainer {
 	private String genUUID() {
 		String res = "" + System.currentTimeMillis();
 		res += new Random().nextInt();
-		res += "-" + BukkitServer.version;
+		res += "-" + CraftServer.version;
 		return res;
 	}
 
@@ -301,7 +300,7 @@ public class BukkitContainer {
 	public void serverStopping(FMLServerStoppingEvent ev) {
 		// reset for potential next launch (if on client)
 		BukkitContainer.bServer.shutdown();
-		B4VScheduler.currentTick = -1;
+		CraftScheduler.currentTick = -1;
 		ForgeEventHandler.ready = false;
 		SchedulerTickHandler.tickOffset = 0;
 		if (propsFile == null) {

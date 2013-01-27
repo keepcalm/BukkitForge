@@ -6,13 +6,13 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.Rotation;
-import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.inventory.BukkitItemStack;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 
-public class CraftItemFrame extends BukkitHanging implements ItemFrame {
-    public CraftItemFrame(BukkitServer server, EntityItemFrame entity) {
+public class CraftItemFrame extends CraftHanging implements ItemFrame {
+    public CraftItemFrame(CraftServer server, EntityItemFrame entity) {
         super(server, entity);
     }
 
@@ -22,7 +22,7 @@ public class CraftItemFrame extends BukkitHanging implements ItemFrame {
             getHandle().getDataWatcher().addObjectByDataType(2, 5);
             getHandle().getDataWatcher().func_82708_h(2);
         } else {
-            getHandle().setDisplayedItem(BukkitItemStack.createNMSItemStack(item));
+            getHandle().setDisplayedItem(CraftItemStack.createNMSItemStack(item));
         }
     }
 
@@ -32,10 +32,10 @@ public class CraftItemFrame extends BukkitHanging implements ItemFrame {
     }
 
     public Rotation getRotation() {
-        return toBukkitRotation(getHandle().getRotation());
+        return toCraftRotation(getHandle().getRotation());
     }
 
-    Rotation toBukkitRotation(int value) {
+    Rotation toCraftRotation(int value) {
         // Translate NMS rotation integer to Craft API
         switch (value) {
         case 0:
@@ -79,7 +79,7 @@ public class CraftItemFrame extends BukkitHanging implements ItemFrame {
 
     @Override
     public String toString() {
-        return "BukkitItemFrame{item=" + getItem() + ", rotation=" + getRotation() + "}";
+        return "CraftItemFrame{item=" + getItem() + ", rotation=" + getRotation() + "}";
     }
 
     public EntityType getType() {

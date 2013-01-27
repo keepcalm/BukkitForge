@@ -1,13 +1,12 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
-import keepcalm.mods.bukkit.bukkitAPI.command.FakeConsoleSender;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.command.FakeConsoleSender;
 
 /**
  * Only registered on IntegratedServers

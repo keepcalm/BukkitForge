@@ -2,12 +2,12 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.passive.EntityBat;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.EntityType;
 
-public class CraftBat extends BukkitAmbient implements Bat {
-    public CraftBat(BukkitServer server, EntityBat entity) {
+public class CraftBat extends CraftAmbient implements Bat {
+    public CraftBat(CraftServer server, EntityBat entity) {
         super(server, entity);
     }
 
@@ -18,7 +18,7 @@ public class CraftBat extends BukkitAmbient implements Bat {
 
     @Override
     public String toString() {
-        return "BukkitBat";
+        return "CraftBat";
     }
 
     public EntityType getType() {

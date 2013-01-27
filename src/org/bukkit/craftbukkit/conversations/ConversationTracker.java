@@ -1,9 +1,9 @@
 package org.bukkit.craftbukkit.conversations;
 
-import org.bukkit.craftbukkit.BukkitConversationTracker;
+import org.bukkit.craftbukkit.CraftConversationTracker;
 
 /**
- * Dummy interface for CraftBukkit compatibility
+ * Dummy interface for CraftCraft compatibility
  */
 public class ConversationTracker extends CraftConversationTracker {
 

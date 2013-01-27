@@ -9,10 +9,10 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 
 public final class Versioning {
-    public static String getBukkitVersion() {
+    public static String getCraftVersion() {
         String result = "Unknown-Version";
 
-        InputStream stream = Craft.class.getClassLoader().getResourceAsStream("META-INF/maven/org.bukkit/bukkit/pom.properties");
+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.bukkit/bukkit/pom.properties");
         Properties properties = new Properties();
 
         if (stream != null) {

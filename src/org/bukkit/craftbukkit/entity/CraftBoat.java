@@ -2,15 +2,15 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.item.EntityBoat;
 
-import org.bukkit.craftbukkit.BukkitServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public class CraftBoat extends BukkitVehicle implements Boat {
+public class CraftBoat extends CraftVehicle implements Boat {
 	private double speed = 0.2;
 	private double emptySpeed = -1;
-    public CraftBoat(BukkitServer server, EntityBoat entity) {
+    public CraftBoat(CraftServer server, EntityBoat entity) {
         super(server, entity);
     }
 
@@ -58,7 +58,7 @@ public class CraftBoat extends BukkitVehicle implements Boat {
 
     @Override
     public String toString() {
-        return "BukkitBoat";
+        return "CraftBoat";
     }
 
     public EntityType getType() {

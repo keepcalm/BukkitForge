@@ -6,20 +6,20 @@ import net.minecraft.tileentity.TileEntityDispenser;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dispenser;
-import org.bukkit.craftbukkit.BukkitWorld;
-import org.bukkit.craftbukkit.inventory.BukkitInventory;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.inventory.Inventory;
-//import org.bukkit.craftbukkit.BukkitWorld;
-//import org.bukkit.craftbukkit.inventory.BukkitInventory;
+//import org.bukkit.craftbukkit.CraftWorld;
+//import org.bukkit.craftbukkit.inventory.CraftInventory;
 
-public class CraftDispenser extends BukkitBlockState implements Dispenser {
+public class CraftDispenser extends CraftBlockState implements Dispenser {
     private final CraftWorld world;
     private final TileEntityDispenser dispenser;
 
     public CraftDispenser(final Block block) {
         super(block);
 
-        world = (BukkitWorld) block.getWorld();
+        world = (CraftWorld) block.getWorld();
         dispenser = (TileEntityDispenser) world.getTileEntityAt(getX(), getY(), getZ());
     }
 

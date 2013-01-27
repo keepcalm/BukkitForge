@@ -10,9 +10,9 @@ public class CraftFurnaceRecipe extends FurnaceRecipe implements CraftRecipe {
         super(result, source.getType(), source.getDurability());
     }
 
-    public static CraftFurnaceRecipe fromBukkitRecipe(FurnaceRecipe recipe) {
+    public static CraftFurnaceRecipe fromCraftRecipe(FurnaceRecipe recipe) {
         if (recipe instanceof CraftFurnaceRecipe) {
-            return (BukkitFurnaceRecipe) recipe;
+            return (CraftFurnaceRecipe) recipe;
         }
         return new CraftFurnaceRecipe(recipe.getResult(), recipe.getInput());
     }

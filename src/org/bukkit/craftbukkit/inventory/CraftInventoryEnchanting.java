@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 
 
-public class CraftInventoryEnchanting extends BukkitInventory implements EnchantingInventory {
+public class CraftInventoryEnchanting extends CraftInventory implements EnchantingInventory {
     public CraftInventoryEnchanting(IInventory inventory) {
         super((IInventory) inventory);
     }
