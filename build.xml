@@ -49,8 +49,20 @@
 	<available property="props-there" file="utils/obf.properties" />
 
 	<target name="check-blockbreak" unless="blockbreak-there">
-		<echo message="You must first run 'git submodules sync' and git pull origin or download the BlockBreak sources into the blockbreak folder!!"/>
-		<fail/>
+		<exec dir="." executable="git" failonerror="true">
+			<arg line="submodule init" />
+		</exec>
+
+		<exec dir="." executable="git" failonerror="true">
+			<arg line="submodule sync" />
+		</exec>
+
+		<mkdir dir="blockbreak" />
+		<exec dir="blockbreak" executable="git" failonerror="false">
+			<arg line="pull origin master"/>
+		</exec>
+		<!--		<echo message="You must first run 'git submodules sync' and git pull origin or download the BlockBreak sources into the blockbreak folder!!"/>
+		  <fail/>-->
 	</target>
 
 	<target name="install" depends="check-blockbreak,build,gen-props">
