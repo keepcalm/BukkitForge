@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
-public class BukkitCommandMods extends CommandBase {
+public class CraftCommandMods extends CommandBase {
 
 	@Override
 	public String getCommandName() {

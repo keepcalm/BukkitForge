@@ -9,6 +9,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
+import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.messaging.StandardMessenger;
 
 import com.google.common.collect.Maps;
@@ -22,7 +24,7 @@ import cpw.mods.fml.relauncher.Side;
 
 /**
  * This packet handler does not listen to any channels by default,
- * but when it is requested to be registered by a Bukkit plugin, the channel
+ * but when it is requested to be registered by a Craft plugin, the channel
  * will be listened for
  * 
  * @author keepcalm
@@ -46,7 +48,7 @@ public class ForgePacketHandler implements IPacketHandler {
 		}
 		EntityPlayer fp = (EntityPlayer) player;
 		if (this.listeningChannels.values().contains(packet.channel) && this.listeningChannels.get(fp.username).contains(packet.channel)) {
-			((StandardMessenger)BukkitServer.instance().getMessenger()).dispatchIncomingMessage(BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP)player), packet.channel, packet.data);
+			((StandardMessenger)CraftServer.instance().getMessenger()).dispatchIncomingMessage(CraftPlayerCache.getCraftPlayer((EntityPlayerMP)player), packet.channel, packet.data);
 			
 		}
 		

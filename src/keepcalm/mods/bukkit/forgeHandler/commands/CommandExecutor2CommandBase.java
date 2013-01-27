@@ -13,11 +13,16 @@ import net.minecraft.server.dedicated.DedicatedServer;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 import com.google.common.base.Joiner;
 /**
  * 
- * A basic Bukkit2ICommand command handler
+ * A basic Craft2ICommand command handler
  * This won't work with Multiverse until I work out the aliases.
  * So I'll probably add a command that does this properly, until I work out how
  * @author keepcalm
@@ -43,10 +48,10 @@ public class CommandExecutor2CommandBase extends CommandBase {
 	public List<String> addTabCompletionOptions(ICommandSender who, String[] args) {
 		
 		if (who instanceof MinecraftServer || who instanceof RConConsoleSource) {
-			return bukkitCommandInstance.tabComplete(BukkitConsoleCommandSender.getInstance() ,name , args);
+			return bukkitCommandInstance.tabComplete(CraftConsoleCommandSender.getInstance() ,name , args);
 		}
 		else {
-			BukkitPlayer player = (BukkitPlayer) BukkitEntity.getEntity(BukkitServer.instance(), (EntityPlayer) who);
+			CraftPlayer player = (CraftPlayer) CraftEntity.getEntity(CraftServer.instance(), (EntityPlayer) who);
 			return bukkitCommandInstance.tabComplete(player, name, args);
 		}
 	}
@@ -65,10 +70,10 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		
 		CommandSender sender;
 		if (who instanceof EntityPlayerMP) {
-			sender = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) who);
+			sender = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) who);
 		}
 		else {
-			sender = BukkitConsoleCommandSender.getInstance();
+			sender = CraftConsoleCommandSender.getInstance();
 		}
 		boolean allowed = bukkitCommandInstance.testPermissionSilent(sender) 
 				|| sender.hasPermission(bukkitCommandInstance.getPermission())
@@ -92,10 +97,10 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		try {
 			CommandSender sender;
 			if (var1 instanceof EntityPlayerMP) {
-				sender = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) var1);
+				sender = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) var1);
 			}
 			else {
-				sender = BukkitConsoleCommandSender.getInstance();
+				sender = CraftConsoleCommandSender.getInstance();
 			}
 			bukkitCommandInstance.execute(sender, this.name, var2);
 		}

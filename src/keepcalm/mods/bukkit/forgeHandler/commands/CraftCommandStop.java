@@ -8,12 +8,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.StopCommand;
+import org.bukkit.craftbukkit.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.CraftPlayerCache;
 /**
  * Shuts down the server in a bukkit-friendly way.
  * @author keepcalm
  *
  */
-public class BukkitCommandStop extends CommandBase {
+public class CraftCommandStop extends CommandBase {
 
 	@Override
 	public String getCommandName() {
@@ -23,9 +25,9 @@ public class BukkitCommandStop extends CommandBase {
 	public boolean canCommandSenderUseCommand(ICommandSender sender) {
 		CommandSender s;
 		if (sender instanceof EntityPlayerMP) {
-			s = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) sender);
+			s = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) sender);
 		}
-		else s = BukkitConsoleCommandSender.getInstance();
+		else s = CraftConsoleCommandSender.getInstance();
 		if ((new StopCommand()).testPermissionSilent(s)) {
 			return true;
 		}

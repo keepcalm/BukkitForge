@@ -15,6 +15,7 @@ import net.minecraft.item.crafting.IRecipe;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.craftbukkit.inventory.BukkitRecipe;
 import org.bukkit.craftbukkit.inventory.CraftInventoryCrafting;
 import org.bukkit.craftbukkit.inventory.CraftInventoryView;
 import org.bukkit.event.inventory.CraftItemEvent;

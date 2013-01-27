@@ -8,18 +8,20 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 
 @Deprecated
-public class BukkitCommandSender implements CommandSender {
-	private BukkitPlayer realPlayer;
+public class CraftCommandSender implements CommandSender {
+	private CraftPlayer realPlayer;
 	private ConsoleCommandSender cons;
 	private boolean isConsole = false;
-	public BukkitCommandSender(ICommandSender guy) {
-		this.realPlayer = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) guy);
+	public CraftCommandSender(ICommandSender guy) {
+		this.realPlayer = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) guy);
 	}
 	@Override
 	public boolean isPermissionSet(String name) {

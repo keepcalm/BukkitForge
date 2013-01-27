@@ -5,15 +5,17 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.craftbukkit.command.CraftConsoleCommandSender;
 /**
  * A command to fix compatibility issues with plugins like MultiVerse - which i __suspect__ use 
  * aliases.
  */
-public class BukkitCommandMVFix extends BukkitCommandBase {
+public class CraftCommandMVFix extends CraftCommandBase {
 	
 	//private boolean hasBeenAdded = false;
 	
-	public BukkitCommandMVFix() {
+	public CraftCommandMVFix() {
 		
 		
 	}
@@ -32,9 +34,9 @@ public class BukkitCommandMVFix extends BukkitCommandBase {
 	public void processCommand(ICommandSender var1, String[] var2) {
 		CommandSender sender;
 		if (var1 instanceof EntityPlayerMP) 
-			sender = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) var1);
+			sender = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) var1);
 		else
-			sender = BukkitConsoleCommandSender.getInstance();
+			sender = CraftConsoleCommandSender.instance();
 			BukkitContainer.bServer.getRealCmdMap().dispatch(sender, this.joinListOfStrings(var2));
 		
 	}

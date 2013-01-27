@@ -9,15 +9,17 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.CraftPlayerCache;
 
 
 /**
- * control for BukkitForge from console/in-game
+ * control for CraftForge from console/in-game
  * 
  * @author keepcalm
  *
  */
-public class CommandBukkitForge extends BukkitCommandBase {
+public class CommandBukkitForge extends CraftCommandBase {
 
 	public static enum EnumState {
 		// hehe
@@ -65,7 +67,7 @@ public class CommandBukkitForge extends BukkitCommandBase {
 	
 	@Override
 	public String getCommandName() {
-		return "/bukkitforge";
+		return "bukkitforge";
 	}
 	
 	@Override
@@ -78,10 +80,10 @@ public class CommandBukkitForge extends BukkitCommandBase {
 	public boolean canCommandSenderUseCommand(ICommandSender par1) {
 		CommandSender x;
 		if (par1 instanceof EntityPlayerMP) {
-			x = BukkitPlayerCache.getBukkitPlayer((EntityPlayerMP) par1);
+			x = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) par1);
 		}
 		else {
-			x = BukkitConsoleCommandSender.getInstance();
+			x = CraftConsoleCommandSender.getInstance();
 		}
 		if (x.hasPermission("bukkitforge.admin")) return true;
 		return false;

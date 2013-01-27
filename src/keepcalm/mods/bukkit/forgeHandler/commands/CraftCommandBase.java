@@ -3,7 +3,7 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 
-public abstract class BukkitCommandBase extends CommandBase {
+public abstract class CraftCommandBase extends CommandBase {
 	
 	public String joinListOfStrings(String[] str) {
 		String ret = "";

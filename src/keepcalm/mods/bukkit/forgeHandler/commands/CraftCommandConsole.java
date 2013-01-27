@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.command.FakeConsoleSender;
 
 /**
@@ -13,7 +14,7 @@ import org.bukkit.craftbukkit.command.FakeConsoleSender;
  * @author keepcalm
  *
  */
-public class BukkitCommandConsole extends BukkitCommandBase {
+public class CraftCommandConsole extends CraftCommandBase {
 
 	@Override
 	public String getCommandName() {
@@ -23,7 +24,7 @@ public class BukkitCommandConsole extends BukkitCommandBase {
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender var1) {
 		// only server owner
-		return BukkitServer.instance().getHandle().getServerOwner().equalsIgnoreCase(var1.getCommandSenderName());
+		return CraftServer.instance().getHandle().getServerOwner().equalsIgnoreCase(var1.getCommandSenderName());
 	}
 	
 	@Override
@@ -31,8 +32,8 @@ public class BukkitCommandConsole extends BukkitCommandBase {
 		if (var2.length == 0) {
 			throw new WrongUsageException("/console <bukkit command to run as console>");
 		}
-		if (BukkitServer.instance().getRealCmdMap().getNMSCommand(var2[0]) != null) {
-			BukkitServer.instance().getRealCmdMap().dispatch(new FakeConsoleSender(Bukkit.getServer(), (EntityPlayerMP) var1), this.joinListOfStrings(var2));
+		if (CraftServer.instance().getRealCmdMap().getNMSCommand(var2[0]) != null) {
+			CraftServer.instance().getRealCmdMap().dispatch(new FakeConsoleSender(Bukkit.getServer(), (EntityPlayerMP) var1), this.joinListOfStrings(var2));
 		}
 		else {
 			

@@ -9,10 +9,13 @@ import net.minecraft.util.MathHelper;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.help.SimpleHelpMap;
 import org.bukkit.help.HelpTopic;
 
-public class BukkitCommandHelp extends CommandBase {
+public class CraftCommandHelp extends CommandBase {
 	public static int entries_per_page = 5;
 	
 	
@@ -28,8 +31,8 @@ public class BukkitCommandHelp extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
-		SimpleHelpMap hm = (SimpleHelpMap) BukkitServer.instance().getHelpMap();
-		CommandSender pcs = var1 instanceof EntityPlayer ? BukkitPlayerCache.getBukkitPlayer(BukkitServer.instance(), (EntityPlayerMP) var1) : BukkitConsoleCommandSender.getInstance();
+		SimpleHelpMap hm = (SimpleHelpMap) CraftServer.instance().getHelpMap();
+		CommandSender pcs = var1 instanceof EntityPlayer ? CraftPlayerCache.getCraftPlayer(CraftServer.instance(), (EntityPlayerMP) var1) : CraftConsoleCommandSender.getInstance();
 		int total = hm.getHelpTopics().size();
 		// round up
 		int totalPages = MathHelper.ceiling_float_int(total / entries_per_page);
