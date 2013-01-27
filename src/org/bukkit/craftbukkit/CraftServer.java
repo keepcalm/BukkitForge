@@ -137,7 +137,7 @@ public class CraftServer implements Server {
 	private static CraftServer instance;
 	private MinecraftServer theServer;
 	private ServerConfigurationManager configMan;
-	public YamlConfiguration bukkitConfig;
+	public YamlConfiguration configuration;
 	private Yaml yaml = new Yaml(new SafeConstructor());
 	private CraftScheduler scheduler = new CraftScheduler();
 	private Logger theLogger;
@@ -175,7 +175,7 @@ public class CraftServer implements Server {
 		this.pluginManager = new SimplePluginManager(this, commandMap);
 		
 		//pluginManager = new SimplePluginManager(this, commandMap);
-		bukkitConfig = new YamlConfiguration();
+		configuration = new YamlConfiguration();
 		YamlConfiguration yml = new YamlConfiguration();
 		try {
 			yml.load(getClass().getClassLoader().getResourceAsStream("configurations/bukkit.yml"));
@@ -183,9 +183,9 @@ public class CraftServer implements Server {
 				new File("bukkit.yml").createNewFile();
 				yml.save("bukkit.yml");
 			}
-			bukkitConfig.load("bukkit.yml");
-			bukkitConfig.addDefaults(yml);
-			bukkitConfig.save("bukkit.yml");
+			configuration.load("bukkit.yml");
+			configuration.addDefaults(yml);
+			configuration.save("bukkit.yml");
 
 		}
 		catch (Exception e) {
@@ -431,19 +431,19 @@ public class CraftServer implements Server {
 	@Override
 	public long getConnectionThrottle() {
 
-		return this.bukkitConfig.getInt("settings.connection-throttle");
+		return this.configuration.getInt("settings.connection-throttle");
 	}
 
 	@Override
 	public int getTicksPerAnimalSpawns() {
 
-		return this.bukkitConfig.getInt("ticks-per.animal-spawns");
+		return this.configuration.getInt("ticks-per.animal-spawns");
 	}
 
 	@Override
 	public int getTicksPerMonsterSpawns() {
 
-		return this.bukkitConfig.getInt("ticks-per.animal-spawn");
+		return this.configuration.getInt("ticks-per.animal-spawn");
 	}
 
 	@Override
@@ -626,7 +626,7 @@ public class CraftServer implements Server {
 	}
 
 	private ChunkGenerator getGenerator(int dimID) {
-		ConfigurationSection section = bukkitConfig.getConfigurationSection("worlds");
+		ConfigurationSection section = configuration.getConfigurationSection("worlds");
 		ChunkGenerator result = null;
 
 		if (section != null) {
@@ -753,7 +753,7 @@ public class CraftServer implements Server {
 
 	@Override
 	public void reload() {
-		bukkitConfig = YamlConfiguration.loadConfiguration(new File("bukkit.yml"));
+		configuration = YamlConfiguration.loadConfiguration(new File("bukkit.yml"));
 		//
 
 		if (theServer instanceof DedicatedServer) {
@@ -773,10 +773,10 @@ public class CraftServer implements Server {
 		theServer.setAllowPvp(config.getBooleanProperty("pvp", theServer.isPVPEnabled()));
 		theServer.setAllowFlight(config.getBooleanProperty("allow-flight", theServer.isFlightAllowed()));
 		theServer.setMOTD(config.getProperty("motd", theServer.getMOTD()));*/
-		monsterSpawn = bukkitConfig.getInt("spawn-limits.monsters");
-		animalSpawn = bukkitConfig.getInt("spawn-limits.animals");
-		waterAnimalSpawn = bukkitConfig.getInt("spawn-limits.water-animals");
-		warningState = WarningState.value(bukkitConfig.getString("settings.deprecated-verbose"));
+		monsterSpawn = configuration.getInt("spawn-limits.monsters");
+		animalSpawn = configuration.getInt("spawn-limits.animals");
+		waterAnimalSpawn = configuration.getInt("spawn-limits.water-animals");
+		warningState = WarningState.value(configuration.getString("settings.deprecated-verbose"));
 		// = bukkitConfig.getInt("ticks-per.autosave");
 
 		for (WorldServer world : theServer.worldServers) {
@@ -900,8 +900,8 @@ public class CraftServer implements Server {
 	}
 	@SuppressWarnings("finally")
 	public void loadCustomPermissions() {
-		theLogger.info("Going to load perms file: " + bukkitConfig.getString("settings.permissions-file", "permissions.yml"));
-		File file = new File(bukkitConfig.getString("settings.permissions-file", "permissions.yml"));
+		theLogger.info("Going to load perms file: " + configuration.getString("settings.permissions-file", "permissions.yml"));
+		File file = new File(configuration.getString("settings.permissions-file", "permissions.yml"));
 		FileInputStream stream;
 
 		try {
@@ -986,11 +986,11 @@ public class CraftServer implements Server {
 	@Override
 	public void configureDbConfig(ServerConfig config) {
 		DataSourceConfig ds = new DataSourceConfig();
-		ds.setDriver(bukkitConfig.getString("database.driver"));
-		ds.setUrl(bukkitConfig.getString("database.url"));
-		ds.setUsername(bukkitConfig.getString("database.username"));
-		ds.setPassword(bukkitConfig.getString("database.password"));
-		ds.setIsolationLevel(TransactionIsolation.getLevel(bukkitConfig.getString("database.isolation")));
+		ds.setDriver(configuration.getString("database.driver"));
+		ds.setUrl(configuration.getString("database.url"));
+		ds.setUsername(configuration.getString("database.username"));
+		ds.setPassword(configuration.getString("database.password"));
+		ds.setIsolationLevel(TransactionIsolation.getLevel(configuration.getString("database.isolation")));
 
 		if (ds.getDriver().contains("sqlite")) {
 			config.setDatabasePlatform(new SQLitePlatform());
@@ -1097,7 +1097,7 @@ public class CraftServer implements Server {
 	@Override
 	public Map<String, String[]> getCommandAliases() {
 
-		ConfigurationSection section = bukkitConfig.getConfigurationSection("aliases");
+		ConfigurationSection section = configuration.getConfigurationSection("aliases");
 		Map<String, String[]> result = new LinkedHashMap<String, String[]>();
 
 		if (section != null) {
