@@ -104,6 +104,7 @@
 					<fileset dir="${src.dir}/net" />
 					</copy>-->
 		<mkdir dir="${mcpsrc.dir}/keepcalm" />
+		<mkdir dir="${mcpsrc.dir}/keepcalm/mods" />
 		<copy todir="${mcpsrc.dir}/keepcalm">
 			<fileset dir="${src.dir}/keepcalm"/>
 		</copy>
