@@ -39,6 +39,7 @@ import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.ContainerRepair;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.TcpConnection;
 import net.minecraft.network.packet.Packet131MapData;
 import net.minecraft.network.packet.Packet200Statistic;
 import net.minecraft.network.packet.Packet201PlayerInfo;
@@ -52,6 +53,7 @@ import net.minecraft.network.packet.Packet61DoorChange;
 import net.minecraft.network.packet.Packet62LevelSound;
 import net.minecraft.network.packet.Packet6SpawnPosition;
 import net.minecraft.network.packet.Packet70GameEvent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumGameType;
@@ -91,6 +93,10 @@ import org.bukkit.plugin.messaging.StandardMessenger;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.MapMaker;
+
+import cpw.mods.fml.common.network.FMLNetworkHandler;
+import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 @DelegateDeserialization(BukkitOfflinePlayer.class)
 public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSender {
@@ -835,7 +841,10 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
             packet.channel = channel;
             packet.length = message.length;
             packet.data = message;
-            getHandle().playerNetServerHandler.sendPacketToPlayer(packet);
+            FMLNetworkHandler.handlePacket250Packet(packet, 
+            		getHandle().playerNetServerHandler.netManager, 
+            		getHandle().playerNetServerHandler);
+            //getHandle().playerNetServerHandler.sendPacketToPlayer(packet);
         }
     }
 
@@ -847,6 +856,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
 
     public void removeChannel(String channel) {
         if (channels.remove(channel)) {
+        	
             server.getPluginManager().callEvent(new PlayerUnregisterChannelEvent(this, channel));
         }
     }
@@ -866,6 +876,7 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
             for (String channel : listening) {
+            	
                 try {
                     stream.write(channel.getBytes("UTF8"));
                     stream.write((byte) 0);
@@ -877,7 +888,8 @@ public class BukkitPlayer extends BukkitEntityHuman implements Player, CommandSe
             packet.data = stream.toByteArray();
             packet.length = packet.data.length;
 
-            getHandle().playerNetServerHandler.sendPacketToPlayer(packet);
+            FMLNetworkHandler.handlePacket250Packet(packet, getHandle().playerNetServerHandler.netManager, getHandle().playerNetServerHandler);
+            
         }
     }
 

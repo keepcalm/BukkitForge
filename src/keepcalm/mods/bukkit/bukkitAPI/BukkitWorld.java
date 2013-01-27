@@ -183,6 +183,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.util.Vector;
 
+import cpw.mods.fml.common.network.FMLPacket;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BukkitWorld implements World {
@@ -338,7 +339,7 @@ public class BukkitWorld implements World {
 		ChunkProviderServer provider = (ChunkProviderServer) getHandle().theChunkProviderServer;
 		provider.currentChunkProvider.populate(provider, x, z);
 		GameRegistry.generateWorld(x, z, getHandle(), provider, provider);
-		
+	
 		newChunk.setChunkModified();
 		
 		return true;

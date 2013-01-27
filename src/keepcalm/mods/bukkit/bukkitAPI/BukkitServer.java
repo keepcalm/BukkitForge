@@ -131,8 +131,8 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BukkitServer implements Server {
-	public static final String apiVer = "1.4.5-R0.2";
-	public static final String version = "1.4.6";
+	public static final String apiVer = "1.4.7-R0.1";
+	public static final String version = "1.4.7";
 	
 	private static BukkitServer instance;
 	private MinecraftServer theServer;
@@ -159,14 +159,13 @@ public class BukkitServer implements Server {
 	private EntityMetadataStore entityMetadata;
 	private WorldMetadataStore worldMetadata;
 	private PlayerMetadataStore playerMetadata;
-	private static String cbBuild;
+//	private static String cbBuild;
 	private static Map<String,Boolean> fauxSleeping = new HashMap<String,Boolean>();
 	private HashMap<String,World> worldNameMapping = Maps.newHashMap();
 
 
 	public BukkitServer(MinecraftServer server) {
 		instance = this;
-		cbBuild = BukkitContainer.CRAFT_VERSION;
 		configMan = server.getConfigurationManager();
 		theServer = server;
 		List<Integer> ids = Arrays.asList(DimensionManager.getIDs());
@@ -303,7 +302,7 @@ public class BukkitServer implements Server {
 	@Override
 	public String getVersion() {
 		// towny fix?
-		return cbBuild;
+		return BukkitContainer.CRAFT_VERSION;
 	}
 
 	@Override

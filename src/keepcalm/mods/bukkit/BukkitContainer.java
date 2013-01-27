@@ -23,6 +23,7 @@ import keepcalm.mods.bukkit.forgeHandler.BukkitCraftingHandler;
 import keepcalm.mods.bukkit.forgeHandler.BukkitCrashCallable;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
+import keepcalm.mods.bukkit.forgeHandler.ForgePacketHandler;
 import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
 import keepcalm.mods.bukkit.forgeHandler.SchedulerTickHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -55,6 +56,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -62,7 +64,7 @@ import cpw.mods.fml.relauncher.Side;
 //import net.minecraftforge.event.EventBus;
 
 @Mod(modid="BukkitForge",name="BukkitForge",version="1.4.6-0",certificateFingerprint="")
-@NetworkMod(clientSideRequired=false,serverSideRequired=false,connectionHandler=ConnectionHandler.class)
+@NetworkMod(clientSideRequired=false,serverSideRequired=false,connectionHandler=ConnectionHandler.class,serverPacketHandlerSpec=@SidedPacketHandler(channels={},packetHandler=ForgePacketHandler.class))
 public class BukkitContainer {
 	public static Properties users;
 	
