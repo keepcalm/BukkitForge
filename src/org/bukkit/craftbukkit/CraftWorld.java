@@ -250,14 +250,15 @@ public class CraftWorld implements World {
 	}
 
 	public boolean isChunkLoaded(int x, int z) {
-		world.theChunkProviderServer.loadChunkOnProvideRequest = false;
+		return world.theChunkProviderServer.chunkExists(x, z);
+		/*world.theChunkProviderServer.loadChunkOnProvideRequest = false;
 		net.minecraft.world.chunk.Chunk c = world.theChunkProviderServer.provideChunk(x, z);
 		world.theChunkProviderServer.loadChunkOnProvideRequest = true;
 		if (c instanceof EmptyChunk) {
 
 			return false;
 		}
-		return true;
+		return true;*/
 	}
 
 	public Chunk[] getLoadedChunks() {
