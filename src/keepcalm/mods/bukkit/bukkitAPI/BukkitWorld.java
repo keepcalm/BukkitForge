@@ -337,7 +337,11 @@ public class BukkitWorld implements World {
 	public boolean regenerateChunk(int x, int z) {
 		net.minecraft.world.chunk.Chunk newChunk = getHandle().getChunkFromChunkCoords(x, z);
 		ChunkProviderServer provider = (ChunkProviderServer) getHandle().theChunkProviderServer;
-		provider.currentChunkProvider.populate(provider, x, z);
+		net.minecraft.world.chunk.Chunk newChunk2 = getHandle().theChunkProviderServer.currentChunkProvider.loadChunk(x, z);
+		newChunk.setStorageArrays(newChunk2.getBlockStorageArray());
+		newChunk.setBiomeArray(newChunk2.getBiomeArray());
+		// is this called from IChunkProvider.load()?
+		//provider.currentChunkProvider.populate(provider, x, z);
 		GameRegistry.generateWorld(x, z, getHandle(), provider, provider);
 	
 		newChunk.setChunkModified();
