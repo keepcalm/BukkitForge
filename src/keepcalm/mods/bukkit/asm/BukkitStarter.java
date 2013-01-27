@@ -4,14 +4,12 @@ import java.util.logging.Level;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
-import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandConsole;
-import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandHelp;
-import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandMVFix;
-import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandMods;
-import keepcalm.mods.bukkit.forgeHandler.commands.BukkitCommandStop;
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandBukkitForge;
-import keepcalm.mods.bukkit.forgeHandler.commands.CommandRequirementRegistry;
-import keepcalm.mods.bukkit.forgeHandler.commands.CommandSetLevel;
+import keepcalm.mods.bukkit.forgeHandler.commands.CraftCommandConsole;
+import keepcalm.mods.bukkit.forgeHandler.commands.CraftCommandHelp;
+import keepcalm.mods.bukkit.forgeHandler.commands.CraftCommandMVFix;
+import keepcalm.mods.bukkit.forgeHandler.commands.CraftCommandMods;
+import keepcalm.mods.bukkit.forgeHandler.commands.CraftCommandStop;
 import net.minecraft.command.CommandServerDeop;
 import net.minecraft.command.CommandServerOp;
 import net.minecraft.command.ServerCommandManager;
@@ -32,26 +30,24 @@ public class BukkitStarter implements Runnable {
 	public void run() {
 		try {
 			ServerCommandManager scm = (ServerCommandManager) server.getCommandManager();
-			scm.registerCommand(new BukkitCommandHelp());
-			scm.registerCommand(new BukkitCommandMVFix());
-			scm.registerCommand(new BukkitCommandMods());
+			scm.registerCommand(new CraftCommandHelp());
+			scm.registerCommand(new CraftCommandMVFix());
+			scm.registerCommand(new CraftCommandMods());
 			scm.registerCommand(new CommandBukkitForge());
 			if (!(server instanceof DedicatedServer)) {
-				scm.registerCommand(new BukkitCommandConsole());
+				scm.registerCommand(new CraftCommandConsole());
 				scm.registerCommand(new CommandServerOp());
 				scm.registerCommand(new CommandServerDeop());
 				server.getConfigurationManager().addOp(server.getServerOwner().toLowerCase());
 			}
-			CommandRequirementRegistry.load();
-			scm.registerCommand(new CommandSetLevel());
 			
 			BukkitContainer.bServer = new CraftServer(MinecraftServer.getServer());
-			scm.registerCommand(new BukkitCommandStop());
+			scm.registerCommand(new CraftCommandStop());
 		}
 		catch (Exception e) {
 			// disable nicely
 			ForgeEventHandler.ready = false;
-			FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE, "Something real bad happened! The BukkitAPI will not be running for this Minecraft session.\n" +
+			FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE, "Something real bad happened! The CraftAPI will not be running for this Minecraft session.\n" +
 					"You should *probably* report this bug to the developer(s) at https://github.com/keepcalm/BukkitForge/issues", e);
 		}
 
