@@ -5,6 +5,6 @@ import org.bukkit.craftbukkit.BukkitConversationTracker;
 /**
  * Dummy interface for CraftBukkit compatibility
  */
-public class ConversationTracker extends BukkitConversationTracker {
+public class ConversationTracker extends CraftConversationTracker {
 
 }

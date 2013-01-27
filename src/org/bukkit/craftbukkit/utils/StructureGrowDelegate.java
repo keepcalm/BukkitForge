@@ -13,11 +13,11 @@ import org.bukkit.material.MaterialData;
 //import org.bukkit.craftbukkit.CraftWorld;
 
 public class StructureGrowDelegate implements BlockChangeDelegate {
-    private final BukkitWorld world;
+    private final CraftWorld world;
     private final List<BlockState> blocks = new ArrayList<BlockState>();
 
     public StructureGrowDelegate(World world) {
-        this.world = (BukkitWorld) BukkitServer.instance().getWorld(world.getWorldInfo().getDimension());
+        this.world = (BukkitWorld) CraftServer.instance().getWorld(world.getWorldInfo().getDimension());
     }
 
     public boolean setRawTypeId(int x, int y, int z, int type) {

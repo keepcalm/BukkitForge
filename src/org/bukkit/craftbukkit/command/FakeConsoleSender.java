@@ -12,7 +12,7 @@ import org.bukkit.craftbukkit.conversations.ConversationTracker;
 public class FakeConsoleSender extends ServerCommandSender implements ConsoleCommandSender {
 
 	private EntityPlayerMP thePlayer;
-	private BukkitServer theServer;
+	private CraftServer theServer;
 	
 	protected final ConversationTracker convo = new ConversationTracker();
 	

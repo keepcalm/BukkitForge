@@ -11,15 +11,15 @@ public class BukkitRecipe implements Recipe {
 	private ItemStack result;
 	
 	public BukkitRecipe(ShapedRecipes recipe) {
-		this.result = new BukkitItemStack(recipe.getRecipeOutput());
+		this.result = new CraftItemStack(recipe.getRecipeOutput());
 		
 	}
 	public BukkitRecipe(ShapelessRecipes shapeless) {
-		this.result = new BukkitItemStack(shapeless.getRecipeOutput());
+		this.result = new CraftItemStack(shapeless.getRecipeOutput());
 	}
 	
 	public BukkitRecipe(IRecipe recipe) {
-		this.result = new BukkitItemStack(recipe.getRecipeOutput());
+		this.result = new CraftItemStack(recipe.getRecipeOutput());
 	}
 	
 	@Override

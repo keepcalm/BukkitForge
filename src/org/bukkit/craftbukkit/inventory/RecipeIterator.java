@@ -31,12 +31,12 @@ public class RecipeIterator implements Iterator<Recipe> {
     public Recipe next() {
         if (recipes.hasNext()) {
             removeFrom = recipes;
-            return new BukkitRecipe(recipes.next());
+            return new CraftRecipe(recipes.next());
         } else {
             removeFrom = smelting;
             int id = smelting.next();
-            BukkitItemStack stack = new BukkitItemStack(FurnaceRecipes.smelting().getSmeltingResult(id));
-            BukkitFurnaceRecipe recipe = new BukkitFurnaceRecipe(stack, new ItemStack(id, 1, (short) -1));
+            CraftItemStack stack = new BukkitItemStack(FurnaceRecipes.smelting().getSmeltingResult(id));
+            CraftFurnaceRecipe recipe = new BukkitFurnaceRecipe(stack, new ItemStack(id, 1, (short) -1));
             return recipe;
         }
     }

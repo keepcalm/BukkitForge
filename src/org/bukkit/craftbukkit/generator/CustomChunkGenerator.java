@@ -19,7 +19,7 @@ import net.minecraft.world.gen.structure.MapGenVillage;
 
 import org.bukkit.block.Biome;
 import org.bukkit.craftbukkit.BukkitServer;
-import org.bukkit.craftbukkit.block.BukkitBlock;
+import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 //import net.minecraft.src.ChunkSection;
@@ -39,11 +39,11 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
         BiomeGenBase[] biome;
 
         public Biome getBiome(int x, int z) {
-            return BukkitBlock.BiomeGenBaseToBiome(biome[(z << 4) | x]);
+            return CraftBlock.BiomeGenBaseToBiome(biome[(z << 4) | x]);
         }
 
         public void setBiome(int x, int z, Biome bio) {
-           biome[(z << 4) | x] = BukkitBlock.biomeToBiomeGenBase(bio);
+           biome[(z << 4) | x] = CraftBlock.biomeToBiomeGenBase(bio);
         }
     }
 
@@ -176,7 +176,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     }
 
     private org.bukkit.World getWorld(WorldServer world2) {
-		return BukkitServer.instance().getWorld(world2.getWorldInfo().getDimension());
+		return CraftServer.instance().getWorld(world2.getWorldInfo().getDimension());
 	}
 
 	public void getChunkAt(IChunkProvider icp, int i, int i1) {

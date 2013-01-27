@@ -36,7 +36,7 @@ public class SimpleHelpMap implements HelpMap {
     private HelpTopic defaultTopic;
     private final Map<String, HelpTopic> helpTopics;
     private final Map<Class, HelpTopicFactory<Command>> topicFactoryMap;
-    private final BukkitServer server;
+    private final CraftServer server;
     private HelpYamlReader yaml;
 
     @SuppressWarnings("unchecked")
@@ -200,7 +200,7 @@ public class SimpleHelpMap implements HelpMap {
     }
 
     private String getCommandPluginName(Command command) {
-        if (command instanceof BukkitCommand || command instanceof VanillaCommand) {
+        if (command instanceof CraftCommand || command instanceof VanillaCommand) {
             return "Bukkit";
         }
         if (command instanceof PluginIdentifiableCommand) {
@@ -210,7 +210,7 @@ public class SimpleHelpMap implements HelpMap {
     }
 
     private boolean commandInIgnoredPlugin(Command command, Set<String> ignoredPlugins) {
-        if ((command instanceof BukkitCommand || command instanceof VanillaCommand) && ignoredPlugins.contains("Bukkit")) {
+        if ((command instanceof CraftCommand || command instanceof VanillaCommand) && ignoredPlugins.contains("Bukkit")) {
             return true;
         }
         if (command instanceof PluginIdentifiableCommand && ignoredPlugins.contains(((PluginIdentifiableCommand)command).getPlugin().getName())) {

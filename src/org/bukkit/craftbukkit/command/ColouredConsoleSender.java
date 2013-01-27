@@ -15,14 +15,14 @@ import org.fusesource.jansi.Ansi.Attribute;
 //import jline.console.ConsoleReader;
 //import org.bukkit.craftbukkit.BukkitServer;
 
-public class ColouredConsoleSender extends BukkitConsoleCommandSender {
+public class ColouredConsoleSender extends CraftConsoleCommandSender {
     //private final ConsoleReader reader;
     //private final Terminal terminal;
     private final Map<ChatColor, String> replacements = new EnumMap<ChatColor, String>(ChatColor.class);
     private final ChatColor[] colors = ChatColor.values();
 
     public ColouredConsoleSender() {
-        super((BukkitServer) Bukkit.getServer());
+        super((BukkitServer) Craft.getServer());
         //this.reader = ((BukkitServer) getServer()).getReader();
         //this.terminal = reader.getTerminal();
 
@@ -71,7 +71,7 @@ public class ColouredConsoleSender extends BukkitConsoleCommandSender {
     
     /*public ConsoleCommandSender getInstance() {
         if (Bukkit.getConsoleSender() != null) {
-            return Bukkit.getConsoleSender();
+            return Craft.getConsoleSender();
         } else {
             return new ColouredConsoleSender();
         }

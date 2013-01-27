@@ -6,7 +6,7 @@ import org.bukkit.craftbukkit.BukkitServer;
 import org.bukkit.entity.Projectile;
 //import org.bukkit.craftbukkit.CraftServer;
 
-public abstract class AbstractProjectile extends BukkitEntity implements Projectile {
+public abstract class AbstractProjectile extends CraftEntity implements Projectile {
 
     private boolean doesBounce;
 
