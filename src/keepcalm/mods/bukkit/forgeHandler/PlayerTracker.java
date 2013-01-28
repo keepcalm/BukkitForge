@@ -45,9 +45,7 @@ public class PlayerTracker implements IPlayerTracker {
 			}
 		};
 
-		Thread x = new Thread(run);
-		x.start();
-
+		run.run();
 
 
 

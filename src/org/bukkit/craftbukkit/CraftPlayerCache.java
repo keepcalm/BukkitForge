@@ -16,7 +16,7 @@ public class CraftPlayerCache {
 		if (playerCache.containsKey(player.username))
 		{
 			CraftPlayer ply = playerCache.get(player.username);
-			if (ply.getHandle().isDead) {
+			if (ply.getHandle().entityId != player.entityId || ply.getHandle().isDead) {
 				// new player needed
 				//removePlayer(player.username);
 				ply.setHandle(player);

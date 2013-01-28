@@ -71,7 +71,7 @@ public class SchedulerTickHandler implements ITickHandler {
 				
 			}
 		});
-		playerCheckerThread.run();
+		playerCheckerThread.start();
 	}
 
 	@Override

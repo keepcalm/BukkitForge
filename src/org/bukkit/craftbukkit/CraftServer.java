@@ -296,7 +296,7 @@ public class CraftServer implements Server {
 	@Override
 	public String getName() {
 
-		return "CraftForge";
+		return "BukkitForge";
 	}
 
 	@Override
@@ -346,7 +346,7 @@ public class CraftServer implements Server {
 
 	@Override
 	public String getServerName() {
-		return "CraftForge";
+		return "BukkitForge";
 		//return theServer.getServerModName();
 	}
 
@@ -1332,8 +1332,8 @@ public class CraftServer implements Server {
 
 	@Override
 	public boolean isPrimaryThread() {
-
-		return false ; /* since we're a mod, i doubt that we are the main thread */
+		return false;
+		//return Thread.currentThread().equals(BukkitContainer.instance.) ; /* since we're a mod, i doubt that we are the main thread */
 	}
 
 	@Override
