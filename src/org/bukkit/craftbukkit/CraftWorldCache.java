@@ -9,6 +9,10 @@ import java.util.*;
 
 public class CraftWorldCache
 {
+
+    private HashMap<Integer,CraftWorld> worlds = new HashMap<Integer,CraftWorld>();
+    private HashMap<String,Integer> worldNameMapping = Maps.newHashMap();
+    
     public CraftWorld get(String name)
     {
         if(worldNameMapping.containsKey(name))
@@ -60,9 +64,6 @@ public class CraftWorldCache
     {
         return name.toLowerCase().replace( ' ', '_');
     }
-
-    private HashMap<Integer,CraftWorld> worlds = new HashMap<Integer,CraftWorld>();
-    private HashMap<String,Integer> worldNameMapping = Maps.newHashMap();
 
     public List<World> getWorldsAsList() {
         return new ArrayList<World>(worlds.values());
