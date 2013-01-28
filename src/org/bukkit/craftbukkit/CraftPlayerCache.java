@@ -18,7 +18,7 @@ public class CraftPlayerCache {
 		{
 			//System.out.println("Found them!");
 			CraftPlayer ply = playerCache.get(player.username.toLowerCase());
-			System.out.println("Cached player is null: " + ply == null ); 
+			//System.out.println("Cached player is null: " + ply == null ); 
 			if (ply.getHandle().isDead) {
 			//	System.out.println("Cached player's handle is dead, updating...");
 				// new player needed
