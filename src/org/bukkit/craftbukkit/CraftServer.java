@@ -449,11 +449,11 @@ public class CraftServer implements Server {
 	@Override
 	public Player getPlayer(String name) {
 		//Player j;
+		name = name.toLowerCase();
 		for (Object i : configMan.playerEntityList) {
-			EntityPlayerMP guy = (EntityPlayerMP) i;System.out.println(guy.username.toLowerCase() + " starts with " + name + "?");
+			EntityPlayerMP guy = (EntityPlayerMP) i;
 			if (guy.username.toLowerCase().startsWith(name)) {
 				CraftPlayer ply = CraftPlayerCache.getCraftPlayer(guy);//(Player) CraftEntity.getEntity(this, guy);
-				System.out.println("Found a match: " + ply);
 				return ply;
 			}
 		}
