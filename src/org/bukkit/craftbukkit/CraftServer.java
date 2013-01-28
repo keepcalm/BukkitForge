@@ -746,6 +746,8 @@ public class CraftServer implements Server {
 		loadPlugins();
 		enablePlugins(PluginLoadOrder.STARTUP);
 		enablePlugins(PluginLoadOrder.POSTWORLD);
+		// reload commands
+		commandMap.doneLoadingPlugins((ServerCommandManager) theServer.getCommandManager());
 
 	}
 	/**
