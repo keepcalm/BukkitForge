@@ -10,7 +10,7 @@ import java.util.*;
 public class CraftWorldCache
 {
 
-    private HashMap<Integer,CraftWorld> worlds = new HashMap<Integer,CraftWorld>();
+    private WeakHashMap<Integer,CraftWorld> worlds = new WeakHashMap<Integer,CraftWorld>();
     private HashMap<String,Integer> worldNameMapping = Maps.newHashMap();
     
     public CraftWorld get(String name)

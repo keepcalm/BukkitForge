@@ -182,6 +182,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.util.Vector;
 
+import com.google.common.base.FinalizableReference;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CraftWorld implements World {
@@ -1406,4 +1408,6 @@ public class CraftWorld implements World {
 		  }
 		  return true;
 	  }
+
+	
 }

@@ -28,6 +28,8 @@ import org.bukkit.entity.Entity;
 //import net.minecraft.src.Chunk;
 //import org.bukkit.craftbukkit.block.CraftBlock;
 
+import com.google.common.base.FinalizableReference;
+
 public class CraftChunk implements Chunk {
 	private WeakReference<net.minecraft.world.chunk.Chunk> weakChunk;
 	private final WorldServer worldServer;
@@ -322,4 +324,5 @@ public class CraftChunk implements Chunk {
 	static {
 		Arrays.fill(emptySkyLight, (byte) 0xFF);
 	}
+
 }
