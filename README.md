@@ -12,13 +12,13 @@ This is ported to 1.4, and works fine on 1.4.6/7
 
 See a list of working plugins [here](https://github.com/keepcalm/BukkitForge/wiki/Working-plugins-page).
 
-Staff List:
-======================
-keepcalm: Main Mod Dev.
+BukkitForge Team Members:
+================
+<a href="https://github.com/keepcalm">keepcalm</a>  
 
-alexbegt: His Helper
+<a href="https://github.com/alexbegt">alexbegt</a>  
 
-SpoonsJTD: Issues Cleaner Upper
+<a href="https://github.com/SpoonsJTD">SpoonsJTD</a>
 
 
 Jenkins? Jenkins? JENKINS!
@@ -33,11 +33,25 @@ Any errors with plugins go [here](https://github.com/Bukkit-Forge-Plugins/Bukkit
 
 GETTING IT WORKING IN MCP:
 =========================
- 
-After unzipping the forge source, copy bukkit\_at.cfg to forge/accesstransformers (create the folder if it's not there), and copy
-all the files in 'lib/' (excluding bukkitAPI.jar) into the lib folder in mcp.
-decompile as usual. 
-You will also need to add the files in the 'lib' folder (excluding bukkitAPI.jar) into the projects in eclipse.
+
+1. Download the MCP and Extract it.
+2. Download Forge
+3. Extract the minecraftforge-src-1.4.7-VersionHere.zip into your MCP folder and you will get a folder called Forge. If you see a install.cmd/install.sh your at the right place.
+4. Make a folder called accesstransformers inside the Forge Folder. You will need to make this.
+5. Put the bukkit_at.cfg into the Folder Accesstransformer inside forge.
+6. Copy Everything from the Lib Folder into the Lib Folder in MCP.
+7. Then run the install.cmd/install.sh in forge.
+8. When its done decompiling, Open to the Src Folder from bukkitforge Copy everything into the folder src/minecraft.
+9. Open Eclipse.
+10. Open to Where you downloaded mcp/eclipse in Eclipse.
+11. Right Click the Minecraft Porject and hit Properties.
+12. Then go to the Java Build Path.
+13. Click Libraries.
+14. Then click Add Jars.
+15. Then click on the lib folder.
+16. And add the files: commons-lang-2.3, argo-2.25, ebean-2.8.1, gson-2.1-cb, guava10-renamed, jansi-1.9, snakeyaml-1.9, SpecialSource-1.3-SNAPSHOT, and sqlite-jdbc-3.7.2 to it.
+17. You should have no errors at this time.
+
 
 COMPILING (to get all that good stuff)
 =======================
