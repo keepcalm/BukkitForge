@@ -251,14 +251,7 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 
 	public boolean teleport(Location location, TeleportCause cause) {
 		//if (!location.getWorld().equals(getWorld())) {
-		if (this instanceof CraftPlayer) {
-			EntityPlayerMP fp = (EntityPlayerMP) entity;
-			server.getHandle().getConfigurationManager().transferPlayerToDimension(fp, 1);
-		}
-		else {
-			//System.out.println("[CraftForge temp debug - will be removed in next build] TP " + this + " from " + getWorld() + " to " + location.getWorld());
-			server.getHandle().getConfigurationManager().transferEntityToWorld(entity, 1, (WorldServer) entity.worldObj, ((CraftWorld)location.getWorld()).getHandle());
-		}
+		entity.travelToDimension(((CraftWorld) location.getWorld()).getHandle().getWorldInfo().getDimension());
 		//}
 		entity.setLocationAndAngles(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 		// entity.setLocation() throws no event, and so cannot be cancelled
