@@ -13,10 +13,10 @@ public class CraftPlayerCache {
 	private static final HashMap<String, CraftPlayer> playerCache = new HashMap<String, CraftPlayer>();
 	
 	public static CraftPlayer getCraftPlayer(EntityPlayerMP player) {
-		if (playerCache.containsKey(player.username))
+		if (playerCache.containsKey(player.username.toLowerCase()))
 		{
-			CraftPlayer ply = playerCache.get(player.username);
-			if (ply.getHandle().entityId != player.entityId || ply.getHandle().isDead) {
+			CraftPlayer ply = playerCache.get(player.username.toLowerCase());
+			if (ply.getHandle().isDead) {
 				// new player needed
 				//removePlayer(player.username);
 				ply.setHandle(player);
@@ -26,8 +26,8 @@ public class CraftPlayerCache {
 				return ply;
 			}
 		}
-		playerCache.put(player.username, new CraftPlayer(player));
-		return playerCache.get(player.username);
+		playerCache.put(player.username.toLowerCase(), new CraftPlayer(player));
+		return playerCache.get(player.username.toLowerCase());
 	}
 	
 	public static CraftPlayer getCraftPlayer( CraftServer server, EntityPlayerMP player) {
