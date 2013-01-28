@@ -13,19 +13,14 @@ public class CraftPlayerCache {
 	private static final HashMap<String, CraftPlayer> playerCache = new HashMap<String, CraftPlayer>();
 	
 	public static CraftPlayer getCraftPlayer(EntityPlayerMP player) {
-		System.out.println("Looking for " + player.username + " in cache...");
-		try {
-			throw new Exception("This is some MOAR DEBUG :P");
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+//		System.out.println("Looking for " + player.username + " in cache...");
 		if (playerCache.containsKey(player.username.toLowerCase()))
 		{
 			//System.out.println("Found them!");
 			CraftPlayer ply = playerCache.get(player.username.toLowerCase());
+			System.out.println("Cached player is null: " + ply == null ); 
 			if (ply.getHandle().isDead) {
-				System.out.println("Cached player's handle is dead, updating...");
+			//	System.out.println("Cached player's handle is dead, updating...");
 				// new player needed
 				//removePlayer(player.username);
 				ply.setHandle(player);
@@ -38,7 +33,7 @@ public class CraftPlayerCache {
 			}
 		}
 		CraftPlayer ply = new CraftPlayer(player);
-		System.out.println("Created a new CraftPlayer: " + ply);
+		//System.out.println("Created a new CraftPlayer: " + ply);
 		playerCache.put(player.username.toLowerCase(), ply);
 		return ply;
 	}

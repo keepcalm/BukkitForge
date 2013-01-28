@@ -452,7 +452,9 @@ public class CraftServer implements Server {
 		for (Object i : configMan.playerEntityList) {
 			EntityPlayerMP guy = (EntityPlayerMP) i;
 			if (guy.username.toLowerCase().startsWith(name)) {
-				return CraftPlayerCache.getCraftPlayer(guy);//(Player) CraftEntity.getEntity(this, guy);
+				CraftPlayer ply = CraftPlayerCache.getCraftPlayer(guy);//(Player) CraftEntity.getEntity(this, guy);
+				System.out.println("Found a match: " + ply);
+				return ply;
 			}
 		}
 		//return (Player) configMan.getPlayerForUsername(name);
