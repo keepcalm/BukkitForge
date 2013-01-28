@@ -26,7 +26,7 @@ public class CraftInventoryCustom extends CraftInventory {
         super(new MinecraftInventory(owner, size, title));
     }
 
-    static class MinecraftInventory implements IInventory {
+    public static class MinecraftInventory implements IInventory {
         private final ItemStack[] items;
         private int maxStack = 64;
         private final List<HumanEntity> viewers;
