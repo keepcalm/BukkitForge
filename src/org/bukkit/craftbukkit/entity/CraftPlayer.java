@@ -675,48 +675,25 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
     }
 
     public void hidePlayer(Player player) {
-        Validate.notNull(player, "hidden player cannot be null");
-        if (getHandle().playerNetServerHandler == null) return;
-        if (equals(player)) return;
-        if (hiddenPlayers.containsKey(player.getName())) return;
-        hiddenPlayers.put(player.getName(), player);
-
-        //remove this player from the hidden player's EntityTrackerEntry
-        EntityTracker tracker = ((WorldServer) entity.worldObj).getEntityTracker();
-        EntityPlayerMP other = ((CraftPlayer) player).getHandle();
-        // TODO: Does this work?
-        EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntityIDs.lookup(getHandle().entityId);
-        entry.removePlayerFromTracker(other);
-        entry.removeFromWatchingList(other);
-        VanishUtils.setHidden(getHandle(), other);
-        /*if (entry != null) {
-            entry.removePlayerFromTracker(getHandle());
-        }*/
-
-        //remove the hidden player from this player user list
-        getHandle().playerNetServerHandler.sendPacketToPlayer(new Packet201PlayerInfo(player.getPlayerListName(), false, 9999));
-    }
+            }
 
     public void showPlayer(Player player) {
-        Validate.notNull(player, "shown player cannot be null");
-        if (getHandle().playerNetServerHandler == null) return;
-        if (equals(player)) return;
-        if (!hiddenPlayers.containsKey(player.getName())) return;
-        hiddenPlayers.remove(player.getName());
+    	 Validate.notNull(player, "hidden player cannot be null");
+         if (getHandle().playerNetServerHandler/*was:playerConnection*/ == null) return;
+         if (equals(player)) return;
+         if (hiddenPlayers.containsKey(player.getName())) return;
+         hiddenPlayers.put(player.getName(), player);
 
-        EntityTracker tracker = ((WorldServer) entity.worldObj).getEntityTracker();
-        EntityPlayerMP other = ((CraftPlayer) player).getHandle();
-        EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntityIDs.lookup(getHandle().entityId);
-        
-        // FIXME: What does this do???
-        //getHandle().player.remove(Integer.valueOf(other.entityId)); // Should be called destroyQueue
-        if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
-            entry.tryStartWachingThis(getHandle());
-            VanishUtils.setVisible(getHandle(), other);
-        }
+         //remove this player from the hidden player's EntityTrackerEntry
+         net.minecraft.entity.EntityTracker/*was:EntityTracker*/ tracker = ((net.minecraft.world.WorldServer/*was:WorldServer*/) entity.worldObj/*was:world*/).getEntityTracker();
+         net.minecraft.entity.player.EntityPlayerMP/*was:EntityPlayer*/ other = ((CraftPlayer) player).getHandle();
+         net.minecraft.entity.EntityTrackerEntry/*was:EntityTrackerEntry*/ entry = (net.minecraft.entity.EntityTrackerEntry/*was:EntityTrackerEntry*/) tracker.trackedEntityIDs/*was:trackedEntities*/.lookup/*was:get*/(other.entityId/*was:id*/);
+         if (entry != null) {
+             entry.removePlayerFromTracker/*was:clear*/(getHandle());
+         }
 
-        getHandle().playerNetServerHandler.sendPacketToPlayer(new Packet201PlayerInfo(player.getPlayerListName(), true, getHandle().ping));
-    }
+         //remove the hidden player from this player user list
+         getHandle().playerNetServerHandler/*was:playerConnection*/.sendPacketToPlayer/*was:sendPacket*/(new net.minecraft.network.packet.Packet201PlayerInfo/*was:Packet201PlayerInfo*/(player.getPlayerListName(), false, 9999));   }
 
     public boolean canSee(Player player) {
         return !hiddenPlayers.containsKey(player.getName());
