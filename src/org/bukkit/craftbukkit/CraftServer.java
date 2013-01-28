@@ -450,9 +450,9 @@ public class CraftServer implements Server {
 	public Player getPlayer(String name) {
 		//Player j;
 		for (Object i : configMan.playerEntityList) {
-			EntityPlayer guy = (EntityPlayer) i;
+			EntityPlayerMP guy = (EntityPlayerMP) i;
 			if (guy.username.toLowerCase().startsWith(name)) {
-				return (Player) CraftEntity.getEntity(this, guy);
+				return CraftPlayerCache.getCraftPlayer(guy);//(Player) CraftEntity.getEntity(this, guy);
 			}
 		}
 		//return (Player) configMan.getPlayerForUsername(name);

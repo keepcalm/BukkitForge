@@ -106,7 +106,8 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
         for (Object obj : server.getHandle().getConfigurationManager().playerEntityList) {
             EntityPlayerMP player = (EntityPlayerMP) obj;
             if (player.username.equalsIgnoreCase(getName())) {
-                return (Player) ((player.playerNetServerHandler != null) ? CraftEntity.getEntity(server, player) : null);
+            	return CraftPlayerCache.getCraftPlayer(player);
+                //return (Player) ((player.playerNetServerHandler != null) ? CraftEntity.getEntity(server, player) : null);
             }
         }
 
