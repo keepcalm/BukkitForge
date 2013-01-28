@@ -9,6 +9,7 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -123,7 +124,13 @@ public class BukkitContainer {
 	public void preInit(FMLPreInitializationEvent ev) {
 		bukkitLogger = ev.getModLog();
 		bukkitLogger.setParent(FMLCommonHandler.instance().getFMLLogger());
-
+		try {
+			bukkitLogger.addHandler(new FileHandler("server.log"));
+		} catch (SecurityException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		meta.modId = "BukkitForge";
 		meta.name = "BukkitForge";
 		meta.version = CraftServer.version + ", implementing Bukkit version " + CraftServer.apiVer;
