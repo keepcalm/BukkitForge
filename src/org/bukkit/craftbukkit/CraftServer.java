@@ -146,7 +146,7 @@ public class CraftServer implements Server {
 	public CraftCommandMap commandMap = new CraftCommandMap(this);
 	private PluginManager pluginManager;// = new SimplePluginManager(this, commandMap);
 
-	public Map<Integer,CraftWorld> worlds = new LinkedHashMap<Integer,CraftWorld>();
+	public CraftWorldCache worlds = new CraftWorldCache();
 	private Map<String, OfflinePlayer> offlinePlayers = new HashMap<String, OfflinePlayer>();
 	private StandardMessenger theMessenger;
 	private SimpleHelpMap theHelpMap = new SimpleHelpMap(this);
@@ -161,8 +161,6 @@ public class CraftServer implements Server {
 	private PlayerMetadataStore playerMetadata;
 //	private static String cbBuild;
 	private static Map<String,Boolean> fauxSleeping = new HashMap<String,Boolean>();
-	private HashMap<String,World> worldNameMapping = Maps.newHashMap();
-
 
 	public CraftServer(MinecraftServer server) {
 		instance = this;
@@ -192,14 +190,10 @@ public class CraftServer implements Server {
 			e.printStackTrace();
 		}
 
-		while(worldIter.hasNext()) {
-			int i = worldIter.next();
-			WorldServer x = theServer.worldServerForDimension(i);
-			CraftWorld world = new CraftWorld(x, this.getGenerator(x.getWorldInfo().getDimension()), this.wtToEnv(x), false);
-			worlds.put(i, world);
-			//if (!x.getWorldInfo().getWorldName().equals(vanillaName))
-			worldNameMapping.put(x.provider.getDimensionName().toLowerCase().replace(' ', '_'), world);
-		}
+		for( int id : ids ) {
+			worlds.get(id);
+        }
+
 		this.theLogger = BukkitContainer.bukkitLogger;
 		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
 		
@@ -238,22 +232,6 @@ public class CraftServer implements Server {
 				(new PlayerTracker()).onPlayerLogin(player);
 			}
 		}
-	}
-
-	private Environment wtToEnv(WorldServer x) {
-
-		IChunkProvider wp = x.theChunkProviderServer.currentChunkProvider;
-
-		if (wp instanceof ChunkProviderEnd) {
-			return Environment.THE_END;
-		}
-		else if (wp instanceof ChunkProviderHell) {
-			return Environment.NETHER;
-		}
-		else {
-			return Environment.NORMAL;
-		}
-
 	}
 
 	public MinecraftServer getHandle() {
@@ -340,7 +318,6 @@ public class CraftServer implements Server {
 
 	@Override
 	public String getIp() {
-
 		return theServer.getHostname();
 	}
 
@@ -515,9 +492,37 @@ public class CraftServer implements Server {
 
 	@Override
 	public List<World> getWorlds() {
-
-		return new ArrayList<World>(worlds.values());
+		return worlds.getWorldsAsList();
 	}
+
+    public ChunkGenerator getGenerator(int dimID) {
+        ConfigurationSection section = configuration.getConfigurationSection("worlds");
+        ChunkGenerator result = null;
+
+        if (section != null) {
+            section = section.getConfigurationSection(Integer.toString(dimID));
+
+            if (section != null) {
+                String name = section.getString("generator");
+
+                if ((name != null) && (!name.equals(""))) {
+                    String[] split = name.split(":", 2);
+                    String id = (split.length > 1) ? split[1] : null;
+                    Plugin plugin = pluginManager.getPlugin(split[0]);
+
+                    if (plugin == null) {
+                        getLogger().severe("Could not set generator for default world '" + Integer.toString(dimID) + "': Plugin '" + split[0] + "' does not exist");
+                    } else if (!plugin.isEnabled()) {
+                        getLogger().severe("Could not set generator for default world '" + Integer.toString(dimID) + "': Plugin '" + split[0] + "' is not enabled yet (is it load:STARTUP?)");
+                    } else {
+                        result = plugin.getDefaultWorldGenerator(Integer.toString(dimID), id);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
 
 	@Override
 	public World createWorld(WorldCreator creator) {
@@ -552,10 +557,6 @@ public class CraftServer implements Server {
 
         ChunkGenerator generator = creator.generator();
 
-        if (generator == null) {
-			generator = getGenerator(dimension);
-		}
-
         boolean generateStructures = creator.generateStructures();
 
 		AnvilSaveConverter converter = new AnvilSaveConverter(folder);
@@ -565,18 +566,8 @@ public class CraftServer implements Server {
 		}
 
         DimensionManager.initDimension(dimension);
-
         WorldServer internal = theServer.worldServerForDimension(dimension);
-
-        this.worlds.put(dimension, new CraftWorld(internal, creator.generator(), creator.environment(), true));
-
         DimensionManager.setWorld(dimension, internal);
-
-        worldNameMapping.put( name, worlds.get(dimension) );
-
-		if (generator != null) {
-			(worlds.get(dimension)).getPopulators().addAll(generator.getDefaultPopulators(worlds.get(dimension)));
-		}
 
 		pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
 		System.out.print("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
@@ -605,45 +596,12 @@ public class CraftServer implements Server {
 				}//
 			}
 		}
-
-        worldNameMapping.put( name, worlds.get(dimension) );
-
 		pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
 		return worlds.get(dimension);
 	}
 
-	private ChunkGenerator getGenerator(int dimID) {
-		ConfigurationSection section = configuration.getConfigurationSection("worlds");
-		ChunkGenerator result = null;
-
-		if (section != null) {
-			section = section.getConfigurationSection(Integer.toString(dimID));
-
-			if (section != null) {
-				String name = section.getString("generator");
-
-				if ((name != null) && (!name.equals(""))) {
-					String[] split = name.split(":", 2);
-					String id = (split.length > 1) ? split[1] : null;
-					Plugin plugin = pluginManager.getPlugin(split[0]);
-
-					if (plugin == null) {
-						getLogger().severe("Could not set generator for default world '" + Integer.toString(dimID) + "': Plugin '" + split[0] + "' does not exist");
-					} else if (!plugin.isEnabled()) {
-						getLogger().severe("Could not set generator for default world '" + Integer.toString(dimID) + "': Plugin '" + split[0] + "' is not enabled yet (is it load:STARTUP?)");
-					} else {
-						result = plugin.getDefaultWorldGenerator(Integer.toString(dimID), id);
-					}
-				}
-			}
-		}
-
-		return result;
-	}
-
 	@Override
 	public boolean unloadWorld(String name, boolean save) {
-
 		return unloadWorld(getWorld(name), save);
 	}
 
@@ -655,49 +613,23 @@ public class CraftServer implements Server {
 		if (ev.isCancelled())
 			return false; // cancelled
 		DimensionManager.unloadWorld(handle.getWorldInfo().getDimension());
+        worlds.remove(handle.getWorldInfo().getDimension());
 		return true;
 
 	}
 
 	@Override
 	public World getWorld(String name) {
-		name = name.toLowerCase();
-		if (worldNameMapping.containsKey(name))
-			return worldNameMapping.get(name);
-		return null;
+		return worlds.get(name);
 	}
 
 	public World getWorld(int dimID) {
-		if (worlds.containsKey(dimID))
-			return worlds.get(dimID);
-		else if (!worlds.containsKey(dimID) && Arrays.asList(DimensionManager.getIDs()).contains(dimID)) {
-			// dim there but not registered with us.
-			WorldServer internal = DimensionManager.getWorld(dimID);
-			int dim = internal.getWorldInfo().getDimension();
-				System.out.println("Registering dimension with CraftForge: " + dim + "..." );
-				WorldProvider w = internal.provider;
-				
-				Environment env = w.isHellWorld ? Environment.NETHER : Environment.NORMAL;
-				ChunkGenerator cg = new NormalChunkGenerator(internal);//(((WorldServer)ev.world).theChunkProviderServer);
-				CraftWorld bukkit = new CraftWorld(internal, cg, env, false);
-				CraftServer.instance().worlds.put(dim, bukkit);
-				return bukkit;
-			
-		}
-		return null;
+		return worlds.get(dimID);
 	}
 
 	@Override
 	public World getWorld(UUID uid) {
-		for (WorldServer w : theServer.worldServers) {
-			//return null;
-			UUID wUUID = new UUID(w.getSeed(), w.getWorldInfo().getDimension());
-			if (wUUID.equals(uid)) {
-				return worlds.get(w.getWorldInfo().getDimension());
-			}
-			//if (w.getWorldInfo().)
-		}
-		return null;
+		return worlds.get(uid);
 	}
 
 	/**

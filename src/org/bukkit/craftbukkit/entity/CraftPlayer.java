@@ -424,19 +424,19 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
         // Grab the new To Location dependent on whether the event was cancelled.
         to = event.getTo();
         // Grab the To and From World Handles.
-        WorldServer fromWorld = ((CraftWorld) from.getWorld()).getHandle();
-        WorldServer toWorld = ((CraftWorld) to.getWorld()).getHandle();
+        CraftWorld fromWorld = ((CraftWorld) from.getWorld());
+        CraftWorld toWorld = ((CraftWorld) to.getWorld());
         // Grab the EntityPlayerMP
         EntityPlayerMP entity = getHandle();
 
         // Check if the fromWorld and toWorld are the same.
-        if (fromWorld == toWorld) {
+        if (fromWorld.getName().equals(toWorld.getName())) {
             entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
         } else {
             // Close any foreign inventory
         	if (getHandle().openContainer != getHandle().inventoryContainer)
                 getHandle().closeInventory();
-            server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getWorldInfo().getDimension());
+            server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension());
             entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
         }
         return true;

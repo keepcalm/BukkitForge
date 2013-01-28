@@ -51,7 +51,7 @@ public class CraftChunk implements Chunk {
 	}
 
 	public World getWorld() {
-		if (BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension()) == null) {
+		/*if (BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension()) == null) {
 			Environment env;
 			if (worldServer.provider.isHellWorld) {
 				env = Environment.NETHER;
@@ -61,7 +61,7 @@ public class CraftChunk implements Chunk {
 			}
 			CraftWorld bw = new CraftWorld(worldServer, new NormalChunkGenerator(worldServer), env, false );
 			BukkitContainer.bServer.worlds.put(worldServer.getWorldInfo().getDimension(), bw);
-		}
+		}          */
 		
 		return BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension());
 		

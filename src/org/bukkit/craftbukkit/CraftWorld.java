@@ -69,6 +69,9 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.EmptyChunk;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.ChunkProviderEnd;
+import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
@@ -96,6 +99,7 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftItem;
@@ -182,9 +186,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CraftWorld implements World {
 	private final WorldServer world;
-	private Environment environment;
 	private final CraftServer server ;//= (CraftServer) Bukkit.getServer();
-	private ChunkGenerator generator;
 	private final List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
 	private final BlockMetadataStore blockMetadata = new BlockMetadataStore(this);
 	private int monsterSpawn = -1;
@@ -192,18 +194,11 @@ public class CraftWorld implements World {
 	private int waterAnimalSpawn = -1;
 	private int ambientSpawn = -1;
 	private static final Random rand = new Random();
-	private final boolean useWorldName;
 
-	public CraftWorld(WorldServer world, ChunkGenerator gen, Environment env, boolean hasDifferentName) {
+	public CraftWorld(WorldServer world) {
 		this.world = world;
-		this.generator = gen;
 		this.server = CraftServer.instance();
-		environment = env;
-		this.useWorldName = !hasDifferentName;
 	}
-
-
-
 
 	public Block getBlockAt(int x, int y, int z) {
 		return getChunkAt(x >> 4, z >> 4).getBlock(x & 0xF, y & 0xFF, z & 0xF);
@@ -552,6 +547,7 @@ public class CraftWorld implements World {
 	}
 
 	public UUID getUID() {
+        int dim = world.getWorldInfo().getDimension();
 		return new UUID(world.getSeed(), world.getWorldInfo().getDimension());
 	}
 
@@ -609,15 +605,23 @@ public class CraftWorld implements World {
 	}
 
 	public Environment getEnvironment() {
-		return environment;
+        IChunkProvider wp = getHandle().theChunkProviderServer.currentChunkProvider;
+
+        if (wp instanceof ChunkProviderEnd) {
+            return Environment.THE_END;
+        }
+        else if (wp instanceof ChunkProviderHell) {
+            return Environment.NETHER;
+        }
+        else {
+            return Environment.NORMAL;
+        }
 	}
 
 	public void setEnvironment(Environment env) {
-
-		if (environment != env) {
-			environment = env;
+		if (env != getEnvironment()) {
 			Bukkit.getLogger().severe("Changing the world's environment is highly dangerous!");
-			world.provider = WorldProvider.getProviderForDimension(environment.getId());
+			world.provider = WorldProvider.getProviderForDimension(env.getId());
 		}
 	}
 
@@ -638,7 +642,7 @@ public class CraftWorld implements World {
 	}
 
 	public ChunkGenerator getGenerator() {
-		return generator;
+		return server.getGenerator(world.getWorldInfo().getDimension());
 	}
 
 	public List<BlockPopulator> getPopulators() {
