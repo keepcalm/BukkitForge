@@ -39,6 +39,7 @@ public class CraftPlayerCache {
 	}
 	
 	public static void removePlayer(String name) {
+		System.out.println("RemovePlayer: " + name);
 		if (playerCache.containsKey(name))
 			playerCache.remove(name);
 	}
