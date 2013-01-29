@@ -65,7 +65,7 @@ public class ColouredConsoleSender extends CraftConsoleCommandSender {
                 System.out.println(result + Ansi.ansi().reset().toString());
             }
         } else {
-            super.sendMessage(message);
+            super.sendMessage(ChatColor.stripColor(message));
         }
     }
     
