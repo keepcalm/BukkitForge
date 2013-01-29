@@ -105,6 +105,10 @@ public class BukkitContainer {
 	private static Thread bThread;
 
 
+	static {
+		System.out.println("THIS SERVER IS RUNNING BUKKITFORGE " + BF_FULL_VERSION + ". JUST IN CASE SOMEONE ASKS!");
+	}
+	
 	public BukkitContainer() {
 		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
 			isDediServer = true;
