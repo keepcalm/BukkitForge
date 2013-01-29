@@ -44,6 +44,7 @@ import net.minecraft.network.packet.Packet61DoorChange;
 import net.minecraft.network.packet.Packet62LevelSound;
 import net.minecraft.network.packet.Packet6SpawnPosition;
 import net.minecraft.network.packet.Packet70GameEvent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumGameType;
@@ -436,7 +437,7 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
             // Close any foreign inventory
         	if (getHandle().openContainer != getHandle().inventoryContainer)
                 getHandle().closeInventory();
-        	entity.travelToDimension(toWorld.getHandle().getWorldInfo().getDimension());
+        	MinecraftServer.getServer().getConfigurationManager().transferPlayerToDimension(getHandle(), toWorld.getHandle().getWorldInfo().getDimension());
             //server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension());
             entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
         //}

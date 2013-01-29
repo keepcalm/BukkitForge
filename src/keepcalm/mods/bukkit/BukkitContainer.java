@@ -76,6 +76,8 @@ public class BukkitContainer {
 	public File myConfigurationFile;
 	public static boolean allowAnsi;
 	public String pluginFolder;
+
+	private Thread updateCheckerThread;
 	public static boolean showAllLogs;
 	public static boolean isDediServer;
 	public static String serverUUID;
@@ -104,6 +106,12 @@ public class BukkitContainer {
 	public static BukkitContainer instance;
 	private static Thread bThread;
 
+	public static int UPDATE_CHECK_INTERVAL;
+	public static boolean ENABLE_UPDATE_CHECK;
+	/**
+	 * 1 for console-only, 0 for broadcast, -1 for both
+	 */
+	public static int UPDATE_ANNOUNCE_METHOD;
 
 	static {
 		System.out.println("THIS SERVER IS RUNNING BUKKITFORGE " + BF_FULL_VERSION + ". JUST IN CASE SOMEONE ASKS!");
@@ -195,7 +203,25 @@ public class BukkitContainer {
 		modActionName.comment = "The name of the player to use when passing events from mods (such as block breaks) to plugins";
 		BukkitContainer.MOD_USERNAME = modActionName.value;
 		
-
+		config.addCustomCategoryComment("updatechecking", "Update-related stuff");
+		
+		Property enableUpdateThread = config.get("updatechecking", "allowUpdateChecking", true);
+		enableUpdateThread.comment = "Allow BukkitForge to automatically notify you when there are updates.";
+		BukkitContainer.ENABLE_UPDATE_CHECK = enableUpdateThread.getBoolean(true);
+		
+		Property updateThreadInterval = config.get("updatechecking", "updateInterval", 216000);
+		updateThreadInterval.comment = "Number of seconds between checks - min 3000, max 2^31-1";
+		BukkitContainer.UPDATE_CHECK_INTERVAL = updateThreadInterval.getInt();
+		if (UPDATE_CHECK_INTERVAL < 3000) {
+			UPDATE_CHECK_INTERVAL = 3000;
+		}
+		
+		Property updateMode = config.get("updatechecking", "updateAnnounceMode", "-1");
+		updateMode.comment = "Mode to announce new updates. 0 is broadcast a message on the server, 1 is print to console, -1 is both.";
+		BukkitContainer.UPDATE_ANNOUNCE_METHOD = updateMode.getInt(-1);
+		if (UPDATE_ANNOUNCE_METHOD < -1 || UPDATE_ANNOUNCE_METHOD > 1) {
+			UPDATE_ANNOUNCE_METHOD = -1;
+		}
 		/*Property showAllLogs = config.get(Configuration.CATEGORY_GENERAL, "printForgeLogToGui", false);
 		showAllLogs.comment = "Print stuff that's outputted to the logs to the GUI as it happens.";
 		this.showAllLogs = showAllLogs.getBoolean(false);*/
@@ -203,6 +229,10 @@ public class BukkitContainer {
 		config.save();
 		GameRegistry.registerPlayerTracker(new PlayerTracker());
 		GameRegistry.registerCraftingHandler(new BukkitCraftingHandler());
+		if (ENABLE_UPDATE_CHECK) {
+			this.updateCheckerThread = new Thread(new HttpUpdateCheckerThread(), "BukkitForge-HttpChecker");
+			updateCheckerThread.start();
+		}
 		FileInputStream fis;
 		propsFile = null;
 		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
@@ -240,6 +270,8 @@ public class BukkitContainer {
 				}
 			}
 		}
+		
+		
 		
 		BukkitContainer.users = new Properties();
 		if (propsFile == null) return;

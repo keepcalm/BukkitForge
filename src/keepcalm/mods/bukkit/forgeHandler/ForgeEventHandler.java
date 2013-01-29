@@ -547,7 +547,7 @@ public class ForgeEventHandler {
 	}*/
 	
 	// TODO: This breaks commands for some reason.
-    //@ForgeSubscribe
+    @ForgeSubscribe
 	public void serverCmd(CommandEvent ev) {
 		if (ev.sender instanceof EntityPlayerMP) {
 			PlayerCommandPreprocessEvent bev=new PlayerCommandPreprocessEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
@@ -790,14 +790,20 @@ public class ForgeEventHandler {
 			return;
 		}
 		
-		//BlockIgniteEvent bev = 
-				new BlockIgniteEvent(new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), IgniteCause.LIGHTNING, null);
+		BlockIgniteEvent bev = new BlockIgniteEvent(new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), IgniteCause.LIGHTNING, null);
+		Bukkit.getPluginManager().callEvent(bev);
+		
+		if (bev.isCancelled()) {
+			ev.setCanceled(true);
+		}
 	}
 	
         @ForgeSubscribe
 	public void onSignChange(SignChangeEvent ev) {
 		if (!ready|| FMLCommonHandler.instance().getEffectiveSide().isClient())
 			return;
+		if (BukkitContainer.DEBUG)
+			System.out.println(String.format("SignChange: player %s x %s y %s z %s text %s", new Object[] {ev.signChanger.username, ev.x, ev.y, ev.z, Joiner.on(", ").join(ev.lines) }));
 		CraftBlock theBlock = new CraftBlock(
 					new CraftChunk(ev.signChanger.worldObj.getChunkFromBlockCoords(ev.x, ev.z)),
 					ev.x,

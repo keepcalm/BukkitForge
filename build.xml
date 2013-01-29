@@ -98,6 +98,7 @@
 		<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="MANIFEST.MF"/>
 		<copy file="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" toFile="${dist.dir}/BukkitForge-latest.jar" />
 		<delete dir="${classes.dir}" />
+		<echo file="${dist.dir}/LATEST_BUILD" message="${build.ver}-${build.number}" />
 	</target>
 
 	<target name="build" depends="setup-forge" unless="already-compiled">
