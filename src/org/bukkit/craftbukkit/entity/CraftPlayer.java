@@ -431,7 +431,7 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
 
         // Check if the fromWorld and toWorld are the same.
        // if (fromWorld.getName().equals(toWorld.getName())) {
-       entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
+       //entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
         //} else {
             // Close any foreign inventory
         	if (getHandle().openContainer != getHandle().inventoryContainer)
