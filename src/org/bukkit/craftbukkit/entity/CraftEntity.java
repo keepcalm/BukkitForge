@@ -77,6 +77,7 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.CraftWorldCache;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -242,7 +243,10 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 	}
 
 	public World getWorld() {
-		return CraftServer.instance().getWorld(entity.worldObj.getWorldInfo().getDimension());
+		
+		//System.out.println("Get world: " + entity.worldObj.getWorldInfo().getDimension() + " or " + entity.dimension);
+		// it appears that entity.worldObj is not updated as soon as the entity changes dimension.
+		return server.getWorld(entity.dimension);
 	}
 
 	public boolean teleport(Location location) {

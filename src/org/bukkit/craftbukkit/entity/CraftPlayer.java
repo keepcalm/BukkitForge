@@ -44,6 +44,7 @@ import net.minecraft.network.packet.Packet61DoorChange;
 import net.minecraft.network.packet.Packet62LevelSound;
 import net.minecraft.network.packet.Packet6SpawnPosition;
 import net.minecraft.network.packet.Packet70GameEvent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumGameType;
@@ -430,15 +431,16 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
         EntityPlayerMP entity = getHandle();
 
         // Check if the fromWorld and toWorld are the same.
-        if (fromWorld.getName().equals(toWorld.getName())) {
-            entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
-        } else {
+       // if (fromWorld.getName().equals(toWorld.getName())) {
+       //entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
+        //} else {
             // Close any foreign inventory
         	if (getHandle().openContainer != getHandle().inventoryContainer)
                 getHandle().closeInventory();
-            server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension());
+        	MinecraftServer.getServer().getConfigurationManager().transferPlayerToDimension(getHandle(), toWorld.getHandle().getWorldInfo().getDimension());
+            //server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension());
             entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
-        }
+        //}
         return true;
     }
 

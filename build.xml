@@ -92,9 +92,13 @@
 		</copy>
 		<manifest file="MANIFEST.MF" >
 			<attribute name="FMLCorePlugin" value="keepcalm.mods.bukkit.asm.BukkitASMLoader" />
+			<attribute name="MCVersion" value="${build.ver}"/>
+			<attribute name="BuildNumber" value="${build.number}" />
 		</manifest>
-		<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="META-INF/MANIFEST.MF"/>
+		<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="MANIFEST.MF"/>
+		<copy file="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" toFile="${dist.dir}/BukkitForge-latest.jar" />
 		<delete dir="${classes.dir}" />
+		<echo file="${dist.dir}/LATEST_BUILD" message="${build.ver}-${build.number}" />
 	</target>
 
 	<target name="build" depends="setup-forge" unless="already-compiled">

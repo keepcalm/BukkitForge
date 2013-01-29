@@ -33,6 +33,7 @@ import net.minecraftforge.common.Property;
 
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.scheduler.CraftScheduler;
+import org.bukkit.craftbukkit.utils.Versioning;
 
 import com.google.common.base.Joiner;
 import com.google.common.eventbus.EventBus;
@@ -64,15 +65,19 @@ import cpw.mods.fml.relauncher.Side;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
-@Mod(modid="BukkitForge",name="BukkitForge",version="1.4.6-0",certificateFingerprint="")
+@Mod(modid="BukkitForge",name="BukkitForge",version="Unknown",certificateFingerprint="")
 @NetworkMod(clientSideRequired=false,serverSideRequired=false,connectionHandler=ConnectionHandler.class,serverPacketHandlerSpec=@SidedPacketHandler(channels={},packetHandler=ForgePacketHandler.class))
 public class BukkitContainer {
 	public static Properties users;
+	
+	public static final String BF_FULL_VERSION = Versioning.getBFVersion();
 	
 	public static CraftServer bServer;
 	public File myConfigurationFile;
 	public static boolean allowAnsi;
 	public String pluginFolder;
+
+	private Thread updateCheckerThread;
 	public static boolean showAllLogs;
 	public static boolean isDediServer;
 	public static String serverUUID;
@@ -101,7 +106,17 @@ public class BukkitContainer {
 	public static BukkitContainer instance;
 	private static Thread bThread;
 
+	public static int UPDATE_CHECK_INTERVAL;
+	public static boolean ENABLE_UPDATE_CHECK;
+	/**
+	 * 1 for console-only, 0 for broadcast, -1 for both
+	 */
+	public static int UPDATE_ANNOUNCE_METHOD;
 
+	static {
+		System.out.println("THIS SERVER IS RUNNING BUKKITFORGE " + BF_FULL_VERSION + ". JUST IN CASE SOMEONE ASKS!");
+	}
+	
 	public BukkitContainer() {
 		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
 			isDediServer = true;
@@ -133,7 +148,7 @@ public class BukkitContainer {
 		}
 		meta.modId = "BukkitForge";
 		meta.name = "BukkitForge";
-		meta.version = CraftServer.version + ", implementing Bukkit version " + CraftServer.apiVer;
+		meta.version = BF_FULL_VERSION;
 		meta.authorList = Arrays.asList(new String[]{"keepcalm"});
 		meta.description = "An implementation Bukkit API for vanilla Minecraft.";
 		
@@ -188,7 +203,25 @@ public class BukkitContainer {
 		modActionName.comment = "The name of the player to use when passing events from mods (such as block breaks) to plugins";
 		BukkitContainer.MOD_USERNAME = modActionName.value;
 		
-
+		config.addCustomCategoryComment("updatechecking", "Update-related stuff");
+		
+		Property enableUpdateThread = config.get("updatechecking", "allowUpdateChecking", true);
+		enableUpdateThread.comment = "Allow BukkitForge to automatically notify you when there are updates.";
+		BukkitContainer.ENABLE_UPDATE_CHECK = enableUpdateThread.getBoolean(true);
+		
+		Property updateThreadInterval = config.get("updatechecking", "updateInterval", 216000);
+		updateThreadInterval.comment = "Number of seconds between checks - min 3000, max 2^31-1";
+		BukkitContainer.UPDATE_CHECK_INTERVAL = updateThreadInterval.getInt();
+		if (UPDATE_CHECK_INTERVAL < 3000) {
+			UPDATE_CHECK_INTERVAL = 3000;
+		}
+		
+		Property updateMode = config.get("updatechecking", "updateAnnounceMode", "-1");
+		updateMode.comment = "Mode to announce new updates. 0 is broadcast a message on the server, 1 is print to console, -1 is both.";
+		BukkitContainer.UPDATE_ANNOUNCE_METHOD = updateMode.getInt(-1);
+		if (UPDATE_ANNOUNCE_METHOD < -1 || UPDATE_ANNOUNCE_METHOD > 1) {
+			UPDATE_ANNOUNCE_METHOD = -1;
+		}
 		/*Property showAllLogs = config.get(Configuration.CATEGORY_GENERAL, "printForgeLogToGui", false);
 		showAllLogs.comment = "Print stuff that's outputted to the logs to the GUI as it happens.";
 		this.showAllLogs = showAllLogs.getBoolean(false);*/
@@ -196,6 +229,10 @@ public class BukkitContainer {
 		config.save();
 		GameRegistry.registerPlayerTracker(new PlayerTracker());
 		GameRegistry.registerCraftingHandler(new BukkitCraftingHandler());
+		if (ENABLE_UPDATE_CHECK) {
+			this.updateCheckerThread = new Thread(new HttpUpdateCheckerThread(), "BukkitForge-HttpChecker");
+			updateCheckerThread.start();
+		}
 		FileInputStream fis;
 		propsFile = null;
 		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
@@ -233,6 +270,8 @@ public class BukkitContainer {
 				}
 			}
 		}
+		
+		
 		
 		BukkitContainer.users = new Properties();
 		if (propsFile == null) return;

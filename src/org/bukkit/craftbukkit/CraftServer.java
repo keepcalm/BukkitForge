@@ -202,7 +202,8 @@ public class CraftServer implements Server {
         }
 
 		this.theLogger = BukkitContainer.bukkitLogger;
-		theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
+		//theLogger.info("Bukkit API for Vanilla, version " + apiVer + " starting up...");
+		theLogger.info("Starting BukkitForge " + BukkitContainer.BF_FULL_VERSION + "(CB-Version: " + BukkitContainer.CRAFT_VERSION + ").");
 		
 		Bukkit.setServer(this);
 		this.theHelpMap = new SimpleHelpMap(this);
@@ -1128,7 +1129,7 @@ public class CraftServer implements Server {
 	@Override
 	public void shutdown() {
 		
-		theLogger.info("Stopping the Craft API " + version);
+		theLogger.info("Stopping BukkitForge " + BukkitContainer.BF_FULL_VERSION);
 		int pollCount = 0;
 		while (pollCount < 50 && getScheduler().getActiveWorkers().size() > 0) {
 			try {

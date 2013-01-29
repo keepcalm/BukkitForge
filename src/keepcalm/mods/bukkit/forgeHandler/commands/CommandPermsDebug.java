@@ -44,12 +44,15 @@ public class CommandPermsDebug extends CommandBase {
 			
 			for (PermissionAttachmentInfo j : craft.perm.getEffectivePermissions()) {
 				PermissionAttachment x = j.getAttachment();
-				try {
-					buf.write(x.getPlugin().getDescription().getFullName());
+				/*try {
+					if (x.getPlugin() == null || x.getPlugin().getDescription() == null)
+						buf.write("Bukkit-assigned perms:");
+					else
+						buf.write(x.getPlugin().getDescription().getFullName());
 				}
 				catch (Exception e) {
 					e.printStackTrace();
-				}
+				}*/
 				for (String i : x.getPermissions().keySet()) {
 					try {
 						buf.write("    " +i + " : " + x.getPermissions().get(i));

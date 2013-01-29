@@ -1,6 +1,8 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
 
+import keepcalm.mods.bukkit.BukkitContainer;
+
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.Plugin;
 
@@ -10,7 +12,7 @@ public class BukkitCrashCallable implements ICrashCallable {
 
 	@Override
 	public String call() throws Exception {
-		String versionINFO = CraftServer.version + " (Bukkit API version " + CraftServer.apiVer + ")\nPlugins Loaded:";
+		String versionINFO = "BukkitForge " + BukkitContainer.BF_FULL_VERSION + " (with bukkit API version " + CraftServer.apiVer + ")\nPlugins Loaded:";
 		String endMsg;
 		if (CraftServer.instance() != null) {
 			String plugins = "";
@@ -35,7 +37,7 @@ public class BukkitCrashCallable implements ICrashCallable {
 			endMsg = versionINFO + plugins;
 		}
 		else {
-			endMsg = versionINFO + "[No plugins loaded yet]";
+			endMsg = versionINFO + "[Didn't get far enough to load plugins :/]";
 		}
 		return endMsg;
 	}
