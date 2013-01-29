@@ -94,6 +94,7 @@
 			<attribute name="FMLCorePlugin" value="keepcalm.mods.bukkit.asm.BukkitASMLoader" />
 		</manifest>
 		<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="META-INF/MANIFEST.MF"/>
+		<copy file="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" toFile="${dist.dir}/BukkitForge-latest.jar" />
 		<delete dir="${classes.dir}" />
 	</target>
 
