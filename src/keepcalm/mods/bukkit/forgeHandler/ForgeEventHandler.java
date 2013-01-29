@@ -547,7 +547,7 @@ public class ForgeEventHandler {
 	}*/
 	
 	// TODO: This breaks commands for some reason.
-    @ForgeSubscribe
+//    @ForgeSubscribe
 	public void serverCmd(CommandEvent ev) {
 		if (ev.sender instanceof EntityPlayerMP) {
 			PlayerCommandPreprocessEvent bev=new PlayerCommandPreprocessEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
