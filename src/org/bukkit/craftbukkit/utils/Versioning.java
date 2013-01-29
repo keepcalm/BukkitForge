@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 
-public final class Versioning {
-    public static String getCraftVersion() {
+public class Versioning {
+    public final static String getBFVersion() {
         String result = "Unknown-Version";
 
         InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.bukkit/bukkit/pom.properties");
@@ -19,12 +19,15 @@ public final class Versioning {
             try {
                 properties.load(stream);
 
-                result = properties.getProperty("version");
+                result = properties.getProperty("MCVersion");
+                result += "-";
+                result += properties.getProperty("BuildNumber");
             } catch (IOException ex) {
                 Logger.getLogger(Versioning.class.getName()).log(Level.SEVERE, "Could not get Craft version!", ex);
             }
         }
 
-        return result;
+        final String res = result;
+        return res;
     }
 }

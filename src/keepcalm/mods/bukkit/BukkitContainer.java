@@ -33,6 +33,7 @@ import net.minecraftforge.common.Property;
 
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.scheduler.CraftScheduler;
+import org.bukkit.craftbukkit.utils.Versioning;
 
 import com.google.common.base.Joiner;
 import com.google.common.eventbus.EventBus;
@@ -64,10 +65,12 @@ import cpw.mods.fml.relauncher.Side;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
-@Mod(modid="BukkitForge",name="BukkitForge",version="1.4.6-0",certificateFingerprint="")
+@Mod(modid="BukkitForge",name="BukkitForge",version="Unknown",certificateFingerprint="")
 @NetworkMod(clientSideRequired=false,serverSideRequired=false,connectionHandler=ConnectionHandler.class,serverPacketHandlerSpec=@SidedPacketHandler(channels={},packetHandler=ForgePacketHandler.class))
 public class BukkitContainer {
 	public static Properties users;
+	
+	public static final String BF_FULL_VERSION = Versioning.getBFVersion();
 	
 	public static CraftServer bServer;
 	public File myConfigurationFile;
@@ -133,7 +136,7 @@ public class BukkitContainer {
 		}
 		meta.modId = "BukkitForge";
 		meta.name = "BukkitForge";
-		meta.version = CraftServer.version + ", implementing Bukkit version " + CraftServer.apiVer;
+		meta.version = BF_FULL_VERSION;
 		meta.authorList = Arrays.asList(new String[]{"keepcalm"});
 		meta.description = "An implementation Bukkit API for vanilla Minecraft.";
 		
