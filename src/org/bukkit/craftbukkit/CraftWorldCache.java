@@ -15,15 +15,15 @@ import java.util.Map.Entry;
 public class CraftWorldCache
 {
 
-    private HashMap<Integer,WeakReference<CraftWorld>> worlds = new HashMap<Integer,WeakReference<CraftWorld>>();
+    private HashMap<Integer,CraftWorld> worlds = new HashMap<Integer,CraftWorld>();
     private HashMap<String,Integer> worldNameMapping = Maps.newHashMap();
     
     private int recursiveGetCount = 0;
     
     public CraftWorld get(String name)
     {
-        if(worldNameMapping.containsKey(name))
-            return get(worldNameMapping.get(name));
+        if(worldNameMapping.containsKey(safeName(name)))
+            return get(worldNameMapping.get(safeName(name)));
         return null;
     }
 
@@ -45,7 +45,7 @@ public class CraftWorldCache
         return tryGetWorld(dim);
     }
 
-    private void cacheIfNotPresent(int dim) {
+    public void cacheIfNotPresent(int dim) {
         if(!existsInCache(dim) && existsInDM(dim) /*&& worlds.get(dim) != null*/)
         {
             cacheWorld(dim, DimensionManager.getWorld(dim));
@@ -63,7 +63,7 @@ public class CraftWorldCache
     private void cacheWorld(int dim, WorldServer world)
     {
         if(world == null) return;
-        worlds.put(dim, new WeakReference<CraftWorld>(new CraftWorld(world)));
+        worlds.put(dim, new CraftWorld(world));
         worldNameMapping.put(safeName(world.provider.getDimensionName()), dim);
     }
     
@@ -81,9 +81,9 @@ public class CraftWorldCache
     	if (recursiveGetCount >= 5) {
     		return null;
     	}
-    	if (worlds.get(dim).get() != null) {
+    	if (worlds.get(dim) != null) {
     		this.recursiveGetCount = 0;
-    		return worlds.get(dim).get();
+    		return worlds.get(dim);
     	}
 		//GC'd!
 		this.cacheWorld(dim);
@@ -93,8 +93,8 @@ public class CraftWorldCache
     }
     public List<World> getWorldsAsList() {
     	List<World> ret = Lists.newArrayList();
-    	for (Entry<Integer,WeakReference<CraftWorld>> j : worlds.entrySet()) {
-    		ret.add(tryGetWorld(j.getKey()));
+    	for (CraftWorld j : worlds.values()) {
+    		ret.add(j);
     	}
     	return ret;
     }

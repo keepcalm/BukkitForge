@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,12 +37,14 @@ import net.minecraft.server.dedicated.PropertyManager;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.*;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.WorldManager;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldSettings;
+import net.minecraft.world.WorldServerMulti;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.AnvilSaveConverter;
@@ -50,6 +53,8 @@ import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -104,6 +109,8 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.map.MapView;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.LazyMetadataValue;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
@@ -524,6 +531,23 @@ public class CraftServer implements Server {
         return result;
     }
 
+    private Boolean firstBukkitWorld = true;
+
+    private Environment wtToEnv(WorldServer x) {
+
+        IChunkProvider wp = x.theChunkProviderServer.currentChunkProvider;
+
+        if (wp instanceof ChunkProviderEnd) {
+            return Environment.THE_END;
+        }
+        else if (wp instanceof ChunkProviderHell) {
+            return Environment.NETHER;
+        }
+        else {
+            return Environment.NORMAL;
+        }
+    }
+
 	@Override
 	public World createWorld(WorldCreator creator) {
 		if (creator == null) {
@@ -532,31 +556,42 @@ public class CraftServer implements Server {
 
    		String name = creator.name();
 		World world = getWorld(name);
-		WorldType type = WorldType.parseWorldType(creator.type().getName());
 
-		if (world != null) {
+//		WorldType type = WorldType.parseWorldType(creator.type().getName());
+
+		if (world != null) { // Existing forge world
 			return world;
 		}
 
-        int dimension = DimensionManager.getNextFreeDimId();
+        if( firstBukkitWorld )
+        {
+            DimensionManager.registerProviderType(CraftWorldProvider.ProviderID, CraftWorldProvider.class, false);
+            firstBukkitWorld = false;
+        }
 
-        Environment env = creator.environment();
-        int envId = env.getId();
+        int dimension = -1000;
 
-        // No way to check if provider type is already registered, so register every time
-        DimensionManager.registerProviderType(CraftWorldProvider.ProviderID, CraftWorldProvider.class, false);
+        if( CraftWorldProvider.hasDimensionIdForName( name ) )
+        {
+            dimension = CraftWorldProvider.getDimensionIdForName(name);
+        }
+        else
+        {
+            dimension = DimensionManager.getNextFreeDimId();
+            CraftWorldProvider.setDimensionIdForName(name, dimension);
+        }
+
         DimensionManager.registerDimension(dimension, CraftWorldProvider.ProviderID);
-        WorldProvider wp = DimensionManager.createProviderFor(dimension);
-        ((CraftWorldProvider)wp).setName(creator.name());
-        wp.setDimension(dimension);
 
-        File folder = new File(getWorldContainer(), wp.getSaveFolder());
+        CraftWorldProvider wp = (CraftWorldProvider)DimensionManager.createProviderFor(dimension);
+        wp.setName(creator.name());
+
+        File folder = new File(getWorldContainer(), wp.getDimName());
 		if ((folder.exists()) && (!folder.isDirectory())) {
 			throw new IllegalArgumentException("File exists with the name '" + name + "' and isn't a folder");
 		}
 
         ChunkGenerator generator = creator.generator();
-
         boolean generateStructures = creator.generateStructures();
 
 		AnvilSaveConverter converter = new AnvilSaveConverter(folder);
@@ -565,9 +600,23 @@ public class CraftServer implements Server {
 			converter.convertMapFormat(name, new ConvertingProgressUpdate(theServer));
 		}
 
-        DimensionManager.initDimension(dimension);
-        WorldServer internal = theServer.worldServerForDimension(dimension);
-        DimensionManager.setWorld(dimension, internal);
+        WorldType type = WorldType.parseWorldType(creator.type().getName());
+
+        //WorldServer internal = new WorldServer(theServer, new AnvilSaveHandler(getWorldContainer().getParentFile(), name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, false, type), theServer.theProfiler);
+       // WorldServerMulti internal = new WorldServerMulti(theServer, new AnvilSaveHandler(getWorldContainer()                , name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, false,    type), theServer.theProfiler, creator.environment(), generator);
+        WorldServer internal = new WorldServerMulti(theServer, new AnvilSaveHandler(getWorldContainer(), wp.getDimName(), true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, false, type), worlds.get(0).getHandle(), theServer.theProfiler);
+
+        internal.addWorldAccess((IWorldAccess) new WorldManager(theServer, internal));
+        internal.difficultySetting = 1;
+        internal.provider = wp;
+
+        wp.registerWorld(internal);
+
+        //DimensionManager.setWorld(dimension, internal);  not necessary, done in constructor of WorldServer
+        worlds.cacheIfNotPresent(dimension);
+        if (generator != null) {
+            (worlds.get(dimension)).getPopulators().addAll(generator.getDefaultPopulators(worlds.get(dimension)));
+        }
 
 		pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
 		System.out.print("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
@@ -596,7 +645,10 @@ public class CraftServer implements Server {
 				}//
 			}
 		}
-		pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
+
+        MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(internal));
+
+        //pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
 		return worlds.get(dimension);
 	}
 
