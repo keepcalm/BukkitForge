@@ -23,6 +23,11 @@ public class CommandPermsDebug extends CommandBase {
 	}
 
 	@Override
+	public boolean canCommandSenderUseCommand(ICommandSender par1) {
+		return true;
+	}
+	
+	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
 		
 		if (var1 instanceof EntityPlayerMP) {
