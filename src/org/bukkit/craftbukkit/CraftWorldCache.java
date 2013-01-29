@@ -1,17 +1,24 @@
 package org.bukkit.craftbukkit;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import org.bukkit.World;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
+import java.util.Map.Entry;
 
 public class CraftWorldCache
 {
 
-    private WeakHashMap<Integer,CraftWorld> worlds = new WeakHashMap<Integer,CraftWorld>();
+    private HashMap<Integer,WeakReference<CraftWorld>> worlds = new HashMap<Integer,WeakReference<CraftWorld>>();
     private HashMap<String,Integer> worldNameMapping = Maps.newHashMap();
+    
+    private int recursiveGetCount = 0;
     
     public CraftWorld get(String name)
     {
@@ -22,11 +29,11 @@ public class CraftWorldCache
 
     public CraftWorld get(UUID id)
     {
-        for( CraftWorld cw : worlds.values() )
+        for( World cw : getWorldsAsList())
         {
             if( cw.getUID().equals(id) )
             {
-                return cw;
+                return (CraftWorld)cw;
             }
         }
         return null;
@@ -35,7 +42,7 @@ public class CraftWorldCache
     public CraftWorld get(int dim)
     {
         cacheIfNotPresent(dim);
-        return worlds.get(dim);
+        return tryGetWorld(dim);
     }
 
     private void cacheIfNotPresent(int dim) {
@@ -56,17 +63,40 @@ public class CraftWorldCache
     private void cacheWorld(int dim, WorldServer world)
     {
         if(world == null) return;
-        worlds.put(dim, new CraftWorld(world));
+        worlds.put(dim, new WeakReference<CraftWorld>(new CraftWorld(world)));
         worldNameMapping.put(safeName(world.provider.getDimensionName()), dim);
     }
-
+    
+    private void cacheWorld(int dim) {
+    	
+    	cacheWorld(dim, MinecraftServer.getServer().worldServerForDimension(dim));
+    	
+    }
     private String safeName(String name)
     {
         return name.toLowerCase().replace( ' ', '_');
     }
 
+    private CraftWorld tryGetWorld(int dim) {
+    	if (recursiveGetCount >= 5) {
+    		return null;
+    	}
+    	if (worlds.get(dim).get() != null) {
+    		this.recursiveGetCount = 0;
+    		return worlds.get(dim).get();
+    	}
+		//GC'd!
+		this.cacheWorld(dim);
+		// try again
+		recursiveGetCount++;
+		return tryGetWorld(dim);
+    }
     public List<World> getWorldsAsList() {
-        return new ArrayList<World>(worlds.values());
+    	List<World> ret = Lists.newArrayList();
+    	for (Entry<Integer,WeakReference<CraftWorld>> j : worlds.entrySet()) {
+    		ret.add(tryGetWorld(j.getKey()));
+    	}
+    	return ret;
     }
 
     public void remove(int id) {
