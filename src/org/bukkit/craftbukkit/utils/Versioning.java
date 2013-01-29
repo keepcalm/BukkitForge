@@ -30,9 +30,10 @@ public class Versioning {
 					if (str.length <  2) {
 						continue; // invalid
 					}
-					if (str.length > 2) {
-						str[1] = Joiner.on(':').join(Arrays.copyOfRange(str, 1, str.length));
-					}
+					//if (str.length > 2) {
+						//str[1] = Joiner.on(':').join(Arrays.copyOfRange(str, 1, str.length));
+					//}
+					System.out.println(str[0] + "=>" + str[1]);
 					map.put(str[0], str[1]);
 				}
 			}
