@@ -46,7 +46,7 @@ public class CraftWorldCache
     }
 
     private void cacheIfNotPresent(int dim) {
-        if(!existsInCache(dim) && existsInDM(dim) && worlds.get(dim) != null)
+        if(!existsInCache(dim) && existsInDM(dim) /*&& worlds.get(dim) != null*/)
         {
             cacheWorld(dim, DimensionManager.getWorld(dim));
         }
