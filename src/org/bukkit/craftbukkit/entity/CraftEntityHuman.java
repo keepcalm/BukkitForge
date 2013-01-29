@@ -45,7 +45,7 @@ import org.bukkit.plugin.Plugin;
 public class CraftEntityHuman extends CraftLivingEntity implements HumanEntity  {
 	private CraftInventoryPlayer inventory;
 	private final CraftInventory enderChest;
-	protected final PermissibleBase perm = new PermissibleBase(this);
+	public final PermissibleBase perm = new PermissibleBase(this);
 	private boolean op;
 	private GameMode mode;
 
