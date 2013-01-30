@@ -81,7 +81,7 @@ public class BukkitContainer {
 	public static boolean DEBUG = false;// ClassLoader.getSystemResourceAsStream("/net/minecraft/item") == null;
 	// hehe
 	public static boolean IGNORE_CONNECTION_RECEIVED = false;
-	private static String MOD_USERNAME = "[Mod]";
+	public static String MOD_USERNAME = "[Mod]";
 	public static EntityPlayerMP MOD_PLAYER;
 	public static String[] pluginsInPath;
 	public static String CRAFT_VERSION;
@@ -100,7 +100,6 @@ public class BukkitContainer {
 	@Instance("BukkitForge")
 	public static BukkitContainer instance;
 	private static Thread bThread;
-
 
 	public BukkitContainer() {
 		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
