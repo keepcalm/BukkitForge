@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.inventory.Container;
@@ -35,6 +33,7 @@ import net.minecraft.network.packet.Packet200Statistic;
 import net.minecraft.network.packet.Packet202PlayerAbilities;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet3Chat;
+import net.minecraft.network.packet.Packet43Experience;
 import net.minecraft.network.packet.Packet4UpdateTime;
 import net.minecraft.network.packet.Packet53BlockChange;
 import net.minecraft.network.packet.Packet54PlayNoteBlock;
@@ -45,6 +44,7 @@ import net.minecraft.network.packet.Packet70GameEvent;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumGameType;
+import net.minecraft.world.WorldServer;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.Validate;
@@ -70,7 +70,6 @@ import org.bukkit.craftbukkit.CraftEffect;
 import org.bukkit.craftbukkit.CraftOfflinePlayer;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftSound;
-import org.bukkit.craftbukkit.CraftTeleporter;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.map.CraftMapView;
 import org.bukkit.craftbukkit.map.RenderData;
@@ -463,8 +462,26 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
             }
             
             entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!*/
-        	server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension(), new CraftTeleporter(toWorld.getHandle()));
-        	entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
+        	//server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension(), new CraftTeleporter(toWorld.getHandle()));
+        	//entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
+        	toWorld.getHandle().spawnEntityInWorld(entity);
+        	entity.setWorld(toWorld.getHandle());
+        	entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
+        	toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
+        	entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
+        	
+        	entity.mcServer.getConfigurationManager().func_72375_a(entity, toWorld.getHandle());
+        	entity.playerNetServerHandler.setPlayerLocation(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
+        	toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
+        	
+        	WorldServer newWorld = toWorld.getHandle();
+        	
+            entity.theItemInWorldManager.setWorld((WorldServer)newWorld);
+            entity.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(entity, (WorldServer)newWorld);
+            entity.mcServer.getConfigurationManager().syncPlayerInventory(entity);
+            entity.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(entity.experience, entity.experienceTotal, entity.experienceLevel));
+            
+            entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
             
         }
 
