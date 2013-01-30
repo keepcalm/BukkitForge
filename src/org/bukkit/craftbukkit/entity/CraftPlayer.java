@@ -14,9 +14,8 @@ import java.util.logging.Logger;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
-import keepcalm.mods.bukkit.forgeHandler.VanishUtils;
-import net.minecraft.entity.EntityTracker;
-import net.minecraft.entity.EntityTrackerEntry;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.inventory.Container;
@@ -33,7 +32,6 @@ import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet131MapData;
 import net.minecraft.network.packet.Packet200Statistic;
-import net.minecraft.network.packet.Packet201PlayerInfo;
 import net.minecraft.network.packet.Packet202PlayerAbilities;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet3Chat;
@@ -44,11 +42,9 @@ import net.minecraft.network.packet.Packet61DoorChange;
 import net.minecraft.network.packet.Packet62LevelSound;
 import net.minecraft.network.packet.Packet6SpawnPosition;
 import net.minecraft.network.packet.Packet70GameEvent;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumGameType;
-import net.minecraft.world.WorldServer;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.Validate;
@@ -448,11 +444,25 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
             // Close any foreign inventory
         	if (getHandle().openContainer != getHandle().inventoryContainer)
                 getHandle().closeInventory();
-            toWorld.getHandle().spawnEntityInWorld(entity); // does something cool
-            toWorld.getHandle().updateEntityWithOptionalForce(entity, false); // Update entity properties 	
+            //toWorld.getHandle().spawnEntityInWorld(entity); // does something cool
+            //toWorld.getHandle().updateEntityWithOptionalForce(entity, false); // Update entity properties 	
             entity.setWorld(toWorld.getHandle()); // Sets the current world obj
+            
+            fromWorld.getHandle().removeEntity(entity);
+            
+            Entity e = EntityList.createEntityByName(entity.getEntityName(), toWorld.getHandle());
+            
+            if (e != null) {
+            	e.copyDataFrom(entity, true);
+            	entity.setDead(); 
+            	toWorld.getHandle().spawnEntityInWorld(e);
+            	fromWorld.getHandle().resetUpdateEntityTick();
+            	toWorld.getHandle().resetUpdateEntityTick();
+            	this.setHandle(e);
+            }
+            
             entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
-
+            
         }
 
         return true;
