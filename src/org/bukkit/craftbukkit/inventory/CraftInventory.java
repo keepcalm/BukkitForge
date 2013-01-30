@@ -441,7 +441,7 @@ public class CraftInventory implements Inventory {
 		int totalFound = 0;
 		for (int i = 0; i < getSize(); i++) {
 			if (new CraftItemStack(inventory.getStackInSlot(i)).isSimilar(item)) {
-				totalFound++;
+				totalFound+=inventory.getStackInSlot(i).stackSize;
 			}
 		}
 		return totalFound >= amount;

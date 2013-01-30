@@ -229,10 +229,10 @@ public class BukkitContainer {
 		config.save();
 		GameRegistry.registerPlayerTracker(new PlayerTracker());
 		GameRegistry.registerCraftingHandler(new BukkitCraftingHandler());
-		if (ENABLE_UPDATE_CHECK) {
+		/*if (ENABLE_UPDATE_CHECK) {
 			this.updateCheckerThread = new Thread(new HttpUpdateCheckerThread(), "BukkitForge-HttpChecker");
 			updateCheckerThread.start();
-		}
+		}*/
 		FileInputStream fis;
 		propsFile = null;
 		if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {

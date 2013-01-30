@@ -407,7 +407,19 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
 
     @Override
     public boolean teleport(Location location, PlayerTeleportEvent.TeleportCause cause) {
-        if (getHandle().playerNetServerHandler == null) return false;
+    	net.minecraft.entity.player.EntityPlayerMP/*was:EntityPlayer*/ entity = getHandle();
+
+        if (getHealth() == 0 || entity.isDead/*was:dead*/) {
+            return false;
+        }
+
+        if (entity.playerNetServerHandler/*was:playerConnection*/ == null || entity.playerNetServerHandler/*was:playerConnection*/.connectionClosed/*was:disconnected*/) {
+            return false;
+        }
+
+        if (entity.ridingEntity/*was:vehicle*/ != null || entity.riddenByEntity/*was:passenger*/ != null) {
+            return false;
+        }
 
         // From = Players current Location
         Location from = this.getLocation();
@@ -416,31 +428,32 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
         // Create & Call the Teleport Event.
         PlayerTeleportEvent event = new PlayerTeleportEvent((Player) this, from, to, cause);
         server.getPluginManager().callEvent(event);
+
         // Return False to inform the Plugin that the Teleport was unsuccessful/cancelled.
-        if (event.isCancelled() == true) {
+        if (event.isCancelled()) {
             return false;
         }
+
         // Update the From Location
         from = event.getFrom();
         // Grab the new To Location dependent on whether the event was cancelled.
         to = event.getTo();
         // Grab the To and From World Handles.
-        CraftWorld fromWorld = ((CraftWorld) from.getWorld());
-        CraftWorld toWorld = ((CraftWorld) to.getWorld());
-        // Grab the EntityPlayerMP
-        EntityPlayerMP entity = getHandle();
-
+        CraftWorld fromWorld = (CraftWorld) from.getWorld();
+        CraftWorld toWorld = (CraftWorld) to.getWorld();
         // Check if the fromWorld and toWorld are the same.
-       // if (fromWorld.getName().equals(toWorld.getName())) {
-       //entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
-        //} else {
+        if (fromWorld.getName().equals(toWorld.getName())) {
+            entity.setPositionAndRotation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
+        } else {
             // Close any foreign inventory
         	if (getHandle().openContainer != getHandle().inventoryContainer)
                 getHandle().closeInventory();
-        	MinecraftServer.getServer().getConfigurationManager().transferPlayerToDimension(getHandle(), toWorld.getHandle().getWorldInfo().getDimension());
-            //server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension());
-            entity.setPositionAndUpdate(location.getX(), location.getY(), location.getZ());
-        //}
+            toWorld.getHandle().spawnEntityInWorld(entity);
+            entity.setPositionAndRotation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
+            
+        }
+        toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
+        entity.setWorld(toWorld.getHandle());
         return true;
     }
 

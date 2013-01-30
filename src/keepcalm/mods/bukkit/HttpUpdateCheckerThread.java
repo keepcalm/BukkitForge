@@ -23,7 +23,7 @@ public class HttpUpdateCheckerThread implements Runnable {
 	static {
 		try {
 			url = (new URL("http://build.technicpack.net/job/BukkitForge/ws/build/dist/LATEST_BUILD"));
-			ENABLED = true;
+			ENABLED = false;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			ENABLED = false;
