@@ -70,6 +70,7 @@ import org.bukkit.craftbukkit.CraftEffect;
 import org.bukkit.craftbukkit.CraftOfflinePlayer;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftSound;
+import org.bukkit.craftbukkit.CraftTeleporter;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.map.CraftMapView;
 import org.bukkit.craftbukkit.map.RenderData;
@@ -446,7 +447,7 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
                 getHandle().closeInventory();
             //toWorld.getHandle().spawnEntityInWorld(entity); // does something cool
             //toWorld.getHandle().updateEntityWithOptionalForce(entity, false); // Update entity properties 	
-            entity.setWorld(toWorld.getHandle()); // Sets the current world obj
+           /* entity.setWorld(toWorld.getHandle()); // Sets the current world obj
             
             fromWorld.getHandle().removeEntity(entity);
             
@@ -461,7 +462,9 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
             	this.setHandle(e);
             }
             
-            entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
+            entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!*/
+        	server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension(), new CraftTeleporter(toWorld.getHandle()));
+        	entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
             
         }
 
