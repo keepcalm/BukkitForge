@@ -466,6 +466,7 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
         	//entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
         	toWorld.getHandle().spawnEntityInWorld(entity);
         	entity.setWorld(toWorld.getHandle());
+        	fromWorld.getHandle().removeEntity(entity);
         	entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         	toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
         	entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
