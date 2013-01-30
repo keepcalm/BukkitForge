@@ -14,9 +14,6 @@ import java.util.logging.Logger;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
-import keepcalm.mods.bukkit.forgeHandler.VanishUtils;
-import net.minecraft.entity.EntityTracker;
-import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.inventory.Container;
@@ -33,10 +30,10 @@ import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet131MapData;
 import net.minecraft.network.packet.Packet200Statistic;
-import net.minecraft.network.packet.Packet201PlayerInfo;
 import net.minecraft.network.packet.Packet202PlayerAbilities;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet3Chat;
+import net.minecraft.network.packet.Packet43Experience;
 import net.minecraft.network.packet.Packet4UpdateTime;
 import net.minecraft.network.packet.Packet53BlockChange;
 import net.minecraft.network.packet.Packet54PlayNoteBlock;
@@ -44,7 +41,7 @@ import net.minecraft.network.packet.Packet61DoorChange;
 import net.minecraft.network.packet.Packet62LevelSound;
 import net.minecraft.network.packet.Packet6SpawnPosition;
 import net.minecraft.network.packet.Packet70GameEvent;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumGameType;
@@ -443,17 +440,61 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
         CraftWorld toWorld = (CraftWorld) to.getWorld();
         // Check if the fromWorld and toWorld are the same.
         if (fromWorld.getName().equals(toWorld.getName())) {
-            entity.setPositionAndRotation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
+            entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
         } else {
             // Close any foreign inventory
         	if (getHandle().openContainer != getHandle().inventoryContainer)
                 getHandle().closeInventory();
-            toWorld.getHandle().spawnEntityInWorld(entity);
-            entity.setPositionAndRotation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
+            //toWorld.getHandle().spawnEntityInWorld(entity); // does something cool
+            //toWorld.getHandle().updateEntityWithOptionalForce(entity, false); // Update entity properties 	
+           /* entity.setWorld(toWorld.getHandle()); // Sets the current world obj
+            
+            fromWorld.getHandle().removeEntity(entity);
+            
+            Entity e = EntityList.createEntityByName(entity.getEntityName(), toWorld.getHandle());
+            
+            if (e != null) {
+            	e.copyDataFrom(entity, true);
+            	entity.setDead(); 
+            	toWorld.getHandle().spawnEntityInWorld(e);
+            	fromWorld.getHandle().resetUpdateEntityTick();
+            	toWorld.getHandle().resetUpdateEntityTick();
+            	this.setHandle(e);
+            }
+            
+            
+            
+            entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!*/
+        	WorldServer newWorld = toWorld.getHandle();
+        	entity.dimension = newWorld.getWorldInfo().getDimension();
+        	entity.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(entity.dimension, (byte)entity.worldObj.difficultySetting, newWorld.getWorldInfo().getTerrainType(), newWorld.getHeight(), entity.theItemInWorldManager.getGameType()));
+        	fromWorld.getHandle().getPlayerManager().removePlayer(entity);
+        	//server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension(), new CraftTeleporter(toWorld.getHandle()));
+        	//entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
+        	toWorld.getHandle().spawnEntityInWorld(entity);
+        	entity.setWorld(toWorld.getHandle());
+        	fromWorld.getHandle().removeEntity(entity);
+        	entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
+        	toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
+        	entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
+        	
+        	entity.mcServer.getConfigurationManager().func_72375_a(entity, toWorld.getHandle());
+        	entity.playerNetServerHandler.setPlayerLocation(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
+        	toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
+        	
+        	
+        	
+            entity.theItemInWorldManager.setWorld((WorldServer)newWorld);
+            entity.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(entity, (WorldServer)newWorld);
+            entity.mcServer.getConfigurationManager().syncPlayerInventory(entity);
+            entity.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(entity.experience, entity.experienceTotal, entity.experienceLevel));
+            
+            entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
+            newWorld.updateEntities();
+            fromWorld.getHandle().updateEntities();
             
         }
-        toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
-        entity.setWorld(toWorld.getHandle());
+
         return true;
     }
 

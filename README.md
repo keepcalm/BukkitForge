@@ -21,6 +21,10 @@ BukkitForge Team Members:
 <a href="https://github.com/SpoonsJTD">SpoonsJTD</a>
 
 
+IRC
+===============
+We have a irc, its hosted on esper.net and its #bukkitforge.
+
 Jenkins? Jenkins? JENKINS!
 ==========================
 
