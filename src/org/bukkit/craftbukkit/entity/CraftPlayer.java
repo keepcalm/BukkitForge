@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +34,10 @@ import net.minecraft.network.packet.Packet200Statistic;
 import net.minecraft.network.packet.Packet202PlayerAbilities;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.network.packet.Packet3Chat;
+import net.minecraft.network.packet.Packet41EntityEffect;
 import net.minecraft.network.packet.Packet43Experience;
 import net.minecraft.network.packet.Packet4UpdateTime;
+import net.minecraft.network.packet.Packet51MapChunk;
 import net.minecraft.network.packet.Packet53BlockChange;
 import net.minecraft.network.packet.Packet54PlayNoteBlock;
 import net.minecraft.network.packet.Packet61DoorChange;
@@ -42,6 +45,7 @@ import net.minecraft.network.packet.Packet62LevelSound;
 import net.minecraft.network.packet.Packet6SpawnPosition;
 import net.minecraft.network.packet.Packet70GameEvent;
 import net.minecraft.network.packet.Packet9Respawn;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumGameType;
@@ -459,7 +463,7 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
             	toWorld.getHandle().spawnEntityInWorld(e);
             	fromWorld.getHandle().resetUpdateEntityTick();
             	toWorld.getHandle().resetUpdateEntityTick();
-            	this.setHandle(e);
+            	this.setHdle(e);
             }
             
             
@@ -471,30 +475,38 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
         	fromWorld.getHandle().getPlayerManager().removePlayer(entity);
         	//server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension(), new CraftTeleporter(toWorld.getHandle()));
         	//entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
-        	toWorld.getHandle().spawnEntityInWorld(entity);
         	entity.setWorld(toWorld.getHandle());
         	fromWorld.getHandle().removeEntity(entity);
+        	toWorld.getHandle().spawnEntityInWorld(entity);
+        	
         	entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         	toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
         	entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
-        	
+        	toWorld.getHandle().spawnEntityInWorld(entity);
         	entity.mcServer.getConfigurationManager().func_72375_a(entity, toWorld.getHandle());
         	entity.playerNetServerHandler.setPlayerLocation(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         	toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
         	
         	
-        	
             entity.theItemInWorldManager.setWorld((WorldServer)newWorld);
             entity.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(entity, (WorldServer)newWorld);
             entity.mcServer.getConfigurationManager().syncPlayerInventory(entity);
+            Iterator var6 = entity.getActivePotionEffects().iterator();
+
+            while (var6.hasNext())
+            {
+                PotionEffect var7 = (PotionEffect)var6.next();
+                entity.playerNetServerHandler.sendPacketToPlayer(new Packet41EntityEffect(entity.entityId, var7));
+            }
             entity.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(entity.experience, entity.experienceTotal, entity.experienceLevel));
             
             entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
             newWorld.updateEntities();
             fromWorld.getHandle().updateEntities();
-            
+            newWorld.updateEntityWithOptionalForce(entity, false);
         }
-
+        
+        toWorld.refreshChunk(entity.chunkCoordX, entity.chunkCoordZ);
         return true;
     }
 
