@@ -283,7 +283,7 @@ public class BukkitContainer {
 			return;
 		}
 		
-		System.out.println("Successfully loaded users: " + Joiner.on(' ').join(users.keySet()));
+		//System.out.println("Successfully loaded users: " + Joiner.on(' ').join(users.keySet()));
 	}
 
 	public static BukkitContainer getInstance() {
@@ -345,6 +345,7 @@ public class BukkitContainer {
 	@ServerStopping
 	public void serverStopping(FMLServerStoppingEvent ev) {
 		// reset for potential next launch (if on client)
+		
 		BukkitContainer.bServer.shutdown();
 		CraftScheduler.currentTick = -1;
 		ForgeEventHandler.ready = false;

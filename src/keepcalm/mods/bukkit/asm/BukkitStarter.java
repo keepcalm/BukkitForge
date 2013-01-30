@@ -34,7 +34,7 @@ public class BukkitStarter implements Runnable {
 			scm.registerCommand(new CraftCommandHelp());
 			scm.registerCommand(new CraftCommandMVFix());
 			scm.registerCommand(new CraftCommandMods());
-			scm.registerCommand(new CommandPermsDebug());
+			//scm.registerCommand(new CommandPermsDebug());
 			scm.registerCommand(new CommandBukkitForge());
 			if (!(server instanceof DedicatedServer)) {
 				scm.registerCommand(new CraftCommandConsole());
