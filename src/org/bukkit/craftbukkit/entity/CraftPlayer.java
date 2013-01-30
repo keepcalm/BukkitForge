@@ -443,17 +443,18 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
         CraftWorld toWorld = (CraftWorld) to.getWorld();
         // Check if the fromWorld and toWorld are the same.
         if (fromWorld.getName().equals(toWorld.getName())) {
-            entity.setPositionAndRotation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
+            entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
         } else {
             // Close any foreign inventory
         	if (getHandle().openContainer != getHandle().inventoryContainer)
                 getHandle().closeInventory();
-            toWorld.getHandle().spawnEntityInWorld(entity);
-            entity.setPositionAndRotation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
-            
+            toWorld.getHandle().spawnEntityInWorld(entity); // does something cool
+            toWorld.getHandle().updateEntityWithOptionalForce(entity, false); // Update entity properties 	
+            entity.setWorld(toWorld.getHandle()); // Sets the current world obj
+            entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
+
         }
-        toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
-        entity.setWorld(toWorld.getHandle());
+
         return true;
     }
 
