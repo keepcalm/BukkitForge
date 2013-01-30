@@ -439,21 +439,21 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
         // Grab the new To Location dependent on whether the event was cancelled.
         to = event.getTo();
         // Grab the To and From World Handles.
-        net.minecraft.world.WorldServer/*was:WorldServer*/ fromWorld = ((CraftWorld) from.getWorld()).getHandle();
-        net.minecraft.world.WorldServer/*was:WorldServer*/ toWorld = ((CraftWorld) to.getWorld()).getHandle();
-
+        CraftWorld fromWorld = (CraftWorld) from.getWorld();
+        CraftWorld toWorld = (CraftWorld) to.getWorld();
         // Check if the fromWorld and toWorld are the same.
-        if (fromWorld == toWorld) {
-            entity.playerNetServerHandler/*was:playerConnection*/.setPlayerLocation(to.getX(), to.getY(), to.getZ(), to.getPitch(), to.getYaw());
+        if (fromWorld.getName().equals(toWorld.getName())) {
+            entity.setPositionAndRotation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
         } else {
             // Close any foreign inventory
-            if (getHandle().openContainer/*was:activeContainer*/ != getHandle().inventoryContainer/*was:defaultContainer*/){
-                getHandle().closeScreen/*was:closeInventory*/();
-            }
-            server.getHandle().getConfigurationManager().respawnPlayer(entity, toWorld.getWorldInfo().getDimension(), true);
-            entity.playerNetServerHandler/*was:playerConnection*/.setPlayerLocation(to.getX(), to.getY(), to.getZ(), to.getPitch(), to.getYaw());
+        	if (getHandle().openContainer != getHandle().inventoryContainer)
+                getHandle().closeInventory();
+            toWorld.getHandle().spawnEntityInWorld(entity);
+            entity.setPositionAndRotation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
             
         }
+        toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
+        entity.setWorld(toWorld.getHandle());
         return true;
     }
 
