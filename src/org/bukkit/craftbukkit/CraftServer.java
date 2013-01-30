@@ -648,8 +648,7 @@ public class CraftServer implements Server {
 		}
 
         MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(internal));
-
-        //pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
+        pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
 		return worlds.get(dimension);
 	}
 
