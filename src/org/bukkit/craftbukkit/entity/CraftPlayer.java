@@ -41,6 +41,7 @@ import net.minecraft.network.packet.Packet61DoorChange;
 import net.minecraft.network.packet.Packet62LevelSound;
 import net.minecraft.network.packet.Packet6SpawnPosition;
 import net.minecraft.network.packet.Packet70GameEvent;
+import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumGameType;
@@ -461,7 +462,13 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
             	this.setHandle(e);
             }
             
+            
+            
             entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!*/
+        	WorldServer newWorld = toWorld.getHandle();
+        	entity.dimension = newWorld.getWorldInfo().getDimension();
+        	entity.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(entity.dimension, (byte)entity.worldObj.difficultySetting, newWorld.getWorldInfo().getTerrainType(), newWorld.getHeight(), entity.theItemInWorldManager.getGameType()));
+        	fromWorld.getHandle().getPlayerManager().removePlayer(entity);
         	//server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension(), new CraftTeleporter(toWorld.getHandle()));
         	//entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
         	toWorld.getHandle().spawnEntityInWorld(entity);
@@ -475,7 +482,7 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
         	entity.playerNetServerHandler.setPlayerLocation(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         	toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
         	
-        	WorldServer newWorld = toWorld.getHandle();
+        	
         	
             entity.theItemInWorldManager.setWorld((WorldServer)newWorld);
             entity.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(entity, (WorldServer)newWorld);
@@ -483,6 +490,8 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
             entity.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(entity.experience, entity.experienceTotal, entity.experienceLevel));
             
             entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
+            newWorld.updateEntities();
+            fromWorld.getHandle().updateEntities();
             
         }
 
