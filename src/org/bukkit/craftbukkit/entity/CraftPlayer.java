@@ -95,6 +95,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.MapMaker;
 
 import cpw.mods.fml.common.network.FMLNetworkHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @DelegateDeserialization(CraftOfflinePlayer.class)
 public class CraftPlayer extends CraftEntityHuman implements Player, CommandSender {
@@ -451,7 +452,7 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
                 getHandle().closeInventory();
             //toWorld.getHandle().spawnEntityInWorld(entity); // does something cool
             //toWorld.getHandle().updateEntityWithOptionalForce(entity, false); // Update entity properties 	
-           /* entity.setWorld(toWorld.getHandle()); // Sets the current world obj
+          /* entity.setWorld(toWorld.getHandle()); // Sets the current world obj
             
             fromWorld.getHandle().removeEntity(entity);
             
@@ -464,32 +465,23 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
             	fromWorld.getHandle().resetUpdateEntityTick();
             	toWorld.getHandle().resetUpdateEntityTick();
             	this.setHdle(e);
-            }
+            }*/
             
             
             
-            entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!*/
-        	WorldServer newWorld = toWorld.getHandle();
-        	entity.dimension = newWorld.getWorldInfo().getDimension();
-        	entity.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(entity.dimension, (byte)entity.worldObj.difficultySetting, newWorld.getWorldInfo().getTerrainType(), newWorld.getHeight(), entity.theItemInWorldManager.getGameType()));
-        	fromWorld.getHandle().getPlayerManager().removePlayer(entity);
-        	//server.getHandle().getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension(), new CraftTeleporter(toWorld.getHandle()));
-        	//entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());  // Set location!
-        	entity.setWorld(toWorld.getHandle());
-        	fromWorld.getHandle().removeEntity(entity);
-        	toWorld.getHandle().spawnEntityInWorld(entity);
-        	
-        	entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
-        	toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
-        	entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
-        	toWorld.getHandle().spawnEntityInWorld(entity);
-        	entity.mcServer.getConfigurationManager().func_72375_a(entity, toWorld.getHandle());
-        	entity.playerNetServerHandler.setPlayerLocation(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
-        	toWorld.getHandle().updateEntityWithOptionalForce(entity, false);
-        	
-        	
-            entity.theItemInWorldManager.setWorld((WorldServer)newWorld);
-            entity.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(entity, (WorldServer)newWorld);
+            int var3 = entity.dimension;
+            WorldServer var4 = entity.mcServer.worldServerForDimension(entity.dimension);
+            entity.dimension = toWorld.getHandle().getWorldInfo().getDimension();
+            WorldServer var5 = entity.mcServer.worldServerForDimension(entity.dimension);
+
+            entity.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(entity.dimension, (byte)entity.worldObj.difficultySetting, var5.getWorldInfo().getTerrainType(), var5.getHeight(), entity.theItemInWorldManager.getGameType()));
+            var4.removePlayerEntityDangerously(entity);
+            entity.isDead = false;
+            entity.mcServer.getConfigurationManager().transferEntityToWorld(entity, 1, var4, var5);
+            entity.mcServer.getConfigurationManager().func_72375_a(entity, var4);
+            entity.playerNetServerHandler.setPlayerLocation(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
+            entity.theItemInWorldManager.setWorld(var5);
+            entity.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(entity, var5);
             entity.mcServer.getConfigurationManager().syncPlayerInventory(entity);
             Iterator var6 = entity.getActivePotionEffects().iterator();
 
@@ -498,15 +490,11 @@ public class CraftPlayer extends CraftEntityHuman implements Player, CommandSend
                 PotionEffect var7 = (PotionEffect)var6.next();
                 entity.playerNetServerHandler.sendPacketToPlayer(new Packet41EntityEffect(entity.entityId, var7));
             }
-            entity.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(entity.experience, entity.experienceTotal, entity.experienceLevel));
-            
-            entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
-            newWorld.updateEntities();
-            fromWorld.getHandle().updateEntities();
-            newWorld.updateEntityWithOptionalForce(entity, false);
+
+            GameRegistry.onPlayerChangedDimension(entity);
         }
         
-        toWorld.refreshChunk(entity.chunkCoordX, entity.chunkCoordZ);
+       // toWorld.refreshChunk(entity.chunkCoordX, entity.chunkCoordZ);
         return true;
     }
 
