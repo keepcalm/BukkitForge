@@ -13,6 +13,7 @@ import keepcalm.mods.events.events.LightningStrikeEvent;
 import keepcalm.mods.events.events.LiquidFlowEvent;
 import keepcalm.mods.events.events.PlayerDamageBlockEvent;
 import keepcalm.mods.events.events.PlayerMoveEvent;
+import keepcalm.mods.events.events.PlayerUseItemEvent;
 import keepcalm.mods.events.events.PressurePlateInteractEvent;
 import keepcalm.mods.events.events.SheepDyeEvent;
 import keepcalm.mods.events.events.SignChangeEvent;
@@ -28,6 +29,7 @@ import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -97,6 +99,7 @@ import org.bukkit.event.entity.SheepDyeWoolEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.server.ServerCommandEvent;
@@ -241,7 +244,6 @@ public class ForgeEventHandler {
 		EntityDeathEvent bev = new EntityDeathEvent(e, stacks);
 		bev.setDroppedExp(ev.entityLiving.experienceValue);
 		Bukkit.getPluginManager().callEvent(bev);
-
 	}
 
 	/*@ForgeSubscribe
@@ -509,7 +511,10 @@ public class ForgeEventHandler {
 		CraftPlayer whom = CraftPlayerCache.getCraftPlayer(ev.player);
 
 		AsyncPlayerChatEvent ev1 = new AsyncPlayerChatEvent(false, whom, ev.message, Sets.newHashSet(CraftServer.instance().getOnlinePlayers()));
+		PlayerChatEvent bev = new PlayerChatEvent(whom, ev.message);
 		ev1 = CraftEventFactory.callEvent(ev1);
+		bev.setCancelled(ev1.isCancelled());
+		bev = CraftEventFactory.callEvent(bev);
 		String newLine = String.format(ev1.getFormat(),new Object[] {newName, ev1.getMessage()});
 		ev.line = newLine;
 		if (ev1.isCancelled()) {
@@ -571,7 +576,7 @@ public class ForgeEventHandler {
 	// begin CraftForge-added events
 
 	// used PlayerInteractEvent for this
-	/*@ForgeSubscribe
+	@ForgeSubscribe
 	public void tryPlaceBlock(PlayerUseItemEvent ev) {
 		if (ev.stack.getItem() instanceof ItemBlock) {
 			ItemBlock block = (ItemBlock) ev.stack.getItem();
@@ -587,7 +592,7 @@ public class ForgeEventHandler {
 				bblock.breakNaturally();
 			}
 		}
-	}*/
+	}
 
 	@ForgeSubscribe
 	public void dispenseItem(DispenseItemEvent ev) {

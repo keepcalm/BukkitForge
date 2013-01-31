@@ -61,6 +61,10 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
 		
 	}
 
+	private net.minecraft.item.ItemStack getItemStackOrNull(CraftItemStack stack) {
+		return stack == null ? null : stack.getHandle();
+	}
+	
 	@Override
 	public void setHelmet(ItemStack helmet) {
 		realInv.armorInventory[3] = ((CraftItemStack) helmet).getHandle();
