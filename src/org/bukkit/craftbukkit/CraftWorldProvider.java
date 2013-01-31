@@ -26,7 +26,7 @@ public class CraftWorldProvider extends WorldProvider
 
     @Override
     public String getSaveFolder()    {
-        return "";
+        return getDimName();
     }
 
     public String getDimName()
@@ -121,7 +121,5 @@ public class CraftWorldProvider extends WorldProvider
     }
 
     public static int ProviderID = 101;
-
-    public static CraftWorldDummyPlugin dummyPlugin = new CraftWorldDummyPlugin();
 }
 
