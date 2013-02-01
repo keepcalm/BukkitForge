@@ -120,7 +120,7 @@
 		</copy>
 
 		<copy todir="${mcpsrc.dir}/org">
-			<fileset dir="${src.dir}/org/bukkit" />
+			<fileset dir="${src.dir}/org" />
 		</copy>
 
 		<!-- Recompile -->
