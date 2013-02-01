@@ -102,6 +102,11 @@
 	</target>
 
 	<target name="build" depends="setup-forge" unless="already-compiled">
+	 
+	         <!--Deleting sources so that they don't come back to haunt you-->
+                <delete dir="${mcpsrc.dir}/keepcalm" />
+                <delete dir="${mcpsrc.dir}/org" />
+                <delete dir="${mcpsrc.dir}/javax" />
 		<!-- Copy source -->
 		<!--<mkdir dir="${mcpsrc.dir}/net" />
 				<copy todir="${mcpsrc.dir}/net">
@@ -146,10 +151,6 @@
 			<fileset dir="${mcp.dir}/reobf/minecraft"/>
 		</copy>
 
-    <!--Deleting sources so that they don't come back to haunt you-->
-    <delete dir="${mcpsrc.dir}/keepcalm" />
-    <delete dir="${mcpsrc.dir}/org" />
-    <delete dir="${mcpsrc.dir}/javax" />
     
 	</target>
 
