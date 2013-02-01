@@ -2,7 +2,10 @@ package org.bukkit.craftbukkit;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.gen.ChunkProviderGenerate;
+
 import org.bukkit.craftbukkit.generator.CustomChunkGenerator;
 import org.bukkit.craftbukkit.generator.InternalChunkGenerator;
 import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
@@ -136,7 +139,8 @@ public class CraftWorldProvider extends WorldProvider
             }
             else if(generator instanceof NormalChunkGenerator )
             {
-                return (NormalChunkGenerator)generator;
+                //return (NormalChunkGenerator)generator;
+            	return new ChunkProviderGenerate(worldObj, this.getSeed(), MinecraftServer.getServer().canStructuresSpawn());
             }
             else
             {
