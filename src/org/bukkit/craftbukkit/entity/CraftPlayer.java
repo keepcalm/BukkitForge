@@ -971,9 +971,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 			throw new IllegalArgumentException("Cannot make player fly if getAllowFlight() is false");
 		}
 
-		Packet202PlayerAbilities pack = getAbilitiesPacket();
+		/*Packet202PlayerAbilities pack = getAbilitiesPacket();
 		pack.setFlying(value);
-		this.updateAbilities(pack);
+		this.updateAbilities(pack);*/
+		getHandle().capabilities.isFlying = true;
+		updateAbilities(new Packet202PlayerAbilities(getHandle().capabilities));
 
 	}
 	private void updateAbilities(Packet202PlayerAbilities j) {
@@ -994,9 +996,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 	}
 
 	public void setAllowFlight(boolean value) {
-		Packet202PlayerAbilities able = getAbilitiesPacket();    	
-		able.setAllowFlying(value);
-		updateAbilities(able);
+		getHandle().capabilities.allowFlying = true;
+		updateAbilities(new Packet202PlayerAbilities(getHandle().capabilities));
 	}
 
 	@Override
