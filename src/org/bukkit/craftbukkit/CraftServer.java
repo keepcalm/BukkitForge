@@ -100,6 +100,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
 import org.bukkit.help.HelpTopic;
@@ -560,8 +561,6 @@ public class CraftServer implements Server {
    		String name = creator.name();
 		World world = getWorld(name);
 
-//		WorldType type = WorldType.parseWorldType(creator.type().getName());
-
 		if (world != null) { // Existing forge world
 			return world;
 		}
@@ -584,54 +583,30 @@ public class CraftServer implements Server {
             CraftWorldProvider.setDimensionIdForName(name, dimension);
         }
 
+        CraftWorldProvider.registerChunkGenerator(dimension, creator.generator());
+        CraftWorldProvider.registerNameForDimension(dimension,name);
         DimensionManager.registerDimension(dimension, CraftWorldProvider.ProviderID);
 
-        CraftWorldProvider wp = (CraftWorldProvider)DimensionManager.createProviderFor(dimension);
-        wp.setName(creator.name());
-
-        File folder = new File(getWorldContainer(), wp.getDimName());
-		if ((folder.exists()) && (!folder.isDirectory())) {
-			throw new IllegalArgumentException("File exists with the name '" + name + "' and isn't a folder");
-		}
-
-        ChunkGenerator generator = creator.generator();
-        boolean generateStructures = creator.generateStructures();
-
+        File folder = new File(getWorldContainer(), "");
 		AnvilSaveConverter converter = new AnvilSaveConverter(folder);
-		if (converter.isOldMapFormat(wp.getDimensionName())) {
+		if (converter.isOldMapFormat(name)) {
 			getLogger().info("Converting world '" + name + "'");
 			converter.convertMapFormat(name, new ConvertingProgressUpdate(theServer));
 		}
 
-        WorldType type = WorldType.parseWorldType(creator.type().getName());
+        DimensionManager.initDimension( dimension );
+        WorldServer internal = DimensionManager.getWorld(dimension);
 
-        WorldServer overworld = worlds.get(0).getHandle();
-        MinecraftServer mcServer = overworld.getMinecraftServer();
-        ISaveHandler saveHandler = overworld.getSaveHandler();
-        WorldSettings worldSettings = new WorldSettings(overworld.getWorldInfo());
-
-        WorldServer internal = new WorldServerMulti(theServer, saveHandler, overworld.getWorldInfo().getWorldName(), dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, false, type), overworld, theServer.theProfiler);
-
-        internal.addWorldAccess((IWorldAccess) new WorldManager(theServer, internal));
-        internal.difficultySetting = 1;
-        internal.provider = wp;
-
-        wp.registerWorld(internal);
-
-        //DimensionManager.setWorld(dimension, internal);  not necessary, done in constructor of WorldServer
         worlds.cacheIfNotPresent(dimension);
-        if (generator != null) {
-            (worlds.get(dimension)).getPopulators().addAll(generator.getDefaultPopulators(worlds.get(dimension)));
-        }
 
-		pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
-		System.out.println("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
+        List<BlockPopulator> bps = ((CraftWorldProvider)worlds.get(dimension).getHandle().provider).getPopulators(worlds.get(dimension));
+        if( bps != null )
+           (worlds.get(dimension)).getPopulators().addAll(bps);
 
-        //CraftWorldCreatorTask creatorTask = new CraftWorldCreatorTask( name, internal );
+        pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
 
-        //getScheduler().scheduleSyncDelayedTask(CraftDummyPlugin.INSTANCE, creatorTask, 0L);
-
-		/*if (DimensionManager.shouldLoadSpawn(dimension)) {
+		if (DimensionManager.shouldLoadSpawn(dimension)) {
+            System.out.println("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
 			short short1 = 196;
 			long i = System.currentTimeMillis();
 			for (int j = -short1; j <= short1; j += 16) {
@@ -654,8 +629,8 @@ public class CraftServer implements Server {
 					internal.theChunkProviderServer.provideChunk(chunkcoordinates.posX + j >> 4, chunkcoordinates.posZ + k >> 4);
 				}//
 			}
-		}        */
-        MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(internal));
+		}
+
         pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
 
 		return worlds.get(dimension);
@@ -692,6 +667,11 @@ public class CraftServer implements Server {
 	public World getWorld(UUID uid) {
 		return worlds.get(uid);
 	}
+
+        public int getDimensionForWorld(String name)
+        {
+             return worlds.getDimensionForWorld(name);
+        }
 
 	/**
 	 * 

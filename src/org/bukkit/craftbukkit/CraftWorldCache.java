@@ -45,6 +45,14 @@ public class CraftWorldCache
         return tryGetWorld(dim);
     }
 
+    public int getDimensionForWorld(String name)
+    {
+        if(worldNameMapping.containsKey(safeName(name)))
+            return worldNameMapping.get(safeName(name));
+        return 0;
+    }
+
+
     public void cacheIfNotPresent(int dim) {
         if(!existsInCache(dim) && existsInDM(dim) /*&& worlds.get(dim) != null*/)
         {

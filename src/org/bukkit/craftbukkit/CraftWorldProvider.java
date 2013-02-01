@@ -3,35 +3,40 @@ package org.bukkit.craftbukkit;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.world.WorldProvider;
+import org.bukkit.craftbukkit.generator.CustomChunkGenerator;
+import org.bukkit.craftbukkit.generator.InternalChunkGenerator;
+import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CraftWorldProvider extends WorldProvider
 {
     String dimName;
-
-    public void setName( String name )
-    {
-        dimName = name;
-    }
+    ChunkGenerator generator;
 
     @Override
     public String getDimensionName() {
-        // TODO: Fix this to get stored dimension name
         return (dimName != null)?dimName:getSaveFolder();
     }
 
     @Override
     public String getSaveFolder()    {
-        return getDimName();
+        //return getDimName();
+        return dimName;
     }
 
     public String getDimName()
     {
-        return "DIM_BF" + dimensionId;
+        return "DIM_ZZZ_BF" + dimensionId;
     }
 
     private static void saveDimensionMapping()
@@ -120,6 +125,72 @@ public class CraftWorldProvider extends WorldProvider
         }
     }
 
+    @Override
+    public net.minecraft.world.chunk.IChunkProvider createChunkGenerator()
+    {
+        if( generator != null )
+        {
+            if(generator instanceof CustomChunkGenerator )
+            {
+                return (CustomChunkGenerator)generator;
+            }
+            else if(generator instanceof NormalChunkGenerator )
+            {
+                return (NormalChunkGenerator)generator;
+            }
+            else
+            {
+                return new CustomChunkGenerator(worldObj, this.getSeed(), generator);
+            }
+        }
+        return null;
+    }
+
+
+
+    @Override
+    public void setDimension(int dim)
+    {
+        if( tempGens.containsKey(dim))
+        {
+            generator = tempGens.get(dim).get();
+        }
+
+        if( tempNames.containsKey(dim))
+        {
+            dimName = tempNames.get(dim);
+        }
+
+        super.setDimension(dim);
+    }
+
+
     public static int ProviderID = 101;
+
+    private static Map<Integer, WeakReference<ChunkGenerator>> tempGens = new HashMap<Integer, WeakReference<ChunkGenerator>>();
+    private static Map<Integer, String> tempNames = new HashMap<Integer, String>();
+
+    public List<BlockPopulator> getPopulators(CraftWorld world)
+    {
+        if( generator != null )
+        {
+            return (generator.getDefaultPopulators(world));
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static void registerChunkGenerator( int dimension, ChunkGenerator gen )
+    {
+        tempGens.put(dimension, new WeakReference<ChunkGenerator>(gen));
+    }
+
+    public static void registerNameForDimension(int dimension, String name)
+    {
+        tempNames.put(dimension, name);
+    }
+
 }
 
