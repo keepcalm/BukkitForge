@@ -162,7 +162,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 		DamageSource reason = DamageSource.generic;
 
 		if (source instanceof HumanEntity) {
-			reason = DamageSource.causePlayerDamage(((CraftEntityHuman) source).getHandle());
+			reason = DamageSource.causePlayerDamage(((CraftHumanEntity) source).getHandle());
 		} else if (source instanceof LivingEntity) {
 			reason = DamageSource.causeMobDamage(((CraftLivingEntity) source).getHandle());
 		}

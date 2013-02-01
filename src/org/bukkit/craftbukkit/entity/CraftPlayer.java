@@ -93,7 +93,7 @@ import com.google.common.collect.MapMaker;
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 
 @DelegateDeserialization(CraftOfflinePlayer.class)
-public class CraftPlayer extends CraftEntityHuman implements Player, CommandSender {
+public class CraftPlayer extends CraftHumanEntity implements Player, CommandSender {
 	private long firstPlayed = 0;
 	private long lastPlayed = 0;
 	//private boolean hasPlayedBefore = false;

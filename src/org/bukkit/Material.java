@@ -591,7 +591,7 @@ public enum Material {
             if (byId.length > material.id) {
                 byId[material.id] = material;
             } else {
-                byId = Java15Compat.Arrays_copyOfRange(byId, 0, material.id + 2);
+                byId = Arrays.copyOfRange(byId, 0, material.id + 2);
                 byId[material.id] = material;
             }
             BY_NAME.put(material.name(), material);

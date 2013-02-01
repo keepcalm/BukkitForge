@@ -1,16 +1,29 @@
 package org.bukkit.util;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class Java15Compat {
-    @SuppressWarnings("unchecked")
-    public static <T> T[] Arrays_copyOfRange(T[] original, int start, int end) {
+    public static <T> T[] Arrays_copyOf(T[] original, int newLength) {
+        if (0 <= newLength) {
+            return Arrays.copyOfRange(original, 0, newLength);
+        }
+        throw new NegativeArraySizeException();
+    }
+
+    public static long[] Arrays_copyOf(long[] original, int newLength) {
+        if (0 <= newLength) {
+            return Arrays_copyOfRange(original, 0, newLength);
+        }
+        throw new NegativeArraySizeException();
+    }
+
+    private static long[] Arrays_copyOfRange(long[] original, int start, int end) {
         if (original.length >= start && 0 <= start) {
             if (start <= end) {
                 int length = end - start;
                 int copyLength = Math.min(length, original.length - start);
-                T[] copy = (T[]) Array.newInstance(original.getClass().getComponentType(), length);
-
+                long[] copy = (long[]) Array.newInstance(original.getClass().getComponentType(), length);
                 System.arraycopy(original, start, copy, 0, copyLength);
                 return copy;
             }
@@ -18,4 +31,5 @@ public class Java15Compat {
         }
         throw new ArrayIndexOutOfBoundsException();
     }
+
 }

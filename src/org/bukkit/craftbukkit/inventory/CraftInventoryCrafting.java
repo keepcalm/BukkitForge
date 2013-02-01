@@ -1,15 +1,16 @@
 package org.bukkit.craftbukkit.inventory;
 
+import java.util.Arrays;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.ShapedRecipes;
 
-import org.bukkit.craftbukkit.entity.CraftEntityHuman;
+import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
-import org.bukkit.util.Java15Compat;
 
 public class CraftInventoryCrafting extends CraftInventory implements CraftingInventory {
     private final IInventory resultInventory;
@@ -39,7 +40,7 @@ public class CraftInventoryCrafting extends CraftInventory implements CraftingIn
         if (len > items.length) {
             throw new IllegalArgumentException("Invalid inventory size; expected " + len + " or less");
         }
-        setContents(items[0], Java15Compat.Arrays_copyOfRange(items, 1, items.length));
+        setContents(items[0], Arrays.copyOfRange(items, 1, items.length));
     }
 
     @Override
@@ -168,7 +169,7 @@ public class CraftInventoryCrafting extends CraftInventory implements CraftingIn
     	if (getViewers().isEmpty()) {
     		return null;
     	}
-    	net.minecraft.item.ItemStack recipe = CraftingManager.getInstance().findMatchingRecipe((InventoryCrafting) getInventory(), ((CraftEntityHuman) this.getViewers().get(0)).getHandle().worldObj);
+    	net.minecraft.item.ItemStack recipe = CraftingManager.getInstance().findMatchingRecipe((InventoryCrafting) getInventory(), ((CraftHumanEntity) this.getViewers().get(0)).getHandle().worldObj);
     	if (recipe == null) {
     		return null;
     	}

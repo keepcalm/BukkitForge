@@ -104,7 +104,7 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 			// Players
 			if (entity instanceof EntityPlayer) {
 				if (entity instanceof EntityPlayerMP) { return CraftPlayerCache.getCraftPlayer(server, (EntityPlayerMP) entity); }
-				else { return new CraftEntityHuman(server, (EntityPlayer) entity); }
+				else { return new CraftHumanEntity(server, (EntityPlayer) entity); }
 			}
 			else if (entity instanceof EntityCreature) {
 				// Animals

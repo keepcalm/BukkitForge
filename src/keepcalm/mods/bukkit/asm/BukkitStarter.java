@@ -44,6 +44,16 @@ public class BukkitStarter implements Runnable {
 			}
 			
 			BukkitContainer.bServer = new CraftServer(MinecraftServer.getServer());
+			try {
+				if (MinecraftServer.HAS_BUKKIT_EVENTS) {
+					ForgeEventHandler.ready = false;
+					// disabled!
+				}
+			}
+			catch (Exception e) {
+				// BukkitForge jar-patch not installed :(
+				ForgeEventHandler.ready = true;
+			}
 			scm.registerCommand(new CraftCommandStop());
 		}
 		catch (Exception e) {

@@ -1,11 +1,12 @@
 package org.bukkit.craftbukkit.utils;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class Java15Compat {
     public static <T> T[] Arrays_copyOf(T[] original, int newLength) {
         if (0 <= newLength) {
-            return org.bukkit.util.Java15Compat.Arrays_copyOfRange(original, 0, newLength);
+            return Arrays.copyOfRange(original, 0, newLength);
         }
         throw new NegativeArraySizeException();
     }

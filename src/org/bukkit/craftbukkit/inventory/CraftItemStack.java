@@ -1,5 +1,7 @@
 package org.bukkit.craftbukkit.inventory;
 
+import net.minecraft.item.Item;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.inventory.ItemStack;
@@ -66,4 +68,19 @@ public class CraftItemStack extends ItemStack {
     public net.minecraft.item.ItemStack getHandle() {
     	return this.item;
     }
+
+	public static CraftItemStack asCraftMirror(
+			net.minecraft.item.ItemStack par2ItemStack) {
+		return new CraftItemStack(par2ItemStack);
+	}
+
+	public static net.minecraft.item.ItemStack asNMSCopy(
+			org.bukkit.inventory.ItemStack item2) {
+		// TODO Auto-generated method stub
+		return createNMSItemStack(item2);
+	}
+
+	public static ItemStack asNewCraftStack(Item item, int j) {
+		return new CraftItemStack(new net.minecraft.item.ItemStack(item, j));
+	}
 }

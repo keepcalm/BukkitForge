@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-import org.bukkit.craftbukkit.entity.CraftEntityHuman;
+import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryHolder;
@@ -103,11 +103,11 @@ public class MinecraftInventory implements IInventory {
 		return items;
 	}
 
-	public void onOpen(CraftEntityHuman who) {
+	public void onOpen(CraftHumanEntity who) {
 		viewers.add(who);
 	}
 
-	public void onClose(CraftEntityHuman who) {
+	public void onClose(CraftHumanEntity who) {
 		viewers.remove(who);
 	}
 

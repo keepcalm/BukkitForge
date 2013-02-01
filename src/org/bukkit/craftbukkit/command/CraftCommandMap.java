@@ -1,8 +1,8 @@
 package org.bukkit.craftbukkit.command;
 
-import static org.bukkit.util.Java15Compat.Arrays_copyOfRange;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -168,7 +168,7 @@ public class CraftCommandMap extends SimpleCommandMap implements CommandMap  {
 
         try {
             // Note: we don't return the result of target.execute as thats success / failure, we return handled (true) or not handled (false)
-            target.execute(sender, sentCommandLabel, Arrays_copyOfRange(args, 1, args.length));
+            target.execute(sender, sentCommandLabel, Arrays.copyOfRange(args, 1, args.length));
         } catch (CommandException ex) {
             throw ex;
         } catch (Throwable ex) {
