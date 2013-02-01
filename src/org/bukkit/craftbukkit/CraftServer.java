@@ -51,6 +51,7 @@ import net.minecraft.world.chunk.storage.AnvilSaveConverter;
 import net.minecraft.world.chunk.storage.AnvilSaveHandler;
 import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderHell;
+import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -92,6 +93,7 @@ import org.bukkit.craftbukkit.map.CraftMapView;
 import org.bukkit.craftbukkit.metadata.EntityMetadataStore;
 import org.bukkit.craftbukkit.metadata.PlayerMetadataStore;
 import org.bukkit.craftbukkit.metadata.WorldMetadataStore;
+import org.bukkit.craftbukkit.scheduler.CraftDummyPlugin;
 import org.bukkit.craftbukkit.scheduler.CraftScheduler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -603,9 +605,12 @@ public class CraftServer implements Server {
 
         WorldType type = WorldType.parseWorldType(creator.type().getName());
 
-        //WorldServer internal = new WorldServer(theServer, new AnvilSaveHandler(getWorldContainer().getParentFile(), name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, false, type), theServer.theProfiler);
-       // WorldServerMulti internal = new WorldServerMulti(theServer, new AnvilSaveHandler(getWorldContainer()                , name, true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, false,    type), theServer.theProfiler, creator.environment(), generator);
-        WorldServer internal = new WorldServerMulti(theServer, new AnvilSaveHandler(getWorldContainer(), wp.getDimName(), true), name, dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, false, type), worlds.get(0).getHandle(), theServer.theProfiler);
+        WorldServer overworld = worlds.get(0).getHandle();
+        MinecraftServer mcServer = overworld.getMinecraftServer();
+        ISaveHandler saveHandler = overworld.getSaveHandler();
+        WorldSettings worldSettings = new WorldSettings(overworld.getWorldInfo());
+
+        WorldServer internal = new WorldServerMulti(theServer, saveHandler, overworld.getWorldInfo().getWorldName(), dimension, new WorldSettings(creator.seed(), EnumGameType.getByID(getDefaultGameMode().getValue()), generateStructures, false, type), overworld, theServer.theProfiler);
 
         internal.addWorldAccess((IWorldAccess) new WorldManager(theServer, internal));
         internal.difficultySetting = 1;
@@ -620,9 +625,13 @@ public class CraftServer implements Server {
         }
 
 		pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
-		System.out.print("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
+		System.out.println("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
 
-		if (DimensionManager.shouldLoadSpawn(dimension)) {
+        //CraftWorldCreatorTask creatorTask = new CraftWorldCreatorTask( name, internal );
+
+        //getScheduler().scheduleSyncDelayedTask(CraftDummyPlugin.INSTANCE, creatorTask, 0L);
+
+		/*if (DimensionManager.shouldLoadSpawn(dimension)) {
 			short short1 = 196;
 			long i = System.currentTimeMillis();
 			for (int j = -short1; j <= short1; j += 16) {
@@ -645,10 +654,10 @@ public class CraftServer implements Server {
 					internal.theChunkProviderServer.provideChunk(chunkcoordinates.posX + j >> 4, chunkcoordinates.posZ + k >> 4);
 				}//
 			}
-		}
-
+		}        */
         MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(internal));
         pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
+
 		return worlds.get(dimension);
 	}
 
