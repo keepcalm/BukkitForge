@@ -30,7 +30,7 @@ public class PlayerTracker implements IPlayerTracker {
 		if (DEBUG)
 		System.out.println("User logged in: " + player.username.toLowerCase());
 		BukkitContainer.users.put(player.username.toLowerCase(), "SeenBefore");
-		if (!ForgeEventHandler.ready) {
+		if (CraftServer.instance() == null) {
 			return;
 		}
 		

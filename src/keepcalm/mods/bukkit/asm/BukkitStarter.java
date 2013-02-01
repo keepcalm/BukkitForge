@@ -1,11 +1,11 @@
 package keepcalm.mods.bukkit.asm;
 
+import java.lang.reflect.Field;
 import java.util.logging.Level;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.commands.CommandBukkitForge;
-import keepcalm.mods.bukkit.forgeHandler.commands.CommandPermsDebug;
 import keepcalm.mods.bukkit.forgeHandler.commands.CraftCommandConsole;
 import keepcalm.mods.bukkit.forgeHandler.commands.CraftCommandHelp;
 import keepcalm.mods.bukkit.forgeHandler.commands.CraftCommandMVFix;
@@ -45,10 +45,9 @@ public class BukkitStarter implements Runnable {
 			
 			BukkitContainer.bServer = new CraftServer(MinecraftServer.getServer());
 			try {
-				if (MinecraftServer.HAS_BUKKIT_EVENTS) {
-					ForgeEventHandler.ready = false;
-					// disabled!
-				}
+				// its mere presence is enough ;)
+				Field f = MinecraftServer.class.getField("HAS_BUKKIT_EVENTS");
+				ForgeEventHandler.ready = false;
 			}
 			catch (Exception e) {
 				// BukkitForge jar-patch not installed :(
