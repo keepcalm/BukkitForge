@@ -648,8 +648,8 @@ public class CraftServer implements Server {
 		getPluginManager().callEvent(ev);
 		if (ev.isCancelled())
 			return false; // cancelled
-		DimensionManager.unloadWorld(handle.getWorldInfo().getDimension());
-        worlds.remove(handle.getWorldInfo().getDimension());
+		DimensionManager.unloadWorld(handle.provider.dimensionId);
+        worlds.remove(handle.provider.dimensionId);
 		return true;
 
 	}

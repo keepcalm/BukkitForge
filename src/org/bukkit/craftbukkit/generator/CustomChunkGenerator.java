@@ -71,7 +71,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
         world.getWorldChunkManager().getBiomeGenAt(biomegrid.biome, x << 4, z << 4, 16, 16, false);
 
         // Try extended block method (1.2+)
-        short[][] xbtypes = generator.generateExtBlockSections(CraftServer.instance().getWorld(world.getWorldInfo().getDimension()), this.random, x, z, biomegrid);
+        short[][] xbtypes = generator.generateExtBlockSections(CraftServer.instance().getWorld(world.provider.dimensionId), this.random, x, z, biomegrid);
         if (xbtypes != null) {
             chunk = new Chunk(this.world, x, z);
 
@@ -176,7 +176,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     }
 
     private org.bukkit.World getWorld(WorldServer world2) {
-		return CraftServer.instance().getWorld(world2.getWorldInfo().getDimension());
+		return CraftServer.instance().getWorld(world2.provider.dimensionId);
 	}
 
 	public void getChunkAt(IChunkProvider icp, int i, int i1) {

@@ -43,10 +43,12 @@ public class CraftChunk implements Chunk {
 		if (!(chunk instanceof EmptyChunk)) {
 			this.weakChunk = new WeakReference<net.minecraft.world.chunk.Chunk>(chunk);
 		}
-		if (DEBUG) {
-			System.out.println("Creating a new CraftChunk - forge chunk is in dimension " + getHandle().worldObj.getWorldInfo().getDimension()
+
+        if (DEBUG) {
+			System.out.println("Creating a new CraftChunk - forge chunk is in dimension " + getHandle().worldObj.provider.dimensionId
 					+ " at x,z " + getHandle().xPosition + "," + getHandle().zPosition + ".");
 		}
+
 		worldServer = (WorldServer) getHandle().worldObj;
 		x = getHandle().xPosition;
 		z = getHandle().zPosition;
@@ -65,8 +67,7 @@ public class CraftChunk implements Chunk {
 			BukkitContainer.bServer.worlds.put(worldServer.getWorldInfo().getDimension(), bw);
 		}          */
 		
-		return BukkitContainer.bServer.getWorld(getHandle().worldObj.getWorldInfo().getDimension());
-		
+		return BukkitContainer.bServer.getWorld( getHandle().worldObj.provider.dimensionId );
 	}
 
 	public CraftWorld getCraftWorld() {

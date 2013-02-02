@@ -255,7 +255,7 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 
 	public boolean teleport(Location location, TeleportCause cause) {
 		//if (!location.getWorld().equals(getWorld())) {
-		entity.travelToDimension(((CraftWorld) location.getWorld()).getHandle().getWorldInfo().getDimension());
+		entity.travelToDimension(((CraftWorld) location.getWorld()).getHandle().provider.dimensionId);
 		//}
 		entity.setLocationAndAngles(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 		// entity.setLocation() throws no event, and so cannot be cancelled

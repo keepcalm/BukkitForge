@@ -33,7 +33,7 @@ public class CraftBrewingStand extends CraftBlockState implements BrewingStand {
         }
         
         this.brewingStand = (TileEntityBrewingStand) world.getBlockTileEntity(xCoord, yCoord, zCoord);
-        this.world = (CraftWorld) CraftServer.instance().getWorld(world.getWorldInfo().getDimension());
+        this.world = (CraftWorld) CraftServer.instance().getWorld(world.provider.dimensionId);
 	}
 
 	public BrewerInventory getInventory() {

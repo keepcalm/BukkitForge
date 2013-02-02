@@ -534,7 +534,7 @@ public class ForgeEventHandler {
 
 
 			//StructureGrowEvent bev = 
-					new StructureGrowEvent(new Location(CraftServer.instance().getWorld(ev.world.getWorldInfo().getDimension()),ev.x,ev.y,ev.z), type, false, null, new ArrayList<BlockState>());
+					new StructureGrowEvent(new Location(CraftServer.instance().getWorld(ev.world.provider.dimensionId),ev.x,ev.y,ev.z), type, false, null, new ArrayList<BlockState>());
 		}
 	}
 
@@ -683,7 +683,7 @@ public class ForgeEventHandler {
 		
 		//AxisAlignedBB blocks = AxisAlignedBB.getBoundingBox(x - ev.explosionRadius, y - ev.explosionRadius, z - ev.explosionRadius, x + ev.explosionRadius, y + ev.explosionRadius, z + ev.explosionRadius);
 		//world.block
-		Location loc = new Location(CraftServer.instance().getWorld(ev.creeper.worldObj.getWorldInfo().getDimension()), ev.creeper.posX, ev.creeper.posY, ev.creeper.posZ);
+		Location loc = new Location(CraftServer.instance().getWorld(ev.creeper.worldObj.provider.dimensionId), ev.creeper.posX, ev.creeper.posY, ev.creeper.posZ);
 		EntityExplodeEvent bev = new EntityExplodeEvent(new CraftCreeper(CraftServer.instance(), ev.creeper), loc, blocks, 1.0f);
 		Bukkit.getPluginManager().callEvent(bev);
 		if (bev.isCancelled()) {
@@ -740,8 +740,8 @@ public class ForgeEventHandler {
 			return;
 		if (!(ev.entityPlayer instanceof EntityPlayerMP)) return;
 		CraftPlayer player = CraftPlayerCache.getCraftPlayer(CraftServer.instance(), (EntityPlayerMP) ev.entityPlayer);
-		Location old = new Location(CraftServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.oldX, ev.oldY, ev.oldZ);
-		Location now = new Location(CraftServer.instance().getWorld(ev.entityPlayer.worldObj.getWorldInfo().getDimension()), ev.newX, ev.newY, ev.newZ);
+		Location old = new Location(CraftServer.instance().getWorld(ev.entityPlayer.worldObj.provider.dimensionId), ev.oldX, ev.oldY, ev.oldZ);
+		Location now = new Location(CraftServer.instance().getWorld(ev.entityPlayer.worldObj.provider.dimensionId), ev.newX, ev.newY, ev.newZ);
 		org.bukkit.event.player.PlayerMoveEvent bev = new org.bukkit.event.player.PlayerMoveEvent(player, old, now);
 		
 		/*if (old.equals(now)) {
@@ -781,7 +781,7 @@ public class ForgeEventHandler {
 			return;
 		if (ev.bolt != null) {
 
-			org.bukkit.event.weather.LightningStrikeEvent bev1 = new org.bukkit.event.weather.LightningStrikeEvent(CraftServer.instance().getWorld(ev.world.getWorldInfo().getDimension()), new CraftLightningStrike(CraftServer.instance(), ev.bolt));
+			org.bukkit.event.weather.LightningStrikeEvent bev1 = new org.bukkit.event.weather.LightningStrikeEvent(CraftServer.instance().getWorld(ev.world.provider.dimensionId), new CraftLightningStrike(CraftServer.instance(), ev.bolt));
 			Bukkit.getPluginManager().callEvent(bev1);
 			if (bev1.isCancelled()) {
 				cancelled.add(ev.bolt);

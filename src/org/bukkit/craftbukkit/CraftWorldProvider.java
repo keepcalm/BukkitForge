@@ -1,10 +1,10 @@
 package org.bukkit.craftbukkit;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.gen.ChunkProviderGenerate;
 
 import org.bukkit.craftbukkit.generator.CustomChunkGenerator;
 import org.bukkit.craftbukkit.generator.InternalChunkGenerator;
@@ -12,6 +12,7 @@ import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
+import net.minecraft.world.chunk.IChunkProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -129,7 +130,7 @@ public class CraftWorldProvider extends WorldProvider
     }
 
     @Override
-    public net.minecraft.world.chunk.IChunkProvider createChunkGenerator()
+    public IChunkProvider createChunkGenerator()
     {
         if( generator != null )
         {
@@ -139,15 +140,15 @@ public class CraftWorldProvider extends WorldProvider
             }
             else if(generator instanceof NormalChunkGenerator )
             {
-                //return (NormalChunkGenerator)generator;
-            	return new ChunkProviderGenerate(worldObj, this.getSeed(), MinecraftServer.getServer().canStructuresSpawn());
+                return (NormalChunkGenerator)generator;
+            	//return new ChunkProviderGenerate(worldObj, this.getSeed(), MinecraftServer.getServer().canStructuresSpawn());
             }
             else
             {
                 return new CustomChunkGenerator(worldObj, this.getSeed(), generator);
             }
         }
-        return null;
+        return new NormalChunkGenerator(((CraftWorld)BukkitContainer.bServer.getWorld(0)).getHandle(), this.getSeed());
     }
 
 

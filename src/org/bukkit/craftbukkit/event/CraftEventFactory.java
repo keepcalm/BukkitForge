@@ -107,7 +107,8 @@ public class CraftEventFactory {
         WorldServer worldServer = world.getHandle();
         int spawnSize = Bukkit.getServer().getSpawnRadius();
 
-        if (world.getHandle().getWorldInfo().getDimension() != 0) return true;
+        // TODO: Review the next check, is this true?
+        if (world.getHandle().provider.dimensionId != 0) return true;
         if (spawnSize <= 0) return true;
         if (player.isOp()) return true;
 
@@ -139,7 +140,7 @@ public class CraftEventFactory {
      * Block place methods
      */
     public static BlockPlaceEvent callBlockPlaceEvent(World world, EntityPlayer par2EntityPlayer, BlockState replacedBlockState, int clickedX, int clickedY, int clickedZ) {
-        CraftWorld craftWorld = (CraftWorld) CraftServer.instance().getWorld(((WorldServer) world).getWorldInfo().getDimension());
+        CraftWorld craftWorld = (CraftWorld) CraftServer.instance().getWorld(((WorldServer) world).provider.dimensionId);
         CraftServer craftServer = (CraftServer) Bukkit.getServer();
 
         Player player = (par2EntityPlayer == null) ? null : (Player) CraftEntity.getEntity(craftServer, par2EntityPlayer);

@@ -283,7 +283,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 	}
 
 	public Location getCompassTarget() {
-		return new Location(CraftServer.instance().getWorld(getHandle().worldObj.getWorldInfo().getDimension()), getHandle().getHomePosition().posX, getHandle().getHomePosition().posY, getHandle().getHomePosition().posZ);
+		return new Location(CraftServer.instance().getWorld(getHandle().worldObj.provider.dimensionId), getHandle().getHomePosition().posX, getHandle().getHomePosition().posY, getHandle().getHomePosition().posZ);
 	}
 
 	public void chat(String msg) {

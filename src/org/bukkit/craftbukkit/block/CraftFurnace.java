@@ -26,7 +26,7 @@ public class CraftFurnace extends CraftBlockState implements Furnace {
 
     public CraftFurnace(int xCoord, int yCoord, int zCoord, World worldObj) {
 		super( new CraftBlock(new CraftChunk(worldObj.getChunkFromBlockCoords(yCoord, zCoord)), xCoord, yCoord, zCoord));
-		world = (CraftWorld) CraftServer.instance().getWorld(worldObj.getWorldInfo().getDimension());
+		world = (CraftWorld) CraftServer.instance().getWorld(worldObj.provider.dimensionId);
 		furnace = (TileEntityFurnace) world.getTileEntityAt(xCoord, yCoord, zCoord);
 	}
 

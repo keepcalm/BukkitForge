@@ -62,7 +62,7 @@ public class PlayerTracker implements IPlayerTracker {
 	@Override
 	public void onPlayerChangedDimension(EntityPlayer player) {
 		EntityPlayerMP dude = (EntityPlayerMP) player;
-		PlayerChangedWorldEvent c = new PlayerChangedWorldEvent(CraftPlayerCache.getCraftPlayer(dude), CraftServer.instance().getWorld(dude.worldObj.getWorldInfo().getDimension()));
+		PlayerChangedWorldEvent c = new PlayerChangedWorldEvent(CraftPlayerCache.getCraftPlayer(dude), CraftServer.instance().getWorld(dude.worldObj.provider.dimensionId));
 		Bukkit.getPluginManager().callEvent(c);
 	}
 
@@ -73,7 +73,7 @@ public class PlayerTracker implements IPlayerTracker {
 			@Override
 			public void run() {
 				ChunkCoordinates j = player.getHomePosition();
-				PlayerRespawnEvent c = new PlayerRespawnEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) player), new Location(CraftServer.instance().getWorld(player.worldObj.getWorldInfo().getDimension()), j.posX, j.posY, j.posZ), player.hasHome());
+				PlayerRespawnEvent c = new PlayerRespawnEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) player), new Location(CraftServer.instance().getWorld(player.worldObj.provider.dimensionId), j.posX, j.posY, j.posZ), player.hasHome());
 				Bukkit.getPluginManager().callEvent(c);
 			}
 		};

@@ -549,8 +549,7 @@ public class CraftWorld implements World {
 	}
 
 	public UUID getUID() {
-        int dim = world.getWorldInfo().getDimension();
-		return new UUID(world.getSeed(), world.getWorldInfo().getDimension());
+		return new UUID(world.getSeed(), world.provider.dimensionId);
 	}
 
 	@Override
@@ -644,7 +643,7 @@ public class CraftWorld implements World {
 	}
 
 	public ChunkGenerator getGenerator() {
-		return server.getGenerator(world.getWorldInfo().getDimension());
+		return server.getGenerator(world.provider.dimensionId);
 	}
 
 	public List<BlockPopulator> getPopulators() {
@@ -1181,7 +1180,7 @@ public class CraftWorld implements World {
 	}
 
 	public boolean getKeepSpawnInMemory() {
-		return DimensionManager.shouldLoadSpawn(world.getWorldInfo().getDimension());
+		return DimensionManager.shouldLoadSpawn(world.provider.dimensionId);
 	}
 	/**
 	 * FIXME - broken
