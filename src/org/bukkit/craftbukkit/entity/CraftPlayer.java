@@ -445,11 +445,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 			entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
 		} else {
 			// Close any foreign inventory
-			System.out.println("interdim TP" + fromWorld + " > " + toWorld + " ( to dimension " + toWorld.getHandle().getWorldInfo().getDimension());
+			System.out.println("interdim TP" + fromWorld + " > " + toWorld + " ( to dimension " + toWorld.getHandle().provider.dimensionId);
 			if (getHandle().openContainer != getHandle().inventoryContainer)
 				getHandle().closeInventory();
 			
-			entity.mcServer.getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().getWorldInfo().getDimension(), new CraftTeleporter(toWorld.getHandle()));
+			entity.mcServer.getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().provider.dimensionId, new CraftTeleporter(toWorld.getHandle()));
 			entity.onUpdate();
 			//entity.setLocationAndAngles(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
 			entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(),location.getZ(),location.getYaw(), location.getPitch());
