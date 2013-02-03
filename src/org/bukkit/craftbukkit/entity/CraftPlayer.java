@@ -976,7 +976,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 		this.updateAbilities(pack);*/
 		getHandle().capabilities.allowFlying = true;
 		updateAbilities(getHandle().capabilities);
-		//updateAbilities(new Packet202PlayerAbilities(getHandle().capabilities));
+		//Compile! updateAbilities(new Packet202PlayerAbilities(getHandle().capabilities));
 
 	}
 	private void updateAbilities(Packet202PlayerAbilities j) {
