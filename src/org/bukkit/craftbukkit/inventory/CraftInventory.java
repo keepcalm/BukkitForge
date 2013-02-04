@@ -306,10 +306,14 @@ public class CraftInventory implements Inventory {
     public HashMap<Integer, ItemStack> removeItem(ItemStack... items) {
         HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
 
-        // TODO: optimization
+        IInventory inv = (IInventory)getInventory();
+        int count = 0;
 
-        for (int i = 0; i < items.length; i++) {
-            ItemStack item = items[i];
+        int i = 0;
+
+        for ( ItemStack item : items ) {
+            net.minecraft.item.ItemStack internal = CraftItemStack.createNMSItemStack(item);
+
             int toDelete = item.getAmount();
 
             while (true) {
@@ -321,17 +325,14 @@ public class CraftInventory implements Inventory {
                     leftover.put(i, item);
                     break;
                 } else {
-                    ItemStack itemStack = getItem(first);
-                    int amount = itemStack.getAmount();
-
-                    if (amount <= toDelete) {
-                        toDelete -= amount;
-                        // clear the slot, all used up
-                        clear(first);
-                    } else {
-                        // split the stack and store
-                        itemStack.setAmount(amount - toDelete);
-                        setItem(first, itemStack);
+                    if(toDelete > item.getAmount())
+                    {
+                        inv.decrStackSize(first, toDelete - item.getAmount());
+                        toDelete = toDelete - item.getAmount();
+                    }
+                    else
+                    {
+                        inv.decrStackSize(first, toDelete);
                         toDelete = 0;
                     }
                 }
@@ -341,6 +342,8 @@ public class CraftInventory implements Inventory {
                     break;
                 }
             }
+
+            i++;
         }
         return leftover;
     }

@@ -140,49 +140,4 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
 		
 	}
 
-    public HashMap<Integer, ItemStack> removeItem(ItemStack... items) {
-        HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
-
-        InventoryPlayer inv = (InventoryPlayer)getInventory();
-        int count = 0;
-
-        int i = 0;
-
-        for ( ItemStack item : items ) {
-            net.minecraft.item.ItemStack internal = CraftItemStack.createNMSItemStack(item);
-
-            int toDelete = item.getAmount();
-
-            while (true) {
-                int first = first(item, false);
-
-                // Drat! we don't have this type in the inventory
-                if (first == -1) {
-                    item.setAmount(toDelete);
-                    leftover.put(i, item);
-                    break;
-                } else {
-                    if(toDelete > item.getAmount())
-                    {
-                        inv.decrStackSize(first, toDelete - item.getAmount());
-                        toDelete = toDelete - item.getAmount();
-                    }
-                    else
-                    {
-                        inv.decrStackSize(first, toDelete);
-                        toDelete = 0;
-                    }
-                }
-
-                // Bail when done
-                if (toDelete <= 0) {
-                    break;
-                }
-            }
-
-            i++;
-        }
-        return leftover;
-    }
-
 }
