@@ -690,7 +690,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 	public void setBedSpawnLocation(Location location) {
 		/* what does spawnForced mean? */
 		getHandle().setSpawnChunk(new ChunkCoordinates(location.getBlockX(), location.getBlockY(), location.getBlockZ()), false);
-		and //getHandle().spawnWorld = location.getWorld().getName();
+		//getHandle().spawnWorld = location.getWorld().getName();
 	}
 
 	public void hidePlayer(Player player) {
