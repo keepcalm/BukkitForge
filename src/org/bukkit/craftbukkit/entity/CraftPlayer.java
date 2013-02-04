@@ -690,13 +690,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 	public void setBedSpawnLocation(Location location) {
 		/* what does spawnForced mean? */
 		getHandle().setSpawnChunk(new ChunkCoordinates(location.getBlockX(), location.getBlockY(), location.getBlockZ()), false);
-		//getHandle().spawnWorld = location.getWorld().getName();
+		and //getHandle().spawnWorld = location.getWorld().getName();
 	}
 
 	public void hidePlayer(Player player) {
-	}
-
-	public void showPlayer(Player player) {
 		Validate.notNull(player, "hidden player cannot be null");
 		if (getHandle().playerNetServerHandler/*was:playerConnection*/ == null) return;
 		if (equals(player)) return;
@@ -712,8 +709,26 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 		}
 
 		//remove the hidden player from this player user list
-		getHandle().playerNetServerHandler/*was:playerConnection*/.sendPacketToPlayer/*was:sendPacket*/(new net.minecraft.network.packet.Packet201PlayerInfo/*was:Packet201PlayerInfo*/(player.getPlayerListName(), false, 9999));   }
+		getHandle().playerNetServerHandler/*was:playerConnection*/.sendPacketToPlayer/*was:sendPacket*/(new net.minecraft.network.packet.Packet201PlayerInfo/*was:Packet201PlayerInfo*/(player.getPlayerListName(), false, 9999));   
+	}
 
+	public void showPlayer(Player player) {
+        	Validate.notNull(player, "shown player cannot be null");
+        	if (getHandle().playerNetServerHandler == null) return;
+       		if (equals(player)) return;
+        	if (!hiddenPlayers.containsKey(player.getName())) return;
+        	hiddenPlayers.remove(player.getName());
+
+		net.minecraft.entity.EntityTracker/*was:EntityTracker*/ tracker = ((net.minecraft.world.WorldServer/*was:WorldServer*/) entity.worldObj/*was:world*/).getEntityTracker();
+		net.minecraft.entity.player.EntityPlayerMP/*was:EntityPlayer*/ other = ((CraftPlayer) player).getHandle();
+		EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntityIDs.lookup(other.entityId);
+	        if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
+            		entry.tryStartWachingThis(getHandle());
+        	}
+		
+        	getHandle().playerNetServerHandler.sendPacketToPlayer(new Packet201PlayerInfo(player.getPlayerListName(), true, getHandle().ping));
+	}
+	
 	public boolean canSee(Player player) {
 		return !hiddenPlayers.containsKey(player.getName());
 	}
