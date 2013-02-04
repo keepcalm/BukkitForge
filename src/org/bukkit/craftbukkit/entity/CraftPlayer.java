@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkit.BukkitContainer
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -435,10 +435,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 		from = event.getFrom();
 		// Grab the new To Location dependent on whether the event was cancelled.
 		to = event.getTo();
-		// Grab the To and From World Handles.
+		// Grab the To From World Handles.
 		CraftWorld fromWorld = (CraftWorld) from.getWorld();
 		CraftWorld toWorld = (CraftWorld) to.getWorld();
-		// Check if the fromWorld and toWorld are the same.
+		// Check if the fromWorld toWorld are the same.
 		// we can use != because the point in memory will be the same
 		if (fromWorld == toWorld) {
             if (BukkitContainer.DEBUG)
@@ -690,7 +690,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 	public void setBedSpawnLocation(Location location) {
 		/* what does spawnForced mean? */
 		getHandle().setSpawnChunk(new ChunkCoordinates(location.getBlockX(), location.getBlockY(), location.getBlockZ()), false);
-		and //getHandle().spawnWorld = location.getWorld().getName();
+		//getHandle().spawnWorld = location.getWorld().getName();
 	}
 
 	public void hidePlayer(Player player) {
@@ -713,22 +713,21 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 	}
 
 	public void showPlayer(Player player) {
-        	Validate.notNull(player, "shown player cannot be null");
-        	if (getHandle().playerNetServerHandler == null) return;
-       		if (equals(player)) return;
-        	if (!hiddenPlayers.containsKey(player.getName())) return;
-        	hiddenPlayers.remove(player.getName());
+        Validate.notNull(player, "shown player cannot be null");
+        if (getHandle().playerNetServerHandler == null) return;
+        if (equals(player)) return;
+        if (!hiddenPlayers.containsKey(player.getName())) return;
+        hiddenPlayers.remove(player.getName());
 
-		net.minecraft.entity.EntityTracker/*was:EntityTracker*/ tracker = ((net.minecraft.world.WorldServer/*was:WorldServer*/) entity.worldObj/*was:world*/).getEntityTracker();
+    	net.minecraft.entity.EntityTracker/*was:EntityTracker*/ tracker = ((net.minecraft.world.WorldServer/*was:WorldServer*/) entity.worldObj/*was:world*/).getEntityTracker();
 		net.minecraft.entity.player.EntityPlayerMP/*was:EntityPlayer*/ other = ((CraftPlayer) player).getHandle();
-		EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntityIDs.lookup(other.entityId);
-	        if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
-            		entry.tryStartWachingThis(getHandle());
-        	}
-		
-        	getHandle().playerNetServerHandler.sendPacketToPlayer(new Packet201PlayerInfo(player.getPlayerListName(), true, getHandle().ping));
-	}
-	
+	    EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntityIDs.lookup(other.entityId);
+        if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
+            entry.tryStartWachingThis(getHandle());
+        }
+
+        getHandle().playerNetServerHandler.sendPacketToPlayer(new Packet201PlayerInfo(player.getPlayerListName(), true, getHandle().ping));
+	}	
 	public boolean canSee(Player player) {
 		return !hiddenPlayers.containsKey(player.getName());
 	}
