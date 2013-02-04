@@ -441,11 +441,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 		// Check if the fromWorld and toWorld are the same.
 		// we can use != because the point in memory will be the same
 		if (fromWorld == toWorld) {
-			System.out.println("monodim TP: " + fromWorld + " > " + toWorld);
+            if (BukkitContainer.DEBUG)
+			    System.out.println("monodim TP: " + fromWorld + " > " + toWorld);
 			entity.playerNetServerHandler.setPlayerLocation(location.getX(), location.getY(), location.getZ(), location.getPitch(), location.getYaw());
 		} else {
 			// Close any foreign inventory
-			System.out.println("interdim TP" + fromWorld + " > " + toWorld + " ( to dimension " + toWorld.getHandle().provider.dimensionId);
+            if (BukkitContainer.DEBUG)
+                System.out.println("interdim TP" + fromWorld + " > " + toWorld + " ( to dimension " + toWorld.getHandle().provider.dimensionId);
 			if (getHandle().openContainer != getHandle().inventoryContainer)
 				getHandle().closeInventory();
 			

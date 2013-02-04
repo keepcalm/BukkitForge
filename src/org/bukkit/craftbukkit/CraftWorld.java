@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import keepcalm.mods.bukkit.BukkitContainer;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
@@ -834,7 +835,8 @@ public class CraftWorld implements World {
 		if (!weather.isCancelled()) {
 			//world.getWorldInfo().setThundering(hasStorm);
 			world.getWorldInfo().setRaining(hasStorm);
-			System.out.println("Set raining: " + hasStorm);
+            if (BukkitContainer.DEBUG)
+                System.out.println("Set raining: " + hasStorm);
 			world.updateWeatherBody();
 		}
 	}
