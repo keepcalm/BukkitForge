@@ -25,7 +25,7 @@ public class CraftInventoryCrafting extends CraftInventory implements CraftingIn
     }
 
     public IInventory getMatrixInventory() {
-        return inventory;
+        return getInventory();
     }
 
     @Override

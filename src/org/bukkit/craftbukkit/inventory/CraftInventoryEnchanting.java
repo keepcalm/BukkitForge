@@ -23,6 +23,6 @@ public class CraftInventoryEnchanting extends CraftInventory implements Enchanti
 
     @Override
     public InventoryBasic getInventory() {
-        return (InventoryBasic) inventory;
+        return (InventoryBasic)getInventory();
     }
 }

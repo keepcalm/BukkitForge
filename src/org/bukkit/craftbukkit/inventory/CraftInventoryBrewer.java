@@ -23,7 +23,7 @@ public class CraftInventoryBrewer extends CraftInventory implements BrewerInvent
 
     @Override
     public BrewingStand getHolder() {
-    	TileEntityBrewingStand x = (TileEntityBrewingStand) inventory;
+    	TileEntityBrewingStand x = (TileEntityBrewingStand)getInventory();
         return new CraftBrewingStand(x.xCoord, x.yCoord, x.zCoord, x.worldObj);//();
     }
 }
