@@ -18,6 +18,8 @@ import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterators;
 import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
@@ -28,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.server.ConvertingProgressUpdate;
@@ -86,6 +89,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
 import org.bukkit.craftbukkit.help.CommandHelpTopic;
 import org.bukkit.craftbukkit.help.SimpleHelpMap;
+import org.bukkit.craftbukkit.inventory.BukkitRecipe;
 import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
 import org.bukkit.craftbukkit.inventory.CraftItemFactory;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -1039,8 +1043,13 @@ public class CraftServer implements Server {
 
 	@Override
 	public Iterator<Recipe> recipeIterator() {
-
-		return CraftingManager.getInstance().getRecipeList().iterator();
+		return Iterators.transform(CraftingManager.getInstance().getRecipeList().iterator(), new Function<IRecipe,Recipe>() {
+            @Override
+            public Recipe apply(IRecipe input) {
+                return new BukkitRecipe(input);
+            }
+        }
+        );
 	}
 
 	@Override
