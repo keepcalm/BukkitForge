@@ -75,19 +75,17 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity  
 	}
 
 	public ItemStack getItemOnCursor() {
-		return new CraftItemStack(getHandle().inventory.getCurrentItem());
-	}
+        return CraftItemStack.asCraftMirror(getHandle().inventory.getItemStack());
+    }
 	/**
 	 * UNIMPLEMENTED - TODO
 	 */
 	public void setItemOnCursor(ItemStack item) {
-		/*
-		net.minecraft.src.ItemStack stack = CraftItemStack.createNMSItemStack(item);
-		getHandle().inventory.setItemStack(stack);
-		if (this instanceof CraftPlayer) {
-			((EntityPlayer) getHandle()).send(); // Send set slot for cursor
-		}*/
-		//net.minecraft.item.ItemStack stack = CraftItemStack.createNMSItemStack(item);
+        net.minecraft.item.ItemStack stack = CraftItemStack.asNMSCopy(item);
+        getHandle().inventory.setItemStack(stack);
+        if (this instanceof CraftPlayer) {
+            ((net.minecraft.entity.player.EntityPlayerMP) getHandle()).updateHeldItem();
+        }
 	}
 
 	public boolean isSleeping() {

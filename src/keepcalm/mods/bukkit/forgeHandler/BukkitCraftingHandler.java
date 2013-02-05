@@ -52,23 +52,24 @@ public class BukkitCraftingHandler implements ICraftingHandler {
 			}
 			
 			if (targ == null) return;
-			
-			
-			
+
 			Recipe recipe = new BukkitRecipe(targ);
-			
 			
 			InventoryView what = new CraftInventoryView(CraftPlayerCache.getCraftPlayer(fp), new CraftInventoryCrafting(inv, player.inventory), inv.eventHandler);
 
-            // TODO: Replaced slot param of -1 to 0 so it is valid, what should it be?
+            // Should be slot of crafting container, will only be trouble if ever have crafting table with more than one slot
 			CraftItemEvent ev = new CraftItemEvent(recipe, what, SlotType.CRAFTING, 0, false, false);
 			Bukkit.getPluginManager().callEvent(ev);
 			if (ev.isCancelled()) {
-				// failure!
-				if (!(inv.eventHandler instanceof ContainerWorkbench)) return;
-				ContainerWorkbench cc = (ContainerWorkbench) inv.eventHandler;
-				InventoryCraftResult iv = (InventoryCraftResult) cc.craftResult;
-				iv.setInventorySlotContents(0, null);
+                // Believe it is too late to do this, this just clears the workbench which has already happened
+				//if (!(inv.eventHandler instanceof ContainerWorkbench)) return;
+				//ContainerWorkbench cc = (ContainerWorkbench) inv.eventHandler;
+				//InventoryCraftResult iv = (InventoryCraftResult) cc.craftResult;
+				//iv.setInventorySlotContents(0, null);
+
+                //Instead, clear item from hand
+                player.inventory.setItemStack(null);
+                ((EntityPlayerMP)player).updateHeldItem();
 			}
 		}
 
