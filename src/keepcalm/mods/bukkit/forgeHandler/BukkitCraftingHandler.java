@@ -59,7 +59,9 @@ public class BukkitCraftingHandler implements ICraftingHandler {
 			
 			
 			InventoryView what = new CraftInventoryView(CraftPlayerCache.getCraftPlayer(fp), new CraftInventoryCrafting(inv, player.inventory), inv.eventHandler);
-			CraftItemEvent ev = new CraftItemEvent(recipe, what, SlotType.CRAFTING, -1, false, false);
+
+            // TODO: Replaced slot param of -1 to 0 so it is valid, what should it be?
+			CraftItemEvent ev = new CraftItemEvent(recipe, what, SlotType.CRAFTING, 0, false, false);
 			Bukkit.getPluginManager().callEvent(ev);
 			if (ev.isCancelled()) {
 				// failure!
