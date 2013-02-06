@@ -54,6 +54,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -835,6 +836,10 @@ public class ForgeEventHandler {
 	@ForgeSubscribe
 	public void worldLoadEvent(WorldEvent.Load event) {
     	
+		if (!ready) {
+			return;
+		}
+		
     	org.bukkit.World w = CraftServer.instance().getWorld(event.world.provider.dimensionId);
     	
     	org.bukkit.event.world.WorldInitEvent init = new org.bukkit.event.world.WorldInitEvent(w);
@@ -849,6 +854,11 @@ public class ForgeEventHandler {
     
     @ForgeSubscribe
     public void worldSaveEvent(WorldEvent.Save event) {
+    	
+    	if (!ready) {
+			return;
+		}
+    	
     	org.bukkit.event.world.WorldSaveEvent save = new org.bukkit.event.world.WorldSaveEvent(CraftServer.instance().getWorld(event.world.provider.dimensionId));
     	
     	Bukkit.getPluginManager().callEvent(save);
@@ -857,6 +867,11 @@ public class ForgeEventHandler {
     
     @ForgeSubscribe
     public void worldUnloadEvent(WorldEvent.Unload event) {
+    	
+    	if (!ready) {
+			return;
+		}
+    	
     	org.bukkit.event.world.WorldUnloadEvent unload = new org.bukkit.event.world.WorldUnloadEvent(CraftServer.instance().getWorld(event.world.provider.dimensionId));
     	
     	Bukkit.getPluginManager().callEvent(unload);
