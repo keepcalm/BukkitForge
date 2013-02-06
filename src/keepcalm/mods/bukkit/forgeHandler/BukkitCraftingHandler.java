@@ -34,7 +34,6 @@ public class BukkitCraftingHandler implements ICraftingHandler {
 	public void onCrafting(EntityPlayer player, ItemStack item,
 			IInventory craftMatrix) {
 
-
 		if (craftMatrix instanceof InventoryCrafting) {
 
 			EntityPlayerMP fp;
@@ -68,33 +67,54 @@ public class BukkitCraftingHandler implements ICraftingHandler {
 				//InventoryCraftResult iv = (InventoryCraftResult) cc.craftResult;
 				//iv.setInventorySlotContents(0, null);
 
-                for(int i = 0; i < inv.getSizeInventory(); i++)
-                {
-                    // TODO: Refill crafting inv with matrix
-                }
+                int itemsToRemove = item.stackSize > 0 ? item.stackSize : 1;
 
                 // Is item in hand (single craft)
                 if( ( player.inventory.getItemStack() != null ) && ( player.inventory.getItemStack().getItem().itemID == item.getItem().itemID )  )
                 {
+                    itemsToRemove = itemsToRemove - player.inventory.getItemStack().stackSize;
                     player.inventory.setItemStack(null); // Remove it
                     ((EntityPlayerMP)player).updateHeldItem();
                 }
-                else // Look for it in inventory
+
+                // If item not removed from hand, or not all crafted were removed from hand
+                if(itemsToRemove > 0)
                 {
                     for(int i = 0; i < player.inventory.getSizeInventory(); i++)
                     {
                         if( player.inventory.getStackInSlot(i) != null && player.inventory.getStackInSlot(i).getItem().itemID == item.getItem().itemID )
                         {
-                            ((InventoryPlayer)player.inventory).decrStackSize(i, 1);
-                            ((EntityPlayerMP)player).updateHeldItem();
-                            break;
+                            int stackSize = ((InventoryPlayer)player.inventory).getStackInSlot(i).stackSize;
+                            if( stackSize < itemsToRemove )
+                            {
+                                ((InventoryPlayer)player.inventory).decrStackSize(i, stackSize);
+                                itemsToRemove = itemsToRemove - stackSize;
+                            }
+                            else
+                            {
+                                ((InventoryPlayer)player.inventory).decrStackSize(i, itemsToRemove);
+                                itemsToRemove = 0;
+                            }
+
+                            if( itemsToRemove == 0 ) break;
                         }
                     }
                 }
 
+                // Add ingredients back
+                for(int i = 0; i < inv.getSizeInventory(); i++)
+                {
+                    if(inv.getStackInSlot(i) != null && inv.getStackInSlot(i).stackSize != 0 )
+                    {
+                        ItemStack putBack = inv.getStackInSlot(i).copy();
+                        putBack.stackSize = 1;
+                        player.inventory.addItemStackToInventory( putBack );
+                    }
+                }
+
+                BukkitContainer.bServer.getPlayer( player.username ).updateInventory();
 			}
 		}
-
 	}
 
 	@Override
