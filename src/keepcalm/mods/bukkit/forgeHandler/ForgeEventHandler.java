@@ -832,6 +832,36 @@ public class ForgeEventHandler {
 		ev.lines = bev.getLines();
 		
 	}
+	@ForgeSubscribe
+	public void worldLoadEvent(WorldEvent.Load event) {
+    	
+    	org.bukkit.World w = CraftServer.instance().getWorld(event.world.provider.dimensionId);
+    	
+    	org.bukkit.event.world.WorldInitEvent init = new org.bukkit.event.world.WorldInitEvent(w);
+    	
+    	org.bukkit.event.world.WorldLoadEvent worldLoad = new org.bukkit.event.world.WorldLoadEvent(w);
+    	
+    	Bukkit.getPluginManager().callEvent(init);
+    	
+    	Bukkit.getPluginManager().callEvent(worldLoad);
+    	
+    }
+    
+    @ForgeSubscribe
+    public void worldSaveEvent(WorldEvent.Save event) {
+    	org.bukkit.event.world.WorldSaveEvent save = new org.bukkit.event.world.WorldSaveEvent(CraftServer.instance().getWorld(event.world.provider.dimensionId));
+    	
+    	Bukkit.getPluginManager().callEvent(save);
+    	
+    }
+    
+    @ForgeSubscribe
+    public void worldUnloadEvent(WorldEvent.Unload event) {
+    	org.bukkit.event.world.WorldUnloadEvent unload = new org.bukkit.event.world.WorldUnloadEvent(CraftServer.instance().getWorld(event.world.provider.dimensionId));
+    	
+    	Bukkit.getPluginManager().callEvent(unload);
+    	
+    }
 	
 	private List<EntityLightningBolt> cancelled = new ArrayList<EntityLightningBolt>();
 }
