@@ -5,6 +5,7 @@ import java.util.Iterator;
 import keepcalm.mods.bukkit.BukkitContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
@@ -67,9 +68,30 @@ public class BukkitCraftingHandler implements ICraftingHandler {
 				//InventoryCraftResult iv = (InventoryCraftResult) cc.craftResult;
 				//iv.setInventorySlotContents(0, null);
 
-                //Instead, clear item from hand
-                player.inventory.setItemStack(null);
-                ((EntityPlayerMP)player).updateHeldItem();
+                for(int i = 0; i < inv.getSizeInventory(); i++)
+                {
+                    // TODO: Refill crafting inv with matrix
+                }
+
+                // Is item in hand (single craft)
+                if( ( player.inventory.getItemStack() != null ) && ( player.inventory.getItemStack().getItem().itemID == item.getItem().itemID )  )
+                {
+                    player.inventory.setItemStack(null); // Remove it
+                    ((EntityPlayerMP)player).updateHeldItem();
+                }
+                else // Look for it in inventory
+                {
+                    for(int i = 0; i < player.inventory.getSizeInventory(); i++)
+                    {
+                        if( player.inventory.getStackInSlot(i) != null && player.inventory.getStackInSlot(i).getItem().itemID == item.getItem().itemID )
+                        {
+                            ((InventoryPlayer)player.inventory).decrStackSize(i, 1);
+                            ((EntityPlayerMP)player).updateHeldItem();
+                            break;
+                        }
+                    }
+                }
+
 			}
 		}
 
