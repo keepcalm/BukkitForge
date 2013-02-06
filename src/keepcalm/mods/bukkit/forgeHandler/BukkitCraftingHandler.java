@@ -111,8 +111,6 @@ public class BukkitCraftingHandler implements ICraftingHandler {
                         player.inventory.addItemStackToInventory( putBack );
                     }
                 }
-
-                BukkitContainer.bServer.getPlayer( player.username ).updateInventory();
 			}
 		}
 	}
