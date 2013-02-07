@@ -61,6 +61,7 @@ import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.network.packet.Packet61DoorChange;
+import net.minecraft.server.management.PlayerManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
@@ -364,7 +365,13 @@ public class CraftWorld implements World {
 	}
 
 	public boolean isChunkInUse(int x, int z) {
-		return world.getPlayerManager().getOrCreateChunkWatcher(x, z, false).playersInChunk.size() == 0;
+		
+		PlayerManager pm = world.getPlayerManager();
+		
+		if (BukkitContainer.DEBUG)
+			System.out.println("Checking " + x + " " + z);
+		
+		return pm.getOrCreateChunkWatcher(x, z, false).playersInChunk.size() == 0;
 		//eturn world.getPlayerManager().getOrCreateChunkWatcher(x, z, false).playersInChunk == null || world.getPlayerManager().getOrCreateChunkWatcher(x, z, false).playersInChunk.size() == 0;
 		//return world.getPlayerManager().getOrCreateChunkWatcher(x,z,false).playersInChunk.size() == 0;
 
