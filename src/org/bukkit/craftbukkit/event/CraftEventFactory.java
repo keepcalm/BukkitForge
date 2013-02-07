@@ -471,7 +471,6 @@ public class CraftEventFactory {
         } else {
             event = new EntityDamageEvent(getBukkitEntity(damagee), cause, damage);
         }
-
         callEvent(event);
 
 
