@@ -576,6 +576,7 @@ public class ForgeEventHandler {
 	}
 
 
+    // TODO: This still doesnt work, and even worse, it now causes an infinite recursion when enabled
 	@ForgeSubscribe(receiveCanceled = true)
 	public void serverCmd(CommandEvent ev) {
 		CommandSender s;
@@ -592,6 +593,8 @@ public class ForgeEventHandler {
 		 * TileEntityCommandBlock
 		 * 
 		 */
+
+        /*
 		ICommandSender sender = ev.sender;
 		
 		if (sender instanceof EntityPlayerMP) {
@@ -625,7 +628,7 @@ public class ForgeEventHandler {
 
 		ServerCommandEvent bev = new ServerCommandEvent(s, ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
 		
-		Bukkit.getPluginManager().callEvent(bev);
+		Bukkit.getPluginManager().callEvent(bev);   */
 		
 	}
 	
