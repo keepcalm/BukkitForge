@@ -598,8 +598,9 @@ public class ForgeEventHandler {
 			s = CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ev.sender);
 			
 			PlayerCommandPreprocessEvent bev = new PlayerCommandPreprocessEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
-			
-			bev.setCancelled(ev.isCancelable());
+
+            //Don't think we want to cancel the command before it even starts?
+			//bev.setCancelled(ev.isCancelable());
 			
 			Bukkit.getPluginManager().callEvent(bev);
 			
