@@ -190,7 +190,7 @@ public class ForgeEventHandler {
 				e = new CraftLivingEntity(CraftServer.instance(), (EntityLiving) ev.entity);
 			}
 			CreatureSpawnEvent bev = new CreatureSpawnEvent((LivingEntity) e, SpawnReason.DEFAULT);
-			bev.setCancelled(ev.isCancelable());
+			//bev.setCancelled(ev.isCancelable());
 			Bukkit.getPluginManager().callEvent(bev);
 			
 			ev.setCanceled(bev.isCancelled());
@@ -232,7 +232,7 @@ public class ForgeEventHandler {
 					getDamageCause(ev.source),
 					ev.ammount);
 		}
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 
 		ev.setCanceled(bev.isCancelled());
@@ -362,7 +362,7 @@ public class ForgeEventHandler {
 				
 				BlockCanBuildEvent can = new BlockCanBuildEvent(beforeBlock, beforeBlock.getTypeId(), canBuild);
 				
-				can.setBuildable(!ev.isCancelable());
+				//can.setBuildable(!ev.isCancelable());
 				
 				Bukkit.getPluginManager().callEvent(can);
 				
@@ -370,7 +370,7 @@ public class ForgeEventHandler {
 				
 				BlockPlaceEvent bev = new BlockPlaceEvent(placedBlock, beforeBlock.getState(), placedBlock, itemInHand, thePlayer, can.isBuildable());
 				
-				bev.setCancelled(ev.isCancelable());
+				//bev.setCancelled(ev.isCancelable());
 				
 				Bukkit.getPluginManager().callEvent(bev);
 
@@ -388,7 +388,7 @@ public class ForgeEventHandler {
 				}
 
 				BlockIgniteEvent bev = new BlockIgniteEvent(new CraftBlock(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), IgniteCause.FLINT_AND_STEEL, CraftPlayerCache.getCraftPlayer(fp));
-				bev.setCancelled(ev.isCancelable());
+				//bev.setCancelled(ev.isCancelable());
 				Bukkit.getPluginManager().callEvent(bev);
 				ev.setCanceled(bev.isCancelled());
 				
@@ -412,7 +412,7 @@ public class ForgeEventHandler {
 		}
 		PlayerPickupItemEvent bev = new PlayerPickupItemEvent(CraftPlayerCache.getCraftPlayer(fp), new CraftItem(CraftServer.instance(), ev.item), 0);
 		bev.setCancelled(ev.entityLiving.captureDrops);
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
@@ -434,7 +434,7 @@ public class ForgeEventHandler {
 		}
 		CraftBlock blk = new CraftBlock(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.target.blockX, ev.target.blockZ)), ev.target.blockX, ev.target.blockY, ev.target.blockZ);
 		PlayerBucketFillEvent bev = new PlayerBucketFillEvent(CraftPlayerCache.getCraftPlayer(fp), blk, CraftBlock.notchToBlockFace(ev.target.sideHit), Material.BUCKET, new CraftItemStack(ev.result));
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
@@ -476,7 +476,7 @@ public class ForgeEventHandler {
 		BlockFace face = CraftBlock.notchToBlockFace(ev.face);
 		org.bukkit.event.player.PlayerInteractEvent bev = 
 				new org.bukkit.event.player.PlayerInteractEvent(CraftPlayerCache.getCraftPlayer(fp), act, new CraftItemStack(ev.entityPlayer.inventory.getCurrentItem()), bb, face);
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 
 		if (bev.isCancelled()) {
@@ -493,7 +493,7 @@ public class ForgeEventHandler {
 		if (!ready || isClient)
 			return;
 		org.bukkit.event.player.PlayerBedEnterEvent bev = new PlayerBedEnterEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) ev.entityPlayer), new CraftBlock(new CraftChunk(ev.entityPlayer.worldObj.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z));
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 
 		if (bev.isCancelled()) {
@@ -533,8 +533,8 @@ public class ForgeEventHandler {
 
 		AsyncPlayerChatEvent ev1 = new AsyncPlayerChatEvent(false, whom, ev.message, Sets.newHashSet(CraftServer.instance().getOnlinePlayers()));
 		PlayerChatEvent bev = new PlayerChatEvent(whom, ev.message);
-		bev.setCancelled(ev.isCancelable());
-		ev1.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
+		//ev1.setCancelled(ev.isCancelable());
 		ev1 = CraftEventFactory.callEvent(ev1);
 		bev.setCancelled(ev1.isCancelled());
 		bev = CraftEventFactory.callEvent(bev);
@@ -566,7 +566,7 @@ public class ForgeEventHandler {
 
 
 			StructureGrowEvent bev = new StructureGrowEvent(new Location(CraftServer.instance().getWorld(ev.world.provider.dimensionId),ev.x,ev.y,ev.z), type, false, null, new ArrayList<BlockState>());
-			bev.setCancelled(ev.isCancelable());
+			//bev.setCancelled(ev.isCancelable());
 			Bukkit.getPluginManager().callEvent(bev);
 			ev.setCanceled((bev.isCancelled()));
 			
@@ -575,6 +575,7 @@ public class ForgeEventHandler {
 		
 	}
 
+    /* STILL NOT FIXED!
 	@ForgeSubscribe(receiveCanceled = true)
 	public void serverCmd(CommandEvent ev) {
 		CommandSender s;
@@ -590,7 +591,7 @@ public class ForgeEventHandler {
 		 * RConConsoleSource, 
 		 * TileEntityCommandBlock
 		 * 
-		 */
+		 */   /*
 		ICommandSender sender = ev.sender;
 		
 		if (sender instanceof EntityPlayerMP) {
@@ -599,7 +600,6 @@ public class ForgeEventHandler {
 			
 			PlayerCommandPreprocessEvent bev = new PlayerCommandPreprocessEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
 
-            //Don't think we want to cancel the command before it even starts?
 			//bev.setCancelled(ev.isCancelable());
 			
 			Bukkit.getPluginManager().callEvent(bev);
@@ -618,15 +618,16 @@ public class ForgeEventHandler {
 			s = Bukkit.getConsoleSender();
 			
 		}
-		
-		if (ev.isCancelable()) {
+
+		if (ev.isCanceled()) {
 			return;
 		}
+
 		ServerCommandEvent bev = new ServerCommandEvent(s, ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
 		
 		Bukkit.getPluginManager().callEvent(bev);
 		
-	}
+	}                                            */
 	
 
 	// used PlayerInteractEvent for this
@@ -640,7 +641,9 @@ public class ForgeEventHandler {
 			boolean canBuild = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(spawn.posX, spawn.posY, spawn.posZ, spawn.posX + spawnRadius, spawn.posY + spawnRadius, spawn.posZ + spawnRadius).isVecInside(Vec3.createVectorHelper(ev.x, ev.y, ev.z));
 			CraftBlock bblock = new CraftBlock(chunk, ev.x, ev.y, ev.z);
 			BlockCanBuildEvent bukkitEv = new BlockCanBuildEvent(bblock, block.getBlockID(), canBuild);
-			bukkitEv.setBuildable(ev.isCancelable());
+
+            // TODO: Do we need to call an event here?
+			//bukkitEv.setBuildable(ev.isCancelable());
 			if (!bukkitEv.isBuildable() && canBuild) {
 				// it was changed
 				// and since we were called from AFTER the actual placement, we can just break the block.
@@ -665,7 +668,7 @@ public class ForgeEventHandler {
 				new CraftBlock(
 						new CraftChunk(ev.blockWorld.getChunkFromBlockCoords(ev.blockX, ev.blockZ)),
 						ev.blockX, ev.blockY, ev.blockZ), new CraftItemStack(item), new Vector());
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		
 		ev.setCanceled(bev.isCancelled());
@@ -680,7 +683,7 @@ public class ForgeEventHandler {
 				new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.blockX, ev.blockZ)), ev.blockX, ev.blockY, ev.blockZ),
 				new CraftItemStack(ev.entityPlayer.inventory.getCurrentItem()), 
 				((EntityPlayerMP) ev.entityPlayer).capabilities.isCreativeMode);
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
@@ -703,7 +706,7 @@ public class ForgeEventHandler {
 			return;
 		
 		BlockBreakEvent bev = new BlockBreakEvent(new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), CraftPlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER));
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		
 		ev.setCanceled(bev.isCancelled());
@@ -740,7 +743,7 @@ public class ForgeEventHandler {
 		Location loc = new Location(CraftServer.instance().getWorld(ev.creeper.worldObj.provider.dimensionId), ev.creeper.posX, ev.creeper.posY, ev.creeper.posZ);
 		EntityExplodeEvent bev = new EntityExplodeEvent(new CraftCreeper(CraftServer.instance(), ev.creeper), loc, blocks, 1.0f);
 		
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		
 		Bukkit.getPluginManager().callEvent(bev);
 		ev.setCanceled(bev.isCancelled());
@@ -756,7 +759,7 @@ public class ForgeEventHandler {
 		CraftBlock source = new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.flowFromX, ev.flowFromZ)), ev.flowFromX, ev.flowFromY, ev.flowFromZ);
 
 		BlockSpreadEvent bev = new BlockSpreadEvent(newBlk, source, newBlk.getState());
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		
 		ev.setCanceled(bev.isCancelled());
@@ -770,7 +773,7 @@ public class ForgeEventHandler {
 			return;
 		
 		SheepDyeWoolEvent bev = new SheepDyeWoolEvent(new CraftSheep(CraftServer.instance(), ev.sheep), DyeColor.getByData((byte)ev.newColour));
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		
 		ev.setCanceled(bev.isCancelled());
@@ -793,7 +796,7 @@ public class ForgeEventHandler {
 		Location now = new Location(CraftServer.instance().getWorld(ev.entityPlayer.worldObj.provider.dimensionId), ev.newX, ev.newY, ev.newZ);
 		
 		org.bukkit.event.player.PlayerMoveEvent bev = new org.bukkit.event.player.PlayerMoveEvent(player, old, now);
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		
 		ev.setCanceled(bev.isCancelled());
@@ -810,7 +813,7 @@ public class ForgeEventHandler {
 
 			CraftItemStack item = new CraftItemStack(fp.inventory.getCurrentItem());
 			org.bukkit.event.player.PlayerInteractEvent bev = new org.bukkit.event.player.PlayerInteractEvent(player, Action.PHYSICAL, item, new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x,ev.y,ev.z), CraftBlock.notchToBlockFace(-1));
-			bev.setCancelled(ev.isCancelable());
+			//bev.setCancelled(ev.isCancelable());
 			Bukkit.getPluginManager().callEvent(bev);
 			ev.setCanceled(bev.isCancelled());
 		}
@@ -823,7 +826,7 @@ public class ForgeEventHandler {
 		if (ev.bolt != null) {
 
 			org.bukkit.event.weather.LightningStrikeEvent bev1 = new org.bukkit.event.weather.LightningStrikeEvent(CraftServer.instance().getWorld(ev.world.provider.dimensionId), new CraftLightningStrike(CraftServer.instance(), ev.bolt));
-			bev1.setCancelled(ev.isCancelable());
+			//bev1.setCancelled(ev.isCancelable());
 			Bukkit.getPluginManager().callEvent(bev1);
 			if (bev1.isCancelled()) {
 				cancelled.add(ev.bolt);
@@ -838,7 +841,7 @@ public class ForgeEventHandler {
 		}
 		
 		BlockIgniteEvent bev = new BlockIgniteEvent(new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), IgniteCause.LIGHTNING, null);
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		
 		ev.setCanceled(bev.isCancelled());
@@ -864,7 +867,7 @@ public class ForgeEventHandler {
 		else thePlayer = CraftPlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER);
 		
 		org.bukkit.event.block.SignChangeEvent bev = new org.bukkit.event.block.SignChangeEvent(theBlock, thePlayer, ev.lines);
-		bev.setCancelled(ev.isCancelable());
+		//bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		
 		ev.setCanceled(bev.isCancelled());
