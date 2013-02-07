@@ -25,7 +25,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.EnumStatus;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
@@ -48,15 +47,12 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import net.minecraftforge.event.entity.living.LivingSpecialSpawnEvent;
-import net.minecraftforge.event.entity.minecart.MinecartCollisionEvent;
-import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -66,12 +62,14 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
+import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftChunk;
 import org.bukkit.craftbukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.block.CraftBlockFake;
 import org.bukkit.craftbukkit.entity.CraftCreeper;
@@ -83,7 +81,6 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.entity.CraftSheep;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -110,7 +107,12 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldSaveEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.util.Vector;
 
 import com.google.common.base.Joiner;
@@ -809,9 +811,7 @@ public class ForgeEventHandler {
 			org.bukkit.event.player.PlayerInteractEvent bev = new org.bukkit.event.player.PlayerInteractEvent(player, Action.PHYSICAL, item, new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x,ev.y,ev.z), CraftBlock.notchToBlockFace(-1));
 			bev.setCancelled(ev.isCancelable());
 			Bukkit.getPluginManager().callEvent(bev);
-			if (bev.isCancelled()) {
-				ev.setCanceled(true);
-			}
+			ev.setCanceled(bev.isCancelled());
 		}
 	}
 
@@ -840,12 +840,11 @@ public class ForgeEventHandler {
 		bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		
-		if (bev.isCancelled()) {
-			ev.setCanceled(true);
-		}
+		ev.setCanceled(bev.isCancelled());
+		
 	}
 	
-        @ForgeSubscribe(receiveCanceled = true)
+    @ForgeSubscribe(receiveCanceled = true)
 	public void onSignChange(SignChangeEvent ev) {
 		if (!ready || isClient)
 			return;
@@ -867,9 +866,7 @@ public class ForgeEventHandler {
 		bev.setCancelled(ev.isCancelable());
 		Bukkit.getPluginManager().callEvent(bev);
 		
-		if (bev.isCancelled()) {
-			ev.setCanceled(true);
-		}
+		ev.setCanceled(bev.isCancelled());
 		
 		ev.lines = bev.getLines();
 		
@@ -881,13 +878,13 @@ public class ForgeEventHandler {
 			return;
 		}
 		
-    	org.bukkit.World w = CraftServer.instance().getWorld(event.world.provider.dimensionId);
+    	World w = CraftServer.instance().getWorld(event.world.provider.dimensionId);
     	
-    	org.bukkit.event.world.WorldInitEvent init = new org.bukkit.event.world.WorldInitEvent(w);
-    	
-    	org.bukkit.event.world.WorldLoadEvent worldLoad = new org.bukkit.event.world.WorldLoadEvent(w);
+    	WorldInitEvent init = new WorldInitEvent(w);
     	
     	Bukkit.getPluginManager().callEvent(init);
+    	
+    	WorldLoadEvent worldLoad = new WorldLoadEvent(w);
     	
     	Bukkit.getPluginManager().callEvent(worldLoad);
     	
@@ -900,7 +897,7 @@ public class ForgeEventHandler {
 			return;
 		}
     	
-    	org.bukkit.event.world.WorldSaveEvent save = new org.bukkit.event.world.WorldSaveEvent(CraftServer.instance().getWorld(event.world.provider.dimensionId));
+    	WorldSaveEvent save = new WorldSaveEvent(CraftServer.instance().getWorld(event.world.provider.dimensionId));
     	
     	Bukkit.getPluginManager().callEvent(save);
     	
@@ -913,10 +910,16 @@ public class ForgeEventHandler {
 			return;
 		}
     	
-    	org.bukkit.event.world.WorldUnloadEvent unload = new org.bukkit.event.world.WorldUnloadEvent(CraftServer.instance().getWorld(event.world.provider.dimensionId));
+    	WorldUnloadEvent unload = new WorldUnloadEvent(CraftServer.instance().getWorld(event.world.provider.dimensionId));
     	
     	Bukkit.getPluginManager().callEvent(unload);
     	
+    }
+    
+    @ForgeSubscribe(receiveCanceled = true)
+    public void populateChunks(PopulateChunkEvent event) {
+    	ChunkPopulateEvent e = new ChunkPopulateEvent(new CraftChunk(event.world.getChunkFromBlockCoords(event.chunkX, event.chunkZ)));
+    	Bukkit.getPluginManager().callEvent(e);
     }
 	
 
