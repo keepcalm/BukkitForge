@@ -594,14 +594,17 @@ public class ForgeEventHandler {
 		 * 
 		 */
 
-        /*
+
 		ICommandSender sender = ev.sender;
 		
 		if (sender instanceof EntityPlayerMP) {
 			
 			s = CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ev.sender);
-			
-			PlayerCommandPreprocessEvent bev = new PlayerCommandPreprocessEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) ev.sender), "/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
+
+            // Trim it so we don't pass an extra space - blows up worldedit
+            String fullCommandText = ("/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters)).trim();
+
+			PlayerCommandPreprocessEvent bev = new PlayerCommandPreprocessEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) ev.sender), fullCommandText);
 
 			bev.setCancelled(ev.isCanceled());
 			
@@ -626,14 +629,13 @@ public class ForgeEventHandler {
 			return;
 		}
 
-		ServerCommandEvent bev = new ServerCommandEvent(s, ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters));
+		ServerCommandEvent bev = new ServerCommandEvent(s, (ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters)).trim());
 		
-		Bukkit.getPluginManager().callEvent(bev);   */
+		Bukkit.getPluginManager().callEvent(bev);
 		
 	}
-	
 
-	// used PlayerInteractEvent for this
+    // used PlayerInteractEvent for this
 	@ForgeSubscribe(receiveCanceled = true)
 	public void tryPlaceBlock(PlayerUseItemEvent ev) {
 		if (ev.stack.getItem() instanceof ItemBlock) {
