@@ -575,8 +575,6 @@ public class ForgeEventHandler {
 		
 	}
 
-
-    // TODO: This still doesnt work, and even worse, it now causes an infinite recursion when enabled
 	@ForgeSubscribe(receiveCanceled = true)
 	public void serverCmd(CommandEvent ev) {
 		CommandSender s;
@@ -593,7 +591,6 @@ public class ForgeEventHandler {
 		 * TileEntityCommandBlock
 		 * 
 		 */
-
 
 		ICommandSender sender = ev.sender;
 		
@@ -632,7 +629,6 @@ public class ForgeEventHandler {
 		ServerCommandEvent bev = new ServerCommandEvent(s, (ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters)).trim());
 		
 		Bukkit.getPluginManager().callEvent(bev);
-		
 	}
 
     // used PlayerInteractEvent for this
@@ -647,7 +643,6 @@ public class ForgeEventHandler {
 			CraftBlock bblock = new CraftBlock(chunk, ev.x, ev.y, ev.z);
 			BlockCanBuildEvent bukkitEv = new BlockCanBuildEvent(bblock, block.getBlockID(), canBuild);
 
-            // TODO: Do we need to call an event here?
 			bukkitEv.setBuildable(ev.isCanceled());
 			if (!bukkitEv.isBuildable() && canBuild) {
 				// it was changed
@@ -926,7 +921,7 @@ public class ForgeEventHandler {
     }
     
     @ForgeSubscribe(receiveCanceled = true)
-    public void populateChunks(PopulateChunkEvent event) {
+    public void populateChunks(PopulateChunkEvent.Post event) {
     	ChunkPopulateEvent e = new ChunkPopulateEvent(new CraftChunk(event.world.getChunkFromBlockCoords(event.chunkX, event.chunkZ)));
     	Bukkit.getPluginManager().callEvent(e);
     }
