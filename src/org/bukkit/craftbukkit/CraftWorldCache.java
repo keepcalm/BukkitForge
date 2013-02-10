@@ -65,10 +65,10 @@ public class CraftWorldCache
     }
 
     private boolean existsInDM(int dim) {
-        return Arrays.asList( DimensionManager.getIDs()).contains(dim);
+        return !Arrays.asList(CraftDimensionManager.getIDs()).contains(dim) && !Arrays.asList( DimensionManager.getIDs()).contains(dim);
     }
 
-    private void cacheWorld(int dim, WorldServer world)
+    public void cacheWorld(int dim, WorldServer world)
     {
         if(world == null) return;
         worlds.put(dim, new CraftWorld(world));
@@ -113,5 +113,9 @@ public class CraftWorldCache
             worldNameMapping.remove(worldNameMapping.get(id));
             worlds.remove(id);
         }
+    }
+
+    public void add(WorldServer ws) {
+
     }
 }

@@ -569,43 +569,29 @@ public class CraftServer implements Server {
 			return world;
 		}
 
-        if( firstBukkitWorld )
-        {
-            DimensionManager.registerProviderType(CraftWorldProvider.ProviderID, CraftWorldProvider.class, false);
-            firstBukkitWorld = false;
-        }
-
         int dimension = -1000;
 
-        if( CraftWorldProvider.hasDimensionIdForName( name ) )
+        if( CraftDimensionManager.hasDimensionIdForName( name ) )
         {
-            dimension = CraftWorldProvider.getDimensionIdForName(name);
+            dimension = CraftDimensionManager.getDimensionIdForName(name);
         }
         else
         {
-            dimension = DimensionManager.getNextFreeDimId();
-            CraftWorldProvider.setDimensionIdForName(name, dimension);
+            dimension = CraftDimensionManager.getNextDimensionId();
+            CraftDimensionManager.setDimensionIdForName(name, dimension);
         }
 
-        CraftWorldProvider.registerChunkGenerator(dimension, creator.generator());
-        CraftWorldProvider.registerNameForDimension(dimension,name);
-        DimensionManager.registerDimension(dimension, CraftWorldProvider.ProviderID);
+        WorldServer internal = CraftDimensionManager.createWorld( this, creator, getWorldContainer(), name, dimension, theServer.theProfiler );
 
-        File folder = new File(getWorldContainer(), "");
+        File folder = CraftDimensionManager.getWorldFolder(creator.name());
+
 		AnvilSaveConverter converter = new AnvilSaveConverter(folder);
 		if (converter.isOldMapFormat(name)) {
 			getLogger().info("Converting world '" + name + "'");
 			converter.convertMapFormat(name, new ConvertingProgressUpdate(theServer));
 		}
 
-        DimensionManager.initDimension( dimension );
-        WorldServer internal = DimensionManager.getWorld(dimension);
-
-        worlds.cacheIfNotPresent(dimension);
-
-        List<BlockPopulator> bps = ((CraftWorldProvider)worlds.get(dimension).getHandle().provider).getPopulators(worlds.get(dimension));
-        if( bps != null )
-           (worlds.get(dimension)).getPopulators().addAll(bps);
+        worlds.cacheWorld(dimension, internal);
 
         pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
 
@@ -1245,11 +1231,12 @@ public class CraftServer implements Server {
 	@Override
 	public ConsoleCommandSender getConsoleSender() {
 		return this.console;
+
 	}
 
 	@Override
 	public File getWorldContainer() {
-		return theServer.getFile(theServer.worldServerForDimension(0).getWorldInfo().getWorldName());
+		return theServer.getFile("world");
 	}
 
 	@Override

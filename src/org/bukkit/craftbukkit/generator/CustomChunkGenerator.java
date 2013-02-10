@@ -244,10 +244,10 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
         return "CustomChunkGenerator";
     }
 
-	@Override
+	/*@Override
 	public boolean chunkExists(int x, int z) {
 		return this.getChunkAt(x, z) == null ? false : true;
-	}
+	} */
 
 	@Override
 	public ChunkPosition findClosestStructure(World var1, String var2,
@@ -277,7 +277,12 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
 		
 	}
 
-	@Override
+    @Override
+    public boolean chunkExists(int i, int i2) {
+        return false;
+    }
+
+    @Override
 	public Chunk provideChunk(int x, int z) {
 		return this.getOrCreateChunk(x, z);
 	}

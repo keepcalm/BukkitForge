@@ -3,9 +3,14 @@ package org.bukkit.craftbukkit;
 import keepcalm.mods.bukkit.BukkitContainer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.*;
 
+import net.minecraft.world.chunk.storage.AnvilSaveHandler;
+import net.minecraftforge.common.DimensionManager;
+import org.apache.commons.lang.ArrayUtils;
+import org.bukkit.WorldCreator;
 import org.bukkit.craftbukkit.generator.CustomChunkGenerator;
 import org.bukkit.craftbukkit.generator.InternalChunkGenerator;
 import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
@@ -18,31 +23,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class CraftWorldProvider extends WorldProvider
+public class CraftDimensionManager
 {
-    String dimName;
-    ChunkGenerator generator;
-
-    @Override
-    public String getDimensionName() {
-        return (dimName != null)?dimName:getSaveFolder();
-    }
-
-    @Override
-    public String getSaveFolder()    {
-        //return getDimName();
-        return dimName;
-    }
-
-    public String getDimName()
-    {
-        return "DIM_ZZZ_BF" + dimensionId;
-    }
-
     private static void saveDimensionMapping()
     {
         writeNBTToFile( new File(CraftServer.instance().getWorldContainer(), "bfdims.dat" ), nbt );
@@ -67,6 +51,16 @@ public class CraftWorldProvider extends WorldProvider
 
         String dk = worldNameToDimensionKey( name );
         return nbt.hasKey(dk);
+    }
+
+    public static boolean hasNameForDimensionId( int dim )
+    {
+        if(nbt == null)
+        {
+            loadDimensionMapping();
+        }
+
+        return nbt.hasKey(Integer.toString(dim));
     }
 
     public static int getDimensionIdForName( String name )
@@ -97,6 +91,7 @@ public class CraftWorldProvider extends WorldProvider
 
         String dk = worldNameToDimensionKey( name );
         nbt.setInteger(dk, dimension);
+        nbt.setString(Integer.toString(dimension), dk);
         saveDimensionMapping();
     }
 
@@ -129,73 +124,62 @@ public class CraftWorldProvider extends WorldProvider
         }
     }
 
-    @Override
-    public IChunkProvider createChunkGenerator()
+    public static int getNextDimensionId()
     {
-        if( generator != null )
+        loadDimensionMapping();
+
+        for(int i = DimensionOffset; i < DimensionOffset + 1000; i++)
         {
-            if(generator instanceof CustomChunkGenerator )
+            if(nbt.hasKey(Integer.toString(i)))
             {
-                return (CustomChunkGenerator)generator;
-            }
-            else if(generator instanceof NormalChunkGenerator )
-            {
-                return (NormalChunkGenerator)generator;
-            	//return new ChunkProviderGenerate(worldObj, this.getSeed(), MinecraftServer.getServer().canStructuresSpawn());
-            }
-            else
-            {
-                return new CustomChunkGenerator(worldObj, this.getSeed(), generator);
+                nbt.setString(Integer.toString(i), "");
+                return i;
             }
         }
-        return new NormalChunkGenerator(((CraftWorld)BukkitContainer.bServer.getWorld(0)).getHandle(), this.getSeed());
+
+        return DimensionOffset;
     }
 
-
-
-    @Override
-    public void setDimension(int dim)
-    {
-        if( tempGens.containsKey(dim))
-        {
-            generator = tempGens.get(dim).get();
-        }
-
-        if( tempNames.containsKey(dim))
-        {
-            dimName = tempNames.get(dim);
-        }
-
-        super.setDimension(dim);
-    }
-
-
-    public static int ProviderID = 101;
+    public static int DimensionOffset = 1000;
 
     private static Map<Integer, WeakReference<ChunkGenerator>> tempGens = new HashMap<Integer, WeakReference<ChunkGenerator>>();
     private static Map<Integer, String> tempNames = new HashMap<Integer, String>();
-
-    public List<BlockPopulator> getPopulators(CraftWorld world)
-    {
-        if( generator != null )
-        {
-            return (generator.getDefaultPopulators(world));
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public static void registerChunkGenerator( int dimension, ChunkGenerator gen )
-    {
-        tempGens.put(dimension, new WeakReference<ChunkGenerator>(gen));
-    }
 
     public static void registerNameForDimension(int dimension, String name)
     {
         tempNames.put(dimension, name);
     }
 
+    public static File getWorldFolder(String worldName) {
+        return new File(CraftServer.instance().getWorldContainer(), worldName );
+    }
+
+    public static int[] getIDs() {
+        loadDimensionMapping();
+
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        for(int i = DimensionOffset; i < DimensionOffset + 1000; i++)
+        {
+            if(nbt.hasKey(Integer.toString(i)))
+            {
+                list.add(i);
+            }
+        }
+
+        return ArrayUtils.toPrimitive( list.toArray(new Integer[0]) );
+    }
+
+    public static WorldServer createWorld(CraftServer craft, WorldCreator creator, File worldContainer, String name, int dimension, Profiler theProfiler) {
+
+        DimensionManager.registerDimension(dimension, 0);
+
+        WorldServer ws = new CraftWorldServer( craft.getHandle(), new AnvilSaveHandler(craft.getWorldContainer(), name, false), name, dimension, theProfiler, creator, craft.worlds.get(0).getHandle());
+        ws.addWorldAccess( (IWorldAccess) new WorldManager(craft.getHandle(), ws));
+
+        CraftWorld cw = new CraftWorld(ws);
+        cw.getPopulators().addAll(creator.generator().getDefaultPopulators(cw));
+
+        return ws;  //To change body of created methods use File | Settings | File Templates.
+    }
 }
 
