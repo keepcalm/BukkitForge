@@ -59,6 +59,7 @@ public class BukkitCraftingHandler implements ICraftingHandler {
 
             // Should be slot of crafting container, will only be trouble if ever have crafting table with more than one slot
 			CraftItemEvent ev = new CraftItemEvent(recipe, what, SlotType.CRAFTING, 0, false, false);
+
 			Bukkit.getPluginManager().callEvent(ev);
 			if (ev.isCancelled()) {
                 // Believe it is too late to do this, this just clears the workbench which has already happened
@@ -101,14 +102,17 @@ public class BukkitCraftingHandler implements ICraftingHandler {
                     }
                 }
 
-                // Add ingredients back
-                for(int i = 0; i < inv.getSizeInventory(); i++)
+                if( itemsToRemove == 0 ) // Assume we couldn't remove item, so dont give back ingredients
                 {
-                    if(inv.getStackInSlot(i) != null && inv.getStackInSlot(i).stackSize != 0 )
+                    // Add ingredients back
+                    for(int i = 0; i < inv.getSizeInventory(); i++)
                     {
-                        ItemStack putBack = inv.getStackInSlot(i).copy();
-                        putBack.stackSize = 1;
-                        player.inventory.addItemStackToInventory( putBack );
+                        if(inv.getStackInSlot(i) != null && inv.getStackInSlot(i).stackSize != 0 )
+                        {
+                         ItemStack putBack = inv.getStackInSlot(i).copy();
+                            putBack.stackSize = 1;
+                            player.inventory.addItemStackToInventory( putBack );
+                        }
                     }
                 }
 			}
