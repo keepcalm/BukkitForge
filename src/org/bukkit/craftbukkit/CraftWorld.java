@@ -566,7 +566,7 @@ public class CraftWorld implements World {
 	}
 
 	public long getTime() {
-		return world.getWorldInfo().getWorldTime();
+		return getFullTime() % 24000;
 	}
 
 	public void setTime(long time) {
