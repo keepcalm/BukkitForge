@@ -23,7 +23,7 @@ BukkitForge Team Members:
 
 IRC
 ===============
-We have a irc, its hosted on esper.net and its #bukkitforge.
+We have a irc, you can find it on irc.esper.net, #bukkitforge.
 
 Jenkins? Jenkins? JENKINS!
 ==========================
