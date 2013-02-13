@@ -12,4 +12,4 @@ It works by using code from [SrgTools](https://github.com/Frans-Willem/SrgTools)
 WHERE'D PERMISSIONSEX GO?
 =====================
 
-[PermissionsEx Download]http://files.electro-gaming.org/BukkitForge/ Go there for it!
+PEX hurts kittens. So don't use it. Simple as that.
