@@ -507,9 +507,10 @@ public class ForgeEventHandler {
 		if (!ready || isClient)
 			return;
 
-		final org.bukkit.event.world.ChunkLoadEvent c = new org.bukkit.event.world.ChunkLoadEvent(new CraftChunk(ev.getChunk()), false);
-		
-		Bukkit.getPluginManager().callEvent(c);
+		org.bukkit.event.world.ChunkLoadEvent c = new org.bukkit.event.world.ChunkLoadEvent(new CraftChunk(ev.getChunk()), false);
+
+        // Chunk event eventually turns into exception due to bad bukkit chunk code
+		//Bukkit.getPluginManager().callEvent(c);
 		
 	}
 
@@ -922,8 +923,10 @@ public class ForgeEventHandler {
     
     @ForgeSubscribe(receiveCanceled = true)
     public void populateChunks(PopulateChunkEvent.Post event) {
-    	ChunkPopulateEvent e = new ChunkPopulateEvent(new CraftChunk(event.world.getChunkFromBlockCoords(event.chunkX, event.chunkZ)));
-    	Bukkit.getPluginManager().callEvent(e);
+    	//ChunkPopulateEvent e = new ChunkPopulateEvent(new CraftChunk(event.world.getChunkFromBlockCoords(event.chunkX, event.chunkZ)));
+
+        // Chunk event eventually turns into exception due to bad bukkit chunk code
+        //        Bukkit.getPluginManager().callEvent(e);
     }
 	
 
