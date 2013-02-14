@@ -2,6 +2,7 @@ package keepcalm.mods.bukkit.asm;
 
 import java.util.Map;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 public class BukkitASMLoader implements IFMLLoadingPlugin {
@@ -9,6 +10,9 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 	
 	@Override
 	public String[] getASMTransformerClass() {
+
+        System.out.println( "Bukkitforge call to getASMTransformer ..." ); // Don't use log so that it doesnt preload Minecraft classes
+
 		try {
 			Class.forName("keepcalm.mods.events.asm.BlockBreakEventAdder");
 			return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer",
@@ -16,14 +20,16 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 					"keepcalm.mods.events.asm.BlockBreakEventAdder",
 					/*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */
 					"keepcalm.mods.events.asm.transformers.events.BlockEventHelpers",
-					"keepcalm.mods.events.asm.transformers.events.EntityEventHelpers"};
+					"keepcalm.mods.events.asm.transformers.events.EntityEventHelpers",
+                    "keepcalm.mods.bukkit.asm.asmext.AsmExtClassTransformer"};
 		}
 		catch (ClassNotFoundException e) {
 			return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer", 
 					"keepcalm.mods.bukkit.asm.transformers.BukkitAPIHelperTransformer",
 					/*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */
 					"keepcalm.mods.events.asm.transformers.events.BlockEventHelpers",
-					"keepcalm.mods.events.asm.transformers.events.EntityEventHelpers"};
+					"keepcalm.mods.events.asm.transformers.events.EntityEventHelpers",
+                    "keepcalm.mods.bukkit.asm.asmext.AsmExtClassTransformer"};
 		}
 		
 	}
