@@ -1,6 +1,8 @@
 package keepcalm.mods.bukkit.asm.asmext;
 
 import cpw.mods.fml.relauncher.IClassTransformer;
+import keepcalm.mods.bukkit.asm.replacements.CommandHandler_BukkitForge;
+import keepcalm.mods.bukkit.asm.replacements.MinecraftServer_BukkitForge;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -25,8 +27,9 @@ public class AsmExtClassTransformer implements IClassTransformer {
     static protected HashMap<String,String> createClassesToTransform() {
         HashMap<String,String> map = new HashMap<String, String>();
 
-        //map.put( "net.minecraft.command.CommandHandler", CommandHandler_BukkitForge.class.getName());
-        map.put( "net.minecraftforge.common.DimensionManager", DimensionManager_BukkitForge.class.getName() );
+//        map.put( "net.minecraft.command.CommandHandler", CommandHandler_BukkitForge.class.getName());
+        //map.put( "net.minecraft.server.dedicated.DedicatedServer", MinecraftServer_BukkitForge.class.getName() );
+        //map.put( "net.minecraftforge.common.DimensionManager", DimensionManager_BukkitForge.class.getName() );
 
         return map;
     }
@@ -41,8 +44,6 @@ public class AsmExtClassTransformer implements IClassTransformer {
     public byte[] transform(String s, byte[] bytes) {
 
         String nameToMatch = s.replace('/', '.');
-
-       // System.out.println( "Looking to match " + s );
 
         if( classesToTransform.containsKey(nameToMatch) )
         {
