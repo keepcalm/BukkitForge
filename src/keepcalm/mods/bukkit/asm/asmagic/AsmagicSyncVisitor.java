@@ -1,7 +1,6 @@
-package keepcalm.mods.bukkit.asm.asmext;
+package keepcalm.mods.bukkit.asm.asmagic;
 
 import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -17,8 +16,8 @@ import java.util.List;
  * Time: 3:56 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AsmExtSyncVisitor extends ClassVisitor {
-    public AsmExtSyncVisitor(ClassVisitor nextVisitor, int i, List<FieldNode> nf, List<MethodNode> nm, ArrayList<String> m2r )
+public class AsmagicSyncVisitor extends ClassVisitor {
+    public AsmagicSyncVisitor(ClassVisitor nextVisitor, int i, List<FieldNode> nf, List<MethodNode> nm, ArrayList<String> m2r)
     {
         super(i, nextVisitor);
         newFields = nf;

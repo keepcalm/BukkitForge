@@ -1,11 +1,9 @@
-package keepcalm.mods.bukkit.asm.asmext;
+package keepcalm.mods.bukkit.asm.asmagic;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.tree.MethodNode;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,9 +14,9 @@ import java.util.List;
  * Time: 11:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AsmExtMethodCollector extends MethodNode {
+public class AsmagicMethodCollector extends MethodNode {
 
-    public AsmExtMethodCollector(List<MethodNode> nm, HashMap<String, Integer> rm, int i, java.lang.String s, java.lang.String s1, java.lang.String s2, java.lang.String[] strings){
+    public AsmagicMethodCollector(List<MethodNode> nm, HashMap<String, Integer> rm, int i, java.lang.String s, java.lang.String s1, java.lang.String s2, java.lang.String[] strings){
         super(ClassWriter.COMPUTE_MAXS, i, s, s1, s2, strings);
         newMethods = nm;
         replaceMethods = rm;
@@ -37,13 +35,13 @@ public class AsmExtMethodCollector extends MethodNode {
 
         if( !isWriting )
         {
-            if(desc.contains("AsmExtMethodAdd") )
+            if(desc.contains("AsmagicMethodAdd") )
             {
                 newMethods.add(this);
                 wasAsmAnnotated = true;
             }
 
-            if(desc.contains("AsmExtMethodReplace"))
+            if(desc.contains("AsmagicMethodReplace"))
             {
                 replaceMethods.put(this.name + this.desc, 0);
                 newMethods.add(this);

@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import guava10.com.google.common.collect.ListMultimap;
-import keepcalm.mods.bukkit.asm.asmext.AsmExtMethodReplace;
+import keepcalm.mods.bukkit.asm.asmagic.AsmagicMethodReplace;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.*;
@@ -71,7 +71,7 @@ public class DimensionManagerImpl {
         registerDimension(1, 1);
     }
 
-    @AsmExtMethodReplace
+    @AsmagicMethodReplace
     public void registerDimension(int id, int providerType)
     {
         FMLLog.info("Modified DimensionManager woot woot!!!");

@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit.asm.asmext;
+package keepcalm.mods.bukkit.asm.asmagic;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -17,8 +17,8 @@ import java.util.List;
  * Time: 3:56 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AsmExtDiffVisitor extends ClassVisitor {
-    public AsmExtDiffVisitor(int i)
+public class AsmagicDiffVisitor extends ClassVisitor {
+    public AsmagicDiffVisitor(int i)
     {
         super(i);
     }
@@ -30,12 +30,12 @@ public class AsmExtDiffVisitor extends ClassVisitor {
     @Override
     public FieldVisitor visitField(int i, java.lang.String s, java.lang.String s1, java.lang.String s2, java.lang.Object o)
     {
-        return new AsmExtFieldCollector(newFields, i, s, s1, s2, o);
+        return new AsmagicFieldCollector(newFields, i, s, s1, s2, o);
     }
 
     @Override
     public MethodVisitor visitMethod(int i, java.lang.String s, java.lang.String s1, java.lang.String s2, java.lang.String[] strings)
     {
-        return new AsmExtMethodCollector(newMethods, methodsToReplace, i, s, s1, s2, strings);
+        return new AsmagicMethodCollector(newMethods, methodsToReplace, i, s, s1, s2, strings);
     }
 }

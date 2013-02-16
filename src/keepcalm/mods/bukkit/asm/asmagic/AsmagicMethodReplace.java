@@ -1,11 +1,12 @@
-package keepcalm.mods.bukkit.asm.asmext;
+package keepcalm.mods.bukkit.asm.asmagic;
 
 /**
  * Created with IntelliJ IDEA.
  * User: jtdossett
  * Date: 2/11/13
- * Time: 11:00 PM
+ * Time: 10:27 PM
  * To change this template use File | Settings | File Templates.
  */
-public @interface AsmExtMethodAdd {
+public @interface AsmagicMethodReplace {
+    String obfuscatedName() default "";
 }

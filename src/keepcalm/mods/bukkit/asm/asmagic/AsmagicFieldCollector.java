@@ -1,11 +1,8 @@
-package keepcalm.mods.bukkit.asm.asmext;
+package keepcalm.mods.bukkit.asm.asmagic;
 
 import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.tree.FieldNode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,8 +12,8 @@ import java.util.List;
  * Time: 11:33 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AsmExtFieldCollector extends FieldNode {
-    public AsmExtFieldCollector( List<FieldNode> nf, int i, java.lang.String s, java.lang.String s1, java.lang.String s2, java.lang.Object o ) {
+public class AsmagicFieldCollector extends FieldNode {
+    public AsmagicFieldCollector(List<FieldNode> nf, int i, java.lang.String s, java.lang.String s1, java.lang.String s2, java.lang.Object o) {
         super(i, s, s1, s2, o);
         newFields = nf;
     }
@@ -28,16 +25,12 @@ public class AsmExtFieldCollector extends FieldNode {
     @Override
     public AnnotationVisitor visitAnnotation(String desc, boolean visible)
     {
-        if( !isWriting )
+        if(desc.contains("AsmagicFieldAdd"))
         {
-            if(desc.contains("AsmExtFieldAdd"))
-            {
-                newFields.add(this);
-            }
-
-            isWriting = true;
+            newFields.add(this);
         }
 
         return super.visitAnnotation(desc, visible);
     }
+
 }
