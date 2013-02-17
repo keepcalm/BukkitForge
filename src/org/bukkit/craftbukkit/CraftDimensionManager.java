@@ -178,10 +178,9 @@ public class CraftDimensionManager
         else
         {
             dimension = CraftDimensionManager.getNextDimensionId();
-            CraftDimensionManager.setDimensionIdForName(name, dimension);
         }
 
-        if(registeredDimensions.containsKey(dimension))
+        if(!registeredDimensions.containsKey(dimension))
         {
             DimensionManagerImpl.getInstance().registerCraftDimension(dimension, providerType, creator);
             registeredDimensions.put(dimension, 0);
@@ -197,6 +196,8 @@ public class CraftDimensionManager
 
         CraftWorld cw = new CraftWorld(ws);
         cw.getPopulators().addAll(creator.generator().getDefaultPopulators(cw));
+
+        CraftDimensionManager.setDimensionIdForName(name, dimension);
 
         return ws;  //To change body of created methods use File | Settings | File Templates.
     }

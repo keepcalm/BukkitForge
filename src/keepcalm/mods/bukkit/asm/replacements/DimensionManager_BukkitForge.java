@@ -12,7 +12,7 @@ import java.util.*;
 public class DimensionManager_BukkitForge {
 
     @AsmagicFieldAdd
-    public static DimensionManagerImpl impl = new DimensionManagerImpl();
+    public static DimensionManagerImpl impl = DimensionManagerImpl.getInstance();
 
     @AsmagicMethodReplace
     public static boolean registerProviderType(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)

@@ -34,7 +34,10 @@ public class DimensionManagerImpl {
     protected static DimensionManagerImpl impl = null;
 
     public static DimensionManagerImpl getInstance() {
-        if( impl == null ) { impl = new DimensionManagerImpl(); impl.init(); }
+        if( impl == null ) {
+            impl = new DimensionManagerImpl();
+            impl.init();
+        }
         return impl;
     }
 
@@ -55,8 +58,6 @@ public class DimensionManagerImpl {
 
     public void init()
     {
-        FMLLog.info("Initializing modified DimensionManager woot woot!!!");
-
         if (hasInit)
         {
             return;
@@ -212,7 +213,8 @@ public class DimensionManagerImpl {
 
                 if( bukkitDims.containsKey(dim) )
                 {
-                    return new CraftWorldProvider(provider, bukkitDims.get(dim));
+                    CraftWorldProvider cwp = new CraftWorldProvider(provider, bukkitDims.get(dim));
+                    cwp.setDimensionName( bukkitDims.get(dim).name() );
                 }
 
                 return provider;
