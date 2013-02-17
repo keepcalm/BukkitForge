@@ -20,8 +20,8 @@ public class CommandHandler_BukkitForge implements ICommandManager {
         /**
          * adds the command and any aliases it has to the internal map of available commands
          */
-        @AsmagicMethodReplace(obfuscatedName = "")
-        public ICommand registerCommand(ICommand par1ICommand)
+        @AsmagicMethodReplace(obfuscatedName = "a")
+        public ICommand a(ICommand par1ICommand)
         {
             return CommandHandlerImpl.getInstance().registerCommand(par1ICommand);
         }

@@ -541,7 +541,7 @@ public class CraftServer implements Server {
 
     private Boolean firstBukkitWorld = true;
 
-    private Environment wtToEnv(WorldServer x) {
+    private static Environment wtToEnv(WorldServer x) {
 
         IChunkProvider wp = x.theChunkProviderServer.currentChunkProvider;
 
@@ -571,17 +571,8 @@ public class CraftServer implements Server {
 
         int dimension = -1000;
 
-        if( CraftDimensionManager.hasDimensionIdForName( name ) )
-        {
-            dimension = CraftDimensionManager.getDimensionIdForName(name);
-        }
-        else
-        {
-            dimension = CraftDimensionManager.getNextDimensionId();
-            CraftDimensionManager.setDimensionIdForName(name, dimension);
-        }
-
-        WorldServer internal = CraftDimensionManager.createWorld( this, creator, getWorldContainer(), name, dimension, theServer.theProfiler );
+        WorldServer internal = CraftDimensionManager.createWorld( this, creator, getWorldContainer(), name, theServer.theProfiler );
+        dimension = internal.provider.dimensionId;
 
         File folder = CraftDimensionManager.getWorldFolder(creator.name());
 
@@ -1029,7 +1020,7 @@ public class CraftServer implements Server {
 
 	@Override
 	public Iterator<Recipe> recipeIterator() {
-		return Iterators.transform(CraftingManager.getInstance().getRecipeList().iterator(), new Function<IRecipe,Recipe>() {
+		return Iterators.transform(CraftingManager.getInstance().getRecipeList().iterator(), new Function<IRecipe, Recipe>() {
             @Override
             public Recipe apply(IRecipe input) {
                 return new BukkitRecipe(input);

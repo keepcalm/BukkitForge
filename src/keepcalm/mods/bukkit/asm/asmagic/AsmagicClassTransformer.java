@@ -15,13 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: jtdossett
- * Date: 2/12/13
- * Time: 8:43 PM
- * To change this template use File | Settings | File Templates.
- */
 public class AsmagicClassTransformer implements IClassTransformer {
 
     static protected HashMap<String,String> classesToTransform = createClassesToTransform();
@@ -29,11 +22,9 @@ public class AsmagicClassTransformer implements IClassTransformer {
     static protected HashMap<String,String> createClassesToTransform() {
         HashMap<String,String> classes = new HashMap<String,String>();
 
-        if(new File("monkeypatch.txt").exists())
-        {
-            addClassNameAndAlias(classes, "net.minecraft.common.CommandHandler", "x", CommandHandler_BukkitForge.class);
-            addClassNameAndAlias(classes, "net.minecraftforge.common.DimensionManager", null, DimensionManager_BukkitForge.class);
-        }
+        addClassNameAndAlias(classes, "net.minecraft.common.CommandHandler", "x", CommandHandler_BukkitForge.class);
+        addClassNameAndAlias(classes, "net.minecraftforge.common.DimensionManager", null, DimensionManager_BukkitForge.class);
+
         return classes;
     }
 

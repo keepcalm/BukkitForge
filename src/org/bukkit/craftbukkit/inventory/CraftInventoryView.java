@@ -64,6 +64,19 @@ public class CraftInventoryView extends InventoryView {
         if (slot == -999) {
             return null;
         }
+
+        try
+        {
+            if( container.getSlot(slot) == null )
+            {
+                return null;
+            }
+        }
+        catch(IndexOutOfBoundsException oob)
+        {
+            return null;
+        }
+
         return new CraftItemStack(container.getSlot(slot).getStack());
     }
 

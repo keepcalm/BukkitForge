@@ -10,10 +10,16 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import net.minecraft.command.*;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.CraftPlayerCache;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+
+import javax.persistence.PrePersist;
 
 public class CommandHandlerImpl implements ICommandManager {
        /** Map of Strings to the ICommand objects they represent */
@@ -24,7 +30,15 @@ public class CommandHandlerImpl implements ICommandManager {
 
         public void executeCommand(ICommandSender par1ICommandSender, String par2Str)
         {
-            System.out.println("WOOT! Replaced executeCommand method!!");
+            if( par1ICommandSender instanceof EntityPlayer)
+            {
+                PlayerCommandPreprocessEvent bev = new PlayerCommandPreprocessEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP)par1ICommandSender), par2Str);
+                Bukkit.getPluginManager().callEvent(bev);
+                if(bev.isCancelled())
+                {
+                    return;
+                }
+            }
 
             if (par2Str.startsWith("/"))
             {

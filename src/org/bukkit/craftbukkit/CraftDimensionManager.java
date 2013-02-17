@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit;
 
 import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkit.forgeHandler.DimensionManagerImpl;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.profiler.Profiler;
@@ -8,9 +9,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.*;
 
 import net.minecraft.world.chunk.storage.AnvilSaveHandler;
+import net.minecraft.world.gen.ChunkProviderEnd;
+import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraftforge.common.DimensionManager;
 import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.generator.CustomChunkGenerator;
 import org.bukkit.craftbukkit.generator.InternalChunkGenerator;
 import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
@@ -128,19 +132,8 @@ public class CraftDimensionManager
     {
         loadDimensionMapping();
 
-        for(int i = DimensionOffset; i < DimensionOffset + 1000; i++)
-        {
-            if(nbt.hasKey(Integer.toString(i)))
-            {
-                nbt.setString(Integer.toString(i), "");
-                return i;
-            }
-        }
-
-        return DimensionOffset;
+        return DimensionManager.getNextFreeDimId();
     }
-
-    public static int DimensionOffset = 1000;
 
     private static Map<Integer, WeakReference<ChunkGenerator>> tempGens = new HashMap<Integer, WeakReference<ChunkGenerator>>();
     private static Map<Integer, String> tempNames = new HashMap<Integer, String>();
@@ -158,7 +151,7 @@ public class CraftDimensionManager
         loadDimensionMapping();
 
         ArrayList<Integer> list = new ArrayList<Integer>();
-        for(int i = DimensionOffset; i < DimensionOffset + 1000; i++)
+        for(int i = 0; i < 2000; i++)
         {
             if(nbt.hasKey(Integer.toString(i)))
             {
@@ -169,11 +162,36 @@ public class CraftDimensionManager
         return ArrayUtils.toPrimitive( list.toArray(new Integer[0]) );
     }
 
-    public static WorldServer createWorld(CraftServer craft, WorldCreator creator, File worldContainer, String name, int dimension, Profiler theProfiler) {
+    public static int getWorldProviderForEnvironment( World.Environment env )
+    {
+        if( env == World.Environment.THE_END ) return 1;
 
-        DimensionManager.registerDimension(dimension, 0);
+        if( env == World.Environment.NETHER ) return -1;
 
-        WorldServer ws = new CraftWorldServer( craft.getHandle(), new AnvilSaveHandler(craft.getWorldContainer(), name, false), name, dimension, theProfiler, creator, craft.worlds.get(0).getHandle());
+        if( env == World.Environment.NORMAL ) return 0;
+
+        return 0;
+    }
+
+    public static WorldServer createWorld(CraftServer craft, WorldCreator creator, File worldContainer, String name, Profiler theProfiler) {
+
+        int dimension = -1000;
+        if( CraftDimensionManager.hasDimensionIdForName( name ) )
+        {
+            dimension = CraftDimensionManager.getDimensionIdForName(name);
+            DimensionManagerImpl.getInstance().registerCraftDimension(dimension, getWorldProviderForEnvironment(creator.environment()), creator);
+        }
+        else
+        {
+            dimension = CraftDimensionManager.getNextDimensionId();
+            CraftDimensionManager.setDimensionIdForName(name, dimension);
+            DimensionManager.registerProviderType(dimension, DimensionManager.getProvider(getWorldProviderForEnvironment(creator.environment())).getClass(), false );
+            DimensionManagerImpl.getInstance().registerCraftDimension(dimension, getWorldProviderForEnvironment(creator.environment()), creator);
+        }
+
+        DimensionManager.initDimension(dimension);
+
+        WorldServer ws = DimensionManager.getWorld(dimension);
         ws.addWorldAccess( (IWorldAccess) new WorldManager(craft.getHandle(), ws));
 
         CraftWorld cw = new CraftWorld(ws);

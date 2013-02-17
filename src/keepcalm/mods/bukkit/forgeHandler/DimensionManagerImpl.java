@@ -1,29 +1,26 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import com.google.common.collect.Maps;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import guava10.com.google.common.collect.ListMultimap;
+import guava10.com.google.common.collect.Maps;
+import keepcalm.mods.bukkit.asm.asmagic.AsmagicFieldAdd;
 import keepcalm.mods.bukkit.asm.asmagic.AsmagicMethodReplace;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.*;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
+import org.bukkit.WorldCreator;
+import org.bukkit.craftbukkit.CraftWorldProvider;
 
 import java.io.File;
 import java.util.*;
 import java.util.logging.Level;
 
-/**
- * Created with IntelliJ IDEA.
- * User: jtdossett
- * Date: 2/13/13
- * Time: 8:53 PM
- * To change this template use File | Settings | File Templates.
- */
 public class DimensionManagerImpl {
 
     private Hashtable<Integer, Class<? extends WorldProvider>> providers = new Hashtable();
@@ -34,6 +31,15 @@ public class DimensionManagerImpl {
     private Map<World, ListMultimap<ChunkCoordIntPair, String>> persistentChunkStore = Maps.newHashMap();
     private ArrayList<Integer> unloadQueue = new ArrayList();
     private BitSet dimensionMap = new BitSet(1024);
+
+    private Hashtable<Integer, WorldCreator> bukkitDims = new Hashtable<Integer, WorldCreator>();
+
+    protected static DimensionManagerImpl impl = null;
+
+    public static DimensionManagerImpl getInstance() {
+        if( impl == null ) { impl = new DimensionManagerImpl(); impl.init(); }
+        return impl;
+    }
 
     public boolean registerProviderType(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
     {
@@ -48,9 +54,7 @@ public class DimensionManagerImpl {
 
     public DimensionManagerImpl()
     {
-
     }
-
 
     public void init()
     {
@@ -71,11 +75,8 @@ public class DimensionManagerImpl {
         registerDimension(1, 1);
     }
 
-    @AsmagicMethodReplace
     public void registerDimension(int id, int providerType)
     {
-        FMLLog.info("Modified DimensionManager woot woot!!!");
-
         if (!providers.containsKey(Integer.valueOf(providerType)))
         {
             throw new IllegalArgumentException(String.format("Failed to register dimension for id %d, provider type %d does not exist", new Object[] { Integer.valueOf(id), Integer.valueOf(providerType) }));
@@ -89,6 +90,12 @@ public class DimensionManagerImpl {
         {
             dimensionMap.set(id);
         }
+    }
+
+    public void registerCraftDimension(int id, int baseProviderType, WorldCreator creator )
+    {
+        registerDimension(id, baseProviderType);
+        bukkitDims.put(id, creator);
     }
 
     public void unregisterDimension(int id)
@@ -205,6 +212,12 @@ public class DimensionManagerImpl {
             {
                 WorldProvider provider = (WorldProvider)((Class)providers.get(Integer.valueOf(getProviderType(dim)))).newInstance();
                 provider.setDimension(dim);
+
+                if( bukkitDims.containsKey(dim) )
+                {
+                    return new CraftWorldProvider(provider, bukkitDims.get(dim));
+                }
+
                 return provider;
             }
 
@@ -302,5 +315,9 @@ public class DimensionManagerImpl {
         }
 
         return null;
+    }
+
+    public void registerCraftDimension(int dimension, WorldCreator creator) {
+        bukkitDims.put(dimension, creator);
     }
 }

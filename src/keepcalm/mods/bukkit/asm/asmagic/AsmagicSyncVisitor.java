@@ -17,6 +17,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class AsmagicSyncVisitor extends ClassVisitor {
+
     public AsmagicSyncVisitor(ClassVisitor nextVisitor, int i, List<FieldNode> nf, List<MethodNode> nm, ArrayList<String> m2r)
     {
         super(i, nextVisitor);

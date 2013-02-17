@@ -10,13 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: jtdossett
- * Date: 2/11/13
- * Time: 3:56 PM
- * To change this template use File | Settings | File Templates.
- */
 public class AsmagicDiffVisitor extends ClassVisitor {
     public AsmagicDiffVisitor(int i)
     {
