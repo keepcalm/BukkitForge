@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit.asm.asmagic;
+package com.eoware.asm.asmagic;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;

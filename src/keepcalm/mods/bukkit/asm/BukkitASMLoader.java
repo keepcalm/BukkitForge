@@ -21,7 +21,7 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 					/*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */
 					"keepcalm.mods.events.asm.transformers.events.BlockEventHelpers",
 					"keepcalm.mods.events.asm.transformers.events.EntityEventHelpers",
-                    "keepcalm.mods.bukkit.asm.asmagic.AsmagicClassTransformer"};
+                    "keepcalm.mods.bukkit.asm.transformers.BukkitAsmagicTransformer"};
 		}
 		catch (ClassNotFoundException e) {
 			return new String[] {"keepcalm.mods.bukkit.asm.transformers.BukkitAccessTransformer", 
@@ -29,7 +29,7 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 					/*"keepcalm.mods.bukkit.asm.transformers.BukkitVanishTransformer", */
 					"keepcalm.mods.events.asm.transformers.events.BlockEventHelpers",
 					"keepcalm.mods.events.asm.transformers.events.EntityEventHelpers",
-                    "keepcalm.mods.bukkit.asm.asmagic.AsmagicClassTransformer"};
+                    "keepcalm.mods.bukkit.asm.transformers.BukkitAsmagicTransformer"};
 		}
 		
 	}

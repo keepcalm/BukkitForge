@@ -1,11 +1,11 @@
-package keepcalm.mods.bukkit.asm.asmagic;
+package com.eoware.asm.asmagic;
 
 /**
  * Created with IntelliJ IDEA.
  * User: jtdossett
- * Date: 2/11/13
- * Time: 11:00 PM
+ * Date: 2/17/13
+ * Time: 8:54 AM
  * To change this template use File | Settings | File Templates.
  */
-public @interface AsmagicMethodAdd {
+public @interface AsmagicMethodRemove {
 }

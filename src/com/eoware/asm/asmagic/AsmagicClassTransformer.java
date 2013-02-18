@@ -1,55 +1,30 @@
-package keepcalm.mods.bukkit.asm.asmagic;
+package com.eoware.asm.asmagic;
 
-import cpw.mods.fml.relauncher.IClassTransformer;
-import keepcalm.mods.bukkit.asm.replacements.CommandHandler_BukkitForge;
 import org.objectweb.asm.*;
-
-import keepcalm.mods.bukkit.asm.replacements.DimensionManager_BukkitForge;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AsmagicClassTransformer implements IClassTransformer {
+public class AsmagicClassTransformer {
 
-    static protected HashMap<String,String> classesToTransform = createClassesToTransform();
-
-    static protected HashMap<String,String> createClassesToTransform() {
-        HashMap<String,String> classes = new HashMap<String,String>();
-
-        addClassNameAndAlias(classes, "net.minecraft.common.CommandHandler", "x", CommandHandler_BukkitForge.class);
-        addClassNameAndAlias(classes, "net.minecraftforge.common.DimensionManager", null, DimensionManager_BukkitForge.class);
-
-        return classes;
-    }
-
-    static protected void addClassNameAndAlias( HashMap<String,String> map, String className, String obfName, Class clss )
+    public AsmagicClassTransformer(HashMap<String,String> classesToTransform)
     {
-        map.put(className, clss.getName());
-        if( obfName != null )
-        {
-            map.put(obfName, clss.getName());
-        }
+        c2t = classesToTransform;
     }
 
-    public AsmagicClassTransformer()
-    {
-        System.out.println( "Instantiating AsmagicClassTransformer ...");
-    }
+    HashMap<String,String> c2t = null;
 
-    @Override
     public byte[] transform(String s, byte[] bytes) {
         String nameToMatch = s.replace('/', '.');
 
-        if( classesToTransform.containsKey(nameToMatch) )
+        if( c2t.containsKey(nameToMatch) )
         {
-            System.out.println( "Transforming " + nameToMatch + " with " +  classesToTransform.get(nameToMatch) + " ...");
-            return transformClass(bytes, classesToTransform.get(nameToMatch));
+            return transformClass(bytes, c2t.get(nameToMatch));
         }
 
         return bytes;

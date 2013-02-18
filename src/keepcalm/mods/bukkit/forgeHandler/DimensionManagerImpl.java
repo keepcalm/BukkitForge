@@ -209,13 +209,15 @@ public class DimensionManagerImpl {
             if (dimensions.containsKey(Integer.valueOf(dim)))
             {
                 WorldProvider provider = (WorldProvider)((Class)providers.get(Integer.valueOf(getProviderType(dim)))).newInstance();
-                provider.setDimension(dim);
 
                 if( bukkitDims.containsKey(dim) )
                 {
                     CraftWorldProvider cwp = new CraftWorldProvider(provider, bukkitDims.get(dim));
                     cwp.setDimensionName( bukkitDims.get(dim).name() );
+                    provider = cwp;
                 }
+
+                provider.setDimension(dim);
 
                 return provider;
             }

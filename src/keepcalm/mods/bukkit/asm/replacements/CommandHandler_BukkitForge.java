@@ -1,11 +1,8 @@
 package keepcalm.mods.bukkit.asm.replacements;
 
-import keepcalm.mods.bukkit.asm.asmagic.AsmagicMethodReplace;
+import com.eoware.asm.asmagic.AsmagicMethodReplace;
 import keepcalm.mods.bukkit.forgeHandler.CommandHandlerImpl;
 import net.minecraft.command.*;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.CommandEvent;
 
 import java.util.*;
 

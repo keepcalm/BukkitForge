@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.asm.replacements;
 
-import keepcalm.mods.bukkit.asm.asmagic.AsmagicFieldAdd;
-import keepcalm.mods.bukkit.asm.asmagic.AsmagicMethodReplace;
+import com.eoware.asm.asmagic.AsmagicFieldAdd;
+import com.eoware.asm.asmagic.AsmagicMethodReplace;
 import keepcalm.mods.bukkit.forgeHandler.DimensionManagerImpl;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.*;

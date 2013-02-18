@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit.asm.asmagic;
+package com.eoware.asm.asmagic;
 
 /**
  * Created with IntelliJ IDEA.

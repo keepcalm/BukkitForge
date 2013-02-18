@@ -596,31 +596,10 @@ public class ForgeEventHandler {
 		ICommandSender sender = ev.sender;
 		
 		if (sender instanceof EntityPlayerMP) {
-			
 			s = CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ev.sender);
 
-            // Trim it so we don't pass an extra space - blows up worldedit
-            String fullCommandText = ("/" + ev.command.getCommandName() + " " + Joiner.on(' ').join(ev.parameters)).trim();
-
-			PlayerCommandPreprocessEvent bev = new PlayerCommandPreprocessEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) ev.sender), fullCommandText);
-
-			bev.setCancelled(ev.isCanceled());
-			
-			Bukkit.getPluginManager().callEvent(bev);
-			
-			if (bev.isCancelled()) {
-				ev.setCanceled(true);
-				return;
-			}
-			
-			String[] msg = bev.getMessage().split(" ");
-			
-			ev.parameters = Arrays.copyOfRange(msg, 1, msg.length);
-			
 		} else {
-			
 			s = Bukkit.getConsoleSender();
-			
 		}
 
 		if (ev.isCanceled()) {

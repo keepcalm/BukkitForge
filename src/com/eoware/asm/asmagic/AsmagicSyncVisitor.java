@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit.asm.asmagic;
+package com.eoware.asm.asmagic;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -9,13 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: jtdossett
- * Date: 2/11/13
- * Time: 3:56 PM
- * To change this template use File | Settings | File Templates.
- */
 public class AsmagicSyncVisitor extends ClassVisitor {
 
     public AsmagicSyncVisitor(ClassVisitor nextVisitor, int i, List<FieldNode> nf, List<MethodNode> nm, ArrayList<String> m2r)
