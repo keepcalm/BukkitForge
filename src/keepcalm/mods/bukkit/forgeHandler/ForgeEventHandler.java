@@ -101,11 +101,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.event.entity.SheepDyeWoolEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerBedEnterEvent;
-import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldInitEvent;
@@ -775,11 +771,18 @@ public class ForgeEventHandler {
 		Location old = new Location(CraftServer.instance().getWorld(ev.entityPlayer.worldObj.provider.dimensionId), ev.oldX, ev.oldY, ev.oldZ);
 		
 		Location now = new Location(CraftServer.instance().getWorld(ev.entityPlayer.worldObj.provider.dimensionId), ev.newX, ev.newY, ev.newZ);
-		
+
 		org.bukkit.event.player.PlayerMoveEvent bev = new org.bukkit.event.player.PlayerMoveEvent(player, old, now);
 		bev.setCancelled(ev.isCanceled());
 		Bukkit.getPluginManager().callEvent(bev);
-		
+
+        Location to = bev.getTo();
+
+        if( to != now && !bev.isCancelled() )
+        {
+            player.teleport(to, PlayerTeleportEvent.TeleportCause.UNKNOWN);
+        }
+
 		ev.setCanceled(bev.isCancelled());
 		
 	}

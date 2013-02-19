@@ -1,14 +1,9 @@
 package keepcalm.mods.bukkit.nmsforge;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.Map.Entry;
 
+import keepcalm.mods.bukkit.BukkitEventRouters;
 import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -17,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
 import org.bukkit.Bukkit;
 import keepcalm.mods.bukkit.CraftPlayerCache;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class CommandHandlerImpl implements ICommandManager {
@@ -30,12 +26,13 @@ public class CommandHandlerImpl implements ICommandManager {
         {
             if( par1ICommandSender instanceof EntityPlayer)
             {
-                PlayerCommandPreprocessEvent bev = new PlayerCommandPreprocessEvent(CraftPlayerCache.getCraftPlayer((EntityPlayerMP)par1ICommandSender), par2Str);
-                Bukkit.getPluginManager().callEvent(bev);
+                PlayerCommandPreprocessEvent bev = BukkitEventRouters.Player.PlayerCommandPreprocess.callEvent(false, null, CraftPlayerCache.getCraftPlayer((EntityPlayerMP)par1ICommandSender), par2Str);
                 if(bev.isCancelled())
                 {
                     return;
                 }
+
+
             }
 
             if (par2Str.startsWith("/"))
