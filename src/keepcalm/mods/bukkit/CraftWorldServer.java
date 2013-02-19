@@ -1,4 +1,4 @@
-package org.bukkit.craftbukkit;
+package keepcalm.mods.bukkit;
 
 import net.minecraft.profiler.Profiler;
 import net.minecraft.server.MinecraftServer;

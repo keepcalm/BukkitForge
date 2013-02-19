@@ -1,4 +1,4 @@
-package org.bukkit.craftbukkit;
+package keepcalm.mods.bukkit;
 
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.IChunkProvider;

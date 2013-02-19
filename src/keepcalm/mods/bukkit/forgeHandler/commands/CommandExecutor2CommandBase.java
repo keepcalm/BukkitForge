@@ -14,7 +14,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftConsoleCommandSender;
-import org.bukkit.craftbukkit.CraftPlayerCache;
+import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;

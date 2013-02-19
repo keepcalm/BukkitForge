@@ -1,5 +1,7 @@
-package org.bukkit.craftbukkit;
+package keepcalm.mods.bukkit;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -7,14 +9,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.CraftWorld;
 
-import java.lang.ref.WeakReference;
 import java.util.*;
-import java.util.Map.Entry;
 
 public class CraftWorldCache
 {
-
     private HashMap<Integer,CraftWorld> worlds = new HashMap<Integer,CraftWorld>();
     private HashMap<String,Integer> worldNameMapping = Maps.newHashMap();
     
@@ -113,9 +113,5 @@ public class CraftWorldCache
             worldNameMapping.remove(worldNameMapping.get(id));
             worlds.remove(id);
         }
-    }
-
-    public void add(WorldServer ws) {
-
     }
 }

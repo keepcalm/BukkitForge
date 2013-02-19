@@ -5,7 +5,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.CraftPlayerCache;
+import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.command.CraftConsoleCommandSender;
 /**
  * A command to fix compatibility issues with plugins like MultiVerse - which i __suspect__ use 

@@ -3,7 +3,7 @@ package org.bukkit.util;
 import java.util.HashSet;
 import java.util.List;
 
-import org.bukkit.craftbukkit.CraftPlayerCache;
+import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.entity.Player;
 
 public class LazyPlayerSet extends LazyHashSet<Player> {

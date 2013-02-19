@@ -10,7 +10,7 @@ import net.minecraft.util.MathHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftConsoleCommandSender;
-import org.bukkit.craftbukkit.CraftPlayerCache;
+import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.help.SimpleHelpMap;
 import org.bukkit.help.HelpTopic;

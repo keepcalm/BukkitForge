@@ -1,9 +1,6 @@
 package org.bukkit.craftbukkit;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,13 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterators;
 import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkit.CraftDimensionManager;
+import keepcalm.mods.bukkit.CraftPlayerCache;
+import keepcalm.mods.bukkit.CraftWorldCache;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
 import net.minecraft.command.ICommandSender;
@@ -40,25 +39,14 @@ import net.minecraft.server.dedicated.PropertyManager;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.*;
 import net.minecraft.world.EnumGameType;
-import net.minecraft.world.IWorldAccess;
-import net.minecraft.world.WorldManager;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.WorldSettings;
-import net.minecraft.world.WorldServerMulti;
-import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.AnvilSaveConverter;
-import net.minecraft.world.chunk.storage.AnvilSaveHandler;
 import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderHell;
-import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -84,9 +72,7 @@ import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.command.CraftCommandMap;
-import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
 import org.bukkit.craftbukkit.help.CommandHelpTopic;
 import org.bukkit.craftbukkit.help.SimpleHelpMap;
 import org.bukkit.craftbukkit.inventory.BukkitRecipe;
@@ -97,14 +83,12 @@ import org.bukkit.craftbukkit.map.CraftMapView;
 import org.bukkit.craftbukkit.metadata.EntityMetadataStore;
 import org.bukkit.craftbukkit.metadata.PlayerMetadataStore;
 import org.bukkit.craftbukkit.metadata.WorldMetadataStore;
-import org.bukkit.craftbukkit.scheduler.CraftDummyPlugin;
 import org.bukkit.craftbukkit.scheduler.CraftScheduler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
-import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
 import org.bukkit.help.HelpTopic;
@@ -116,8 +100,6 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.map.MapView;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.LazyMetadataValue;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
@@ -272,8 +254,8 @@ public class CraftServer implements Server {
 		}
 
 		return result;
-
 	}
+
 	public EntityMetadataStore getEntityMetadata() {
 		return entityMetadata;
 	}
@@ -306,6 +288,8 @@ public class CraftServer implements Server {
 
 	@Override
 	public Player[] getOnlinePlayers() {
+
+
 		List<Player> players= new ArrayList<Player>();
 		for (Object i : theServer.getConfigurationManager().playerEntityList) {
 			players.add(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) i));
@@ -1232,14 +1216,13 @@ public class CraftServer implements Server {
 
 	@Override
 	public OfflinePlayer[] getOfflinePlayers() {
-
-
-		String[] files = new File(this.getWorldContainer(), "/players").list(new keepcalm.mods.bukkit.utils.DatFileFilter());
+		String[] files = new File(this.getWorldContainer(), "/players").list(new FilenameFilter() { public boolean accept(File dir, String name) { return name.endsWith(".dat"); } });
 		Set<OfflinePlayer> players = new HashSet<OfflinePlayer>();
 
 		for (String file : files) {
 			players.add(getOfflinePlayer(file.substring(0, file.length() - 4)));
 		}
+
 		players.addAll(Arrays.asList(getOnlinePlayers()));
 
 		return players.toArray(new OfflinePlayer[players.size()]);

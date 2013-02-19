@@ -1,11 +1,12 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkit.BukkitEventRouter;
+import keepcalm.mods.bukkit.BukkitEventRouters;
 import keepcalm.mods.events.events.BlockDestroyEvent;
 import keepcalm.mods.events.events.CreeperExplodeEvent;
 import keepcalm.mods.events.events.DispenseItemEvent;
@@ -67,9 +68,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftChunk;
-import org.bukkit.craftbukkit.CraftPlayerCache;
+import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.block.CraftBlockFake;
 import org.bukkit.craftbukkit.entity.CraftCreeper;
@@ -82,6 +82,7 @@ import org.bukkit.craftbukkit.entity.CraftSheep;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockCanBuildEvent;
@@ -104,10 +105,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.server.ServerCommandEvent;
-import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
@@ -359,16 +358,18 @@ public class ForgeEventHandler {
 				} else {
 					canBuild = true;
 				}
-				
+
+
+
 				BlockCanBuildEvent can = new BlockCanBuildEvent(beforeBlock, beforeBlock.getTypeId(), canBuild);
 				
 				can.setBuildable(!ev.isCanceled());
 				
 				Bukkit.getPluginManager().callEvent(can);
-				
-				CraftBlock placedBlock = new CraftBlockFake(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ, itemInHand.getTypeId(), itemInHand.getDurability());
-				
-				BlockPlaceEvent bev = new BlockPlaceEvent(placedBlock, beforeBlock.getState(), placedBlock, itemInHand, thePlayer, can.isBuildable());
+
+				final CraftBlock placedBlock = new CraftBlockFake(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ, itemInHand.getTypeId(), itemInHand.getDurability());
+
+                BlockPlaceEvent bev = new BlockPlaceEvent(placedBlock, beforeBlock.getState(), placedBlock, itemInHand, thePlayer, can.isBuildable());
 				
 				bev.setCancelled(ev.isCanceled());
 				
@@ -507,10 +508,10 @@ public class ForgeEventHandler {
 		if (!ready || isClient)
 			return;
 
-		org.bukkit.event.world.ChunkLoadEvent c = new org.bukkit.event.world.ChunkLoadEvent(new CraftChunk(ev.getChunk()), false);
-
         // Chunk event eventually turns into exception due to bad bukkit chunk code
-		//Bukkit.getPluginManager().callEvent(c);
+
+        //org.bukkit.event.world.ChunkLoadEvent c = new org.bukkit.event.world.ChunkLoadEvent(new CraftChunk(ev.getChunk()), false);
+        //Bukkit.getPluginManager().callEvent(c);
 		
 	}
 
@@ -643,7 +644,7 @@ public class ForgeEventHandler {
 		item.stackSize = 1;
 		//IRegistry dispenserRegistry = BlockDispenser.dispenseBehaviorRegistry;
 		//IBehaviorDispenseItem theBehaviour = (IBehaviorDispenseItem) dispenserRegistry.func_82594_a(item.getItem());
-		
+
 		BlockDispenseEvent bev = new BlockDispenseEvent(
 				new CraftBlock(
 						new CraftChunk(ev.blockWorld.getChunkFromBlockCoords(ev.blockX, ev.blockZ)),

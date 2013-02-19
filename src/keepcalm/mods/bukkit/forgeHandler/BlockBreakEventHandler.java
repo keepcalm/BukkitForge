@@ -7,7 +7,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftChunk;
-import org.bukkit.craftbukkit.CraftPlayerCache;
+import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.block.CraftBlock;
 
 

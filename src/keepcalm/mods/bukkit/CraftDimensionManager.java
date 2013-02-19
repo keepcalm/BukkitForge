@@ -1,6 +1,6 @@
-package org.bukkit.craftbukkit;
+package keepcalm.mods.bukkit;
 
-import keepcalm.mods.bukkit.forgeHandler.DimensionManagerImpl;
+import keepcalm.mods.bukkit.nmsforge.DimensionManagerImpl;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.profiler.Profiler;
@@ -11,6 +11,8 @@ import net.minecraftforge.common.DimensionManager;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.*;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.generator.ChunkGenerator;
 
 import java.io.File;

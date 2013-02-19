@@ -8,7 +8,7 @@ import net.minecraft.util.ChunkCoordinates;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.CraftPlayerCache;
+import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -25,10 +25,11 @@ public class PlayerTracker implements IPlayerTracker {
 	
 	@Override
 	public void onPlayerLogin(final EntityPlayer player) {
-		// seen - nvm!
+
 		online.add(player.username);
-		if (DEBUG)
-		System.out.println("User logged in: " + player.username.toLowerCase());
+
+		if (DEBUG) System.out.println("User logged in: " + player.username.toLowerCase());
+
 		BukkitContainer.users.put(player.username.toLowerCase(), "SeenBefore");
 		if (CraftServer.instance() == null) {
 			return;

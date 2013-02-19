@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftConsoleCommandSender;
-import org.bukkit.craftbukkit.CraftPlayerCache;
+import keepcalm.mods.bukkit.CraftPlayerCache;
 
 
 /**

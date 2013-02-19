@@ -1,4 +1,4 @@
-package org.bukkit.craftbukkit;
+package keepcalm.mods.bukkit;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

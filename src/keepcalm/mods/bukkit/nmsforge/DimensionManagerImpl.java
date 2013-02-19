@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit.forgeHandler;
+package keepcalm.mods.bukkit.nmsforge;
 
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Maps;
@@ -12,7 +12,7 @@ import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import org.bukkit.WorldCreator;
-import org.bukkit.craftbukkit.CraftWorldProvider;
+import keepcalm.mods.bukkit.CraftWorldProvider;
 
 import java.io.File;
 import java.util.*;

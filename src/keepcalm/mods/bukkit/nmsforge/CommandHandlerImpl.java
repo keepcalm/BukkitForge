@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit.forgeHandler;
+package keepcalm.mods.bukkit.nmsforge;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,10 +16,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.CraftPlayerCache;
+import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
-import javax.persistence.PrePersist;
 
 public class CommandHandlerImpl implements ICommandManager {
        /** Map of Strings to the ICommand objects they represent */
