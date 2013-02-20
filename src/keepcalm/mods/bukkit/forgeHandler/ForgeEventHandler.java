@@ -737,9 +737,11 @@ public class ForgeEventHandler {
 
 		if (!ready) { return; }
 
+        // This is right
         BukkitEventRouters.World.WorldInit.callEvent(false, null, ToBukkit.world(event.world) );
 
-        BukkitEventRouters.World.WorldLoad.callEvent(false, null, ToBukkit.world(event.world) );
+        // This should be called at the end of WorldCreate
+        //BukkitEventRouters.World.WorldLoad.callEvent(false, null, ToBukkit.world(event.world) );
     }
     
     @ForgeSubscribe(receiveCanceled = true)
