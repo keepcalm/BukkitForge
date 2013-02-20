@@ -17,6 +17,7 @@ import keepcalm.mods.bukkit.CraftWorldProvider;
 import java.io.File;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.Hashtable;
 
 public class DimensionManagerImpl {
 
@@ -236,17 +237,28 @@ public class DimensionManagerImpl {
         unloadQueue.add(Integer.valueOf(id));
     }
 
-    public void unloadWorlds(Hashtable<Integer, long[]> worldTickTimes)
-    {
-        for (Iterator i$ = unloadQueue.iterator(); i$.hasNext(); ) { int id = ((Integer)i$.next()).intValue();
+    public void unloadWorlds(Hashtable<Integer, long[]> worldTickTimes) {
+        for (int id : unloadQueue) {
+            WorldServer w = worlds.get(id);
             try {
-                ((WorldServer)worlds.get(Integer.valueOf(id))).saveAllChunks(true, null);
-            } catch (MinecraftException e) {
-                e.printStackTrace();
+                if (w != null) {
+                    w.saveAllChunks(true, null);
+                } else {
+                    FMLLog.warning("Unexpected world unload - world %d is already unloaded", id);
+                }
+            } catch (Exception e) {
+                FMLLog.log(Level.SEVERE, e, "Exception saving chunks when unloading world " + w);
+            } finally {
+                if (w != null) {
+                    try {
+                        MinecraftForge.EVENT_BUS.post(new WorldEvent.Unload(w));
+                    } catch (Throwable t) {
+                        FMLLog.severe("A mod failed to handle a world unload", t);
+                    }
+                    w.flush();
+                    setWorld(id, null);
+                }
             }
-            MinecraftForge.EVENT_BUS.post(new WorldEvent.Unload((World)worlds.get(Integer.valueOf(id))));
-            ((WorldServer)worlds.get(Integer.valueOf(id))).flush();
-            setWorld(id, null);
         }
         unloadQueue.clear();
     }
