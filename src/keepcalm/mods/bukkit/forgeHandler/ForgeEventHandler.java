@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;
-import keepcalm.mods.bukkit.BukkitEventRouter;
-import keepcalm.mods.bukkit.BukkitEventRouters;
 import keepcalm.mods.events.events.BlockDestroyEvent;
 import keepcalm.mods.events.events.CreeperExplodeEvent;
 import keepcalm.mods.events.events.DispenseItemEvent;
@@ -871,11 +869,6 @@ public class ForgeEventHandler {
     	WorldInitEvent init = new WorldInitEvent(w);
     	
     	Bukkit.getPluginManager().callEvent(init);
-    	
-    	WorldLoadEvent worldLoad = new WorldLoadEvent(w);
-    	
-    	Bukkit.getPluginManager().callEvent(worldLoad);
-    	
     }
     
     @ForgeSubscribe(receiveCanceled = true)
