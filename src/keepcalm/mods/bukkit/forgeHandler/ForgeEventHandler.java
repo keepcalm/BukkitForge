@@ -4,8 +4,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+<<<<<<< HEAD
 import keepcalm.mods.bukkit.*;
 import keepcalm.mods.events.events.*;
+=======
+import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.events.events.BlockDestroyEvent;
+import keepcalm.mods.events.events.CreeperExplodeEvent;
+import keepcalm.mods.events.events.DispenseItemEvent;
+import keepcalm.mods.events.events.LightningStrikeEvent;
+import keepcalm.mods.events.events.LiquidFlowEvent;
+import keepcalm.mods.events.events.PlayerDamageBlockEvent;
+import keepcalm.mods.events.events.PlayerMoveEvent;
+import keepcalm.mods.events.events.PlayerUseItemEvent;
+import keepcalm.mods.events.events.PressurePlateInteractEvent;
+import keepcalm.mods.events.events.SheepDyeEvent;
+import keepcalm.mods.events.events.SignChangeEvent;
+>>>>>>> origin/master
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLiving;
@@ -734,6 +749,7 @@ public class ForgeEventHandler {
 	}
 	@ForgeSubscribe(receiveCanceled = true)
 	public void worldLoadEvent(WorldEvent.Load event) {
+<<<<<<< HEAD
 
 		if (!ready) { return; }
 
@@ -742,6 +758,18 @@ public class ForgeEventHandler {
 
         // This should be called at the end of WorldCreate
         //BukkitEventRouters.World.WorldLoad.callEvent(false, null, ToBukkit.world(event.world) );
+=======
+    	
+		if (!ready) {
+			return;
+		}
+		
+    	World w = CraftServer.instance().getWorld(event.world.provider.dimensionId);
+    	
+    	WorldInitEvent init = new WorldInitEvent(w);
+    	
+    	Bukkit.getPluginManager().callEvent(init);
+>>>>>>> origin/master
     }
     
     @ForgeSubscribe(receiveCanceled = true)

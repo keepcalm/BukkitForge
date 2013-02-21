@@ -11,8 +11,11 @@ import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import keepcalm.mods.bukkit.CraftWorldProvider;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.event.world.WorldLoadEvent;
 
 import java.io.File;
 import java.util.*;
@@ -181,6 +184,11 @@ public class DimensionManagerImpl {
         }
 
         mcServer.setDifficultyForAllWorlds(mcServer.getDifficulty());
+
+        if( !bukkitDims.containsKey(dim) )
+        {
+            Bukkit.getServer().getPluginManager().callEvent(new WorldLoadEvent(CraftServer.instance().getWorld(world.provider.dimensionId)));
+        }
     }
 
     public WorldServer getWorld(int id)
