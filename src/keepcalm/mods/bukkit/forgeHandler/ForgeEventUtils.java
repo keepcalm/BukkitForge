@@ -1,8 +1,7 @@
 package keepcalm.mods.bukkit.forgeHandler;
 
-import keepcalm.mods.events.events.SignChangeEvent;
+import keepcalm.mods.events.forgeex.SignChangeEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.NetServerHandler;
 import net.minecraft.network.packet.Packet130UpdateSign;
 import net.minecraftforge.common.MinecraftForge;
 

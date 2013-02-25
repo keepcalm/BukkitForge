@@ -19,7 +19,6 @@
 	<property name="package.configs" value="${src.dir}/configurations" />
 	<property name="build.ver" value="1.4.7" />
 	<property name="package.srgs" value="porting" />
-	<property name="blockbreak.src" value="blockbreak/src/keepcalm/mods" />
 	<!--<property name="files.minecraft.dir" value="jars" />-->
 	<property name="dist.dir" value="${build.dir}/dist" />
 
@@ -39,7 +38,6 @@
 
 	<available property="forge-exists" file="${download.dir}/minecraftforge-src-${forge.version}.zip" />
 	<available property="already-compiled" file="${classes.dir}/keepcalm" />
-	<available property="blockbreak-there" file="${blockbreak.src}" />
 	<condition property="should-download-ant-contrib">
 		<or>
 			<available file="${download.dir}/ant-contrib/ant-contrib-1.0b3.jar"/>
@@ -48,24 +46,7 @@
 	</condition>
 	<available property="props-there" file="utils/obf.properties" />
 
-	<target name="check-blockbreak" unless="blockbreak-there">
-		<exec dir="." executable="git" failonerror="true">
-			<arg line="submodule init" />
-		</exec>
-
-		<exec dir="." executable="git" failonerror="true">
-			<arg line="submodule sync" />
-		</exec>
-
-		<mkdir dir="blockbreak" />
-		<exec dir="blockbreak" executable="git" failonerror="false">
-			<arg line="pull origin master"/>
-		</exec>
-		<!--		<echo message="You must first run 'git submodules sync' and git pull origin or download the BlockBreak sources into the blockbreak folder!!"/>
-		  <fail/>-->
-	</target>
-
-	<target name="install" depends="check-blockbreak,build,gen-props">
+	<target name="install" depends="build,gen-props">
 		<!--		 <delete dir="${classes.dir}/keepcalm/mods/blockbreak" />-->
 		<copy todir="${classes.dir}">
 			<fileset file="${package.at}" />
@@ -121,9 +102,6 @@
         </copy>
 		<copy todir="${mcpsrc.dir}/keepcalm">
 			<fileset dir="${src.dir}/keepcalm"/>
-		</copy>
-		<copy todir="${mcpsrc.dir}/keepcalm/mods">
-			<fileset dir="${blockbreak.src}" />
 		</copy>
 		<copy todir="${mcpsrc.dir}">
 			<fileset dir="${src.dir}/javax" />

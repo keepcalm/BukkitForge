@@ -2,24 +2,13 @@ package keepcalm.mods.bukkit.asm.replacements;
 
 import com.eoware.asm.asmagic.AsmagicReplaceMethod;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventUtils;
-import keepcalm.mods.events.ForgeEventHelper;
-import keepcalm.mods.events.events.SignChangeEvent;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet130UpdateSign;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.IntHashMap;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.MinecraftForge;
-
-import java.util.Random;
-import java.util.logging.Logger;
 
 public class NetServerHandler_BukkitForge {
 

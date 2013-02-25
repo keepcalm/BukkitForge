@@ -304,6 +304,7 @@ public class CraftInventory implements Inventory {
     }
 
     public HashMap<Integer, ItemStack> removeItem(ItemStack... items) {
+
         HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
 
         IInventory inv = (IInventory)getInventory();
@@ -319,16 +320,20 @@ public class CraftInventory implements Inventory {
             while (true) {
                 int first = first(item, false);
 
-                // Drat! we don't have this type in the inventory
                 if (first == -1) {
                     item.setAmount(toDelete);
                     leftover.put(i, item);
                     break;
-                } else {
-                    if(toDelete > item.getAmount())
+                }
+
+                else {
+
+                    int stackSize = inv.getStackInSlot(first).stackSize;
+
+                    if(toDelete > stackSize)
                     {
-                        inv.decrStackSize(first, toDelete - item.getAmount());
-                        toDelete = toDelete - item.getAmount();
+                        inv.decrStackSize(first, toDelete - stackSize);
+                        toDelete = toDelete - stackSize;
                     }
                     else
                     {
