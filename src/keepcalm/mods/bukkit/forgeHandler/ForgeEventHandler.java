@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import keepcalm.mods.bukkit.BukkitContainer;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import keepcalm.mods.bukkit.*;
 import keepcalm.mods.events.events.BlockDestroyEvent;
 import keepcalm.mods.events.events.CreeperExplodeEvent;
 import keepcalm.mods.events.events.DispenseItemEvent;
@@ -18,6 +20,7 @@ import keepcalm.mods.events.events.SheepDyeEvent;
 import keepcalm.mods.events.events.SignChangeEvent;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
@@ -66,7 +69,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftChunk;
-import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.block.CraftBlockFake;
@@ -128,82 +130,29 @@ public class ForgeEventHandler {
 	public static boolean ready = false;
 	
 	private final boolean isClient = FMLCommonHandler.instance().getEffectiveSide().isClient();
-	
-	public static DamageCause getDamageCause(DamageSource ds) {
-
-		DamageCause dc;
-		if (ds == DamageSource.anvil)
-			dc = DamageCause.CUSTOM;
-		else if (ds == DamageSource.cactus)
-			dc = DamageCause.CONTACT;
-		else if (ds == DamageSource.drown)
-			dc = DamageCause.DROWNING;
-		else if (ds == DamageSource.explosion)
-			dc = DamageCause.BLOCK_EXPLOSION;
-		else if (ds == DamageSource.fall)
-			dc = DamageCause.FALL;
-		else if (ds == DamageSource.fallingBlock)
-			dc = DamageCause.FALL;
-		else if (ds == DamageSource.explosion2)
-			dc = DamageCause.ENTITY_EXPLOSION;
-		else if (ds == DamageSource.generic)
-			dc = DamageCause.CUSTOM;
-		else if (ds == DamageSource.inFire)
-			dc = DamageCause.FIRE;
-		else if (ds == DamageSource.inWall)
-			dc = DamageCause.SUFFOCATION;
-		else if (ds == DamageSource.lava)
-			dc = DamageCause.LAVA;
-		else if (ds == DamageSource.magic)
-			dc = DamageCause.MAGIC;
-		else if (ds == DamageSource.onFire)
-			dc = DamageCause.FIRE_TICK;
-		else if (ds == DamageSource.outOfWorld)
-			dc = DamageCause.VOID;
-		else if (ds == DamageSource.starve)
-			dc = DamageCause.STARVATION;
-		else if (ds == DamageSource.wither)
-			dc = DamageCause.WITHER;
-		else
-			dc = DamageCause.CUSTOM;
-		return dc;
-	}
 
 	@ForgeSubscribe(receiveCanceled = true)
-	/**
-	 * Can't cancel this
-	 */
 	public void onEntityJoinWorld(EntityJoinWorldEvent ev) {
-		if (!ready || isClient)
-			return;
+
+		if (!ready || isClient) return;
 		if (ev.entity instanceof EntityLiving && !(ev.entity instanceof EntityPlayer)) {// || ev.entity instanceof EntityPlayerMP) {
 
-			CraftEntity e = CraftEntity.getEntity(CraftServer.instance(), ev.entity);
-			if (!(e instanceof CraftLivingEntity)) {
-				e = new CraftLivingEntity(CraftServer.instance(), (EntityLiving) ev.entity);
-			}
-			CreatureSpawnEvent bev = new CreatureSpawnEvent((LivingEntity) e, SpawnReason.DEFAULT);
-			bev.setCancelled(ev.isCanceled());
-			Bukkit.getPluginManager().callEvent(bev);
-			
-			ev.setCanceled(bev.isCancelled());
-
-			//CraftEventFactory.callCreatureSpawnEvent((EntityLiving) ev.entity, SpawnReason.DEFAULT);
+			ev.setCanceled(BukkitEventRouters.Entity.CreatureSpawn.callEvent(ev.isCanceled(), ToBukkitEvent.CreatureSpawn(ev)).isCancelled());
 		}
 	}
 	
 	@ForgeSubscribe(receiveCanceled = true)
 	public void onItemExpire(ItemExpireEvent ev) {
-		if (!ready || isClient)
-			return;
-		CraftEventFactory.callItemDespawnEvent(ev.entityItem);
+
+		if (!ready || isClient) return;
+        BukkitEventRouters.Entity.ItemDespawn.callEvent(ev.isCanceled(), ToBukkitEvent.ItemDespawn(ev));
 	}
 
 	@ForgeSubscribe(receiveCanceled = true)
 	public void onItemTossEvent(ItemTossEvent ev) {
-		if (!ready || isClient)
-			return;
-		CraftEventFactory.callItemSpawnEvent(ev.entityItem);
+
+		if (!ready || isClient) return;
+        BukkitEventRouters.Entity.ItemSpawn.callEvent(ev.isCanceled(), ToBukkitEvent.ItemSpawn(ev));
 	}
 	
 	@ForgeSubscribe(receiveCanceled = true)
@@ -230,8 +179,12 @@ public class ForgeEventHandler {
 
 		ev.setCanceled(bev.isCancelled());
 	}
-	
-	@ForgeSubscribe(receiveCanceled = true)
+
+    private DamageCause getDamageCause(DamageSource source) {
+        return ToBukkit.damageCause(source);
+    }
+
+    @ForgeSubscribe(receiveCanceled = true)
 	public void onLivingDeathEvent(LivingDeathEvent ev) {
 		if (!ready || isClient)
 			return;
@@ -722,7 +675,6 @@ public class ForgeEventHandler {
 		
 		Bukkit.getPluginManager().callEvent(bev);
 		ev.setCanceled(bev.isCancelled());
-		
 	}
 	
 	@ForgeSubscribe(receiveCanceled = true)
@@ -869,6 +821,11 @@ public class ForgeEventHandler {
     	WorldInitEvent init = new WorldInitEvent(w);
     	
     	Bukkit.getPluginManager().callEvent(init);
+    	
+    	/*WorldLoadEvent worldLoad = new WorldLoadEvent(w);
+    	
+    	Bukkit.getPluginManager().callEvent(worldLoad); */
+    	
     }
     
     @ForgeSubscribe(receiveCanceled = true)
@@ -904,7 +861,5 @@ public class ForgeEventHandler {
         // Chunk event eventually turns into exception due to bad bukkit chunk code
         //        Bukkit.getPluginManager().callEvent(e);
     }
-	
-
 }
 

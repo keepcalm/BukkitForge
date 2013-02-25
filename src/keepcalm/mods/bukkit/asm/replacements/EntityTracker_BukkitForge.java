@@ -1,6 +1,6 @@
 package keepcalm.mods.bukkit.asm.replacements;
 
-import com.eoware.asm.asmagic.AsmagicMethodReplace;
+import com.eoware.asm.asmagic.AsmagicReplaceMethod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.EntityTrackerEntry;
@@ -16,7 +16,7 @@ public class EntityTracker_BukkitForge extends EntityTracker {
     private int entityViewDistance;
     private World theWorld;
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public void addEntityToTracker(Entity par1Entity, int par2, int par3, boolean par4)
     {
         if (par2 > entityViewDistance)

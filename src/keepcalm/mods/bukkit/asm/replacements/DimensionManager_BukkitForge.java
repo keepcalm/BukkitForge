@@ -1,7 +1,7 @@
 package keepcalm.mods.bukkit.asm.replacements;
 
-import com.eoware.asm.asmagic.AsmagicFieldAdd;
-import com.eoware.asm.asmagic.AsmagicMethodReplace;
+import com.eoware.asm.asmagic.AsmagicAddField;
+import com.eoware.asm.asmagic.AsmagicReplaceMethod;
 import keepcalm.mods.bukkit.nmsforge.DimensionManagerImpl;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.*;
@@ -11,122 +11,123 @@ import java.util.*;
 
 public class DimensionManager_BukkitForge {
 
-    @AsmagicFieldAdd
+    @AsmagicAddField
     public static DimensionManagerImpl impl = DimensionManagerImpl.getInstance();
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static boolean registerProviderType(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
     {
         return impl.registerProviderType(id, provider, keepLoaded);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static void init()
     {
+        if( impl == null ) impl = DimensionManagerImpl.getInstance();
         impl.init();
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static void registerDimension(int id, int providerType)
     {
         impl.registerDimension(id, providerType);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static void unregisterDimension(int id)
     {
         impl.unregisterDimension(id);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static int getProviderType(int dim)
     {
         return impl.getProviderType(dim);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static WorldProvider getProvider(int dim)
     {
         return impl.getProvider(dim);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static Integer[] getIDs()
     {
         return impl.getIDs();
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static void setWorld(int id, WorldServer world)
     {
         impl.setWorld(id,world);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static void initDimension(int dim) {
         impl.initDimension(dim);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static WorldServer getWorld(int id)
     {
         return impl.getWorld(id);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static WorldServer[] getWorlds()
     {
         return impl.getWorlds();
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static boolean shouldLoadSpawn(int dim)
     {
         return impl.shouldLoadSpawn(dim);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static Integer[] getStaticDimensionIDs()
     {
         return impl.getStaticDimensionIDs();
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static WorldProvider createProviderFor(int dim)
     {
         return impl.createProviderFor(dim);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static void unloadWorld(int id) {
         impl.unloadWorld(id);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static void unloadWorlds(Hashtable<Integer, long[]> worldTickTimes)
     {
         impl.unloadWorlds(worldTickTimes);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static int getNextFreeDimId()
     {
         return impl.getNextFreeDimId();
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static NBTTagCompound saveDimensionDataMap()
     {
         return impl.saveDimensionDataMap();
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static void loadDimensionDataMap(NBTTagCompound compoundTag)
     {
         impl.loadDimensionDataMap(compoundTag);
     }
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     public static File getCurrentSaveRootDirectory()
     {
         return impl.getCurrentSaveRootDirectory();

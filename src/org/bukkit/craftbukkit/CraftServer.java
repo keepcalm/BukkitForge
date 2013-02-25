@@ -16,10 +16,7 @@ import java.util.logging.Logger;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterators;
-import keepcalm.mods.bukkit.BukkitContainer;
-import keepcalm.mods.bukkit.CraftDimensionManager;
-import keepcalm.mods.bukkit.CraftPlayerCache;
-import keepcalm.mods.bukkit.CraftWorldCache;
+import keepcalm.mods.bukkit.*;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
 import net.minecraft.command.ICommandSender;
@@ -568,7 +565,8 @@ public class CraftServer implements Server {
 
         worlds.cacheWorld(dimension, internal);
 
-        pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
+        //This is already called during world init
+        //pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
 
 		if (DimensionManager.shouldLoadSpawn(dimension)) {
             System.out.println("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
@@ -596,7 +594,7 @@ public class CraftServer implements Server {
 			}
 		}
 
-        pluginManager.callEvent( new WorldLoadEvent(worlds.get(dimension)));
+        BukkitEventRouters.World.WorldLoad.callEvent( false, null, ToBukkit.world(internal) );
 
 		return worlds.get(dimension);
 	}

@@ -1,6 +1,6 @@
 package keepcalm.mods.bukkit.asm.replacements;
 
-import com.eoware.asm.asmagic.AsmagicMethodReplace;
+import com.eoware.asm.asmagic.AsmagicReplaceMethod;
 import org.bukkit.WorldType;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -9,7 +9,7 @@ import java.io.File;
 
 public class WorldManager_MultiVerse {
 
-    @AsmagicMethodReplace
+    @AsmagicReplaceMethod
     private boolean doLoad(String name) {
 
         CraftWorld cw = CraftServer.instance().worlds.get(name);

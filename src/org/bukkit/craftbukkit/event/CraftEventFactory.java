@@ -103,6 +103,7 @@ public class CraftEventFactory {
 	private static CraftEntity getBukkitEntity(net.minecraft.entity.Entity entity) {
 		return CraftEntity.getEntity((CraftServer) Bukkit.getServer(), entity);
 	}
+
     private static boolean canBuild(CraftWorld world, Player player, int x, int z) {
         WorldServer worldServer = world.getHandle();
         int spawnSize = Bukkit.getServer().getSpawnRadius();
