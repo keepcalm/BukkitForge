@@ -279,10 +279,10 @@ public class ForgeEventHelper {
 			int a = 0;
 			//System.out.println("StackTrace count: " + ex.getStackTrace().length);
 			for (StackTraceElement i : stackElems) {
-				if (a == 1) {
+				/*if (a == 1) {
 					a++;
 					continue;
-				}
+				} */
 				//System.out.println("Class found: " + i.getClassName());
 				if (i.getClassName().toLowerCase().contains("iteminworldmanager") || i.getClassName().toLowerCase().equals("ir")) {
 					foundIIWM = true;
@@ -301,7 +301,7 @@ public class ForgeEventHelper {
 					foundIIWM = true;
 					break;
 				}
-				a++;
+				//a++;
 			}
 			
 			if (foundIIWM) {// block break got this, or it's something else

@@ -622,15 +622,17 @@ public class ForgeEventHandler {
 
 	@ForgeSubscribe(receiveCanceled = true)
 	public void blockBreakSomehow(BlockDestroyEvent ev) {
+
+        // This event is breaking something with an 'already decorating' error
 		
 		if (!ready || isClient)
 			return;
 		
-		BlockBreakEvent bev = new BlockBreakEvent(new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), CraftPlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER));
+		/*BlockBreakEvent bev = new BlockBreakEvent(new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), CraftPlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER));
 		bev.setCancelled(ev.isCanceled());
 		Bukkit.getPluginManager().callEvent(bev);
 		
-		ev.setCanceled(bev.isCancelled());
+		ev.setCanceled(bev.isCancelled());  */
 		
 	}
 
