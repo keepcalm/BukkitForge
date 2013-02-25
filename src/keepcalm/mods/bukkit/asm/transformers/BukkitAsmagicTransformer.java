@@ -64,9 +64,7 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
         if( !classes.containsKey(s) ) return bytes;
 
         System.out.println( "Transforming " + s + " using " + classes.get(s));
-        writeByteArrayToFile( "E:\\Servers\\FTB-MindCrack-New\\replacements\\" + s + "_Before.class",bytes);
         byte[] newClass = act.transform(s, bytes);
-        writeByteArrayToFile( "E:\\Servers\\FTB-MindCrack-New\\replacements\\" + s + "_After.class",newClass);
 
         return newClass;
     }
