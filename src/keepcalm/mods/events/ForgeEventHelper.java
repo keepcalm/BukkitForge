@@ -267,14 +267,18 @@ public class ForgeEventHelper {
 		if (!cnk.isTerrainPopulated || !cnk.isChunkLoaded) {
 			return;
 		}
-		try {
+		/*try {
 			throw new RuntimeException("nobody saw this");
 		}
-		catch (RuntimeException ex) {
+		catch (RuntimeException ex) {*/
+        else
+        {
+            StackTraceElement[] stackElems = Thread.currentThread().getStackTrace();
+
 			boolean foundIIWM = false;
 			int a = 0;
 			//System.out.println("StackTrace count: " + ex.getStackTrace().length);
-			for (StackTraceElement i : ex.getStackTrace()) {
+			for (StackTraceElement i : stackElems) {
 				if (a == 1) {
 					a++;
 					continue;
