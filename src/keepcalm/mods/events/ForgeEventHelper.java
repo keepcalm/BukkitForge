@@ -311,24 +311,24 @@ public class ForgeEventHelper {
 			if (id == 0) // no point - air got broken
 				return;
 			//System.out.println("This is a break!");
-			Runnable run = new Runnable() {
+			//Runnable run = new Runnable() {
 				
-				@Override
-				public void run() {
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {}
-					BlockDestroyEvent ev = new BlockDestroyEvent(world, x, y, z, id, data);
-					MinecraftForge.EVENT_BUS.post(ev);
+				//@Override
+				//public void run() {
+				//	try {
+				//		Thread.sleep(50);
+				//	} catch (InterruptedException e) {}
+			BlockDestroyEvent ev = new BlockDestroyEvent(world, x, y, z, id, data);
+			MinecraftForge.EVENT_BUS.post(ev);
 					
-					if (ev.isCanceled()) {
-						world.setBlockAndMetadata(x, y, z, id, data);
-					}
-				}
+			if (ev.isCanceled()) {
+				world.setBlockAndMetadata(x, y, z, id, data);
+			}
+		//		}
 				
-			};
-			Thread thr = new Thread(run);
-			thr.start();
+		//	};
+		//	Thread thr = new Thread(run);
+		//	thr.start();
 		}
 	}
 	
