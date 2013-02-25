@@ -25,6 +25,7 @@ import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
 import keepcalm.mods.bukkit.forgeHandler.SchedulerTickHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemInWorldManager;
+import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.gui.ServerGUI;
 import net.minecraftforge.common.Configuration;
@@ -270,8 +271,8 @@ public class BukkitContainer {
 				}
 			}
 		}
-		
-		
+
+        Packet3Chat.maxChatLength = 32767;
 		
 		BukkitContainer.users = new Properties();
 		if (propsFile == null) return;
