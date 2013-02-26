@@ -273,7 +273,7 @@ public class ForgeEventHelper {
 		catch (RuntimeException ex) {*/
         else
         {
-            StackTraceElement[] stackElems = Thread.currentThread().getStackTrace();
+            StackTraceElement[] stackElems = new Exception().getStackTrace();
 
 			boolean foundIIWM = false;
 			int a = 0;
