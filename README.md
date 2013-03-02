@@ -14,7 +14,9 @@ See a list of working plugins [here](https://github.com/keepcalm/BukkitForge/wik
 
 BukkitForge Team Members:
 ================
-<a href="https://github.com/keepcalm">keepcalm</a>  
+<a href="https://github.com/keepcalm">keepcalm</a> (confirmed Dead) 
+
+keepbot (keepcalm's bot, also confirmed Dead)
 
 <a href="https://github.com/alexbegt">alexbegt</a>  
 
