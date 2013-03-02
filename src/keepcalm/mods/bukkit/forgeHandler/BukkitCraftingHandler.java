@@ -13,7 +13,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
 import org.bukkit.Bukkit;
-import keepcalm.mods.bukkit.CraftPlayerCache;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import org.bukkit.craftbukkit.inventory.BukkitRecipe;
 import org.bukkit.craftbukkit.inventory.CraftInventoryCrafting;
 import org.bukkit.craftbukkit.inventory.CraftInventoryView;
@@ -53,7 +53,7 @@ public class BukkitCraftingHandler implements ICraftingHandler {
 
 			Recipe recipe = new BukkitRecipe(targ);
 			
-			InventoryView what = new CraftInventoryView(CraftPlayerCache.getCraftPlayer(fp), new CraftInventoryCrafting(inv, player.inventory), inv.eventHandler);
+			InventoryView what = new CraftInventoryView(BukkitForgePlayerCache.getCraftPlayer(fp), new CraftInventoryCrafting(inv, player.inventory), inv.eventHandler);
 
             // Should be slot of crafting container, will only be trouble if ever have crafting table with more than one slot
 			CraftItemEvent ev = new CraftItemEvent(recipe, what, SlotType.CRAFTING, 0, false, false);

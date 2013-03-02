@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.messaging.StandardMessenger;
 
@@ -48,7 +48,7 @@ public class ForgePacketHandler implements IPacketHandler {
 		}
 		EntityPlayer fp = (EntityPlayer) player;
 		if (this.listeningChannels.values().contains(packet.channel) && this.listeningChannels.get(fp.username).contains(packet.channel)) {
-			((StandardMessenger)CraftServer.instance().getMessenger()).dispatchIncomingMessage(CraftPlayerCache.getCraftPlayer((EntityPlayerMP)player), packet.channel, packet.data);
+			((StandardMessenger)CraftServer.instance().getMessenger()).dispatchIncomingMessage(BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) player), packet.channel, packet.data);
 			
 		}
 		

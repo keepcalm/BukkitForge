@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityFlying;
@@ -73,7 +74,6 @@ import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
-import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.EntityType;
@@ -101,7 +101,7 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 		if (entity instanceof EntityLiving) {
 			// Players
 			if (entity instanceof EntityPlayer) {
-				if (entity instanceof EntityPlayerMP) { return CraftPlayerCache.getCraftPlayer(server, (EntityPlayerMP) entity); }
+				if (entity instanceof EntityPlayerMP) { return BukkitForgePlayerCache.getCraftPlayer(server, (EntityPlayerMP) entity); }
 				else { return new CraftHumanEntity(server, (EntityPlayer) entity); }
 			}
 			else if (entity instanceof EntityCreature) {

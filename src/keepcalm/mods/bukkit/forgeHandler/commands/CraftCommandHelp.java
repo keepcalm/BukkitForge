@@ -1,5 +1,6 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +11,6 @@ import net.minecraft.util.MathHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftConsoleCommandSender;
-import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.help.SimpleHelpMap;
 import org.bukkit.help.HelpTopic;
@@ -32,7 +32,7 @@ public class CraftCommandHelp extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
 		SimpleHelpMap hm = (SimpleHelpMap) CraftServer.instance().getHelpMap();
-		CommandSender pcs = var1 instanceof EntityPlayer ? CraftPlayerCache.getCraftPlayer(CraftServer.instance(), (EntityPlayerMP) var1) : CraftConsoleCommandSender.getInstance();
+		CommandSender pcs = var1 instanceof EntityPlayer ? BukkitForgePlayerCache.getCraftPlayer(CraftServer.instance(), (EntityPlayerMP) var1) : CraftConsoleCommandSender.getInstance();
 		int total = hm.getHelpTopics().size();
 		// round up
 		int totalPages = MathHelper.ceiling_float_int(total / entries_per_page);

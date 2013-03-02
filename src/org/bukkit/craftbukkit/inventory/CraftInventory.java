@@ -5,14 +5,22 @@ import java.util.List;
 import java.util.ListIterator;
 
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.InventoryEnderChest;
+import net.minecraft.inventory.InventoryMerchant;
+import net.minecraft.tileentity.TileEntityBrewingStand;
+import net.minecraft.tileentity.TileEntityDispenser;
+import net.minecraft.tileentity.TileEntityFurnace;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public class CraftInventory implements Inventory {
 
@@ -41,6 +49,7 @@ public class CraftInventory implements Inventory {
     }
 
     public ItemStack[] getContents() {
+
         ItemStack[] items = new ItemStack[getSize()];
 
         int stackCount = getInventory().getSizeInventory();
@@ -52,6 +61,7 @@ public class CraftInventory implements Inventory {
 
         return items;
     }
+
     protected net.minecraft.item.ItemStack[] getMCContents() {
     	net.minecraft.item.ItemStack[] mcItems = new net.minecraft.item.ItemStack[getSize()];
     	for (int i = 0; i < mcItems.length; i++) {
@@ -410,15 +420,17 @@ public class CraftInventory implements Inventory {
     }
 
     public InventoryType getType() {
-        /*if (inventory instanceof InventoryCrafting) {
+        IInventory inventory = getInventory();
+
+        if (getInventory() instanceof InventoryCrafting) {
             return inventory.getSizeInventory() >= 9 ? InventoryType.WORKBENCH : InventoryType.CRAFTING;
-        } else if (inventory instanceof PlayerInventory) {
+        } else if (inventory instanceof InventoryPlayer) {
             return InventoryType.PLAYER;
         } else if (inventory instanceof TileEntityDispenser) {
             return InventoryType.DISPENSER;
         } else if (inventory instanceof TileEntityFurnace) {
             return InventoryType.FURNACE;
-        } else if (inventory instanceof ContainerEnchantTableInventory) {
+        } else if (inventory.getClass().toString().contains("SlotEnchantmentTable") ) {
             return InventoryType.ENCHANTING;
         } else if (inventory instanceof TileEntityBrewingStand) {
             return InventoryType.BREWING;
@@ -430,8 +442,7 @@ public class CraftInventory implements Inventory {
             return InventoryType.MERCHANT;
         } else {
             return InventoryType.CHEST;
-        }*/
-    	return InventoryType.CHEST;
+        }
     }
 
     public InventoryHolder getHolder() {

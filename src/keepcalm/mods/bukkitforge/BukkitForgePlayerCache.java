@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit;
+package keepcalm.mods.bukkitforge;
 
 import java.util.HashMap;
 
@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
-public class CraftPlayerCache {
+public class BukkitForgePlayerCache {
 
 	private static final HashMap<String, CraftPlayer> playerCache = new HashMap<String, CraftPlayer>();
 	

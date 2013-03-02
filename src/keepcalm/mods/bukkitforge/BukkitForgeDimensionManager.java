@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit;
+package keepcalm.mods.bukkitforge;
 
 import keepcalm.mods.bukkit.nmsforge.DimensionManagerImpl;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,7 +21,7 @@ import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
-public class CraftDimensionManager
+public class BukkitForgeDimensionManager
 {
     protected static HashMap<Integer,Integer> registeredDimensions = new HashMap<Integer, Integer>();
 
@@ -173,13 +173,13 @@ public class CraftDimensionManager
 
         int providerType = getWorldProviderTypeForEnvironment(creator.environment());
 
-        if( CraftDimensionManager.hasDimensionIdForName( name ) )
+        if( BukkitForgeDimensionManager.hasDimensionIdForName(name) )
         {
-            dimension = CraftDimensionManager.getDimensionIdForName(name);
+            dimension = BukkitForgeDimensionManager.getDimensionIdForName(name);
         }
         else
         {
-            dimension = CraftDimensionManager.getNextDimensionId();
+            dimension = BukkitForgeDimensionManager.getNextDimensionId();
         }
 
         if(!registeredDimensions.containsKey(dimension))
@@ -199,7 +199,7 @@ public class CraftDimensionManager
         CraftWorld cw = new CraftWorld(ws);
         cw.getPopulators().addAll(creator.generator().getDefaultPopulators(cw));
 
-        CraftDimensionManager.setDimensionIdForName(name, dimension);
+        BukkitForgeDimensionManager.setDimensionIdForName(name, dimension);
 
         return ws;  //To change body of created methods use File | Settings | File Templates.
     }

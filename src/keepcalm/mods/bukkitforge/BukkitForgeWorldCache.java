@@ -1,7 +1,5 @@
-package keepcalm.mods.bukkit;
+package keepcalm.mods.bukkitforge;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -13,7 +11,7 @@ import org.bukkit.craftbukkit.CraftWorld;
 
 import java.util.*;
 
-public class CraftWorldCache
+public class BukkitForgeWorldCache
 {
     private HashMap<Integer,CraftWorld> worlds = new HashMap<Integer,CraftWorld>();
     private HashMap<String,Integer> worldNameMapping = Maps.newHashMap();
@@ -65,7 +63,7 @@ public class CraftWorldCache
     }
 
     private boolean existsInDM(int dim) {
-        return !Arrays.asList(CraftDimensionManager.getIDs()).contains(dim) && !Arrays.asList( DimensionManager.getIDs()).contains(dim);
+        return !Arrays.asList(BukkitForgeDimensionManager.getIDs()).contains(dim) && !Arrays.asList( DimensionManager.getIDs()).contains(dim);
     }
 
     public void cacheWorld(int dim, WorldServer world)

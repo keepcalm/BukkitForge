@@ -19,6 +19,9 @@ import com.google.common.collect.Iterators;
 import keepcalm.mods.bukkit.*;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
+import keepcalm.mods.bukkitforge.BukkitForgeDimensionManager;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
+import keepcalm.mods.bukkitforge.BukkitForgeWorldCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -83,8 +86,6 @@ import org.bukkit.craftbukkit.metadata.WorldMetadataStore;
 import org.bukkit.craftbukkit.scheduler.CraftScheduler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.world.WorldInitEvent;
-import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
@@ -119,7 +120,6 @@ import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -139,7 +139,7 @@ public class CraftServer implements Server {
 	public CraftCommandMap commandMap = new CraftCommandMap(this);
 	private PluginManager pluginManager;// = new SimplePluginManager(this, commandMap);
 
-	public CraftWorldCache worlds = new CraftWorldCache();
+	public BukkitForgeWorldCache worlds = new BukkitForgeWorldCache();
 	private Map<String, OfflinePlayer> offlinePlayers = new HashMap<String, OfflinePlayer>();
 	private StandardMessenger theMessenger;
 	private SimpleHelpMap theHelpMap = new SimpleHelpMap(this);
@@ -289,7 +289,7 @@ public class CraftServer implements Server {
 
 		List<Player> players= new ArrayList<Player>();
 		for (Object i : theServer.getConfigurationManager().playerEntityList) {
-			players.add(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) i));
+			players.add(BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) i));
 		}
 		return players.toArray(new Player[0]);
 	}
@@ -426,7 +426,7 @@ public class CraftServer implements Server {
 		for (Object i : configMan.playerEntityList) {
 			EntityPlayerMP guy = (EntityPlayerMP) i;
 			if (guy.username.toLowerCase().startsWith(name)) {
-				CraftPlayer ply = CraftPlayerCache.getCraftPlayer(guy);//(Player) CraftEntity.getEntity(this, guy);
+				CraftPlayer ply = BukkitForgePlayerCache.getCraftPlayer(guy);//(Player) CraftEntity.getEntity(this, guy);
 				return ply;
 			}
 		}
@@ -552,10 +552,10 @@ public class CraftServer implements Server {
 
         int dimension = -1000;
 
-        WorldServer internal = CraftDimensionManager.createWorld( this, creator, getWorldContainer(), name, theServer.theProfiler );
+        WorldServer internal = BukkitForgeDimensionManager.createWorld(this, creator, getWorldContainer(), name, theServer.theProfiler);
         dimension = internal.provider.dimensionId;
 
-        File folder = CraftDimensionManager.getWorldFolder(creator.name());
+        File folder = BukkitForgeDimensionManager.getWorldFolder(creator.name());
 
 		AnvilSaveConverter converter = new AnvilSaveConverter(folder);
 		if (converter.isOldMapFormat(name)) {

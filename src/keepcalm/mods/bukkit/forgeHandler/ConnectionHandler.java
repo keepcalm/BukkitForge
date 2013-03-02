@@ -3,6 +3,7 @@ package keepcalm.mods.bukkit.forgeHandler;
 import java.util.HashMap;
 
 import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
@@ -14,7 +15,6 @@ import net.minecraft.server.dedicated.DedicatedServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -118,7 +118,7 @@ public class ConnectionHandler implements IConnectionHandler {
 		PlayerLoginEvent x;
 		if (manager instanceof TcpConnection) {
 			TcpConnection j = (TcpConnection) manager;
-			x = new PlayerLoginEvent(CraftPlayerCache.getCraftPlayer(dude), MinecraftServer.getServer().getHostname(), j.getSocket().getInetAddress());
+			x = new PlayerLoginEvent(BukkitForgePlayerCache.getCraftPlayer(dude), MinecraftServer.getServer().getHostname(), j.getSocket().getInetAddress());
 		}
 		else {
 			// logging in events on single player are presently broken, TODO

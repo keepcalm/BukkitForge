@@ -4,15 +4,13 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import keepcalm.mods.bukkit.BukkitEventRouters;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
-import org.bukkit.Bukkit;
-import keepcalm.mods.bukkit.CraftPlayerCache;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class CommandHandlerImpl implements ICommandManager {
@@ -26,7 +24,7 @@ public class CommandHandlerImpl implements ICommandManager {
         {
             if( par1ICommandSender instanceof EntityPlayer)
             {
-                PlayerCommandPreprocessEvent bev = BukkitEventRouters.Player.PlayerCommandPreprocess.callEvent(false, null, CraftPlayerCache.getCraftPlayer((EntityPlayerMP)par1ICommandSender), par2Str);
+                PlayerCommandPreprocessEvent bev = BukkitEventRouters.Player.PlayerCommandPreprocess.callEvent(false, null, BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) par1ICommandSender), par2Str);
                 if(bev.isCancelled())
                 {
                     return;

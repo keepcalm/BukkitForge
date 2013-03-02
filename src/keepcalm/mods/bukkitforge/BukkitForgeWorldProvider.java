@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit;
+package keepcalm.mods.bukkitforge;
 
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -6,11 +6,11 @@ import net.minecraft.world.gen.structure.ComponentStrongholdRightTurn;
 import org.bukkit.WorldCreator;
 import org.bukkit.craftbukkit.generator.CustomChunkGenerator;
 
-public class CraftWorldProvider extends WorldProvider {
+public class BukkitForgeWorldProvider extends WorldProvider {
 
     protected WorldProvider wp;
 
-    public CraftWorldProvider( WorldProvider providerToWrap, WorldCreator worldCreator )
+    public BukkitForgeWorldProvider(WorldProvider providerToWrap, WorldCreator worldCreator)
     {
         wp = providerToWrap;
         wc = worldCreator;

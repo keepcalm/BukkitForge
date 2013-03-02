@@ -1,7 +1,11 @@
 package org.bukkit.craftbukkit.inventory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import keepcalm.mods.bukkit.ToBukkit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,6 +15,8 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
+
+import javax.annotation.Nullable;
 
 public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.inventory.PlayerInventory {
 	private EntityPlayer player;
@@ -31,6 +37,32 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
 		}
 		return armorContents;
 	}
+
+    @Override
+    public ItemStack[] getContents() {
+        return Lists.transform(Arrays.asList(((InventoryPlayer) getInventory()).mainInventory), new Function<net.minecraft.item.ItemStack, Object>() {
+            public Object apply(@Nullable net.minecraft.item.ItemStack itemStack) {
+                return ToBukkit.itemStack(itemStack);
+            }
+        }).toArray( new ItemStack[0] );
+    }
+
+    @Override
+    public void setContents(ItemStack[] items) {
+        if (getContents().length < items.length) {
+            throw new IllegalArgumentException("Invalid inventory size; expected " + getContents().length + " or less");
+        }
+
+        net.minecraft.item.ItemStack[] mcItems = getMCContents();
+
+        for (int i = 0; i < mcItems.length; i++) {
+            if (i >= items.length) {
+                mcItems[i] = null;
+            } else {
+                mcItems[i] = CraftItemStack.createNMSItemStack(items[i]);
+            }
+        }
+    }
 
 	@Override
 	public ItemStack getHelmet() {

@@ -8,6 +8,7 @@ import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.item.EntityEnderPearl;
@@ -27,7 +28,6 @@ import net.minecraft.util.DamageSource;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.inventory.CraftEntityEquipment;
@@ -226,7 +226,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 		else {
 			fp = BukkitContainer.MOD_PLAYER;
 		}
-		return getHandle().attackingPlayer == null && getHandle().isDead ? null : CraftPlayerCache.getCraftPlayer(fp);
+		return getHandle().attackingPlayer == null && getHandle().isDead ? null : BukkitForgePlayerCache.getCraftPlayer(fp);
 	}
 
 	public boolean addPotionEffect(PotionEffect effect) {

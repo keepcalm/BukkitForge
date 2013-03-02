@@ -1,4 +1,4 @@
-package keepcalm.mods.bukkit;
+package keepcalm.mods.bukkitforge;
 
 import net.minecraft.profiler.Profiler;
 import net.minecraft.server.MinecraftServer;
@@ -17,8 +17,8 @@ import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
  * Time: 11:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CraftWorldServer extends WorldServer {
-    public CraftWorldServer(MinecraftServer par1MinecraftServer, ISaveHandler par2ISaveHandler, String par3Str, int par4, Profiler par6Profiler, WorldCreator creator, WorldServer baseWorld ) {
+public class BukkitForgeWorldServer extends WorldServer {
+    public BukkitForgeWorldServer(MinecraftServer par1MinecraftServer, ISaveHandler par2ISaveHandler, String par3Str, int par4, Profiler par6Profiler, WorldCreator creator, WorldServer baseWorld) {
         super(par1MinecraftServer, par2ISaveHandler, par3Str, par4, new WorldSettings(baseWorld.getWorldInfo()), par6Profiler);
 
         super.chunkProvider = new CustomChunkGenerator( this, creator.seed(), creator.generator() );

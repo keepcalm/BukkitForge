@@ -1,16 +1,13 @@
 package keepcalm.mods.bukkit;
 
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.WorldType;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftChunk;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.block.CraftBlock;
@@ -22,7 +19,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,22 +37,22 @@ public class ToBukkit {
     public static org.bukkit.entity.Player playerOrMod( EntityPlayer ep )
     {
         if (ep instanceof EntityPlayerMP)
-            return CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ep);
+            return BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) ep);
         else
-            return CraftPlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER);
+            return BukkitForgePlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER);
     }
 
     public static org.bukkit.entity.Player player( EntityPlayer ep )
     {
-        return CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ep);
+        return BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) ep);
     }
 
     public static org.bukkit.entity.Player player( net.minecraft.entity.Entity ep )
     {
         if (ep instanceof EntityPlayerMP)
-            return CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ep);
+            return BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) ep);
         else
-            return CraftPlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER);
+            return BukkitForgePlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER);
     }
 
     public static org.bukkit.block.Block blockFromCoords( net.minecraft.world.World world, int x, int y, int z  )

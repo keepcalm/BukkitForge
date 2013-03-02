@@ -14,7 +14,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftConsoleCommandSender;
-import keepcalm.mods.bukkit.CraftPlayerCache;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -70,7 +70,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		
 		CommandSender sender;
 		if (who instanceof EntityPlayerMP) {
-			sender = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) who);
+			sender = BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) who);
 		}
 		else {
 			sender = CraftConsoleCommandSender.getInstance();
@@ -97,7 +97,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 		try {
 			CommandSender sender;
 			if (var1 instanceof EntityPlayerMP) {
-				sender = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) var1);
+				sender = BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) var1);
 			}
 			else {
 				sender = CraftConsoleCommandSender.getInstance();
