@@ -16,6 +16,7 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.block.*;
 import org.bukkit.event.block.SignChangeEvent;
@@ -98,20 +99,23 @@ public class ToBukkitEvent {
     }
     
     public static org.bukkit.event.player.PlayerInteractEvent PlayerInteract(PlayerInteractEvent ev) {
-        return null;
+        return new org.bukkit.event.player.PlayerInteractEvent(ToBukkit.player(ev.entityPlayer),
+                                                               ToBukkit.action(ev.action),
+                                                               ToBukkit.itemStack(ev.entityPlayer.inventory.getCurrentItem()),
+                                                               ToBukkit.blockFromCoords( ev.entity.worldObj, ev.x, ev.y, ev.z ),
+                                                               CraftBlock.notchToBlockFace(ev.face));
     }
 
-    
     public static PlayerBedEnterEvent PlayerBedEnter(PlayerSleepInBedEvent ev) {
         return null;
     }
     
     public static ChunkLoadEvent ChunkLoad(ChunkEvent.Load ev) {
-        return null;
+        return new ChunkLoadEvent( ToBukkit.chunk(ev.getChunk()), false);
     }
     
     public static ChunkUnloadEvent ChunkUnload(ChunkEvent.Unload ev) {
-        return null;
+        return new ChunkUnloadEvent(ToBukkit.chunk(ev.getChunk()));
     }
 
     public static AsyncPlayerChatEvent AsyncPlayerChat(ServerChatEvent ev) {

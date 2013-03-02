@@ -388,45 +388,12 @@ public class ForgeEventHandler {
 		if (!ready || isClient)
 			return;
 
-		Action act;
-		switch (ev.action) 
-		{
-		case LEFT_CLICK_BLOCK:
-			act = Action.LEFT_CLICK_BLOCK;
-			break;
-		case RIGHT_CLICK_AIR:
-			act = Action.RIGHT_CLICK_AIR;
-			break;
-		case RIGHT_CLICK_BLOCK:
-			act = Action.RIGHT_CLICK_BLOCK;
-			break;
-		default:
-			act= Action.PHYSICAL;
-		}
-
-		EntityPlayerMP fp;
-
-		if (!(ev.entityPlayer instanceof EntityPlayerMP)) {
-			fp = BukkitContainer.MOD_PLAYER;
-		}
-		else {
-			fp = (EntityPlayerMP) ev.entityPlayer;
-		}
-
-		CraftBlock bb = new CraftBlock(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.z)), ev.x,ev.y,ev.z);
-		BlockFace face = CraftBlock.notchToBlockFace(ev.face);
-		org.bukkit.event.player.PlayerInteractEvent bev = 
-				new org.bukkit.event.player.PlayerInteractEvent(CraftPlayerCache.getCraftPlayer(fp), act, new CraftItemStack(ev.entityPlayer.inventory.getCurrentItem()), bb, face);
-		bev.setCancelled(ev.isCanceled());
-		Bukkit.getPluginManager().callEvent(bev);
+        org.bukkit.event.player.PlayerInteractEvent bev = BukkitEventRouters.Player.PlayerInteract.callEvent(ev.isCanceled(), ToBukkitEvent.PlayerInteract(ev));
 
 		if (bev.isCancelled()) {
 			ev.setCanceled(true);
 			ev.setResult(Result.DENY);
 		}
-
-		//CraftEventFactory.callPlayerInteractEvent((EntityPlayerMP) ev.entityPlayer, act, ev.entityPlayer.inventory.getCurrentItem());
-
 	}
 
 	@ForgeSubscribe(receiveCanceled = true)
@@ -448,19 +415,15 @@ public class ForgeEventHandler {
 		if (!ready || isClient)
 			return;
 
-        // Chunk event eventually turns into exception due to bad bukkit chunk code
-
-        //org.bukkit.event.world.ChunkLoadEvent c = new org.bukkit.event.world.ChunkLoadEvent(new CraftChunk(ev.getChunk()), false);
-        //Bukkit.getPluginManager().callEvent(c);
-		
+        BukkitEventRouters.World.ChunkLoad.callEvent( false, ToBukkitEvent.ChunkLoad(ev) );
 	}
 
 	@ForgeSubscribe(receiveCanceled = true)
 	public void chunkUnloadEvent(ChunkEvent.Unload ev) {
 		if (!ready || isClient)
 			return;
-		org.bukkit.event.world.ChunkUnloadEvent c = new org.bukkit.event.world.ChunkUnloadEvent(new CraftChunk(ev.getChunk()));
-		Bukkit.getPluginManager().callEvent(c);
+
+        BukkitEventRouters.World.ChunkUnload.callEvent(false, ToBukkitEvent.ChunkUnload(ev));
 	}
 
 	@ForgeSubscribe(receiveCanceled = true)

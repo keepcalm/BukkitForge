@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldType;
@@ -15,6 +16,7 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -49,7 +51,7 @@ public class ToBukkit {
         return CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ep);
     }
 
-    public static org.bukkit.entity.Player player( Entity ep )
+    public static org.bukkit.entity.Player player( net.minecraft.entity.Entity ep )
     {
         if (ep instanceof EntityPlayerMP)
             return CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ep);
@@ -153,4 +155,7 @@ public class ToBukkit {
     }
 
 
+    public static CraftItemStack itemStack(ItemStack currentItem) {
+        return new CraftItemStack(currentItem);
+    }
 }

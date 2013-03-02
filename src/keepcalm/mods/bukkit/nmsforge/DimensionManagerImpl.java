@@ -100,6 +100,11 @@ public class DimensionManagerImpl {
         bukkitDims.put(id, creator);
     }
 
+    public boolean isCraftWorld(int id)
+    {
+        return bukkitDims.containsKey(id);
+    }
+
     public void unregisterDimension(int id)
     {
         if (!dimensions.containsKey(Integer.valueOf(id)))
