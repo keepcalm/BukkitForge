@@ -71,7 +71,9 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.conversations.Conversable;
 import org.bukkit.craftbukkit.command.CraftCommandMap;
+import org.bukkit.craftbukkit.command.CraftSimpleCommandMap;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.help.CommandHelpTopic;
 import org.bukkit.craftbukkit.help.SimpleHelpMap;
@@ -147,6 +149,7 @@ public class CraftServer implements Server {
 	private int monsterSpawn;
 	private int animalSpawn;
 	private int waterAnimalSpawn;
+    private final CraftSimpleCommandMap craftCommandMap = new CraftSimpleCommandMap(this);
 
 	private WarningState warningState;
 	private EntityMetadataStore entityMetadata;
@@ -599,6 +602,34 @@ public class CraftServer implements Server {
 		return worlds.get(dimension);
 	}
 
+    public boolean dispatchServerCommand(CommandSender sender, net.minecraft.command.ServerCommand/*was:ServerCommand*/ serverCommand) {
+        if (sender instanceof Conversable) {
+            Conversable conversable = (Conversable)sender;
+
+            if (conversable.isConversing()) {
+                conversable.acceptConversationInput(serverCommand.command/*was:command*/);
+                return true;
+            }
+        }
+        try {
+            // MCPC+ start - handle bukkit/vanilla console commands
+            int space = serverCommand.command.indexOf(" ");
+            // if bukkit command exists then execute it over vanilla
+            if (this.getCommandMap().getCommand(serverCommand.command.substring(0, space != -1 ? space : serverCommand.command.length())) != null)
+            {
+                return this.dispatchCommand(sender, serverCommand.command);
+            }
+            else { // process vanilla console command
+                craftCommandMap.setVanillaConsoleSender(serverCommand.sender);
+                return this.dispatchVanillaCommand(sender, serverCommand.command);
+            }
+            // MCPC+ end
+        } catch (Exception ex) {
+            getLogger().log(Level.WARNING, "Unexpected exception while parsing console command \"" + serverCommand.command/*was:command*/ + '"', ex);
+            return false;
+        }
+    }
+
 	@Override
 	public boolean unloadWorld(String name, boolean save) {
 		return unloadWorld(getWorld(name), save);
@@ -625,6 +656,16 @@ public class CraftServer implements Server {
 	public World getWorld(int dimID) {
 		return worlds.get(dimID);
 	}
+
+    public boolean dispatchVanillaCommand(CommandSender sender, String commandLine) {
+        if (craftCommandMap.dispatch(sender, commandLine)) {
+            return true;
+        }
+
+        sender.sendMessage("Unknown command. Type \"help\" for help.");
+
+        return false;
+    }
 
 	@Override
 	public World getWorld(UUID uid) {

@@ -5,7 +5,6 @@
 	<property name="build.dir" value="build" />
 
     <property name="classes.dir" value="${build.dir}/packaging/coremod" />
-    <property name="classes-plugin.dir" value="${build.dir}/packaging/testplugin" />
 
 	<property name="src.dir" value="src" />
 
@@ -80,12 +79,10 @@
 			<attribute name="BuildNumber" value="${build.number}" />
 		</manifest>
 		<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="MANIFEST.MF"/>
-        <jar destfile="${dist.dir}/BukkitForgeTestPlugin.jar" basedir="${classes-plugin.dir}" manifest="MANIFEST.MF"/>
 		<copy file="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" toFile="${dist.dir}/BukkitForge-latest.jar" />
 
 
 		<delete dir="${classes.dir}" />
-        <delete dir="${classes-plugin.dir}" />
 		<echo file="${dist.dir}/LATEST_BUILD" message="${build.ver}-${build.number}" />
 	</target>
 
@@ -96,7 +93,6 @@
         <delete dir="${mcpsrc.dir}/org" />
         <delete dir="${mcpsrc.dir}/javax" />
 		<delete dir="${mcpsrc.dir}/com" />
-        <delete dir="${mcpsrc.dir}/tst" />
 		<!-- Copy source -->
 		<!--<mkdir dir="${mcpsrc.dir}/net" />
 				<copy todir="${mcpsrc.dir}/net">
@@ -105,7 +101,6 @@
 		<mkdir dir="${mcpsrc.dir}/keepcalm" />
 		<mkdir dir="${mcpsrc.dir}/keepcalm/mods" />
 		<mkdir dir="${mcpsrc.dir}/com" />
-        <mkdir dir="${mcpsrc.dir}/tst" />
         <copy todir="${mcpsrc.dir}/com">
             <fileset dir="${src.dir}/com"/>
         </copy>
@@ -143,13 +138,6 @@
 		<copy todir="${classes.dir}">
             <fileset dir="${mcp.dir}/reobf/minecraft" />
 		</copy>
-
-        <delete dir="${classes.dir}/tst" />
-
-        <copy todir="${classes-plugin.dir}/tst">
-            <fileset dir="${mcp.dir}/reobf/minecraft/tst" />
-        </copy>
-
     
 	</target>
 
