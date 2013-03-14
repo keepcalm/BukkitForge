@@ -16,6 +16,7 @@ import keepcalm.mods.events.forgeex.PlayerUseItemEvent;
 import keepcalm.mods.events.forgeex.PressurePlateInteractEvent;
 import keepcalm.mods.events.forgeex.SheepDyeEvent;
 import keepcalm.mods.events.forgeex.SignChangeEvent;
+import keepcalm.mods.util.MethodCallerRetriever;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.EnumMobType;
@@ -235,7 +236,7 @@ public class ForgeEventHelper {
 	
 	/**
 	 * 
-	 * @param block
+	 * @param world
 	 * @param itemToDispense
 	 * @param x
 	 * @param y
@@ -278,31 +279,31 @@ public class ForgeEventHelper {
 			boolean foundIIWM = false;
 			int a = 0;
 			//System.out.println("StackTrace count: " + ex.getStackTrace().length);
-			for (StackTraceElement i : stackElems) {
+			//for (StackTraceElement i : stackElems) {
 				/*if (a == 1) {
 					a++;
 					continue;
 				} */
 				//System.out.println("Class found: " + i.getClassName());
-				if (i.getClassName().toLowerCase().contains("iteminworldmanager") || i.getClassName().toLowerCase().equals("ir")) {
+                String className = MethodCallerRetriever.instance().getCallerClassName(3).toLowerCase();
+
+				if (className.contains("iteminworldmanager") || className.equals("ir")) {
+					foundIIWM = true;
+				}
+                if (className.contains("blockflowing") || className.equals("aky")) {
+//				if (i.getMethodName().toLowerCase().contains("updateflow")) {
+					foundIIWM = true;
+				}
+				/*if (i.getMethodName().toLowerCase().contains("l") && i.getClassName().toLowerCase().equals("aky")) {
 					foundIIWM = true;
 					break;
-				}
-				if (i.getMethodName().toLowerCase().contains("updateflow")) {
-					foundIIWM = true;
-					break;
-				}
-				if (i.getMethodName().toLowerCase().contains("l") && i.getClassName().toLowerCase().equals("aky")) {
-					foundIIWM = true;
-					break;
-				}
+				} */
 				// it was us cancelling - or us doing something else
-				if (i.getClassName().contains("keepcalm.mods.bukkit") || i.getClassName().contains("keepcalm.mods")) {
+				if (className.contains("keepcalm.mods.bukkit") || className.contains("keepcalm.mods")) {
 					foundIIWM = true;
-					break;
 				}
 				//a++;
-			}
+			//}
 			
 			if (foundIIWM) {// block break got this, or it's something else
 				//System.out.println("Cancelled.");
