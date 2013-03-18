@@ -123,14 +123,10 @@ public class ToBukkit {
             dc = EntityDamageEvent.DamageCause.CONTACT;
         else if (ds == DamageSource.drown)
             dc = EntityDamageEvent.DamageCause.DROWNING;
-        else if (ds == DamageSource.explosion)
-            dc = EntityDamageEvent.DamageCause.BLOCK_EXPLOSION;
         else if (ds == DamageSource.fall)
             dc = EntityDamageEvent.DamageCause.FALL;
         else if (ds == DamageSource.fallingBlock)
             dc = EntityDamageEvent.DamageCause.FALL;
-        else if (ds == DamageSource.explosion2)
-            dc = EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;
         else if (ds == DamageSource.generic)
             dc = EntityDamageEvent.DamageCause.CUSTOM;
         else if (ds == DamageSource.inFire)

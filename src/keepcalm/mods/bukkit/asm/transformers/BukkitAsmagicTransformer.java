@@ -57,7 +57,7 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
     }
 
     @Override
-    public byte[] transform(String s, byte[] bytes) {
+    public byte[] transform(String s, String transformedName, byte[] bytes) {
 
         if( s.contains("Asmagic") ) return bytes;
 

@@ -19,7 +19,7 @@ import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
  */
 public class BukkitForgeWorldServer extends WorldServer {
     public BukkitForgeWorldServer(MinecraftServer par1MinecraftServer, ISaveHandler par2ISaveHandler, String par3Str, int par4, Profiler par6Profiler, WorldCreator creator, WorldServer baseWorld) {
-        super(par1MinecraftServer, par2ISaveHandler, par3Str, par4, new WorldSettings(baseWorld.getWorldInfo()), par6Profiler);
+        super(par1MinecraftServer, par2ISaveHandler, par3Str, par4, new WorldSettings(baseWorld.getWorldInfo()), par6Profiler, null);
 
         super.chunkProvider = new CustomChunkGenerator( this, creator.seed(), creator.generator() );
 

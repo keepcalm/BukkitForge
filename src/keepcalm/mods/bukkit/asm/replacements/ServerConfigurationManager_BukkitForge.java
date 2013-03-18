@@ -67,7 +67,7 @@ public class ServerConfigurationManager_BukkitForge {
             par2 = world.provider.getRespawnDimension(par1EntityPlayerMP);
         }
 
-        par1EntityPlayerMP.getServerForPlayer().getEntityTracker().removeAllTrackingPlayers(par1EntityPlayerMP);
+        par1EntityPlayerMP.getServerForPlayer().getEntityTracker().removePlayerFromTrackers(par1EntityPlayerMP);
         par1EntityPlayerMP.getServerForPlayer().getEntityTracker().removeEntityFromAllTrackingPlayers(par1EntityPlayerMP);
         par1EntityPlayerMP.getServerForPlayer().getPlayerManager().removePlayer(par1EntityPlayerMP);
         b.remove(par1EntityPlayerMP);

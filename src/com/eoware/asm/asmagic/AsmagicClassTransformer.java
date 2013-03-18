@@ -57,12 +57,12 @@ public class AsmagicClassTransformer {
                     if( fnOrig != null )
                     {
                         cnOrig.fields.remove(fnOrig);
-                        cnOrig.fields.add(cnOrig.fields.size(), scrubField(cnOrig, cnRepl, fnRepl));
+                        cnOrig.fields.add(cnOrig.fields.size(), (FieldNode) scrubField(cnOrig, cnRepl, fnRepl));
                     }
                 }
                 else if (hasAddAnnotation( fnRepl.visibleAnnotations))
                 {
-                    cnOrig.fields.add(cnOrig.fields.size(), scrubField(cnOrig, cnRepl, fnRepl));
+                    cnOrig.fields.add(cnOrig.fields.size(), (FieldNode) scrubField(cnOrig, cnRepl, fnRepl));
                 }
             }
 

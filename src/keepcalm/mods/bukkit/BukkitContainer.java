@@ -123,7 +123,6 @@ public class BukkitContainer {
 			isDediServer = true;
 			if (MinecraftServer.getServer() != null && MinecraftServer.getServer().getGuiEnabled()) {
 				isGuiEnabled = true;
-				ServerGUI.logger.severe("BukkitForge plugins may misbehave when using the gui! Run the server with 'nogui'!");
 			}
 		}
 		else

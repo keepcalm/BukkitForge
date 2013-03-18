@@ -2,10 +2,12 @@ package org.bukkit.craftbukkit;
 
 import java.io.File;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import keepcalm.mods.bukkit.BukkitContainer;
 import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
+
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.management.BanEntry;
@@ -19,6 +21,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 @SerializableAs("Player")
 public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializable {
@@ -26,7 +29,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
     private final CraftServer server;
     private final AnvilSaveHandler storage;
 
-    public CraftOfflinePlayer(CraftServer server, String name) {
+    protected CraftOfflinePlayer(CraftServer server, String name) {
         this.server = server;
         this.name = name;
         this.storage = (AnvilSaveHandler) server.getHandle().getConfigurationManager().playerNBTManagerObj;
@@ -104,10 +107,10 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
 
     public Player getPlayer() {
         for (Object obj : server.getHandle().getConfigurationManager().playerEntityList) {
-            EntityPlayerMP player = (EntityPlayerMP) obj;
+        	EntityPlayerMP  player = (EntityPlayerMP) obj;
             if (player.username.equalsIgnoreCase(getName())) {
             	return BukkitForgePlayerCache.getCraftPlayer(player);
-                //return (Player) ((player.playerNetServerHandler != null) ? CraftEntity.getEntity(server, player) : null);
+                //return (player.playerConnection != null) ? player.playerConnection.getPlayer() : null;
             }
         }
 
@@ -137,11 +140,10 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
     }
 
     private NBTTagCompound getData() {
-    	return storage.getPlayerData(name);
-    	
+        return storage.getPlayerData(getName());
     }
 
-    private NBTTagCompound getCraftData() {
+    private NBTTagCompound getBukkitData() {
         NBTTagCompound result = getData();
 
         if (result != null) {
@@ -155,14 +157,14 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
     }
 
     private File getDataFile() {
-        return new File(storage.getSaveDirectoryName() + (storage.getSaveDirectoryName().endsWith("/") ? "" : "/") + "players", name + ".dat");
+        return new File(storage.getSaveDirectory(), name + ".dat");
     }
 
     public long getFirstPlayed() {
         Player player = getPlayer();
         if (player != null) return player.getFirstPlayed();
 
-        NBTTagCompound data = getCraftData();
+        NBTTagCompound data = getBukkitData();
 
         if (data != null) {
             if (data.hasKey("firstPlayed")) {
@@ -180,7 +182,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
         Player player = getPlayer();
         if (player != null) return player.getLastPlayed();
 
-        NBTTagCompound data = getCraftData();
+        NBTTagCompound data = getBukkitData();
 
         if (data != null) {
             if (data.hasKey("lastPlayed")) {
@@ -195,8 +197,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
     }
 
     public boolean hasPlayedBefore() {
-    	//System.out.println("Has " + name + " played before? " + BukkitContainer.users.containsKey(name));
-        return BukkitContainer.users.containsKey(name);// != null;
+        return getData() != null;
     }
 
     public Location getBedSpawnLocation() {
@@ -215,5 +216,17 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
 
     public void setMetadata(String metadataKey, MetadataValue metadataValue) {
         server.getPlayerMetadata().setMetadata(this, metadataKey, metadataValue);
+    }
+
+    public List<MetadataValue> getMetadata(String metadataKey) {
+        return server.getPlayerMetadata().getMetadata(this, metadataKey);
+    }
+
+    public boolean hasMetadata(String metadataKey) {
+        return server.getPlayerMetadata().hasMetadata(this, metadataKey);
+    }
+
+    public void removeMetadata(String metadataKey, Plugin plugin) {
+        server.getPlayerMetadata().removeMetadata(this, metadataKey, plugin);
     }
 }

@@ -721,7 +721,7 @@ public class CraftServer implements Server {
 		//
 
 		if (theServer instanceof DedicatedServer) {
-			PropertyManager config = new PropertyManager(theServer.getFile("server.properties"));
+			PropertyManager config = new PropertyManager(theServer.getFile("server.properties"), null);
 			((DedicatedServer) theServer).settings = config;
 		}
 		

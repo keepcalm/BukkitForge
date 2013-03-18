@@ -9,9 +9,10 @@ import java.util.*;
 public class CommandHandler_BukkitForge implements ICommandManager {
 
         @AsmagicReplaceMethod(obfuscatedName = "")
-        public void executeCommand(ICommandSender par1ICommandSender, String par2Str)
+        public int executeCommand(ICommandSender par1ICommandSender, String par2Str)
         {
             CommandHandlerImpl.getInstance().executeCommand(par1ICommandSender,  par2Str);
+			return CommandHandlerImpl.getInstance().executeCommand(par1ICommandSender,  par2Str);
         }
 
         /**
