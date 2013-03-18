@@ -274,62 +274,34 @@ public class ForgeEventHelper {
 		catch (RuntimeException ex) {*/
         else
         {
-            StackTraceElement[] stackElems = new Exception().getStackTrace();
+            boolean foundIIWM = false;
+            int a = 0;
 
-			boolean foundIIWM = false;
-			int a = 0;
-			//System.out.println("StackTrace count: " + ex.getStackTrace().length);
-			//for (StackTraceElement i : stackElems) {
-				/*if (a == 1) {
-					a++;
-					continue;
-				} */
-				//System.out.println("Class found: " + i.getClassName());
-                String className = MethodCallerRetriever.instance().getCallerClassName(3).toLowerCase();
+            String className = MethodCallerRetriever.instance().getCallerClassName(3).toLowerCase();
 
-				if (className.contains("iteminworldmanager") || className.equals("ir")) {
-					foundIIWM = true;
-				}
-                if (className.contains("blockflowing") || className.equals("aky")) {
-//				if (i.getMethodName().toLowerCase().contains("updateflow")) {
-					foundIIWM = true;
-				}
-				/*if (i.getMethodName().toLowerCase().contains("l") && i.getClassName().toLowerCase().equals("aky")) {
-					foundIIWM = true;
-					break;
-				} */
-				// it was us cancelling - or us doing something else
-				if (className.contains("keepcalm.mods.bukkit") || className.contains("keepcalm.mods")) {
-					foundIIWM = true;
-				}
-				//a++;
-			//}
-			
-			if (foundIIWM) {// block break got this, or it's something else
-				//System.out.println("Cancelled.");
-				return;
-			}
-			if (id == 0) // no point - air got broken
-				return;
-			//System.out.println("This is a break!");
-			//Runnable run = new Runnable() {
-				
-				//@Override
-				//public void run() {
-				//	try {
-				//		Thread.sleep(50);
-				//	} catch (InterruptedException e) {}
-			BlockDestroyEvent ev = new BlockDestroyEvent(world, x, y, z, id, data);
-			MinecraftForge.EVENT_BUS.post(ev);
-					
-			if (ev.isCanceled()) {
-				world.setBlockAndMetadata(x, y, z, id, data);
-			}
-		//		}
-				
-		//	};
-		//	Thread thr = new Thread(run);
-		//	thr.start();
+            if (className.contains("iteminworldmanager") || className.equals("ir")) {
+                foundIIWM = true;
+            }
+            if (className.contains("blockflowing") || className.equals("aky")) {
+                foundIIWM = true;
+            }
+
+            if (className.contains("keepcalm.mods.bukkit") || className.contains("keepcalm.mods")) {
+                foundIIWM = true;
+            }
+
+            if (foundIIWM) {
+                return;
+            }
+            if (id == 0) // no point - air got broken
+                return;
+
+            BlockDestroyEvent ev = new BlockDestroyEvent(world, x, y, z, id, data);
+            MinecraftForge.EVENT_BUS.post(ev);
+
+            if (ev.isCanceled()) {
+                world.setBlockAndMetadata(x, y, z, id, data);
+            }
 		}
 	}
 	
