@@ -53,7 +53,7 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
     {
         classes = createClassesToTransform();
         //repl.put( "iv", "keepcalm/mods/bukkit/CraftNetServerHandler" );
-        act = new AsmagicClassTransformer(classes, repl);
+        act = new AsmagicClassTransformer(classes, new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Override
@@ -63,8 +63,13 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
 
         if( !classes.containsKey(s) ) return bytes;
 
-        System.out.println( "Transforming " + s + " using " + classes.get(s));
+        System.out.println( "Transforming " + s + " using " + classes.get(s) + " !test!");
         byte[] newClass = act.transform(s, bytes);
+
+        if( bytes.length == newClass.length )
+        {
+            System.out.println( "Transforming " + s + " using " + classes.get(s) + " -- Size unchanged, likely not changed" );
+        }
 
         return newClass;
     }

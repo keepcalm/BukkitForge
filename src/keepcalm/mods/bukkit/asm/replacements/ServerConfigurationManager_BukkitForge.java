@@ -118,6 +118,8 @@ public class ServerConfigurationManager_BukkitForge {
         int envId = var8.provider.isSurfaceWorld()?-1:0;
         int dimensionId = DimensionManagerImpl.getInstance().isCraftWorld(par2)?1:par2;
 
+        System.out.println( "Teleporting -- envId sent: " + envId + " -- dimId sent: " + dimensionId );
+
         var7.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(envId, (byte)var7.worldObj.difficultySetting, var7.worldObj.getWorldInfo().getTerrainType(), var7.worldObj.getHeight(), var7.theItemInWorldManager.getGameType()));
         var7.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(dimensionId, (byte)var7.worldObj.difficultySetting, var7.worldObj.getWorldInfo().getTerrainType(), var7.worldObj.getHeight(), var7.theItemInWorldManager.getGameType()));
         ChunkCoordinates var9 = var8.getSpawnPoint();

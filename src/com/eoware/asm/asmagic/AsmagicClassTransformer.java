@@ -11,15 +11,16 @@ import java.util.*;
 
 public class AsmagicClassTransformer {
 
-    public AsmagicClassTransformer(HashMap<String,String> classesToTransform, HashMap<String,String> repl)
+    public AsmagicClassTransformer(HashMap<String,String> classesToTransform, HashMap<String,String> fieldRepl, HashMap<String,String> MethodRepl)
     {
         c2t = classesToTransform;
-
-        rep = repl;
+        fr = fieldRepl;
+        mr = MethodRepl;
     }
 
     HashMap<String,String> c2t = null;
-    HashMap<String,String> rep = null;
+    HashMap<String,String> fr = null;
+    HashMap<String,String> mr = null;
 
     public byte[] transform(String s, byte[] bytes) {
         String nameToMatch = s.replace('/', '.');
@@ -95,11 +96,19 @@ public class AsmagicClassTransformer {
     }
 
     protected FieldNode findField(List fields, FieldNode fnRepl) {
+
+        String find = fnRepl.name;
+
+        if( fr.containsKey(fnRepl.name) )
+        {
+            find = fr.get(fnRepl.name);
+        }
+
         for( Object ofn : fields )
         {
             FieldNode fn = (FieldNode)ofn;
 
-            if( fn.name.equals( fnRepl.name ) &&
+            if( fn.name.equals( find ) &&
                     fn.desc.equals( fnRepl.desc ) )
             {
                 return fn;
@@ -113,11 +122,22 @@ public class AsmagicClassTransformer {
         {
             fnRepl.desc = fnRepl.desc.replace(cnRepl.name, cnOrig.name);
         }
+
+        if( fr.containsKey(fnRepl.name) )
+        {
+            fnRepl.name = fr.get(fnRepl.name);
+        }
+
         return fnRepl;
     }
 
     protected MethodNode scrubMethod( ClassNode orig, ClassNode repl, MethodNode mn)
     {
+        if( mr.containsKey(mn.name))
+        {
+            mn.name = mr.get(mn.name);
+        }
+
         for( Object oinsn : mn.instructions.toArray() )
         {
             if( oinsn instanceof FieldInsnNode )
@@ -125,6 +145,11 @@ public class AsmagicClassTransformer {
                 if( ((FieldInsnNode)oinsn).owner.equals(repl.name))
                 {
                     ((FieldInsnNode)oinsn).owner = orig.name;
+                }
+
+                if( fr.containsKey(((FieldInsnNode)oinsn).name) )
+                {
+                    ((FieldInsnNode)oinsn).name = fr.get(((FieldInsnNode)oinsn).name);
                 }
             }
 
@@ -134,6 +159,11 @@ public class AsmagicClassTransformer {
                 {
                     ((MethodInsnNode)oinsn).owner = orig.name;
                 }
+
+                if( mr.containsKey(((MethodInsnNode)oinsn).name))
+                {
+                    ((MethodInsnNode)oinsn).name = mr.get(((MethodInsnNode)oinsn).name);
+                }
             }
         }
 
@@ -141,11 +171,19 @@ public class AsmagicClassTransformer {
     }
 
     private MethodNode findMethod(List methods, MethodNode mnRepl) {
+
+        String find = mnRepl.name;
+
+        if( mr.containsKey(mnRepl.name))
+        {
+            find = mr.get(mnRepl.name);
+        }
+
         for( Object omn : methods )
         {
             MethodNode mn = (MethodNode)omn;
 
-            if( mn.name.equals( mnRepl.name ) &&
+            if( mn.name.equals( find ) &&
                 mn.desc.equals( mnRepl.desc ) )
             {
                 return mn;
