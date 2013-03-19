@@ -712,7 +712,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 		net.minecraft.entity.EntityTracker/*was:EntityTracker*/ tracker = ((net.minecraft.world.WorldServer/*was:WorldServer*/) entity.worldObj/*was:world*/).getEntityTracker();
 		net.minecraft.entity.player.EntityPlayerMP/*was:EntityPlayer*/ other = ((CraftPlayer) player).getHandle();
 		EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntityIDs.lookup(other.entityId);
-	        if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
+	        if (entry != null && !entry.trackingPlayers.contains(getHandle())) {
             		entry.tryStartWachingThis(getHandle());
         	}
 		

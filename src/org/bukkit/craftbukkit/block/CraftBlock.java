@@ -75,14 +75,14 @@ public class CraftBlock implements Block {
 	}
 
 	public void setData(final byte data) {
-		chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data);
+		chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data, 3);
 	}
 
 	public void setData(final byte data, boolean applyPhysics) {
 		if (applyPhysics) {
-			chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data);
+			chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data, 3);
 		} else {
-			chunk.getHandle().worldObj.setBlockMetadata(x, y, z, data);
+			chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data, 4);
 		}
 	}
 
@@ -95,14 +95,14 @@ public class CraftBlock implements Block {
 	}
 
 	public boolean setTypeId(final int type) {
-		return chunk.getHandle().worldObj.setBlockWithNotify(x, y, z, type);
+		return chunk.getHandle().worldObj.setBlockAndMetadataWithNotify(x, y, z, type, getData(), 3);
 	}
 
 	public boolean setTypeId(final int type, final boolean applyPhysics) {
 		if (applyPhysics) {
 			return setTypeId(type);
 		} else {
-			return chunk.getHandle().worldObj.setBlock(x, y, z, type);
+			return chunk.getHandle().worldObj.setBlockAndMetadataWithNotify(x, y, z, type, getData(), 4);
 		}
 	}
 
@@ -111,9 +111,9 @@ public class CraftBlock implements Block {
 			return false;
 		}
 		if (applyPhysics) {
-			return chunk.getHandle().worldObj.setBlockAndMetadataWithNotify(x, y, z, type, data);
+			return chunk.getHandle().worldObj.setBlockAndMetadataWithNotify(x, y, z, type, data, 3);
 		} else {
-			boolean success = chunk.getHandle().worldObj.setBlockAndMetadata(x, y, z, type, data);
+			boolean success = chunk.getHandle().worldObj.setBlockAndMetadataWithNotify(x, y, z, type, data, 4);
 			if (success) {
 				chunk.getHandle().worldObj.notifyBlockChange(x, y, z, type);
 			}
@@ -290,7 +290,7 @@ public class CraftBlock implements Block {
 	}
 
 	public boolean isBlockPowered() {
-		return chunk.getHandle().worldObj.isBlockGettingPowered(x, y, z);
+		return chunk.getHandle().worldObj.func_94577_B(x, y, z) > 0;
 	}
 
 	public boolean isBlockIndirectlyPowered() {

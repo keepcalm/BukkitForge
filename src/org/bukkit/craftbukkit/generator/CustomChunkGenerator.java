@@ -288,7 +288,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
 	}
 
 	@Override
-	public boolean unload100OldestChunks() {
+	public boolean unloadQueuedChunks() {
 		return this.unloadChunks();
 	}
 
@@ -307,8 +307,5 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
 		this.scatteredGen.generate(this, this.world, arg0, arg1, (byte[])null);
 		this.villageGen.generate(this, this.world, arg0, arg1, (byte[])null);
 	}
-
-
-
 	
 }
