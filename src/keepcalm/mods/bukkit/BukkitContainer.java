@@ -172,15 +172,15 @@ public class BukkitContainer {
 		
 		Property build = config.get(Configuration.CATEGORY_GENERAL, "bukkitVersionString", "git-Bukkit-1.4.5-R1.0-b3000jnks (Really: BukkitForge for MC " + Loader.instance().getMinecraftModContainer().getDisplayVersion() + ")");
 		build.comment = "The CraftBukkit version to pretend to be";
-		BukkitContainer.CRAFT_VERSION = build.value;
+		BukkitContainer.CRAFT_VERSION = build.getString();
 		
 		Property plugins = config.get(Configuration.CATEGORY_GENERAL, "pluginsToLoad", "");
 		plugins.comment = "Comma-separated list of plugins which are in the classpath to load. Only developers need use this option.";
-		BukkitContainer.pluginsInPath = plugins.value.isEmpty() ? new String[] {} : plugins.value.split(",");
+		BukkitContainer.pluginsInPath = plugins.getString().isEmpty() ? new String[] {} : plugins.getString().split(",");
 		
 		Property kickMsg = config.get(Configuration.CATEGORY_GENERAL, "kickMessage", "Patience, my padawan! BukkitForge is still loading.\nTry again in a few moments...");
 		kickMsg.comment = "Message to kick players with if they try to join before BukkitForge is loaded. \n makes a new line";
-		BukkitContainer.LOADING_KICK_MESSAGE = kickMsg.value;
+		BukkitContainer.LOADING_KICK_MESSAGE = kickMsg.getString();
 		
 		Property debug = config.get("consoleConfig", "debug", false);
 		debug.comment = "Print debug messages";
@@ -192,16 +192,16 @@ public class BukkitContainer {
 
 		Property pluginDir = config.get(Configuration.CATEGORY_GENERAL, "pluginDir", "plugins");
 		pluginDir.comment = "The folder to look for plugins in.";
-		this.pluginFolder = pluginDir.value;
+		this.pluginFolder = pluginDir.getString();
 
 		Property suuid = config.get("dontTouchThis", "serverUUID", this.genUUID());
-		bukkitLogger.info("Set UUID to " + suuid.value);
+		bukkitLogger.info("Set UUID to " + suuid.getString());
 		suuid.comment = "The UUID of the server. Don't touch this or it might break your plugins.";
-		BukkitContainer.serverUUID = suuid.value;
+		BukkitContainer.serverUUID = suuid.getString();
 		
 		Property modActionName = config.get(Configuration.CATEGORY_GENERAL, "modActionUserName", "[Mod]");
 		modActionName.comment = "The name of the player to use when passing events from mods (such as block breaks) to plugins";
-		BukkitContainer.MOD_USERNAME = modActionName.value;
+		BukkitContainer.MOD_USERNAME = modActionName.getString();
 		
 		config.addCustomCategoryComment("updatechecking", "Update-related stuff");
 		
