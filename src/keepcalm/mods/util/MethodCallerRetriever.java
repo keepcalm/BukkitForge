@@ -18,8 +18,6 @@ public class MethodCallerRetriever {
             if( instance == null ) {
             try {
                 Class.forName("sun.reflect.Reflection");
-
-                instance = new ReflectionMethod();
             }
             catch (ClassNotFoundException exception) {
                 instance = new SecurityManagerMethod();
