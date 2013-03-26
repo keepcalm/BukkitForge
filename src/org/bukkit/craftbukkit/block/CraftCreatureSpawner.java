@@ -31,7 +31,7 @@ public class CraftCreatureSpawner extends CraftBlockState implements CreatureSpa
 
     @Deprecated
     public void setCreatureType(CreatureType creatureType) {
-        spawner.func_98049_a().func_98272_a(creatureType.getName());
+        spawner.func_98049_a().setMobID(creatureType.getName());
     }
 
     public void setSpawnedType(EntityType entityType) {
@@ -39,7 +39,7 @@ public class CraftCreatureSpawner extends CraftBlockState implements CreatureSpa
             throw new IllegalArgumentException("Can't spawn EntityType " + entityType + " from mobspawners!");
         }
 
-        spawner.func_98049_a().func_98272_a(entityType.getName());
+        spawner.func_98049_a().setMobID(entityType.getName());
     }
 
     @Deprecated
