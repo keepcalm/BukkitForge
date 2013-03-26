@@ -12,14 +12,14 @@
 	<property name="forge.version" value="1.5.1-7.7.0.608" />
 
 	<property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
-	<property name="mcp.version" value="742" />
+	<property name="mcp.version" value="744" />
 	<property name="forge.dir" value="${build.dir}/forge" />
 	<property name="mcp.dir" value="${forge.dir}/mcp" />
 	<property name="mcpsrc.dir" value="${mcp.dir}/src/minecraft" />
 	<property name="package.meta-inf" value="META-INF" />
 	<property name="package.at" value="bukkit_at.cfg" />
 	<property name="package.configs" value="${src.dir}/configurations" />
-	<property name="build.ver" value="1.5" />
+	<property name="build.ver" value="1.5.1" />
 	<property name="package.srgs" value="porting" />
 	<!--<property name="files.minecraft.dir" value="jars" />-->
 	<property name="dist.dir" value="${build.dir}/dist" />
@@ -101,13 +101,14 @@
 		<mkdir dir="${mcpsrc.dir}/keepcalm" />
 		<mkdir dir="${mcpsrc.dir}/keepcalm/mods" />
 		<mkdir dir="${mcpsrc.dir}/com" />
+		<mkdir dir="${mcpsrc.dir}/javax" />
         <copy todir="${mcpsrc.dir}/com">
             <fileset dir="${src.dir}/com"/>
         </copy>
 		<copy todir="${mcpsrc.dir}/keepcalm">
 			<fileset dir="${src.dir}/keepcalm"/>
 		</copy>
-		<copy todir="${mcpsrc.dir}">
+		<copy todir="${mcpsrc.dir}/javax">
 			<fileset dir="${src.dir}/javax" />
 		</copy>
 		<copy todir="${mcpsrc.dir}/org">
