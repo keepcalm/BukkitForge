@@ -279,10 +279,10 @@ public class ForgeEventHelper {
 
             String className = MethodCallerRetriever.instance().getCallerClassName(3).toLowerCase();
 
-            if (className.contains("iteminworldmanager") || className.equals("ir")) {
+            if (className.contains("iteminworldmanager") || className.equals("jd")) {
                 foundIIWM = true;
             }
-            if (className.contains("blockflowing") || className.equals("aky")) {
+            if (className.contains("blockflowing") || className.equals("anf")) {
                 foundIIWM = true;
             }
 

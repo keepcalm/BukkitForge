@@ -20,9 +20,9 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
 
         repl = new HashMap<String, String>();
 
-        addClassNameAndAlias(classes, "net.minecraft.common.CommandHandler", "y", CommandHandler_BukkitForge.class);
+        //addClassNameAndAlias(classes, "net.minecraft.command.CommandHandler", "y", CommandHandler_BukkitForge.class);
         addClassNameAndAlias(classes, "net.minecraftforge.common.DimensionManager", null, DimensionManager_BukkitForge.class);
-        addClassNameAndAlias(classes, "net.minecraft.server.management.ServerConfigurationManager", "gu", ServerConfigurationManager_BukkitForge.class);
+        //addClassNameAndAlias(classes, "net.minecraft.server.management.ServerConfigurationManager", "gu", ServerConfigurationManager_BukkitForge.class);
         //addClassNameAndAlias(classes, "cpw.mods.fml.common.network.FMLNetworkHandler", null, FMLNetworkHandler_BukkitForge.class);
         //addClassNameAndAlias(classes, "cpw.mods.fml.common.network.NetworkRegistry", null, NetworkRegistry_BukkitForge.class);
         addClassNameAndAlias(classes, "net.minecraft.network.NetServerHandler", "jh", NetServerHandler_BukkitForge.class);
@@ -52,6 +52,7 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
     public BukkitAsmagicTransformer()
     {
         classes = createClassesToTransform();
+        System.out.println("Got this Far!");
         //repl.put( "iv", "keepcalm/mods/bukkit/CraftNetServerHandler" );
         act = new AsmagicClassTransformer(classes, new HashMap<String, String>(), new HashMap<String, String>());
     }

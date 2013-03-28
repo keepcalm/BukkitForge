@@ -52,9 +52,9 @@ public class BlockBreakEventAdder implements IClassTransformer
          */
         obfStrings = new HashMap();
         /* net.minecraft.src.ItemInWorldManager */
-        obfStrings.put("className", "ir");
+        obfStrings.put("className", "jd");
         /* net/minecraft/src/ItemInWorldManager */
-        obfStrings.put("javaClassName", "ir");
+        obfStrings.put("javaClassName", "jd");
         /* removeBlock */
         obfStrings.put("targetMethodName", "d");
         /* theWorld */
@@ -62,17 +62,17 @@ public class BlockBreakEventAdder implements IClassTransformer
         /* thisPlayerMP */
         obfStrings.put("entityPlayerFieldName", "b");
         /* net/minecraft/src/World */
-        obfStrings.put("worldJavaClassName", "yc");
+        obfStrings.put("worldJavaClassName", "aab");
         /* net/minecraft/src/World.getBlockMetadata() */
         obfStrings.put("getBlockMetadataMethodName", "h");
         /* net/minecraft/src/Block */
-        obfStrings.put("blockJavaClassName", "amq");
+        obfStrings.put("blockJavaClassName", "apa");
         /* net/minecraft/src/Block.blocksList[] */
-        obfStrings.put("blocksListFieldName", "p");
+        obfStrings.put("blocksListFieldName", "r");
         /* net/minecraft/src/EntityPlayer */
-        obfStrings.put("entityPlayerJavaClassName", "qx");
+        obfStrings.put("entityPlayerJavaClassName", "sq");
         /* net/minecraft/src/EntityPlayerMP */
-        obfStrings.put("entityPlayerMPJavaClassName", "iq");
+        obfStrings.put("entityPlayerMPJavaClassName", "jc");
         
         /*
          * create a HashMap to store the MCP names of classes, methods, and fields used in the transformation

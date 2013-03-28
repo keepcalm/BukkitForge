@@ -57,12 +57,12 @@ public class AsmagicClassTransformer {
                     if( fnOrig != null )
                     {
                         cnOrig.fields.remove(fnOrig);
-                        cnOrig.fields.add(cnOrig.fields.size(), (FieldNode) scrubField(cnOrig, cnRepl, fnRepl));
+                        cnOrig.fields.add(cnOrig.fields.size(), scrubField(cnOrig, cnRepl, fnRepl));
                     }
                 }
                 else if (hasAddAnnotation( fnRepl.visibleAnnotations))
                 {
-                    cnOrig.fields.add(cnOrig.fields.size(), (FieldNode) scrubField(cnOrig, cnRepl, fnRepl));
+                    cnOrig.fields.add(cnOrig.fields.size(), scrubField(cnOrig, cnRepl, fnRepl));
                 }
             }
 
@@ -117,7 +117,7 @@ public class AsmagicClassTransformer {
         return null;
     }
 
-    protected Object scrubField(ClassNode cnOrig, ClassNode cnRepl, FieldNode fnRepl) {
+    protected FieldNode scrubField(ClassNode cnOrig, ClassNode cnRepl, FieldNode fnRepl) {
         if( fnRepl.desc.equals( cnRepl.name ) )
         {
             fnRepl.desc = fnRepl.desc.replace(cnRepl.name, cnOrig.name);
