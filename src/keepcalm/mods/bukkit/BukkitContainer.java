@@ -139,7 +139,7 @@ public class BukkitContainer {
 	public void preInit(FMLPreInitializationEvent ev) {
 		bukkitLogger = Logger.getLogger("BukkitForge");
 		try {
-			bukkitLogger.addHandler(new FileHandler("server.log"));
+			bukkitLogger.addHandler(new FileHandler("serverBF.log"));
 		} catch (SecurityException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
@@ -301,7 +301,7 @@ public class BukkitContainer {
 	@Init
 	public void init(FMLInitializationEvent ev) {
 		bukkitLogger.info("Loading!");
-		//ItemInWorldManager.class.desiredAssertionStatus();
+		ItemInWorldManager.class.desiredAssertionStatus();
 		FMLCommonHandler.instance().registerCrashCallable(new BukkitCrashCallable());
 		
 		TickRegistry.registerTickHandler(new SchedulerTickHandler(), Side.SERVER);
