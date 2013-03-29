@@ -14,7 +14,7 @@ public class BukkitHelpers {
 		if (BukkitContainer.DEBUG) {
 			System.out.println("Adding material: " + (256 + unshiftedIndex));
 		}
-		Material.addMaterial(256 + unshiftedIndex);
+		//Material.addMaterial(256 + unshiftedIndex);
 	}
 	
 }
