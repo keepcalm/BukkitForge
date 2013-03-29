@@ -123,7 +123,6 @@ public class BukkitContainer {
 			isDediServer = true;
 			if (MinecraftServer.getServer() != null && MinecraftServer.getServer().getGuiEnabled()) {
 				isGuiEnabled = true;
-				System.out.println("THIS SERVER IS RUNNING BUKKITFORGE " + BF_FULL_VERSION + ". JUST IN CASE SOMEONE ASKS!");
 			}
 		}
 		else
@@ -138,7 +137,6 @@ public class BukkitContainer {
 	}
 	@PreInit
 	public void preInit(FMLPreInitializationEvent ev) {
-		System.out.println("THIS SERVER IS RUNNING BUKKITFORGE " + BF_FULL_VERSION + ". JUST IN CASE SOMEONE ASKS!");
 		bukkitLogger = ev.getModLog();
 		try {
 			bukkitLogger.addHandler(new FileHandler("server.log"));
@@ -303,7 +301,6 @@ public class BukkitContainer {
 	@Init
 	public void init(FMLInitializationEvent ev) {
 		bukkitLogger.info("Loading!");
-		System.out.println("THIS SERVER IS RUNNING BUKKITFORGE " + BF_FULL_VERSION + ". JUST IN CASE SOMEONE ASKS!");
 		//ItemInWorldManager.class.desiredAssertionStatus();
 		FMLCommonHandler.instance().registerCrashCallable(new BukkitCrashCallable());
 		
