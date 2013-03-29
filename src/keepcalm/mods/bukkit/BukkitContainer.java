@@ -137,7 +137,7 @@ public class BukkitContainer {
 	}
 	@PreInit
 	public void preInit(FMLPreInitializationEvent ev) {
-		bukkitLogger = ev.getModLog();
+		bukkitLogger = Logger.getLogger("BukkitForge");
 		try {
 			bukkitLogger.addHandler(new FileHandler("server.log"));
 		} catch (SecurityException e1) {
