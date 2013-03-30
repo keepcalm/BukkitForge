@@ -67,6 +67,8 @@
 					<include name="*.properties" />
 				</patternset>
 			</fileset>
+		</copy>
+		<copy todir="${classes.dir}/mappings" >
 			<fileset dir="${package.dir}/mappings" />
 		</copy>
 		<manifest file="MANIFEST.MF" >
