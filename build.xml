@@ -20,7 +20,7 @@
 	<property name="package.at" value="bukkit_at.cfg" />
 	<property name="package.configs" value="${src.dir}/configurations" />
 	<property name="build.ver" value="1.5.1" />
-	<property name="package.srgs" value="porting" />
+	<property name="package.dir" value="porting" />
 	<!--<property name="files.minecraft.dir" value="jars" />-->
 	<property name="dist.dir" value="${build.dir}/dist" />
 
@@ -67,11 +67,7 @@
 					<include name="*.properties" />
 				</patternset>
 			</fileset>
-			<fileset dir="${package.srgs}">
-				<patternset>
-					<include name="*.csrg" />
-				</patternset>
-			</fileset>
+			<fileset dir="${package.dir}/mappings" />
 		</copy>
 		<manifest file="MANIFEST.MF" >
 			<attribute name="FMLCorePlugin" value="keepcalm.mods.bukkit.asm.BukkitASMLoader" />
@@ -90,9 +86,11 @@
 	 
 	    <!--Deleting sources so that they don't come back to haunt you-->
         <delete dir="${mcpsrc.dir}/keepcalm" />
+		<delete dir="${mcpsrc.dir}/au" />
         <delete dir="${mcpsrc.dir}/org" />
         <delete dir="${mcpsrc.dir}/javax" />
 		<delete dir="${mcpsrc.dir}/com" />
+		<delete dir="${mcpsrc.dir}/net/md_5" />
 		<!-- Copy source -->
 		<!--<mkdir dir="${mcpsrc.dir}/net" />
 				<copy todir="${mcpsrc.dir}/net">
@@ -102,6 +100,8 @@
 		<mkdir dir="${mcpsrc.dir}/keepcalm/mods" />
 		<mkdir dir="${mcpsrc.dir}/com" />
 		<mkdir dir="${mcpsrc.dir}/javax" />
+		<mkdir dir="${mcpsrc.dir}/au" />
+		<mkdir dir="${mcpsrc.dir}/net/md_5" />
         <copy todir="${mcpsrc.dir}/com">
             <fileset dir="${src.dir}/com"/>
         </copy>
@@ -113,6 +113,12 @@
 		</copy>
 		<copy todir="${mcpsrc.dir}/org">
 			<fileset dir="${src.dir}/org" />
+		</copy>
+		<copy todir="${mcpsrc.dir}/au">
+			<fileset dir="${src.dir}/au" />
+		</copy>
+		<copy todir="${mcpsrc.dir}/net/md_5">
+			<fileset dir="${src.dir}/net/md_5" />
 		</copy>
         <copy todir="${mcpsrc.dir}/tst">
             <fileset dir="${src.dir}/tst" />
