@@ -832,16 +832,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 	public void sendPluginMessage(Plugin source, String channel, byte[] message) {
 		StandardMessenger.validatePluginMessage(server.getMessenger(), source, channel, message);
 		if (getHandle().playerNetServerHandler == null) return;
-
 		if (channels.contains(channel)) {
 			Packet250CustomPayload packet = new Packet250CustomPayload();
 			packet.channel = channel;
 			packet.length = message.length;
 			packet.data = message;
-			FMLNetworkHandler.handlePacket250Packet(packet, 
-					getHandle().playerNetServerHandler.netManager, 
-					getHandle().playerNetServerHandler);
-			//getHandle().playerNetServerHandler.sendPacketToPlayer(packet);
+			getHandle().playerNetServerHandler.sendPacketToPlayer(packet);
 		}
 	}
 
