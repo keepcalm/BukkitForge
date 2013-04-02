@@ -27,7 +27,9 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
         //addClassNameAndAlias(classes, "cpw.mods.fml.common.network.NetworkRegistry", null, NetworkRegistry_BukkitForge.class);
         addClassNameAndAlias(classes, "net.minecraft.network.NetServerHandler", "jh", NetServerHandler_BukkitForge.class);
         addClassNameAndAlias(classes, "net.minecraft.entity.EntityTracker", "it", EntityTracker_BukkitForge.class);
-
+        addClassNameAndAlias(classes, "net.minecraft.world.WorldServer", "iz", WorldServer_BukkitForge.class);
+        addClassNameAndAlias(classes, "net.minecraft.world.Explosion", "zw", Explosion_BukkitForge.class);
+        
         return classes;
     }
 
@@ -71,7 +73,6 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
         {
             System.out.println( "Transforming " + s + " using " + classes.get(s) + " -- Size unchanged, likely not changed" );
         }
-
         return newClass;
     }
 
