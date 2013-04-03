@@ -7,11 +7,17 @@ import keepcalm.mods.bukkit.ToBukkit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.CraftChunk;
+import org.bukkit.craftbukkit.block.CraftBlock;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -49,6 +55,20 @@ public class EventFactory {
             blocks.add(coords);
         }
 
+        return event.isCancelled();
+    }
+    
+    public static boolean onPlayerInteract(EntityPlayer who, Action action, ItemStack item, int x, int y, int z, int notchFace)
+    {
+        Player player = ToBukkit.player(who);
+        PlayerInteractEvent event = new PlayerInteractEvent(
+            player,
+            action,
+            ToBukkit.itemStack(item),
+            player.getWorld().getBlockAt(x, y, z),
+            CraftBlock.notchToBlockFace(notchFace)
+        );
+        Bukkit.getServer().getPluginManager().callEvent(event);
         return event.isCancelled();
     }
 }
