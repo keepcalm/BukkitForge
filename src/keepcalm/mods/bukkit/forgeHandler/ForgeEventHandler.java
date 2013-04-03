@@ -280,7 +280,7 @@ public class ForgeEventHandler {
 				}
 
 				final CraftPlayer thePlayer = BukkitForgePlayerCache.getCraftPlayer(forgePlayerMP);
-				final CraftBlock beforeBlock = new CraftBlock(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ);
+				final CraftBlock beforeBlock = new CraftBlock(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(blockX, blockZ)), blockX, blockY, blockZ);
 				WorldServer world = (WorldServer) ev.entity.worldObj;
 				int minX = world.getSpawnPoint().posX;
 				int minY = world.getSpawnPoint().posY;
