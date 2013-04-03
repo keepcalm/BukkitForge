@@ -16,7 +16,7 @@ import net.minecraft.world.WorldServer;
 
 public class WorldServer_BukkitForge 
 {
-    public List playerEntities = new ArrayList();
+    public List h = new ArrayList();
     
     //newExplosion
     @AsmagicReplaceMethod
@@ -45,7 +45,7 @@ public class WorldServer_BukkitForge
             return explosion;
         //BukkitForge end
 
-        Iterator iterator = this.playerEntities.iterator();
+        Iterator iterator = this.h.iterator();
 
         while (iterator.hasNext())
         {
