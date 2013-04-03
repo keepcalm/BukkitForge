@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,6 +37,7 @@ import net.minecraft.server.ConvertingProgressUpdate;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.PropertyManager;
+import net.minecraft.server.gui.GuiLogOutputHandler;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChunkCoordinates;
@@ -157,6 +159,7 @@ public class CraftServer implements Server {
 	private PlayerMetadataStore playerMetadata;
 //	private static String cbBuild;
 	private static Map<String,Boolean> fauxSleeping = new HashMap<String,Boolean>();
+	public boolean shutdown = false;
 
 	public CraftServer(MinecraftServer server) {
 		instance = this;
@@ -1125,7 +1128,8 @@ public class CraftServer implements Server {
 
 	@Override
 	public void shutdown() {
-		
+		if(this.shutdown)
+			return;
 		theLogger.info("Stopping BukkitForge " + BukkitContainer.BF_FULL_VERSION);
 		int pollCount = 0;
 		while (pollCount < 50 && getScheduler().getActiveWorkers().size() > 0) {
@@ -1150,8 +1154,16 @@ public class CraftServer implements Server {
 					));
 		}
 		getPluginManager().disablePlugins();
+		Logger logger = this.theServer.getLogAgent().func_98076_a();
+		Handler[] handlers = logger.getHandlers();
+		for(int h = 0; h < handlers.length; h++)
+		{
+			if(handlers[h] instanceof GuiLogOutputHandler)
+				logger.removeHandler(handlers[h]);
+		}
+		this.theServer.getNetworkThread().stopListening();
 		//theServer.stopServer();
-
+		this.shutdown = true;
 	}
 
 	@Override
