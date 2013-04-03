@@ -29,6 +29,7 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
         addClassNameAndAlias(classes, "net.minecraft.entity.EntityTracker", "it", EntityTracker_BukkitForge.class);
         addClassNameAndAlias(classes, "net.minecraft.world.WorldServer", "iz", WorldServer_BukkitForge.class);
         addClassNameAndAlias(classes, "net.minecraft.world.Explosion", "zw", Explosion_BukkitForge.class);
+        addClassNameAndAlias(classes, "net.minecraft.network.packet.Packet18Animation", "ct", Packet18Animation_BukkitForge.class);
         
         return classes;
     }
