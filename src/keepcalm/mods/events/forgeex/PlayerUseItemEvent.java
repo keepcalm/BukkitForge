@@ -44,7 +44,7 @@ public class PlayerUseItemEvent extends PlayerEvent {
 	
 	@Override
 	public String toString() {
-		return "keepcalm.mods.bukkit.events.PlayerUseItemEvent{stack=" + stack.getItem().getItemName() + ", player=" + player.username + ", world=" + world.getWorldInfo().getDimension() + ", xCoord=" + x + ", yCoord=" + y + ", zCoord=" + z + ", blockface=" + dir.name();
+		return "keepcalm.mods.bukkit.events.PlayerUseItemEvent{stack=" + stack.getItem().getUnlocalizedName() + ", player=" + player.username + ", world=" + world.getWorldInfo().getDimension() + ", xCoord=" + x + ", yCoord=" + y + ", zCoord=" + z + ", blockface=" + dir.name();
 	}
 
 }

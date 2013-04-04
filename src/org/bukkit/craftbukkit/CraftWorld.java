@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 import net.minecraft.entity.EntityHanging;
+import net.minecraft.entity.ai.EntityMinecartMobSpawner;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -22,6 +23,11 @@ import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.item.EntityMinecartChest;
+import net.minecraft.entity.item.EntityMinecartEmpty;
+import net.minecraft.entity.item.EntityMinecartFurnace;
+import net.minecraft.entity.item.EntityMinecartHopper;
+import net.minecraft.entity.item.EntityMinecartTNT;
 import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -171,6 +177,9 @@ import org.bukkit.entity.Wither;
 import org.bukkit.entity.WitherSkull;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
+import org.bukkit.entity.minecart.ExplosiveMinecart;
+import org.bukkit.entity.minecart.HopperMinecart;
+import org.bukkit.entity.minecart.SpawnerMinecart;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.weather.ThunderChangeEvent;
@@ -1009,13 +1018,19 @@ public class CraftWorld implements World {
 				entity.motionZ = direction.getZ();
 			}
 		} else if (Minecart.class.isAssignableFrom(clazz)) {
-			if (PoweredMinecart.class.isAssignableFrom(clazz)) {
-				entity = new EntityMinecart(world, x, y, z, CraftMinecart.Type.PoweredMinecart.getId());
-			} else if (StorageMinecart.class.isAssignableFrom(clazz)) {
-				entity = new EntityMinecart(world, x, y, z, CraftMinecart.Type.StorageMinecart.getId());
-			} else {
-				entity = new EntityMinecart(world, x, y, z, CraftMinecart.Type.Minecart.getId());
-			}
+            if (PoweredMinecart.class.isAssignableFrom(clazz)) {
+                entity = new EntityMinecartFurnace(world, x, y, z);
+            } else if (StorageMinecart.class.isAssignableFrom(clazz)) {
+                entity = new EntityMinecartChest(world, x, y, z);
+            } else if (ExplosiveMinecart.class.isAssignableFrom(clazz)) {
+                entity = new EntityMinecartTNT(world, x, y, z);
+            } else if (HopperMinecart.class.isAssignableFrom(clazz)) {
+                entity = new EntityMinecartHopper(world, x, y, z);
+            } else if (SpawnerMinecart.class.isAssignableFrom(clazz)) {
+                entity = new EntityMinecartMobSpawner(world, x, y, z);
+            } else { // Default to rideable minecart for pre-rideable compatibility
+                entity = new EntityMinecartEmpty(world, x, y, z);
+            }
 		} /*else if (EnderSignal.class.isAssignableFrom(clazz)) {
             entity = new EntityEnder(world, x, y, z);
         } */else if (EnderCrystal.class.isAssignableFrom(clazz)) {
@@ -1138,7 +1153,7 @@ public class CraftWorld implements World {
         		entity = null;
         	}
         } else if (TNTPrimed.class.isAssignableFrom(clazz)) {
-        	entity = new EntityTNTPrimed(world, x, y, z);
+        	entity = new EntityTNTPrimed(world, x, y, z, null);
         } else if (ExperienceOrb.class.isAssignableFrom(clazz)) {
         	entity = new EntityXPOrb(world, x, y, z, 0);
         } else if (Weather.class.isAssignableFrom(clazz)) {
@@ -1243,7 +1258,7 @@ public class CraftWorld implements World {
 		 block.setType(org.bukkit.Material.AIR);
 		 // not sure what this does, seems to have something to do with the 'base' material of a block.
 		 // For example, WOODEN_STAIRS does something with WOOD in this method
-		 net.minecraft.block.Block.blocksList[blockId].onBlockDestroyedByExplosion(this.world, blockX, blockY, blockZ);//(this.world, blockX, blockY, blockZ);
+		 net.minecraft.block.Block.blocksList[blockId].onBlockDestroyedByExplosion(this.world, blockX, blockY, blockZ, null);//(this.world, blockX, blockY, blockZ);
 	 }
 
 	 public void sendPluginMessage(Plugin source, String channel, byte[] message) {
@@ -1404,7 +1419,7 @@ public class CraftWorld implements World {
 		  }
 		  else {
 			  exp.doExplosionB(true);
-			  AxisAlignedBB affected = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(x, y, z, x + exp.explosionSize, y + exp.explosionSize, z + exp.explosionSize);
+			  AxisAlignedBB affected = AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + exp.explosionSize, y + exp.explosionSize, z + exp.explosionSize);
 			  List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, affected);
 			  // despawn - no blocks broken, no items dropped
 			  for (EntityItem i : items) {

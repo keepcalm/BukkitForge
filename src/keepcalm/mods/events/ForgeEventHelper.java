@@ -91,17 +91,17 @@ public class ForgeEventHelper {
 		List entities = null;
 		if (type == EnumMobType.everything)
         {
-            entities = world.getEntitiesWithinAABBExcludingEntity((Entity)null, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)((float)x + var7), (double)y, (double)((float)z + var7), (double)((float)(x + 1) - var7), (double)y + 0.25D, (double)((float)(z + 1) - var7)));
+            entities = world.getEntitiesWithinAABBExcludingEntity((Entity)null, AxisAlignedBB.getAABBPool().getAABB((double)((float)x + var7), (double)y, (double)((float)z + var7), (double)((float)(x + 1) - var7), (double)y + 0.25D, (double)((float)(z + 1) - var7)));
         }
 
         if (type == EnumMobType.mobs)
         {
-            entities = world.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)((float)x + var7), (double)y, (double)((float)z + var7), (double)((float)(x + 1) - var7), (double)y + 0.25D, (double)((float)(z + 1) - var7)));
+            entities = world.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getAABBPool().getAABB((double)((float)x + var7), (double)y, (double)((float)z + var7), (double)((float)(x + 1) - var7), (double)y + 0.25D, (double)((float)(z + 1) - var7)));
         }
 
         if (type == EnumMobType.players)
         {
-            entities = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)((float)x + var7), (double)y, (double)((float)z + var7), (double)((float)(x + 1) - var7), (double)y + 0.25D, (double)((float)(z + 1) - var7)));
+            entities = world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB((double)((float)x + var7), (double)y, (double)((float)z + var7), (double)((float)(x + 1) - var7), (double)y + 0.25D, (double)((float)(z + 1) - var7)));
         }
 
         Entity targetEntity = null;
@@ -279,10 +279,10 @@ public class ForgeEventHelper {
 
             String className = MethodCallerRetriever.instance().getCallerClassName(3).toLowerCase();
 
-            if (className.contains("iteminworldmanager") || className.equals("ir")) {
+            if (className.contains("iteminworldmanager") || className.equals("jd")) {
                 foundIIWM = true;
             }
-            if (className.contains("blockflowing") || className.equals("aky")) {
+            if (className.contains("blockflowing") || className.equals("anf")) {
                 foundIIWM = true;
             }
 
@@ -300,7 +300,7 @@ public class ForgeEventHelper {
             MinecraftForge.EVENT_BUS.post(ev);
 
             if (ev.isCanceled()) {
-                world.setBlockAndMetadata(x, y, z, id, data);
+                world.setBlockMetadataWithNotify(x, y, z, id, data);
             }
 		}
 	}

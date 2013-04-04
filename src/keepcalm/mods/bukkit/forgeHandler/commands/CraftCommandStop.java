@@ -37,7 +37,6 @@ public class CraftCommandStop extends CommandBase {
 	
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
-		BukkitContainer.bServer.shutdown();
 		(new CommandServerStop()).processCommand(var1, var2);
 	}
 
