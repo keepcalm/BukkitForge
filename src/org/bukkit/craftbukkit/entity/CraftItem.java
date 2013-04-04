@@ -28,7 +28,7 @@ public class CraftItem extends CraftEntity implements Item {
     }
 
     public void setItemStack(ItemStack stack) {
-        item.func_92058_a(CraftItemStack.createNMSItemStack(stack));
+        item.setEntityItemStack(CraftItemStack.createNMSItemStack(stack));
     }
 
     public int getPickupDelay() {

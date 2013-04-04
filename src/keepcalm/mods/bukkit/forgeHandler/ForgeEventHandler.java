@@ -280,7 +280,7 @@ public class ForgeEventHandler {
 				}
 
 				final CraftPlayer thePlayer = BukkitForgePlayerCache.getCraftPlayer(forgePlayerMP);
-				final CraftBlock beforeBlock = new CraftBlock(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ);
+				final CraftBlock beforeBlock = new CraftBlock(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(blockX, blockZ)), blockX, blockY, blockZ);
 				WorldServer world = (WorldServer) ev.entity.worldObj;
 				int minX = world.getSpawnPoint().posX;
 				int minY = world.getSpawnPoint().posY;
@@ -292,7 +292,7 @@ public class ForgeEventHandler {
 
 				AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 				final boolean canBuild;
-				if (aabb.isVecInside(Vec3.vec3dPool.getVecFromPool(blockX, blockY, blockZ))) {
+				if (aabb.isVecInside(Vec3.fakePool.getVecFromPool(blockX, blockY, blockZ))) {
 					canBuild = false;
 				} else {
 					canBuild = true;
@@ -522,7 +522,7 @@ public class ForgeEventHandler {
 			CraftChunk chunk = new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z));
 			ChunkCoordinates spawn = ev.world.getSpawnPoint();
 			int spawnRadius = CraftServer.instance().getSpawnRadius();
-			boolean canBuild = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(spawn.posX, spawn.posY, spawn.posZ, spawn.posX + spawnRadius, spawn.posY + spawnRadius, spawn.posZ + spawnRadius).isVecInside(Vec3.createVectorHelper(ev.x, ev.y, ev.z));
+			boolean canBuild = AxisAlignedBB.getAABBPool().getAABB(spawn.posX, spawn.posY, spawn.posZ, spawn.posX + spawnRadius, spawn.posY + spawnRadius, spawn.posZ + spawnRadius).isVecInside(Vec3.createVectorHelper(ev.x, ev.y, ev.z));
 			CraftBlock bblock = new CraftBlock(chunk, ev.x, ev.y, ev.z);
 			BlockCanBuildEvent bukkitEv = new BlockCanBuildEvent(bblock, block.getBlockID(), canBuild);
 
@@ -575,7 +575,7 @@ public class ForgeEventHandler {
 		if (bev.getInstaBreak()) {
 			Block blck = Block.blocksList[ev.blockID];
 			blck.dropBlockAsItem(ev.world, ev.blockX, ev.blockY, ev.blockZ, ev.world.getBlockMetadata(ev.blockX, ev.blockY, ev.blockZ), 0);
-			ev.world.setBlockAndMetadata(ev.blockX, ev.blockY, ev.blockZ, 0, 0);
+			ev.world.setBlockMetadataWithNotify(ev.blockX, ev.blockY, ev.blockZ, 0, 0);
 			//Block.blocksList[ev.blockID].breakBlock(ev.world, ev.blockX, ev.blockY, ev.blockZ, ev.blockID, ev.world.getBlockMetadata(ev.blockX, ev.blockY, ev.blockZ));
 			return;
 		}

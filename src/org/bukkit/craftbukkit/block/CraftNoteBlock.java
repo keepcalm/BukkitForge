@@ -99,7 +99,7 @@ public class CraftNoteBlock extends CraftBlockState implements NoteBlock {
             		throw new IllegalArgumentException("Invalid instrument: " + instrument.getType());
 
             	}
-            	((CraftWorld)block.getWorld()).getHandle().setBlock(getX(), getY() - 1, getZ(), targ.blockID);
+            	((CraftWorld)block.getWorld()).getHandle().setBlockMetadataWithNotify(getX(), getY() - 1, getZ(), targ.blockID, 3);
             	t.triggerNote(((CraftWorld) block.getWorld()).getHandle(), getX(), getY(), getZ());
             	t.note = oldNote;
             	//world.getHandle().playNote(getX(), getY(), getZ(), block.getTypeId(), instrument.getType(), note.getId());

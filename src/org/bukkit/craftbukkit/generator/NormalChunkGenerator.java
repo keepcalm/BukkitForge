@@ -59,7 +59,7 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
     }
 
     public boolean unloadChunks() {
-        return provider.unload100OldestChunks();
+        return provider.unloadQueuedChunks();
     }
 
     public boolean canSave() {
@@ -125,7 +125,7 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
 	}
 
 	@Override
-	public boolean unload100OldestChunks() {
+	public boolean unloadQueuedChunks() {
 		return this.unloadChunks();
 	}
 

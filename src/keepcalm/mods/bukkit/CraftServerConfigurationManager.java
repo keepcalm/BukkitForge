@@ -289,7 +289,7 @@ public class CraftServerConfigurationManager {
             par2 = world.provider.getRespawnDimension(par1EntityPlayerMP);
         }
 
-        par1EntityPlayerMP.getServerForPlayer().getEntityTracker().removeAllTrackingPlayers(par1EntityPlayerMP);
+        par1EntityPlayerMP.getServerForPlayer().getEntityTracker().removePlayerFromTrackers(par1EntityPlayerMP);
         par1EntityPlayerMP.getServerForPlayer().getEntityTracker().removeEntityFromAllTrackingPlayers(par1EntityPlayerMP);
         par1EntityPlayerMP.getServerForPlayer().getPlayerManager().removePlayer(par1EntityPlayerMP);
         playerEntityList.remove(par1EntityPlayerMP);
@@ -353,7 +353,7 @@ public class CraftServerConfigurationManager {
 
     public void transferPlayerToDimension(EntityPlayerMP par1EntityPlayerMP, int par2)
     {
-        transferPlayerToDimension(par1EntityPlayerMP, par2, mcServer.worldServerForDimension(par2).func_85176_s());
+        transferPlayerToDimension(par1EntityPlayerMP, par2, mcServer.worldServerForDimension(par2).getDefaultTeleporter());
     }
 
     public void transferPlayerToDimension(EntityPlayerMP par1EntityPlayerMP, int par2, Teleporter teleporter)
@@ -385,7 +385,7 @@ public class CraftServerConfigurationManager {
 
     public void transferEntityToWorld(Entity par1Entity, int par2, WorldServer par3WorldServer, WorldServer par4WorldServer)
     {
-        transferEntityToWorld(par1Entity, par2, par3WorldServer, par4WorldServer, par4WorldServer.func_85176_s());
+        transferEntityToWorld(par1Entity, par2, par3WorldServer, par4WorldServer, par4WorldServer.getDefaultTeleporter());
     }
 
     public void transferEntityToWorld(Entity par1Entity, int par2, WorldServer par3WorldServer, WorldServer par4WorldServer, Teleporter teleporter)
@@ -709,7 +709,7 @@ public class CraftServerConfigurationManager {
         {
             EntityPlayerMP var4 = (EntityPlayerMP)var3.next();
 
-            if (var4.func_71114_r().equals(par1Str))
+            if (var4.getPlayerIP().equals(par1Str))
             {
                 var2.add(var4);
             }

@@ -8,7 +8,7 @@ It can load plugins, commands work, lots of things work, permissions *should* wo
 Most of this mod is a fairly straight port from Craftbukkit, but I've had to modify parts
 (and i anticipate modifiying more).
 
-This is ported to 1.4, and works fine on 1.4.6/7
+This is ported to 1.5.
 
 See a list of working plugins [here](https://github.com/keepcalm/BukkitForge/wiki/Working-plugins-page).
 

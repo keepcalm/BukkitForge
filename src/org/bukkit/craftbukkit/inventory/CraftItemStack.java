@@ -83,4 +83,14 @@ public class CraftItemStack extends ItemStack {
 	public static ItemStack asNewCraftStack(Item item, int j) {
 		return new CraftItemStack(new net.minecraft.item.ItemStack(item, j));
 	}
+	
+	public void setAmount(int amount) {
+		super.setAmount(amount);
+		this.item.stackSize = amount > getMaxStackSize() ? getMaxStackSize() : amount;
+	}
+	
+	public void setDurability(final short durability) {
+        super.setDurability(durability);
+		this.item.setItemDamage(durability);
+    }
 }

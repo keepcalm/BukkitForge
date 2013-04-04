@@ -1,9 +1,9 @@
 package org.bukkit.craftbukkit.block;
 
 import net.minecraft.block.BlockJukeBox;
-import net.minecraft.block.TileEntityRecordPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityRecordPlayer;
 
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -36,9 +36,9 @@ public class CraftJukebox extends CraftBlockState implements Jukebox {
         jukebox.record = new ItemStack(Item.itemsList[record.getId() - 256]);
         jukebox.updateEntity();
         if (record == Material.AIR) {
-            world.getHandle().setBlockMetadata(getX(), getY(), getZ(), 0);
+            world.getHandle().setBlockMetadataWithNotify(getX(), getY(), getZ(), 0, 3);
         } else {
-            world.getHandle().setBlockMetadata(getX(), getY(), getZ(), 1);
+            world.getHandle().setBlockMetadataWithNotify(getX(), getY(), getZ(), 1, 3);
         }
         world.playEffect(getLocation(), Effect.RECORD_PLAY, record.getId());
     }

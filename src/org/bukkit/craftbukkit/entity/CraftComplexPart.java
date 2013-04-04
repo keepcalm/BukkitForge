@@ -23,7 +23,7 @@ public class CraftComplexPart extends CraftEntity implements ComplexEntityPart {
 
 	private ComplexLivingEntity getEntity(CraftServer server,
 			IEntityMultiPart entityDragonObj) {
-		return new CraftEnderDragon(this.server, (EntityDragon) this.entity.worldObj.getEntitiesWithinAABB(EntityDragon.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(entity.posX + 15, entity.posY + 15, entity.posZ + 15, 0, 0, 0)).get(0));
+		return new CraftEnderDragon(this.server, (EntityDragon) this.entity.worldObj.getEntitiesWithinAABB(EntityDragon.class, AxisAlignedBB.getAABBPool().getAABB(entity.posX + 15, entity.posY + 15, entity.posZ + 15, 0, 0, 0)).get(0));
 	}
 
 	@Override

@@ -190,9 +190,7 @@ public class CraftCommandMap extends SimpleCommandMap implements CommandMap  {
     /**
      * Returns the (bukkit) form of a command.
      * 
-     * @deprecated
      */
-    @Deprecated
     @Override
     public Command getCommand(String name) {
         Command target =  knownCommands.get(name.toLowerCase());
