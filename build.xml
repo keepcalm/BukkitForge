@@ -130,8 +130,8 @@
             <fileset dir="${src.dir}/tst" />
         </copy>
 		
-		<replace dir="${dir.development}\mcp\src\minecraft" token="@FINGERPRINT@" value="${release.mod.fingerprint}" />
-		<replace dir="${dir.development}\mcp\src\minecraft" token="@VERSION@" value="${build.ver}.${build.number}" />
+		<replace dir="${src.dir}/minecraft" token="@FINGERPRINT@" value="${release.mod.fingerprint}" />
+		<replace dir="${src.dir}/minecraft" token="@VERSION@" value="${build.ver}.${build.number}" />
 
 		<!-- Recompile -->
 		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
