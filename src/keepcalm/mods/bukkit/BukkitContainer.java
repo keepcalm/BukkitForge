@@ -43,6 +43,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.FingerprintWarning;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.Metadata;
@@ -52,6 +53,7 @@ import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLFingerprintViolationEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
@@ -61,12 +63,13 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
-@Mod(modid="BukkitForge",name="BukkitForge",version="Unknown",certificateFingerprint="")
+@Mod(modid="BukkitForge",name="BukkitForge",version="@VERSION@",certificateFingerprint="@FINGERPRINT@")
 @NetworkMod(clientSideRequired=false,serverSideRequired=false,connectionHandler=ConnectionHandler.class,serverPacketHandlerSpec=@SidedPacketHandler(channels={},packetHandler=ForgePacketHandler.class))
 public class BukkitContainer {
 	public static Properties users;
@@ -83,7 +86,7 @@ public class BukkitContainer {
 	public static boolean isDediServer;
 	public static String serverUUID;
 	public static boolean overrideVanillaCommands;
-	public static Logger bukkitLogger ;//.getLogger("[Bukkit API]");
+	public static Logger bukkitLogger = Logger.getLogger("BukkitForge");//.getLogger("[Bukkit API]");
 	public static boolean DEBUG = false;// ClassLoader.getSystemResourceAsStream("/net/minecraft/item") == null;
 	// hehe
 	public static boolean IGNORE_CONNECTION_RECEIVED = false;
@@ -113,6 +116,13 @@ public class BukkitContainer {
 	 * 1 for console-only, 0 for broadcast, -1 for both
 	 */
 	public static int UPDATE_ANNOUNCE_METHOD;
+	
+	@FingerprintWarning
+    public void invalidFingerprint(FMLFingerprintViolationEvent event) {
+        
+        // Report (log) to the user that the version of BukkitForge they are using has been changed/tampered with
+		bukkitLogger.log(Level.SEVERE, "The copy of BukkitForge that you are running has been modified from the original, and unpredictable things may happen. Please consider re-downloading the original version of the mod.");
+    }
 
 	static {
 		System.out.println("THIS SERVER IS RUNNING BUKKITFORGE " + BF_FULL_VERSION + ". JUST IN CASE SOMEONE ASKS!");
@@ -137,7 +147,6 @@ public class BukkitContainer {
 	}
 	@PreInit
 	public void preInit(FMLPreInitializationEvent ev) {
-		bukkitLogger = Logger.getLogger("BukkitForge");
 		try {
 			bukkitLogger.addHandler(new FileHandler("serverBF.log"));
 		} catch (SecurityException e1) {

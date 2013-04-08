@@ -78,6 +78,10 @@
 		</manifest>
 		<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="MANIFEST.MF"/>
 		<copy file="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" toFile="${dist.dir}/BukkitForge-latest.jar" />
+		
+		<!-- Sign the jar -->
+		<signjar jar="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" keystore="${keystore.location}" alias="${keystore.alias}" storepass="${keystore.password}" />
+		<signjar jar="${dist.dir}/BukkitForge-latest.jar" keystore="${keystore.location}" alias="${keystore.alias}" storepass="${keystore.password}" />
 
 
 		<delete dir="${classes.dir}" />
@@ -93,6 +97,8 @@
         <delete dir="${mcpsrc.dir}/javax" />
 		<delete dir="${mcpsrc.dir}/com" />
 		<delete dir="${mcpsrc.dir}/net/md_5" />
+		<replace dir="${dir.development}\mcp\src\minecraft" token="@FINGERPRINT@" value="${release.mod.fingerprint}" />
+		<replace dir="${dir.development}\mcp\src\minecraft" token="@VERSION@" value="${build.ver}.${build.number}" />
 		<!-- Copy source -->
 		<!--<mkdir dir="${mcpsrc.dir}/net" />
 				<copy todir="${mcpsrc.dir}/net">
@@ -137,11 +143,11 @@
 
 		<!-- Reobf -->
 		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
-			<arg line="/c reobfuscate.bat"/>
+			<arg line="/c reobfuscate_srg.bat"/>
 		</exec>
 
 		<exec dir="${mcp.dir}" executable="sh" osfamily="unix">
-			<arg value="reobfuscate.sh" />
+			<arg value="reobfuscate_srg.sh" />
 		</exec>
 
 		<copy todir="${classes.dir}">
@@ -202,7 +208,7 @@
 
 		<chmod file="${mcp.dir}/updatemd5.sh" perm="+x"/>
 		<chmod file="${mcp.dir}/recompile.sh" perm="+x"/>
-		<chmod file="${mcp.dir}/reobfuscate.sh" perm="+x"/>
+		<chmod file="${mcp.dir}/reobfuscate_srg.sh" perm="+x"/>
 		<chmod file="${mcp.dir}/runtime/bin/astyle-osx" perm="+x" />
 		<chmod file="${mcp.dir}/runtime/bin/jad-osx" perm="+x" />
 
