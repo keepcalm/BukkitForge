@@ -78,11 +78,6 @@
 		</manifest>
 		<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="MANIFEST.MF"/>
 		<copy file="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" toFile="${dist.dir}/BukkitForge-latest.jar" />
-		
-		<!-- Sign the jar -->
-		<signjar jar="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" keystore="${keystore.location}" alias="${keystore.alias}" storepass="${keystore.password}" />
-		<signjar jar="${dist.dir}/BukkitForge-latest.jar" keystore="${keystore.location}" alias="${keystore.alias}" storepass="${keystore.password}" />
-
 
 		<delete dir="${classes.dir}" />
 		<echo file="${dist.dir}/LATEST_BUILD" message="${build.ver}-${build.number}" />
