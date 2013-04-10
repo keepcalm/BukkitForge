@@ -446,7 +446,7 @@ public class JavaPluginLoader implements PluginLoader {
     public InheritanceMap getGlobalInheritanceMap() {
         if (globalInheritanceMap == null) {
             Map<String, String> relocationsCurrent = new HashMap<String, String>();
-            relocationsCurrent.put("net.minecraft.server", "net.minecraft.server."+PluginClassLoader.current);
+            relocationsCurrent.put("net.minecraft.server", "net.minecraft.server");
             JarMapping currentMappings = new JarMapping();
 
             try {

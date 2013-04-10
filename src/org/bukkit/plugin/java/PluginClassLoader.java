@@ -54,6 +54,7 @@ public class PluginClassLoader extends URLClassLoader {
         // MCPC+ start
 
         String pluginName = pluginDescriptionFile.getName();
+        System.out.println(pluginName);
 
         // configure default remapper settings
         YamlConfiguration config = ((CraftServer)Bukkit.getServer()).configuration;
