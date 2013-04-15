@@ -43,6 +43,7 @@ import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.AnvilSaveConverter;
 import net.minecraft.world.gen.ChunkProviderEnd;
@@ -90,6 +91,8 @@ import org.bukkit.craftbukkit.metadata.WorldMetadataStore;
 import org.bukkit.craftbukkit.scheduler.CraftScheduler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
@@ -542,68 +545,6 @@ public class CraftServer implements Server {
             return Environment.NORMAL;
         }
     }
-
-	@Override
-	public World createWorld(WorldCreator creator) {
-		if (creator == null) {
-			throw new IllegalArgumentException("Creator may not be null");
-		}
-
-   		String name = creator.name();
-		World world = getWorld(name);
-
-		if (world != null) { // Existing forge world
-			return world;
-		}
-
-        int dimension = -1000;
-
-        WorldServer internal = BukkitForgeDimensionManager.createWorld(this, creator, getWorldContainer(), name, theServer.theProfiler);
-        dimension = internal.provider.dimensionId;
-
-        File folder = BukkitForgeDimensionManager.getWorldFolder(creator.name());
-
-		AnvilSaveConverter converter = new AnvilSaveConverter(folder);
-		if (converter.isOldMapFormat(name)) {
-			getLogger().info("Converting world '" + name + "'");
-			converter.convertMapFormat(name, new ConvertingProgressUpdate(theServer));
-		}
-
-        worlds.cacheWorld(dimension, internal);
-
-        //This is already called during world init
-        //pluginManager.callEvent(new WorldInitEvent((worlds.get(dimension))));
-
-		if (DimensionManager.shouldLoadSpawn(dimension)) {
-            System.out.println("Preparing start region for level " + (theServer.worldServers.length - 1) + " (Seed: " + internal.getSeed() + ")");
-			short short1 = 196;
-			long i = System.currentTimeMillis();
-			for (int j = -short1; j <= short1; j += 16) {
-				for (int k = -short1; k <= short1; k += 16) {
-					long l = System.currentTimeMillis();
-
-					if (l < i) {
-						i = l;
-					}
-
-					if (l > i + 1000L) {
-						int i1 = (short1 * 2 + 1) * (short1 * 2 + 1);
-						int j1 = (j + short1) * (short1 * 2 + 1) + k + 1;
-
-						System.out.println("Preparing spawn area for " + name + ", " + (j1 * 100 / i1) + "%");
-								i = l;
-					}
-
-					ChunkCoordinates chunkcoordinates = internal.getSpawnPoint();
-					internal.theChunkProviderServer.provideChunk(chunkcoordinates.posX + j >> 4, chunkcoordinates.posZ + k >> 4);
-				}//
-			}
-		}
-
-        BukkitEventRouters.World.WorldLoad.callEvent( false, null, ToBukkit.world(internal) );
-
-		return worlds.get(dimension);
-	}
 
     public boolean dispatchServerCommand(CommandSender sender, net.minecraft.command.ServerCommand/*was:ServerCommand*/ serverCommand) {
         if (sender instanceof Conversable) {
