@@ -224,26 +224,24 @@ public class DimensionManagerImpl {
             {
                 WorldProvider provider = (WorldProvider)((Class)providers.get(Integer.valueOf(getProviderType(dim)))).newInstance();
 
-                /**if( bukkitDims.containsKey(dim) )
+                if( bukkitDims.containsKey(dim) )
                 {
                     BukkitForgeWorldProvider cwp = new BukkitForgeWorldProvider(provider, bukkitDims.get(dim));
                     cwp.setDimensionName( bukkitDims.get(dim).name() );
                     provider = cwp;
-                }*/
+                }
 
                 provider.setDimension(dim);
 
                 return provider;
             }
-            else
-            {
-                throw new RuntimeException(String.format("No WorldProvider bound for dimension %d", dim)); //It's going to crash anyway at this point.  Might as well be informative
-            }
+
+            throw new RuntimeException(String.format("No WorldProvider bound for dimension %d", new Object[] { Integer.valueOf(dim) }));
         }
         catch (Exception e)
         {
-            FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE,String.format("An error occured trying to create an instance of WorldProvider %d (%s)",
-                    dim, providers.get(getProviderType(dim)).getSimpleName()),e);
+            FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE, String.format("An error occured trying to create an instance of WorldProvider %d (%s)", new Object[] { Integer.valueOf(dim), ((Class)providers.get(Integer.valueOf(getProviderType(dim)))).getSimpleName() }), e);
+
             throw new RuntimeException(e);
         }
     }
@@ -339,7 +337,7 @@ public class DimensionManagerImpl {
     {
         if (getWorld(0) != null)
         {
-            return ((SaveHandler)getWorld(0).getSaveHandler()).getWorldDirectory();
+            return ((SaveHandler)getWorld(0).getSaveHandler()).getSaveDirectory();
         }
 
         return null;

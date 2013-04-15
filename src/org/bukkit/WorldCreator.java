@@ -231,7 +231,7 @@ public class WorldCreator {
      * may be ignored.
      *
      * @return Newly created or loaded world
-     *
+     */
     public World createWorld() {
         return Bukkit.createWorld(this);
     }

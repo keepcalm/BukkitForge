@@ -358,7 +358,7 @@ public class CraftBlock implements Block {
 	private boolean itemCausesDrops(ItemStack item) {
 		net.minecraft.block.Block block = net.minecraft.block.Block.blocksList[this.getTypeId()];
 		net.minecraft.item.Item itemType = item != null ? net.minecraft.item.Item.itemsList[item.getTypeId()] : null;
-		return block != null && (block.blockMaterial.isAlwaysHarvested() || (itemType != null && itemType.canHarvestBlock(block)));
+		return block != null && (block.blockMaterial.func_85157_q() || (itemType != null && itemType.canHarvestBlock(block)));
 	}
 
 	public boolean breakNaturally() {

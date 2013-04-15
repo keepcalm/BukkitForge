@@ -9,7 +9,7 @@
 	<property name="src.dir" value="src" />
 
 
-	<property name="forge.version" value="1.5.1-7.7.1.654" />
+	<property name="forge.version" value="1.5.1-7.7.0.608" />
 
 	<property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
 	<property name="mcp.version" value="744" />
@@ -79,6 +79,7 @@
 		<jar destfile="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" basedir="${classes.dir}" manifest="MANIFEST.MF"/>
 		<copy file="${dist.dir}/BukkitForge-${build.ver}-${build.number}.jar" toFile="${dist.dir}/BukkitForge-latest.jar" />
 
+
 		<delete dir="${classes.dir}" />
 		<echo file="${dist.dir}/LATEST_BUILD" message="${build.ver}-${build.number}" />
 	</target>
@@ -124,9 +125,6 @@
         <copy todir="${mcpsrc.dir}/tst">
             <fileset dir="${src.dir}/tst" />
         </copy>
-		
-		<replace dir="${mcpsrc.dir}" token="@FINGERPRINT@" value="${release.mod.fingerprint}" />
-		<replace dir="${mcpsrc.dir}" token="@VERSION@" value="${build.ver}.${build.number}" />
 
 		<!-- Recompile -->
 		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
@@ -139,11 +137,11 @@
 
 		<!-- Reobf -->
 		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
-			<arg line="/c reobfuscate_srg.bat"/>
+			<arg line="/c reobfuscate.bat"/>
 		</exec>
 
 		<exec dir="${mcp.dir}" executable="sh" osfamily="unix">
-			<arg value="reobfuscate_srg.sh" />
+			<arg value="reobfuscate.sh" />
 		</exec>
 
 		<copy todir="${classes.dir}">
@@ -204,7 +202,7 @@
 
 		<chmod file="${mcp.dir}/updatemd5.sh" perm="+x"/>
 		<chmod file="${mcp.dir}/recompile.sh" perm="+x"/>
-		<chmod file="${mcp.dir}/reobfuscate_srg.sh" perm="+x"/>
+		<chmod file="${mcp.dir}/reobfuscate.sh" perm="+x"/>
 		<chmod file="${mcp.dir}/runtime/bin/astyle-osx" perm="+x" />
 		<chmod file="${mcp.dir}/runtime/bin/jad-osx" perm="+x" />
 

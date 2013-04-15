@@ -511,7 +511,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
 
                 AxisAlignedBB var29 = this.playerEntity.boundingBox.copy().expand((double) var21, (double) var21, (double) var21).addCoord(0.0D, -0.55D, 0.0D);
 
-                if (!this.mcServer.isFlightAllowed() && !this.playerEntity.capabilities.allowFlying && !var2.checkBlockCollision(var29))   // CraftBukkit - check abilities instead of creative mode
+                if (!this.mcServer.isFlightAllowed() && !this.playerEntity.capabilities.allowFlying && !var2.isAABBNonEmpty(var29))   // CraftBukkit - check abilities instead of creative mode
                 {
                     if (var25 >= -0.03125D)
                     {

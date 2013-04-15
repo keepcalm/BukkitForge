@@ -313,7 +313,7 @@ public interface Server extends PluginMessageRecipient {
      *
      * @param creator The options to use when creating the world.
      * @return Newly created or loaded world
-     *
+     */
     public World createWorld(WorldCreator creator);
 
     /**

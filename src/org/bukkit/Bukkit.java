@@ -152,9 +152,9 @@ public final class Bukkit {
         return server.getWorlds();
     }
 
-    /**public static World createWorld(WorldCreator options) {
+    public static World createWorld(WorldCreator options) {
         return server.createWorld(options);
-    }*/
+    }
 
     public static boolean unloadWorld(String name, boolean save) {
         return server.unloadWorld(name, save);
