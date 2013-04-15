@@ -21,7 +21,7 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
         repl = new HashMap<String, String>();
 
         //addClassNameAndAlias(classes, "net.minecraft.command.CommandHandler", "y", CommandHandler_BukkitForge.class);
-        addClassNameAndAlias(classes, "net.minecraftforge.common.DimensionManager", null, DimensionManager_BukkitForge.class);
+        //addClassNameAndAlias(classes, "net.minecraftforge.common.DimensionManager", null, DimensionManager_BukkitForge.class);
         //addClassNameAndAlias(classes, "net.minecraft.server.management.ServerConfigurationManager", "gu", ServerConfigurationManager_BukkitForge.class);
         //addClassNameAndAlias(classes, "cpw.mods.fml.common.network.FMLNetworkHandler", null, FMLNetworkHandler_BukkitForge.class);
         addClassNameAndAlias(classes, "cpw.mods.fml.common.network.NetworkRegistry", null, NetworkRegistry_BukkitForge.class);
