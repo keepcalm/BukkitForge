@@ -155,7 +155,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
     }
 
     private File getDataFile() {
-        return new File(storage.getSaveDirectoryName() + (storage.getSaveDirectoryName().endsWith("/") ? "" : "/") + "players", name + ".dat");
+        return new File(storage.getWorldDirectoryName() + (storage.getWorldDirectoryName().endsWith("/") ? "" : "/") + "players", name + ".dat");
     }
 
     public long getFirstPlayed() {

@@ -1234,7 +1234,7 @@ public class CraftWorld implements World {
 	 }
 
 	 public File getWorldFolder() {
-		        File worldDir = ((SaveHandler)world.getSaveHandler()).getSaveDirectory();
+		        File worldDir = ((SaveHandler)world.getSaveHandler()).getWorldDirectory();
 
 		        if (world.provider.getSaveFolder() != null)
 		        {
