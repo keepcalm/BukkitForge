@@ -4,15 +4,13 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import keepcalm.mods.bukkit.BukkitEventRouters;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
-import org.bukkit.Bukkit;
-import keepcalm.mods.bukkit.CraftPlayerCache;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class CommandHandlerImpl implements ICommandManager {
@@ -22,14 +20,14 @@ public class CommandHandlerImpl implements ICommandManager {
         /** The set of ICommand objects currently loaded. */
         private final Set commandSet = new HashSet();
 
-        public void executeCommand(ICommandSender par1ICommandSender, String par2Str)
+        public int executeCommand(ICommandSender par1ICommandSender, String par2Str)
         {
             if( par1ICommandSender instanceof EntityPlayer)
             {
-                PlayerCommandPreprocessEvent bev = BukkitEventRouters.Player.PlayerCommandPreprocess.callEvent(false, null, CraftPlayerCache.getCraftPlayer((EntityPlayerMP)par1ICommandSender), par2Str);
+                PlayerCommandPreprocessEvent bev = BukkitEventRouters.Player.PlayerCommandPreprocess.callEvent(false, null, BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) par1ICommandSender), par2Str);
                 if(bev.isCancelled())
                 {
-                    return;
+                    return 0;
                 }
 
 
@@ -62,7 +60,7 @@ public class CommandHandlerImpl implements ICommandManager {
                         {
                             throw event.exception;
                         }
-                        return;
+                        return 0;
                     }
 
                     if (var6 > -1)
@@ -112,6 +110,7 @@ public class CommandHandlerImpl implements ICommandManager {
                 par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString("commands.generic.exception", new Object[0]));
                 var17.printStackTrace();
             }
+			return 0;
         }
 
         /**
@@ -240,7 +239,7 @@ public class CommandHandlerImpl implements ICommandManager {
             {
                 for (int var3 = 0; var3 < par2ArrayOfStr.length; ++var3)
                 {
-                    if (par1ICommand.isUsernameIndex(var3) && PlayerSelector.matchesMultiplePlayers(par2ArrayOfStr[var3]))
+                    if (par1ICommand.isUsernameIndex(par2ArrayOfStr, var3) && PlayerSelector.matchesMultiplePlayers(par2ArrayOfStr[var3]))
                     {
                         return var3;
                     }

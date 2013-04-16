@@ -1,11 +1,11 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
 import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
-import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.command.CraftConsoleCommandSender;
 /**
  * A command to fix compatibility issues with plugins like MultiVerse - which i __suspect__ use 
@@ -34,7 +34,7 @@ public class CraftCommandMVFix extends CraftCommandBase {
 	public void processCommand(ICommandSender var1, String[] var2) {
 		CommandSender sender;
 		if (var1 instanceof EntityPlayerMP) 
-			sender = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) var1);
+			sender = BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) var1);
 		else
 			sender = CraftConsoleCommandSender.instance();
 			BukkitContainer.bServer.getRealCmdMap().dispatch(sender, this.joinListOfStrings(var2));

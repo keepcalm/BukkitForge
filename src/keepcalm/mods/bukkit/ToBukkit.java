@@ -1,24 +1,28 @@
 package keepcalm.mods.bukkit;
 
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.WorldType;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftChunk;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.inventory.CraftInventoryCrafting;
+import org.bukkit.craftbukkit.inventory.CraftInventoryView;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.block.Action;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,22 +41,22 @@ public class ToBukkit {
     public static org.bukkit.entity.Player playerOrMod( EntityPlayer ep )
     {
         if (ep instanceof EntityPlayerMP)
-            return CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ep);
+            return BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) ep);
         else
-            return CraftPlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER);
+            return BukkitForgePlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER);
     }
 
     public static org.bukkit.entity.Player player( EntityPlayer ep )
     {
-        return CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ep);
+        return BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) ep);
     }
 
-    public static org.bukkit.entity.Player player( Entity ep )
+    public static org.bukkit.entity.Player player( net.minecraft.entity.Entity ep )
     {
         if (ep instanceof EntityPlayerMP)
-            return CraftPlayerCache.getCraftPlayer((EntityPlayerMP)ep);
+            return BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) ep);
         else
-            return CraftPlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER);
+            return BukkitForgePlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER);
     }
 
     public static org.bukkit.block.Block blockFromCoords( net.minecraft.world.World world, int x, int y, int z  )
@@ -107,5 +111,52 @@ public class ToBukkit {
         }
 
         return act;
+    }
+
+
+
+    public static EntityDamageEvent.DamageCause damageCause(DamageSource ds) {
+        EntityDamageEvent.DamageCause dc;
+        if (ds == DamageSource.anvil)
+            dc = EntityDamageEvent.DamageCause.CUSTOM;
+        else if (ds == DamageSource.cactus)
+            dc = EntityDamageEvent.DamageCause.CONTACT;
+        else if (ds == DamageSource.drown)
+            dc = EntityDamageEvent.DamageCause.DROWNING;
+        else if (ds == DamageSource.fall)
+            dc = EntityDamageEvent.DamageCause.FALL;
+        else if (ds == DamageSource.fallingBlock)
+            dc = EntityDamageEvent.DamageCause.FALL;
+        else if (ds == DamageSource.generic)
+            dc = EntityDamageEvent.DamageCause.CUSTOM;
+        else if (ds == DamageSource.inFire)
+            dc = EntityDamageEvent.DamageCause.FIRE;
+        else if (ds == DamageSource.inWall)
+            dc = EntityDamageEvent.DamageCause.SUFFOCATION;
+        else if (ds == DamageSource.lava)
+            dc = EntityDamageEvent.DamageCause.LAVA;
+        else if (ds == DamageSource.magic)
+            dc = EntityDamageEvent.DamageCause.MAGIC;
+        else if (ds == DamageSource.onFire)
+            dc = EntityDamageEvent.DamageCause.FIRE_TICK;
+        else if (ds == DamageSource.outOfWorld)
+            dc = EntityDamageEvent.DamageCause.VOID;
+        else if (ds == DamageSource.starve)
+            dc = EntityDamageEvent.DamageCause.STARVATION;
+        else if (ds == DamageSource.wither)
+            dc = EntityDamageEvent.DamageCause.WITHER;
+        else
+            dc = EntityDamageEvent.DamageCause.CUSTOM;
+        return dc;
+    }
+
+
+    public static CraftItemStack itemStack(ItemStack currentItem) {
+        return new CraftItemStack(currentItem);
+    }
+
+    public static CraftInventoryView view(EntityPlayer player, ContainerPlayer playerc) {
+        CraftInventoryCrafting inventory = new CraftInventoryCrafting(playerc.craftMatrix, playerc.craftResult);
+        return new CraftInventoryView( ToBukkit.player(player), inventory, playerc);
     }
 }

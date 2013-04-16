@@ -20,7 +20,7 @@ public class CraftItemFrame extends CraftHanging implements ItemFrame {
         if (item == null || item.getTypeId() == 0) {
         	// guesses, TODO check this is right
             getHandle().getDataWatcher().addObjectByDataType(2, 5);
-            getHandle().getDataWatcher().func_82708_h(2);
+            getHandle().getDataWatcher().setObjectWatched(2);
         } else {
             getHandle().setDisplayedItem(CraftItemStack.createNMSItemStack(item));
         }

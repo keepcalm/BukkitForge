@@ -603,7 +603,7 @@ public class CraftEventFactory {
         CraftPlayer craftPlayer = (CraftPlayer) getBukkitEntity(player);
         //player.craftingInventory.(container, craftPlayer);
         int i = 0;
-        InventoryBasic inv = new InventoryBasic("", container.getInventory().size());
+        InventoryBasic inv = new InventoryBasic("", false, container.getInventory().size());
         for (Object j : container.inventoryItemStacks) {
         	net.minecraft.item.ItemStack v = (net.minecraft.item.ItemStack) j;
         	inv.setInventorySlotContents(i, v);

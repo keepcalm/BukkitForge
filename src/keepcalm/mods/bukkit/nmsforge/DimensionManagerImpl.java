@@ -4,6 +4,7 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import keepcalm.mods.bukkitforge.BukkitForgeWorldProvider;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.*;
@@ -13,7 +14,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
-import keepcalm.mods.bukkit.CraftWorldProvider;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.world.WorldLoadEvent;
 
@@ -100,6 +100,11 @@ public class DimensionManagerImpl {
         bukkitDims.put(id, creator);
     }
 
+    public boolean isCraftWorld(int id)
+    {
+        return bukkitDims.containsKey(id);
+    }
+
     public void unregisterDimension(int id)
     {
         if (!dimensions.containsKey(Integer.valueOf(id)))
@@ -174,7 +179,7 @@ public class DimensionManagerImpl {
         ISaveHandler savehandler = overworld.getSaveHandler();
         WorldSettings worldSettings = new WorldSettings(overworld.getWorldInfo());
 
-        WorldServer world = dim == 0 ? overworld : new WorldServerMulti(mcServer, savehandler, overworld.getWorldInfo().getWorldName(), dim, worldSettings, overworld, mcServer.theProfiler);
+        WorldServer world = dim == 0 ? overworld : new WorldServerMulti(mcServer, savehandler, overworld.getWorldInfo().getWorldName(), dim, worldSettings, overworld, mcServer.theProfiler, null);
         world.addWorldAccess(new WorldManager(mcServer, world));
 
         MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(world));
@@ -221,7 +226,7 @@ public class DimensionManagerImpl {
 
                 if( bukkitDims.containsKey(dim) )
                 {
-                    CraftWorldProvider cwp = new CraftWorldProvider(provider, bukkitDims.get(dim));
+                    BukkitForgeWorldProvider cwp = new BukkitForgeWorldProvider(provider, bukkitDims.get(dim));
                     cwp.setDimensionName( bukkitDims.get(dim).name() );
                     provider = cwp;
                 }

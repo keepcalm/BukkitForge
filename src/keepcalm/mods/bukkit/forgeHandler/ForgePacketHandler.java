@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
-import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.messaging.StandardMessenger;
 
@@ -34,7 +34,7 @@ public class ForgePacketHandler implements IPacketHandler {
 	
 	public static HashMap<String,List<String>> listeningChannels = Maps.newHashMap();
 	
-	private static ForgePacketHandler INSTANCE;
+	private static ForgePacketHandler INSTANCE = null;
 	
 	public ForgePacketHandler() {
 		this.INSTANCE = this;
@@ -47,15 +47,10 @@ public class ForgePacketHandler implements IPacketHandler {
 			return; // nothing client-side here.
 		}
 		EntityPlayer fp = (EntityPlayer) player;
-		if (this.listeningChannels.values().contains(packet.channel) && this.listeningChannels.get(fp.username).contains(packet.channel)) {
-			((StandardMessenger)CraftServer.instance().getMessenger()).dispatchIncomingMessage(CraftPlayerCache.getCraftPlayer((EntityPlayerMP)player), packet.channel, packet.data);
-			
-		}
-		
+		((StandardMessenger)CraftServer.instance().getMessenger()).dispatchIncomingMessage(BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) player), packet.channel, packet.data);
 	}
 	
 	public static void registerChannel(String chan, EntityPlayer player) {
-		
 		if (!listeningChannels.containsKey(player.username)) {
 			listeningChannels.put(player.username, new ArrayList<String>());
 		}
@@ -66,4 +61,10 @@ public class ForgePacketHandler implements IPacketHandler {
 		}
 	}
 
+	public static ForgePacketHandler instance()
+	{
+		if(INSTANCE == null)
+			INSTANCE = new ForgePacketHandler();
+		return INSTANCE;
+	}
 }

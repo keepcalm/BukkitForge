@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import keepcalm.mods.bukkit.ToBukkit;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.EnumHelper;
@@ -21,6 +22,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.craftbukkit.CraftChunk;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -73,14 +75,14 @@ public class CraftBlock implements Block {
 	}
 
 	public void setData(final byte data) {
-		chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data);
+		chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data, 3);
 	}
 
 	public void setData(final byte data, boolean applyPhysics) {
 		if (applyPhysics) {
-			chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data);
+			chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data, 3);
 		} else {
-			chunk.getHandle().worldObj.setBlockMetadata(x, y, z, data);
+			chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data, 4);
 		}
 	}
 
@@ -93,14 +95,14 @@ public class CraftBlock implements Block {
 	}
 
 	public boolean setTypeId(final int type) {
-		return chunk.getHandle().worldObj.setBlockWithNotify(x, y, z, type);
+		return chunk.getHandle().worldObj.setBlock(x, y, z, type, getData(), 3);
 	}
 
 	public boolean setTypeId(final int type, final boolean applyPhysics) {
 		if (applyPhysics) {
 			return setTypeId(type);
 		} else {
-			return chunk.getHandle().worldObj.setBlock(x, y, z, type);
+			return chunk.getHandle().worldObj.setBlock(x, y, z, type, getData(), 4);
 		}
 	}
 
@@ -109,9 +111,9 @@ public class CraftBlock implements Block {
 			return false;
 		}
 		if (applyPhysics) {
-			return chunk.getHandle().worldObj.setBlockAndMetadataWithNotify(x, y, z, type, data);
+			return chunk.getHandle().worldObj.setBlock(x, y, z, type, data, 3);
 		} else {
-			boolean success = chunk.getHandle().worldObj.setBlockAndMetadata(x, y, z, type, data);
+			boolean success = chunk.getHandle().worldObj.setBlock(x, y, z, type, data, 4);
 			if (success) {
 				chunk.getHandle().worldObj.notifyBlockChange(x, y, z, type);
 			}
@@ -249,6 +251,8 @@ public class CraftBlock implements Block {
 			return new CraftJukebox(this);
 		case BREWING_STAND:
 			return new CraftBrewingStand(this);
+        case SKULL:
+            return new CraftSkull(this);
 		default:
 			return new CraftBlockState(this);
 		}
@@ -286,7 +290,7 @@ public class CraftBlock implements Block {
 	}
 
 	public boolean isBlockPowered() {
-		return chunk.getHandle().worldObj.isBlockGettingPowered(x, y, z);
+		return chunk.getHandle().worldObj.getBlockPowerInput(x, y, z) > 0;
 	}
 
 	public boolean isBlockIndirectlyPowered() {
@@ -358,15 +362,18 @@ public class CraftBlock implements Block {
 	}
 
 	public boolean breakNaturally() {
-		net.minecraft.block.Block block = net.minecraft.block.Block.blocksList[this.getTypeId()];
+        // Order matters here, need to drop before setting to air so skulls can get their data
+        /*was:net.minecraft.server.*/net.minecraft.block.Block/*was:Block*/ block = net.minecraft.block.Block/*was:Block*/.blocksList/*was:byId*/[this.getTypeId()];
 		byte data = getData();
+        boolean result = false;
 
-		setTypeId(Material.AIR.getId());
 		if (block != null) {
-			block.dropBlockAsItemWithChance(chunk.getHandle().worldObj, x, y, z, data, 1.0F, 0);
-			return true;
+            block.dropBlockAsItemWithChance(chunk.getHandle().worldObj, x, y, z, data, 1.0F, 0);
+            result = true;
 		}
-		return false;
+
+        setTypeId(Material.AIR.getId());
+        return result;
 	}
 
 	public boolean breakNaturally(ItemStack item) {
@@ -380,15 +387,28 @@ public class CraftBlock implements Block {
 	public Collection<ItemStack> getDrops() {
 		List<ItemStack> drops = new ArrayList<ItemStack>();
 
-		net.minecraft.block.Block block = net.minecraft.block.Block.blocksList[this.getTypeId()];
+        net.minecraft.block.Block block = net.minecraft.block.Block.blocksList[this.getTypeId()];
 		if (block != null) {
 			byte data = getData();
 			// based on nms.Block.dropNaturally
-			int count = block.quantityDropped(chunk.getHandle().worldObj.rand);
+            int count = block.quantityDroppedWithBonus(0, chunk.getHandle().worldObj.rand);
 			for (int i = 0; i < count; ++i) {
-				int item = block.idDropped(data, chunk.getHandle().worldObj.rand, 0);
+                int item = block.idDropped(data, chunk.getHandle().worldObj.rand, 0);
 				if (item > 0) {
-					drops.add(new ItemStack(item, 1, (short) block.getDamageValue(chunk.getHandle().worldObj, x, y, z)));
+                    // Skulls are special, their data is based on the tile entity
+                    if (net.minecraft.block.Block.skull.blockID == this.getTypeId()) {
+                        net.minecraft.item.ItemStack nmsStack = new net.minecraft.item.ItemStack(item, 1, block.getDamageValue(chunk.getHandle().worldObj, x, y, z));
+                        net.minecraft.tileentity.TileEntitySkull tileentityskull = (net.minecraft.tileentity.TileEntitySkull) chunk.getHandle().worldObj.getBlockTileEntity(x, y, z);
+
+                        if (tileentityskull.getSkullType() == 3 && tileentityskull.getExtraType() != null && tileentityskull.getExtraType().length() > 0) {
+                            nmsStack.setTagCompound(new net.minecraft.nbt.NBTTagCompound());
+                            nmsStack.getTagCompound().setString("SkullOwner", tileentityskull.getExtraType());
+                        }
+
+                        drops.add(ToBukkit.itemStack(nmsStack));
+                    } else {
+                        drops.add(new ItemStack(item, 1, (short) block.damageDropped(data)));
+                    }
 				}
 			}
 		}

@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import org.bukkit.command.CommandException;
-import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -31,7 +31,7 @@ public class CommandPermsDebug extends CommandBase {
 	public void processCommand(ICommandSender var1, String[] var2) {
 		
 		if (var1 instanceof EntityPlayerMP) {
-			CraftPlayer craft = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) var1);
+			CraftPlayer craft = BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) var1);
 			
 			File file = new File(var1.getCommandSenderName() + "_perms.txt");
 			BufferedWriter buf;

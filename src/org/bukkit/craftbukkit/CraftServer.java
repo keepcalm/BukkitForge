@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +20,9 @@ import com.google.common.collect.Iterators;
 import keepcalm.mods.bukkit.*;
 import keepcalm.mods.bukkit.forgeHandler.ForgeEventHandler;
 import keepcalm.mods.bukkit.forgeHandler.PlayerTracker;
+import keepcalm.mods.bukkitforge.BukkitForgeDimensionManager;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
+import keepcalm.mods.bukkitforge.BukkitForgeWorldCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,6 +37,7 @@ import net.minecraft.server.ConvertingProgressUpdate;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.PropertyManager;
+import net.minecraft.server.gui.GuiLogOutputHandler;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChunkCoordinates;
@@ -68,7 +73,9 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.conversations.Conversable;
 import org.bukkit.craftbukkit.command.CraftCommandMap;
+import org.bukkit.craftbukkit.command.CraftSimpleCommandMap;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.help.CommandHelpTopic;
 import org.bukkit.craftbukkit.help.SimpleHelpMap;
@@ -83,8 +90,6 @@ import org.bukkit.craftbukkit.metadata.WorldMetadataStore;
 import org.bukkit.craftbukkit.scheduler.CraftScheduler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.world.WorldInitEvent;
-import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
@@ -119,7 +124,6 @@ import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -139,7 +143,7 @@ public class CraftServer implements Server {
 	public CraftCommandMap commandMap = new CraftCommandMap(this);
 	private PluginManager pluginManager;// = new SimplePluginManager(this, commandMap);
 
-	public CraftWorldCache worlds = new CraftWorldCache();
+	public BukkitForgeWorldCache worlds = new BukkitForgeWorldCache();
 	private Map<String, OfflinePlayer> offlinePlayers = new HashMap<String, OfflinePlayer>();
 	private StandardMessenger theMessenger;
 	private SimpleHelpMap theHelpMap = new SimpleHelpMap(this);
@@ -147,6 +151,7 @@ public class CraftServer implements Server {
 	private int monsterSpawn;
 	private int animalSpawn;
 	private int waterAnimalSpawn;
+    private final CraftSimpleCommandMap craftCommandMap = new CraftSimpleCommandMap(this);
 
 	private WarningState warningState;
 	private EntityMetadataStore entityMetadata;
@@ -154,6 +159,7 @@ public class CraftServer implements Server {
 	private PlayerMetadataStore playerMetadata;
 //	private static String cbBuild;
 	private static Map<String,Boolean> fauxSleeping = new HashMap<String,Boolean>();
+	public boolean shutdown = false;
 
 	public CraftServer(MinecraftServer server) {
 		instance = this;
@@ -289,7 +295,7 @@ public class CraftServer implements Server {
 
 		List<Player> players= new ArrayList<Player>();
 		for (Object i : theServer.getConfigurationManager().playerEntityList) {
-			players.add(CraftPlayerCache.getCraftPlayer((EntityPlayerMP) i));
+			players.add(BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) i));
 		}
 		return players.toArray(new Player[0]);
 	}
@@ -426,7 +432,7 @@ public class CraftServer implements Server {
 		for (Object i : configMan.playerEntityList) {
 			EntityPlayerMP guy = (EntityPlayerMP) i;
 			if (guy.username.toLowerCase().startsWith(name)) {
-				CraftPlayer ply = CraftPlayerCache.getCraftPlayer(guy);//(Player) CraftEntity.getEntity(this, guy);
+				CraftPlayer ply = BukkitForgePlayerCache.getCraftPlayer(guy);//(Player) CraftEntity.getEntity(this, guy);
 				return ply;
 			}
 		}
@@ -552,10 +558,10 @@ public class CraftServer implements Server {
 
         int dimension = -1000;
 
-        WorldServer internal = CraftDimensionManager.createWorld( this, creator, getWorldContainer(), name, theServer.theProfiler );
+        WorldServer internal = BukkitForgeDimensionManager.createWorld(this, creator, getWorldContainer(), name, theServer.theProfiler);
         dimension = internal.provider.dimensionId;
 
-        File folder = CraftDimensionManager.getWorldFolder(creator.name());
+        File folder = BukkitForgeDimensionManager.getWorldFolder(creator.name());
 
 		AnvilSaveConverter converter = new AnvilSaveConverter(folder);
 		if (converter.isOldMapFormat(name)) {
@@ -599,6 +605,34 @@ public class CraftServer implements Server {
 		return worlds.get(dimension);
 	}
 
+    public boolean dispatchServerCommand(CommandSender sender, net.minecraft.command.ServerCommand/*was:ServerCommand*/ serverCommand) {
+        if (sender instanceof Conversable) {
+            Conversable conversable = (Conversable)sender;
+
+            if (conversable.isConversing()) {
+                conversable.acceptConversationInput(serverCommand.command/*was:command*/);
+                return true;
+            }
+        }
+        try {
+            // MCPC+ start - handle bukkit/vanilla console commands
+            int space = serverCommand.command.indexOf(" ");
+            // if bukkit command exists then execute it over vanilla
+            if (this.getCommandMap().getCommand(serverCommand.command.substring(0, space != -1 ? space : serverCommand.command.length())) != null)
+            {
+                return this.dispatchCommand(sender, serverCommand.command);
+            }
+            else { // process vanilla console command
+                craftCommandMap.setVanillaConsoleSender(serverCommand.sender);
+                return this.dispatchVanillaCommand(sender, serverCommand.command);
+            }
+            // MCPC+ end
+        } catch (Exception ex) {
+            getLogger().log(Level.WARNING, "Unexpected exception while parsing console command \"" + serverCommand.command/*was:command*/ + '"', ex);
+            return false;
+        }
+    }
+
 	@Override
 	public boolean unloadWorld(String name, boolean save) {
 		return unloadWorld(getWorld(name), save);
@@ -625,6 +659,16 @@ public class CraftServer implements Server {
 	public World getWorld(int dimID) {
 		return worlds.get(dimID);
 	}
+
+    public boolean dispatchVanillaCommand(CommandSender sender, String commandLine) {
+        if (craftCommandMap.dispatch(sender, commandLine)) {
+            return true;
+        }
+
+        sender.sendMessage("Unknown command. Type \"help\" for help.");
+
+        return false;
+    }
 
 	@Override
 	public World getWorld(UUID uid) {
@@ -680,7 +724,7 @@ public class CraftServer implements Server {
 		//
 
 		if (theServer instanceof DedicatedServer) {
-			PropertyManager config = new PropertyManager(theServer.getFile("server.properties"));
+			PropertyManager config = new PropertyManager(theServer.getFile("server.properties"), null);
 			((DedicatedServer) theServer).settings = config;
 		}
 		
@@ -1084,7 +1128,8 @@ public class CraftServer implements Server {
 
 	@Override
 	public void shutdown() {
-		
+		if(this.shutdown)
+			return;
 		theLogger.info("Stopping BukkitForge " + BukkitContainer.BF_FULL_VERSION);
 		int pollCount = 0;
 		while (pollCount < 50 && getScheduler().getActiveWorkers().size() > 0) {
@@ -1109,8 +1154,16 @@ public class CraftServer implements Server {
 					));
 		}
 		getPluginManager().disablePlugins();
+		Logger logger = this.theServer.getLogAgent().func_98076_a();
+		Handler[] handlers = logger.getHandlers();
+		for(int h = 0; h < handlers.length; h++)
+		{
+			if(handlers[h] instanceof GuiLogOutputHandler)
+				logger.removeHandler(handlers[h]);
+		}
+		this.theServer.getNetworkThread().stopListening();
 		//theServer.stopServer();
-
+		this.shutdown = true;
 	}
 
 	@Override

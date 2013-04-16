@@ -2,12 +2,12 @@ package keepcalm.mods.bukkit.forgeHandler;
 
 import java.util.EnumSet;
 
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import keepcalm.mods.bukkit.utils.CaseInsensitiveArrayList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.Bukkit;
-import keepcalm.mods.bukkit.CraftPlayerCache;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.scheduler.CraftScheduler;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -62,7 +62,7 @@ public class SchedulerTickHandler implements ITickHandler {
 				for (String i : PlayerTracker.online) {
 					if (!cial.contains(i)) {
 						EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().createPlayerForUser(i);
-						PlayerQuitEvent ev = new PlayerQuitEvent(CraftPlayerCache.getCraftPlayer(player), player.username + " left the game");
+						PlayerQuitEvent ev = new PlayerQuitEvent(BukkitForgePlayerCache.getCraftPlayer(player), player.username + " left the game");
 						Bukkit.getPluginManager().callEvent(ev);
 						PlayerTracker.online.remove(i);
 					}

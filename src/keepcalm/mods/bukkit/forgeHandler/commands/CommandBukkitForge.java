@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftConsoleCommandSender;
-import keepcalm.mods.bukkit.CraftPlayerCache;
 
 
 /**
@@ -80,7 +80,7 @@ public class CommandBukkitForge extends CraftCommandBase {
 	public boolean canCommandSenderUseCommand(ICommandSender par1) {
 		CommandSender x;
 		if (par1 instanceof EntityPlayerMP) {
-			x = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) par1);
+			x = BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) par1);
 		}
 		else {
 			x = CraftConsoleCommandSender.getInstance();

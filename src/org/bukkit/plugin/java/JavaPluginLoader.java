@@ -1,9 +1,6 @@
 package org.bukkit.plugin.java;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,7 +17,11 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import net.md_5.specialsource.InheritanceMap;
 import net.md_5.specialsource.JarMapping;
+import net.md_5.specialsource.ShadeRelocationSimulator;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -48,7 +49,7 @@ import org.bukkit.plugin.TimedRegisteredListener;
 import org.bukkit.plugin.UnknownDependencyException;
 import org.yaml.snakeyaml.error.YAMLException;
 
-import com.google.common.collect.ImmutableList;
+import guava10.com.google.common.collect.ImmutableList;
 
 /**
  * Represents a Java plugin loader, allowing plugins in the form of .jar
@@ -63,6 +64,8 @@ public class JavaPluginLoader implements PluginLoader {
         server = instance;
     }
 
+    private static boolean warnedLegacy = false; // MCPC+
+
     public Plugin loadPlugin(File file) throws InvalidPluginException {
         Validate.notNull(file, "File cannot be null");
 
@@ -73,49 +76,16 @@ public class JavaPluginLoader implements PluginLoader {
         // MCPC+ start - file-based plugin remapper using SrgTools ApplySrg
 
         YamlConfiguration configuration = ((CraftServer)Bukkit.getServer()).configuration;
-        boolean shouldRemap = configuration.getBoolean("mcpc.plugin-settings.default.remap-plugin-file", false);
-
-        // per-plugin settings
         String pluginBaseName = file.getName().substring(0, file.getName().indexOf("."));
-        shouldRemap = configuration.getBoolean("mcpc.plugin-settings."+pluginBaseName+".remap-plugin-file", shouldRemap);
 
-        if (shouldRemap && !file.getName().startsWith("ported_")) {
-
-            InputStream srg;
-            if (getClass().getClassLoader().getResourceAsStream("net/minecraft/src") == null) {
-                srg = getClass().getClassLoader().getResourceAsStream("vcb2obf.srg");
-            }
-            else {
-                srg = getClass().getClassLoader().getResourceAsStream("cb2pkgmcp.srg");
-            }
-            if (srg == null) {
-                throw new RuntimeException("MCPC+ was packaged incorrectly - sorry.");
-            }
-            try {
-                ApplySrg.main(file, srg);
-            } catch (IOException e) {
-                server.getLogger().log(Level.SEVERE, "Failed to load plugin " + file.getAbsolutePath() + " - SRG application failed.", e);
-            }
-            
-            
-            if (!file.delete()) {
-                server.getLogger().warning("Failed to delete unported plugin " + file.getAbsolutePath() + ". DELETE IT before your next reload/restart or things may explode!");
-            }
-            File newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
-            /*if (!newFile.exists()) {
-                server.getLogger().warning("FAILED to port plugin " + file.getAbsolutePath() + " to " + newFile.getAbsolutePath() + ", not attempting to load the new one.");
-            }
-            else {
-                newFile.renameTo(file);
-            }*/
-            file = newFile;
-        } else {
-            File newFile = new File(file.getParentFile().getAbsolutePath() + "/ported_" + file.getName());
-            if (newFile.exists()) {
-                // herp, derp
-                file = newFile;
-            }
+        if ((configuration.getBoolean("mcpc.plugin-settings.default.remap-plugin-file", false) || configuration.getBoolean("mcpc.plugin-settings."+pluginBaseName+".remap-plugin-file", false)) && !warnedLegacy) {
+            server.getLogger().warning("Legacy remap-plugin-file SrgTools file-based remapper no longer included but bukkit.yml remap-plugin-file is true; ignoring. "+
+                "If needed, the old tool can be found at https://github.com/MinecraftPortCentral/MCPC-Plus/tree/5210aa0c613f3a1bdccaadc8af9f1b253e871da3/plugins - "+
+                "but please try the new SpecialSource-based in-memory remapper enabled with custom-class-loader (on by default since MCPC+ build 27+) and report "+
+                "any problems to http://www.mcportcentral.co.za/.");
+            warnedLegacy = true;
         }
+
         // MCPC+ end
 
         PluginDescriptionFile description;
@@ -466,4 +436,44 @@ public class JavaPluginLoader implements PluginLoader {
             }
         }
     }
+
+    // MCPC+ start
+    private InheritanceMap globalInheritanceMap = null;
+
+    /**
+     * Get the inheritance map for remapping all plugins
+     */
+    public InheritanceMap getGlobalInheritanceMap() {
+        if (globalInheritanceMap == null) {
+            Map<String, String> relocationsCurrent = new HashMap<String, String>();
+            relocationsCurrent.put("net.minecraft.server", "net.minecraft.server."+PluginClassLoader.current);
+            JarMapping currentMappings = new JarMapping();
+
+            try {
+                currentMappings.loadMappings(
+                        new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.current+"/cb2numpkg.srg"))),
+                        new ShadeRelocationSimulator(relocationsCurrent),
+                        null, false);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                throw new RuntimeException(ex);
+            }
+
+            BiMap<String, String> inverseClassMap = HashBiMap.create(currentMappings.classes).inverse();
+            globalInheritanceMap = new InheritanceMap();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.current+"/nms.inheritmap")));
+
+            try {
+                globalInheritanceMap.load(reader, inverseClassMap);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                throw new RuntimeException(ex);
+            }
+            System.out.println("Loaded inheritance map of "+globalInheritanceMap.size()+" classes");
+        }
+
+        return globalInheritanceMap;
+    }
+    // MCPC+ end
 }

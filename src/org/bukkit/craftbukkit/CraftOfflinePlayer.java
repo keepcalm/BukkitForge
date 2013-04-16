@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import keepcalm.mods.bukkit.BukkitContainer;
-import keepcalm.mods.bukkit.CraftPlayerCache;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.management.BanEntry;
@@ -106,7 +106,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
         for (Object obj : server.getHandle().getConfigurationManager().playerEntityList) {
             EntityPlayerMP player = (EntityPlayerMP) obj;
             if (player.username.equalsIgnoreCase(getName())) {
-            	return CraftPlayerCache.getCraftPlayer(player);
+            	return BukkitForgePlayerCache.getCraftPlayer(player);
                 //return (Player) ((player.playerNetServerHandler != null) ? CraftEntity.getEntity(server, player) : null);
             }
         }

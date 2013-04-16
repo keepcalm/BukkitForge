@@ -1,6 +1,7 @@
 package keepcalm.mods.bukkit.forgeHandler.commands;
 
 import keepcalm.mods.bukkit.BukkitContainer;
+import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandServerStop;
 import net.minecraft.command.ICommandSender;
@@ -9,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.StopCommand;
 import org.bukkit.craftbukkit.CraftConsoleCommandSender;
-import keepcalm.mods.bukkit.CraftPlayerCache;
+
 /**
  * Shuts down the server in a bukkit-friendly way.
  * @author keepcalm
@@ -25,7 +26,7 @@ public class CraftCommandStop extends CommandBase {
 	public boolean canCommandSenderUseCommand(ICommandSender sender) {
 		CommandSender s;
 		if (sender instanceof EntityPlayerMP) {
-			s = CraftPlayerCache.getCraftPlayer((EntityPlayerMP) sender);
+			s = BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) sender);
 		}
 		else s = CraftConsoleCommandSender.getInstance();
 		if ((new StopCommand()).testPermissionSilent(s)) {
@@ -36,7 +37,6 @@ public class CraftCommandStop extends CommandBase {
 	
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
-		BukkitContainer.bServer.shutdown();
 		(new CommandServerStop()).processCommand(var1, var2);
 	}
 

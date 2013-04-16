@@ -5,6 +5,7 @@ import java.util.Set;
 import keepcalm.mods.bukkit.forgeHandler.ConnectionHandler;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IMerchant;
+import net.minecraft.entity.item.EntityMinecartHopper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -16,6 +17,7 @@ import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.tileentity.TileEntityHopper;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -177,7 +179,7 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity  
 	}
 
 	public InventoryView getOpenInventory() {
-		InventoryBasic nms = new InventoryBasic("", getHandle().openContainer.inventoryItemStacks.size());
+		InventoryBasic nms = new InventoryBasic("", true, getHandle().openContainer.inventoryItemStacks.size());
 		for (int i = 0; i < nms.getSizeInventory(); i++) {
 			nms.setInventorySlotContents(i, (net.minecraft.item.ItemStack) getHandle().openContainer.inventoryItemStacks.get(i));
 		}
@@ -241,7 +243,7 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity  
 			break;
 		case MERCHANT:
 			if (craftinv.getInventory() instanceof IMerchant) {
-				getHandle().displayGUIMerchant((IMerchant) craftinv.getInventory());
+				getHandle().displayGUIMerchant((IMerchant) craftinv.getInventory(), null);
 			}
 			else {
 				openCustomInventory(craftinv, player, 6);
@@ -268,7 +270,7 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity  
 		String title = cont.getCraftView().getTitle();// container.();
 		int size = cont.getCraftView().getTopInventory().getSize();
 
-		player.playerNetServerHandler.handleOpenWindow(new Packet100OpenWindow(container.windowId, windowType, title, size));
+		player.playerNetServerHandler.handleOpenWindow(new Packet100OpenWindow(container.windowId, windowType, title, size, true));
 		getHandle().openContainer = container;
 		getHandle().openContainer.setPlayerIsPresent(player, true);
 	}
@@ -303,11 +305,11 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity  
 		if (location == null) {
 			location = getLocation();
 		}
-		getHandle().displayGUIEnchantment(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+		getHandle().displayGUIEnchantment(location.getBlockX(), location.getBlockY(), location.getBlockZ(), null);
 		/*if (force) {
 			getHandle().openContainer. = false;
 		}*/
-		Inventory enchtable = new CraftInventoryEnchanting(new InventoryBasic("Enchanting", 1));
+		Inventory enchtable = new CraftInventoryEnchanting(new InventoryBasic("Enchanting", false, 1));
 		return new CraftInventoryView(this, enchtable, getHandle().openContainer);
 	}
 
@@ -337,7 +339,7 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity  
 		int windowType = CraftContainer.getNotchInventoryType(type);
 		String title = inventory.getTitle();
 		int size = inventory.getTopInventory().getSize();
-		player.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(container.windowId, windowType, title, size));
+		player.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(container.windowId, windowType, title, size, false));
 		player.openContainer = container;
 		player.openContainer.setPlayerIsPresent(player, true);
 	}
