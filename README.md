@@ -8,15 +8,15 @@ It can load plugins, commands work, lots of things work, permissions *should* wo
 Most of this mod is a fairly straight port from Craftbukkit, but I've had to modify parts
 (and i anticipate modifiying more).
 
-This is ported to 1.5.
+This is ported to 1.5.1.
 
 See a list of working plugins [here](https://github.com/keepcalm/BukkitForge/wiki/Working-plugins-page).
 
 BukkitForge Team Members:
 ================
-<a href="https://github.com/keepcalm">keepcalm</a> (confirmed Dead) 
+<a href="https://github.com/keepcalm">keepcalm</a>
 
-keepbot (keepcalm's bot, also confirmed Dead)
+keepbot (keepcalm's bot)
 
 <a href="https://github.com/alexbegt">alexbegt</a>  
 
