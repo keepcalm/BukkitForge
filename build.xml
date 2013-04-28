@@ -92,7 +92,6 @@
         <delete dir="${mcpsrc.dir}/org" />
         <delete dir="${mcpsrc.dir}/javax" />
 		<delete dir="${mcpsrc.dir}/com" />
-		<delete dir="${mcpsrc.dir}/net/md_5" />
 		<!-- Copy source -->
 		<!--<mkdir dir="${mcpsrc.dir}/net" />
 				<copy todir="${mcpsrc.dir}/net">
@@ -103,7 +102,6 @@
 		<mkdir dir="${mcpsrc.dir}/com" />
 		<mkdir dir="${mcpsrc.dir}/javax" />
 		<mkdir dir="${mcpsrc.dir}/au" />
-		<mkdir dir="${mcpsrc.dir}/net/md_5" />
         <copy todir="${mcpsrc.dir}/com">
             <fileset dir="${src.dir}/com"/>
         </copy>
@@ -118,9 +116,6 @@
 		</copy>
 		<copy todir="${mcpsrc.dir}/au">
 			<fileset dir="${src.dir}/au" />
-		</copy>
-		<copy todir="${mcpsrc.dir}/net/md_5">
-			<fileset dir="${src.dir}/net/md_5" />
 		</copy>
         <copy todir="${mcpsrc.dir}/tst">
             <fileset dir="${src.dir}/tst" />
