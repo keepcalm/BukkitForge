@@ -1154,7 +1154,7 @@ public class CraftServer implements Server {
 					));
 		}
 		getPluginManager().disablePlugins();
-		Logger logger = this.theServer.getLogAgent().func_98076_a();
+		Logger logger = this.theServer.getLogAgent().getServerLogger();
 		Handler[] handlers = logger.getHandlers();
 		for(int h = 0; h < handlers.length; h++)
 		{

@@ -9,7 +9,7 @@
 	<property name="src.dir" value="src" />
 
 
-	<property name="forge.version" value="1.5.1-7.7.0.608" />
+	<property name="forge.version" value="1.5.1-7.7.1.676" />
 
 	<property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
 	<property name="mcp.version" value="744" />

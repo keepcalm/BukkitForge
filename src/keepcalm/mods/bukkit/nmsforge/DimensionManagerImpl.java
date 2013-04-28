@@ -337,7 +337,7 @@ public class DimensionManagerImpl {
     {
         if (getWorld(0) != null)
         {
-            return ((SaveHandler)getWorld(0).getSaveHandler()).getSaveDirectory();
+            return ((SaveHandler)getWorld(0).getSaveHandler()).getWorldDirectory();
         }
 
         return null;

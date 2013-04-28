@@ -22,11 +22,11 @@ public class CraftCreatureSpawner extends CraftBlockState implements CreatureSpa
 
     @Deprecated
     public CreatureType getCreatureType() {
-        return CreatureType.fromName(spawner.func_98049_a().func_98276_e());
+        return CreatureType.fromName(spawner.func_98049_a().getEntityNameToSpawn());
     }
 
     public EntityType getSpawnedType() {
-        return EntityType.fromName(spawner.func_98049_a().func_98276_e());
+        return EntityType.fromName(spawner.func_98049_a().getEntityNameToSpawn());
     }
 
     @Deprecated
@@ -44,7 +44,7 @@ public class CraftCreatureSpawner extends CraftBlockState implements CreatureSpa
 
     @Deprecated
     public String getCreatureTypeId() {
-        return spawner.func_98049_a().func_98276_e();
+        return spawner.func_98049_a().getEntityNameToSpawn();
     }
 
     @Deprecated
@@ -53,7 +53,7 @@ public class CraftCreatureSpawner extends CraftBlockState implements CreatureSpa
     }
 
     public String getCreatureTypeName() {
-        return spawner.func_98049_a().func_98276_e();
+        return spawner.func_98049_a().getEntityNameToSpawn();
     }
 
     public void setCreatureTypeByName(String creatureType) {
@@ -66,11 +66,11 @@ public class CraftCreatureSpawner extends CraftBlockState implements CreatureSpa
     }
 
     public int getDelay() {
-        return spawner.func_98049_a().field_98286_b;
+        return spawner.func_98049_a().spawnDelay;
     }
 
     public void setDelay(int delay) {
-        spawner.func_98049_a().field_98286_b = delay;
+        spawner.func_98049_a().spawnDelay = delay;
     }
 
 }
