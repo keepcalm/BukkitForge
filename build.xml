@@ -30,7 +30,7 @@
 
 	<property file="${forge.dir}/forgeversion.properties" />
 	<condition property="forge.already.installed">
-		<equals arg1="${forge.build.number}" arg2="608" />
+		<equals arg1="${forge.build.number}" arg2="676" />
 	</condition>
 
 	<mkdir dir="${download.dir}"/>
