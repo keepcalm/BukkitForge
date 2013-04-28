@@ -7,8 +7,8 @@ import keepcalm.mods.bukkit.ToBukkit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.CraftChunk;
-import org.bukkit.craftbukkit.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_5_R2.CraftChunk;
+import org.bukkit.craftbukkit.v1_5_R2.block.CraftBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityExplodeEvent;

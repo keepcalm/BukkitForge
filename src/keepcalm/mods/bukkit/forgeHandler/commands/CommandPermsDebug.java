@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import org.bukkit.command.CommandException;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 

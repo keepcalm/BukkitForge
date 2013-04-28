@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 
-import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
 
 public class BukkitForgePlayerCache {
 

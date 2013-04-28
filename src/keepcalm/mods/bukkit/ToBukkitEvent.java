@@ -16,7 +16,8 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.SaplingGrowTreeEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import org.bukkit.craftbukkit.block.CraftBlock;
+
+import org.bukkit.craftbukkit.v1_5_R2.block.CraftBlock;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.block.*;
 import org.bukkit.event.block.SignChangeEvent;

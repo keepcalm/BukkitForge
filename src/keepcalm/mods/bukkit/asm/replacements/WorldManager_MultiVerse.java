@@ -2,8 +2,8 @@ package keepcalm.mods.bukkit.asm.replacements;
 
 import com.eoware.asm.asmagic.AsmagicReplaceMethod;
 import org.bukkit.WorldType;
-import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R2.CraftWorld;
 
 import java.io.File;
 

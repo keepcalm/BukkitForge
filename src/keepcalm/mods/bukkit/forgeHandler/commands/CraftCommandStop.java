@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.StopCommand;
-import org.bukkit.craftbukkit.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.v1_5_R2.CraftConsoleCommandSender;
 
 /**
  * Shuts down the server in a bukkit-friendly way.

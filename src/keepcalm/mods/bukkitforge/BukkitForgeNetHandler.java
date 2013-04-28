@@ -35,12 +35,12 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.TextWrapper;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.craftbukkit.event.CraftEventFactory;
-import org.bukkit.craftbukkit.inventory.CraftInventoryView;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R2.TextWrapper;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_5_R2.event.CraftEventFactory;
+import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryView;
+import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -1907,7 +1907,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                 TileEntitySign var7 = (TileEntitySign)var3;
                 // CraftBukkit start
                 Player player = this.server.getPlayer( ToBukkit.player(this.playerEntity).getName());
-                SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(var8, var9, var6), this.server.getPlayer(ToBukkit.player(this.playerEntity).getName()), par1Packet130UpdateSign.signLines);
+                SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.v1_5_R2.block.CraftBlock) player.getWorld().getBlockAt(var8, var9, var6), this.server.getPlayer(ToBukkit.player(this.playerEntity).getName()), par1Packet130UpdateSign.signLines);
                 this.server.getPluginManager().callEvent(event);
 
                 if (!event.isCancelled())

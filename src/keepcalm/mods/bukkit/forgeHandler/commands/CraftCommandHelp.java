@@ -10,9 +10,9 @@ import net.minecraft.util.MathHelper;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.CraftConsoleCommandSender;
-import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.help.SimpleHelpMap;
+import org.bukkit.craftbukkit.v1_5_R2.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R2.help.SimpleHelpMap;
 import org.bukkit.help.HelpTopic;
 
 public class CraftCommandHelp extends CommandBase {

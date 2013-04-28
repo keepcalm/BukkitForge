@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.bukkit.BlockChangeDelegate;
 import org.bukkit.block.BlockState;
-import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R2.CraftWorld;
 import org.bukkit.material.MaterialData;
 
 public class StructureGrowDelegate implements BlockChangeDelegate {

@@ -4,7 +4,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.structure.ComponentStrongholdRightTurn;
 import org.bukkit.WorldCreator;
-import org.bukkit.craftbukkit.generator.CustomChunkGenerator;
+import org.bukkit.craftbukkit.v1_5_R2.generator.CustomChunkGenerator;
 
 public class BukkitForgeWorldProvider extends WorldProvider {
 

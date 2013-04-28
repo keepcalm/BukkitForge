@@ -21,7 +21,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.md_5.specialsource.InheritanceMap;
 import net.md_5.specialsource.JarMapping;
-import net.md_5.specialsource.ShadeRelocationSimulator;
+import net.md_5.specialsource.transformer.MavenShade;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -30,7 +30,7 @@ import org.bukkit.Warning.WarningState;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
@@ -452,7 +452,7 @@ public class JavaPluginLoader implements PluginLoader {
             try {
                 currentMappings.loadMappings(
                         new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.current+"/cb2numpkg.srg"))),
-                        new ShadeRelocationSimulator(relocationsCurrent),
+                        new MavenShade(relocationsCurrent),
                         null, false);
             } catch (IOException ex) {
                 ex.printStackTrace();
