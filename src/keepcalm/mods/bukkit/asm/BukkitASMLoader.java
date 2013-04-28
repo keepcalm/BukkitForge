@@ -44,6 +44,8 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitGuava10Download",
 				"keepcalm.mods.bukkit.asm.libraryHandlers.SpecialSourceDownload",
 				"keepcalm.mods.bukkit.asm.libraryHandlers.LombokDownload",
+				"keepcalm.mods.bukkit.asm.libraryHandlers.OpencsvDownload",
+				"keepcalm.mods.bukkit.asm.libraryHandlers.JoptSimpleDownload",
 				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitMySQLDownload"}; 
 	}
 	@Override
