@@ -123,6 +123,7 @@ public class BukkitContainer {
 			isDediServer = true;
 			if (MinecraftServer.getServer() != null && MinecraftServer.getServer().getGuiEnabled()) {
 				isGuiEnabled = true;
+				MinecraftServer.getServer().getLogAgent().getServerLogger().severe("BukkitForge plugins may misbehave when using the gui! Run the server with 'nogui'!");
 			}
 		}
 		else
@@ -137,9 +138,10 @@ public class BukkitContainer {
 	}
 	@PreInit
 	public void preInit(FMLPreInitializationEvent ev) {
-		bukkitLogger = Logger.getLogger("BukkitForge");
+		bukkitLogger = ev.getModLog();//Logger.getLogger("BukkitForge");
+		bukkitLogger.setParent(FMLCommonHandler.instance().getFMLLogger());
 		try {
-			bukkitLogger.addHandler(new FileHandler("serverBF.log"));
+			bukkitLogger.addHandler(new FileHandler("server.log"));
 		} catch (SecurityException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
