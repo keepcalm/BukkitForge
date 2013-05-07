@@ -2,27 +2,24 @@ package org.bukkit.craftbukkit.v1_5_R2.inventory;
 
 import java.util.List;
 
-import net.minecraft.item.crafting.ShapelessRecipes;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
 public class CraftShapelessRecipe extends ShapelessRecipe implements CraftRecipe {
     // TODO: Could eventually use this to add a matches() method or some such
-    //private ShapelessRecipes recipe;
+    private net.minecraft.item.crafting.ShapelessRecipes recipe;
 
     public CraftShapelessRecipe(ItemStack result) {
         super(result);
     }
 
-    public CraftShapelessRecipe(ItemStack result, ShapelessRecipes recipe) {
+    public CraftShapelessRecipe(ItemStack result, net.minecraft.item.crafting.ShapelessRecipes recipe) {
         this(result);
-        //this.recipe = recipe;
+        this.recipe = recipe;
     }
 
-    public static CraftShapelessRecipe fromCraftRecipe(ShapelessRecipe recipe) {
+    public static CraftShapelessRecipe fromBukkitRecipe(ShapelessRecipe recipe) {
         if (recipe instanceof CraftShapelessRecipe) {
             return (CraftShapelessRecipe) recipe;
         }
@@ -43,6 +40,6 @@ public class CraftShapelessRecipe extends ShapelessRecipe implements CraftRecipe
             data[i] = new net.minecraft.item.ItemStack(id, 1, dmg);
             i++;
         }
-        GameRegistry.addShapelessRecipe(CraftItemStack.createNMSItemStack(this.getResult()), data);
+        net.minecraft.item.crafting.CraftingManager.getInstance().addShapelessRecipe(CraftItemStack.asNMSCopy(this.getResult()), data);
     }
 }

@@ -1,16 +1,15 @@
 package org.bukkit.craftbukkit.v1_5_R2.inventory;
 
+
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CraftFurnaceRecipe extends FurnaceRecipe implements CraftRecipe {
     public CraftFurnaceRecipe(ItemStack result, ItemStack source) {
         super(result, source.getType(), source.getDurability());
     }
 
-    public static CraftFurnaceRecipe fromCraftRecipe(FurnaceRecipe recipe) {
+    public static CraftFurnaceRecipe fromBukkitRecipe(FurnaceRecipe recipe) {
         if (recipe instanceof CraftFurnaceRecipe) {
             return (CraftFurnaceRecipe) recipe;
         }
@@ -20,6 +19,6 @@ public class CraftFurnaceRecipe extends FurnaceRecipe implements CraftRecipe {
     public void addToCraftingManager() {
         ItemStack result = this.getResult();
         ItemStack input = this.getInput();
-        GameRegistry.addSmelting(input.getTypeId(), CraftItemStack.createNMSItemStack(result), 0.1f);
+        net.minecraft.item.crafting.FurnaceRecipes.smelting().addSmelting(input.getTypeId(), CraftItemStack.asNMSCopy(result), 0.1f);
     }
 }

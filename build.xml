@@ -92,6 +92,27 @@
         <delete dir="${mcpsrc.dir}/org" />
         <delete dir="${mcpsrc.dir}/javax" />
 		<delete dir="${mcpsrc.dir}/com" />
+		
+		<delete file="${mcpsrc.dir}/net/minecraft/block/Block.java" />
+		
+		<delete file="${mcpsrc.dir}/net/minecraft/inventory/IInventory.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/inventory/InventoryBasic.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/inventory/InventoryCrafting.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/inventory/InventoryCraftResult.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/inventory/InventoryLargeChest.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/inventory/InventoryMerchant.java" />
+		
+		<delete file="${mcpsrc.dir}/net/minecraft/entity/EntityLiving.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/entity/item/EntityMinecartContainer.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/entity/player/InventoryPlayer.java" />
+		
+		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityBeacon.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityBrewingStand.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityChest.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityDispenser.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityFurnace.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityHopper.java" />
+		
 		<!-- Copy source -->
 		<!--<mkdir dir="${mcpsrc.dir}/net" />
 				<copy todir="${mcpsrc.dir}/net">
@@ -120,6 +141,14 @@
         <copy todir="${mcpsrc.dir}/tst">
             <fileset dir="${src.dir}/tst" />
         </copy>
+		
+		<copy todir="${mcpsrc.dir}/net" >
+			<fileset dir="${src.dir}/net">
+				<patternset>
+					<include name="*.java" />
+				</patternset>
+			</fileset>
+		</copy>
 
 		<!-- Recompile -->
 		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">

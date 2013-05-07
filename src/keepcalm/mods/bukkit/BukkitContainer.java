@@ -138,10 +138,10 @@ public class BukkitContainer {
 	}
 	@PreInit
 	public void preInit(FMLPreInitializationEvent ev) {
-		bukkitLogger = ev.getModLog();//Logger.getLogger("BukkitForge");
-		bukkitLogger.setParent(FMLCommonHandler.instance().getFMLLogger());
+		bukkitLogger = Logger.getLogger("BukkitForge");
+		//bukkitLogger.setParent(FMLCommonHandler.instance().getFMLLogger());
 		try {
-			bukkitLogger.addHandler(new FileHandler("server.log"));
+			bukkitLogger.addHandler(new FileHandler("serverBF.log"));
 		} catch (SecurityException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {

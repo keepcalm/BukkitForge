@@ -14,49 +14,53 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 public class CraftFirework extends CraftEntity implements Firework {
-	private final CraftItemStack item;
-	
-	public CraftFirework(CraftServer server, EntityFireworkRocket entity) {
-		super(server, entity);
-		ItemStack item = getHandle().getDataWatcher().getWatchableObjectItemStack(8);
-		
-		if (item == null) {
-			item = new ItemStack(Item.firework);
-			getHandle().getDataWatcher().updateObject(8, item);
-		}
-		this.item = new CraftItemStack(item);
-		
-		if (this.item.getType() != Material.FIREWORK) {
-			this.item.setType(Material.FIREWORK);
-		}
-	}
-	
-	@Override
-	public EntityFireworkRocket getHandle() {
-		return (EntityFireworkRocket) entity;
-	}
-	
-	@Override
-	public String toString() {
-		return "CraftFirework{vanillaFirework=" + getHandle() + "}";
-	}
+    private static final int FIREWORK_ITEM_INDEX = 8;
 
-	@Override
-	public EntityType getType() {
-		return EntityType.FIREWORK;
-	}
+    private final Random random = new Random();
+    private final CraftItemStack item;
 
-	@Override
-	public FireworkMeta getFireworkMeta() {
-		return (FireworkMeta) item.getItemMeta();
-	}
+    public CraftFirework(CraftServer server, net.minecraft.entity.item.EntityFireworkRocket entity) {
+        super(server, entity);
 
-	@Override
-	public void setFireworkMeta(FireworkMeta meta) {
-		item.setItemMeta(meta);
-		Random rand = new Random();
-		getHandle().lifetime = 10 * (1 + meta.getPower() + rand.nextInt(6) + rand.nextInt(7));
-		getHandle().getDataWatcher().updateObject(8, item.getHandle());
-	}
+        net.minecraft.item.ItemStack item = getHandle().getDataWatcher().getWatchableObjectItemStack(FIREWORK_ITEM_INDEX);
 
+        if (item == null) {
+            item = new net.minecraft.item.ItemStack(net.minecraft.item.Item.firework);
+            getHandle().getDataWatcher().updateObject(FIREWORK_ITEM_INDEX, item);
+        }
+
+        this.item = CraftItemStack.asCraftMirror(item);
+
+        // Ensure the item is a firework...
+        if (this.item.getType() != Material.FIREWORK) {
+            this.item.setType(Material.FIREWORK);
+        }
+    }
+
+    @Override
+    public net.minecraft.entity.item.EntityFireworkRocket getHandle() {
+        return (net.minecraft.entity.item.EntityFireworkRocket) entity;
+    }
+
+    @Override
+    public String toString() {
+        return "CraftFirework";
+    }
+
+    public EntityType getType() {
+        return EntityType.FIREWORK;
+    }
+
+    public FireworkMeta getFireworkMeta() {
+        return (FireworkMeta) item.getItemMeta();
+    }
+
+    public void setFireworkMeta(FireworkMeta meta) {
+        item.setItemMeta(meta);
+
+        // Copied from EntityFireworks constructor, update firework lifetime/power
+        getHandle().lifetime = 10 * (1 + meta.getPower()) + random.nextInt(6) + random.nextInt(7);
+
+        getHandle().getDataWatcher().setObjectWatched(FIREWORK_ITEM_INDEX); // Update
+    }
 }

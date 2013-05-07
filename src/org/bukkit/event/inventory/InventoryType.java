@@ -10,6 +10,10 @@ public enum InventoryType {
      */
     DISPENSER(9,"Dispenser"),
     /**
+     * A dropper inventory, with 9 slots of type CONTAINER.
+     */
+    DROPPER(9, "Dropper"),
+    /**
      * A furnace inventory, with a RESULT slot, a CRAFTING slot, and a FUEL slot.
      */
     FURNACE(3,"Furnace"),
@@ -56,6 +60,10 @@ public enum InventoryType {
      * A beacon inventory, with 1 CRAFTING slot
      */
     BEACON(1, "container.beacon"),
+    /**
+     * A hopper inventory, with 5 slots of type CONTAINER.
+     */
+    HOPPER(5, "Item Hopper"),
     ;
 
     private final int size;

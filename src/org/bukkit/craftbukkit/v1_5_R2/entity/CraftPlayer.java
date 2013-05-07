@@ -476,9 +476,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 	}
 
 	public void updateInventory() {
-		//getHandle().updateInventory(getHandle().craftingInventory);f
-		getHandle().updateHeldItem();
-	}
+        getHandle().sendContainerToPlayer(getHandle().openContainer);
+    }
 
 	public void setSleepingIgnored(boolean isSleeping) {
 		// FIXME - this will explode MC

@@ -2,27 +2,24 @@ package org.bukkit.craftbukkit.v1_5_R2.inventory;
 
 import java.util.Map;
 
-import net.minecraft.item.crafting.ShapedRecipes;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
 public class CraftShapedRecipe extends ShapedRecipe implements CraftRecipe {
     // TODO: Could eventually use this to add a matches() method or some such
-    //private ShapedRecipes recipe;
-    
+    private net.minecraft.item.crafting.ShapedRecipes recipe;
+
     public CraftShapedRecipe(ItemStack result) {
         super(result);
     }
-    
-    public CraftShapedRecipe(ItemStack result, ShapedRecipes recipe) {
+
+    public CraftShapedRecipe(ItemStack result, net.minecraft.item.crafting.ShapedRecipes recipe) {
         this(result);
-        //this.recipe = recipe;
+        this.recipe = recipe;
     }
 
-    public static CraftShapedRecipe fromCraftRecipe(ShapedRecipe recipe) {
+    public static CraftShapedRecipe fromBukkitRecipe(ShapedRecipe recipe) {
         if (recipe instanceof CraftShapedRecipe) {
             return (CraftShapedRecipe) recipe;
         }
@@ -60,6 +57,6 @@ public class CraftShapedRecipe extends ShapedRecipe implements CraftRecipe {
             data[i] = new net.minecraft.item.ItemStack(id, 1, dmg);
             i++;
         }
-        GameRegistry.addRecipe(CraftItemStack.createNMSItemStack(this.getResult()), data);
+        net.minecraft.item.crafting.CraftingManager.getInstance().addRecipe(CraftItemStack.asNMSCopy(this.getResult()), data);
     }
 }

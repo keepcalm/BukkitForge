@@ -80,9 +80,13 @@ import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_5_R2.help.CommandHelpTopic;
 import org.bukkit.craftbukkit.v1_5_R2.help.SimpleHelpMap;
 import org.bukkit.craftbukkit.v1_5_R2.inventory.BukkitRecipe;
+import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftFurnaceRecipe;
 import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryCustom;
 import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftItemFactory;
 import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftRecipe;
+import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftShapedRecipe;
+import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftShapelessRecipe;
 import org.bukkit.craftbukkit.v1_5_R2.map.CraftMapView;
 import org.bukkit.craftbukkit.v1_5_R2.metadata.EntityMetadataStore;
 import org.bukkit.craftbukkit.v1_5_R2.metadata.PlayerMetadataStore;
@@ -94,6 +98,7 @@ import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
 import org.bukkit.help.HelpTopic;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFactory;
@@ -975,60 +980,24 @@ public class CraftServer implements Server {
 
 	@Override
 	public boolean addRecipe(Recipe recipe) {
-	//	GameRegistry.addRecipe((IRecipe) recipe);
-		if (recipe instanceof ShapedRecipe) {
-			ShapedRecipe r = (ShapedRecipe) recipe;
-			boolean useOreDict = false;
-			//Map<Character,net.minecraft.item.ItemStack> nmsRecipe = Maps.newHashMap();
-			List<Object> objRecipe = new ArrayList<Object>();
-			objRecipe.addAll(Arrays.asList(r.getShape()));
-			for (Character j : r.getIngredientMap().keySet()) {
-				ItemStack x = r.getIngredientMap().get(j);
-				net.minecraft.item.ItemStack nms = CraftItemStack.createNMSItemStack(x);
-				if (OreDictionary.getOreID(nms) != -1) {
-					useOreDict = true;
-				}
-				if (LiquidContainerRegistry.isContainer(nms)) {
-					useOreDict = true;
-				}
-				objRecipe.add(j);
-				objRecipe.add(nms);
-			}
-			
-			if (useOreDict) {
-				ShapedOreRecipe rec = new ShapedOreRecipe(CraftItemStack.createNMSItemStack(recipe.getResult()), objRecipe);
-				GameRegistry.addRecipe(rec);
-			}
-			else {
-				GameRegistry.addRecipe(CraftItemStack.createNMSItemStack(recipe.getResult()), objRecipe);
-			}
-		}
-		else if (recipe instanceof ShapelessRecipe) {
-			ShapelessRecipe r = (ShapelessRecipe) recipe;
-			List<net.minecraft.item.ItemStack> items = new ArrayList<net.minecraft.item.ItemStack>();
-			boolean useOreDict = false;
-			for (ItemStack i : r.getIngredientList()) {
-				net.minecraft.item.ItemStack nms = CraftItemStack.createNMSItemStack(i);
-				if (OreDictionary.getOreID(nms) != -1) {
-					useOreDict = true;
-				}
-				if (LiquidContainerRegistry.isContainer(nms)) {
-					useOreDict = true;
-				}
-				items.add(nms);
-			}
-			if (useOreDict) {
-				//TODO: Check if the new Class is even required
-				//ShapelessOreRecipe nmsRec = 
-						new ShapelessOreRecipe(CraftItemStack.createNMSItemStack(recipe.getResult()), items);
-			}
-			else {
-				ShapelessRecipes nmsRec = new ShapelessRecipes(CraftItemStack.createNMSItemStack(recipe.getResult()), items);
-				GameRegistry.addRecipe(nmsRec);
-			}
-		}
-		return true;
-	}
+        CraftRecipe toAdd;
+        if (recipe instanceof CraftRecipe) {
+            toAdd = (CraftRecipe) recipe;
+        } else {
+            if (recipe instanceof ShapedRecipe) {
+                toAdd = CraftShapedRecipe.fromBukkitRecipe((ShapedRecipe) recipe);
+            } else if (recipe instanceof ShapelessRecipe) {
+                toAdd = CraftShapelessRecipe.fromBukkitRecipe((ShapelessRecipe) recipe);
+            } else if (recipe instanceof FurnaceRecipe) {
+                toAdd = CraftFurnaceRecipe.fromBukkitRecipe((FurnaceRecipe) recipe);
+            } else {
+                return false;
+            }
+        }
+        toAdd.addToCraftingManager();
+        //net.minecraft.item.crafting.CraftingManager.getInstance().sort(); // MCPC+ - mod recipes not necessarily sortable
+        return true;
+    }
 
 	@Override
 	public List<Recipe> getRecipesFor(ItemStack result) {
@@ -1293,22 +1262,19 @@ public class CraftServer implements Server {
 
 	@Override
 	public Inventory createInventory(InventoryHolder owner, InventoryType type) {
+        // TODO: Create the appropriate type, rather than Custom?
+        return new CraftInventoryCustom(owner, type);
+    }
 
-		return new CraftInventoryCustom(owner, type);
-	}
+    public Inventory createInventory(InventoryHolder owner, int size) throws IllegalArgumentException {
+        Validate.isTrue(size % 9 == 0, "Chests must have a size that is a multiple of 9!");
+        return new CraftInventoryCustom(owner, size);
+    }
 
-	@Override
-	public Inventory createInventory(InventoryHolder owner, int size) {
-		Validate.isTrue(size % 9 ==0, "The size of a chest must be divisible by 9!");
-		return new CraftInventoryCustom(owner, size);
-	}
-
-	@Override
-	public Inventory createInventory(InventoryHolder owner, int size,
-			String title) {
-		Validate.isTrue(size % 9 ==0, "The size of a chest must be divisible by 9!");
-		return new CraftInventoryCustom(owner, size, title);
-	}
+    public Inventory createInventory(InventoryHolder owner, int size, String title) throws IllegalArgumentException {
+        Validate.isTrue(size % 9 == 0, "Chests must have a size that is a multiple of 9!");
+        return new CraftInventoryCustom(owner, size, title);
+    }
 
 	@Override
 	public int getMonsterSpawnLimit() {

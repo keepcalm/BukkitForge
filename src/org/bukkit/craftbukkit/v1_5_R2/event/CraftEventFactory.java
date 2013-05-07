@@ -630,7 +630,7 @@ public class CraftEventFactory {
 
         org.bukkit.inventory.ItemStack bitem = event.getInventory().getResult();
 
-        return CraftItemStack.createNMSItemStack(bitem);
+        return CraftItemStack.asNMSCopy(bitem);
     }
 
     public static ProjectileLaunchEvent callProjectileLaunchEvent(Entity entity) {

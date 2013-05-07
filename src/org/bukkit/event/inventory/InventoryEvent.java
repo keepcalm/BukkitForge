@@ -30,15 +30,6 @@ public class InventoryEvent extends Event {
     }
 
     /**
-     * Gets the list of players viewing the primary (upper) inventory involved in this event
-     *
-     * @return A list of people viewing.
-     */
-    public List<HumanEntity> getViewers() {
-        return transaction.getTopInventory().getViewers();
-    }
-
-    /**
      * Gets the view object itself
      *
      * @return InventoryView

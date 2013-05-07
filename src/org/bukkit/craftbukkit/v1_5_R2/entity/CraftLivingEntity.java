@@ -51,8 +51,13 @@ import org.bukkit.util.Vector;
 //import net.minecraft.src.PotionEffect;
 
 public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+	private CraftEntityEquipment equipment;
 	public CraftLivingEntity(final CraftServer server, final EntityLiving entity) {
 		super(server, entity);
+		
+		if (!(this instanceof HumanEntity)) {
+            equipment = new CraftEntityEquipment(this);
+        }
 	}
 
 	public int getHealth() {
@@ -339,9 +344,8 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 
 	@Override
 	public EntityEquipment getEquipment() {
-
-		return new CraftEntityEquipment(getHandle());
-	}
+        return equipment;
+    }
 
 	@Override
 	public void setCanPickupItems(boolean pickup) {
@@ -363,4 +367,35 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 		// TODO
 
 	}
+	
+	public void setCustomName(String name) {
+        if (name == null) {
+            name = "";
+        }
+
+        // Names cannot be more than 64 characters due to DataWatcher limitations
+        if (name.length() > 64) {
+            name = name.substring(0, 64);
+        }
+
+        getHandle().func_94058_c(name);
+    }
+
+    public String getCustomName() {
+        String name = getHandle().func_94057_bL();
+
+        if (name == null || name.length() == 0) {
+            return null;
+        }
+
+        return name;
+    }
+
+    public void setCustomNameVisible(boolean flag) {
+        getHandle().func_94061_f(flag);
+    }
+
+    public boolean isCustomNameVisible() {
+        return getHandle().func_94062_bN();
+    }
 }

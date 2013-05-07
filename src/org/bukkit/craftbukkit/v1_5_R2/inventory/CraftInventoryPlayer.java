@@ -1,175 +1,182 @@
 package org.bukkit.craftbukkit.v1_5_R2.inventory;
 
-import java.util.Arrays;
-import java.util.HashMap;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import keepcalm.mods.bukkit.ToBukkit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_5_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nullable;
-
-public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.inventory.PlayerInventory {
+public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.inventory.PlayerInventory, EntityEquipment {
 	private EntityPlayer player;
 	private InventoryPlayer realInv;
-	public CraftInventoryPlayer(InventoryPlayer inventory) {
-		super(inventory);
-		this.realInv = inventory;
+	public CraftInventoryPlayer(net.minecraft.entity.player.InventoryPlayer inventory) {
+        super(inventory);
+        this.realInv = inventory;
 		this.player = inventory.player;
-	}
-
-	@Override
-	public ItemStack[] getArmorContents() {
-		ItemStack[] armorContents = new ItemStack[realInv.armorInventory.length];
-		int i = 0;
-		for (net.minecraft.item.ItemStack j : realInv.armorInventory) {
-			armorContents[i] = new CraftItemStack(j);
-			i++;
-		}
-		return armorContents;
-	}
-
-    @Override
-    public ItemStack[] getContents() {
-        return Lists.transform(Arrays.asList(((InventoryPlayer) getInventory()).mainInventory), new Function<net.minecraft.item.ItemStack, Object>() {
-            public Object apply(@Nullable net.minecraft.item.ItemStack itemStack) {
-                return ToBukkit.itemStack(itemStack);
-            }
-        }).toArray( new ItemStack[0] );
     }
 
     @Override
-    public void setContents(ItemStack[] items) {
-        if (getContents().length < items.length) {
-            throw new IllegalArgumentException("Invalid inventory size; expected " + getContents().length + " or less");
-        }
+    public net.minecraft.entity.player.InventoryPlayer getInventory() {
+        return (net.minecraft.entity.player.InventoryPlayer) inventory;
+    }
 
-        net.minecraft.item.ItemStack[] mcItems = getMCContents();
+    @Override
+    public int getSize() {
+        return super.getSize() - 4;
+    }
+
+    public ItemStack getItemInHand() {
+        return CraftItemStack.asCraftMirror(getInventory().getCurrentItem());
+    }
+
+    public void setItemInHand(ItemStack stack) {
+        setItem(getHeldItemSlot(), stack);
+    }
+
+    public int getHeldItemSlot() {
+        return getInventory().currentItem;
+    }
+
+    public void setHeldItemSlot(int slot) {
+        Validate.isTrue(slot >= 0 && slot < net.minecraft.entity.player.InventoryPlayer.getHotbarSize(), "Slot is not between 0 and 8 inclusive");
+        this.getInventory().currentItem = slot;
+        ((CraftPlayer) this.getHolder()).getHandle().playerNetServerHandler.sendPacketToPlayer(new net.minecraft.network.packet.Packet16BlockItemSwitch(slot));
+    }
+
+    public ItemStack getHelmet() {
+        return getItem(getSize() + 3);
+    }
+
+    public ItemStack getChestplate() {
+        return getItem(getSize() + 2);
+    }
+
+    public ItemStack getLeggings() {
+        return getItem(getSize() + 1);
+    }
+
+    public ItemStack getBoots() {
+        return getItem(getSize() + 0);
+    }
+
+    public void setHelmet(ItemStack helmet) {
+        setItem(getSize() + 3, helmet);
+    }
+
+    public void setChestplate(ItemStack chestplate) {
+        setItem(getSize() + 2, chestplate);
+    }
+
+    public void setLeggings(ItemStack leggings) {
+        setItem(getSize() + 1, leggings);
+    }
+
+    public void setBoots(ItemStack boots) {
+        setItem(getSize() + 0, boots);
+    }
+
+    public ItemStack[] getArmorContents() {
+        net.minecraft.item.ItemStack[] mcItems = getInventory().getArmorContents();
+        ItemStack[] ret = new ItemStack[mcItems.length];
 
         for (int i = 0; i < mcItems.length; i++) {
-            if (i >= items.length) {
-                mcItems[i] = null;
+            ret[i] = CraftItemStack.asCraftMirror(mcItems[i]);
+        }
+        return ret;
+    }
+
+    public void setArmorContents(ItemStack[] items) {
+        int cnt = getSize();
+
+        if (items == null) {
+            items = new ItemStack[4];
+        }
+        for (ItemStack item : items) {
+            if (item == null || item.getTypeId() == 0) {
+                clear(cnt++);
             } else {
-                mcItems[i] = CraftItemStack.createNMSItemStack(items[i]);
+                setItem(cnt++, item);
             }
         }
     }
 
-	@Override
-	public ItemStack getHelmet() {
-		return new CraftItemStack(realInv.armorItemInSlot(3));
-	}
+    public int clear(int id, int data) {
+        int count = 0;
+        ItemStack[] items = getContents();
+        ItemStack[] armor = getArmorContents();
+        int armorSlot = getSize();
 
-	@Override
-	public ItemStack getChestplate() {
-		return new CraftItemStack(realInv.armorItemInSlot(2));
-	}
+        for (int i = 0; i < items.length; i++) {
+            ItemStack item = items[i];
+            if (item == null) continue;
+            if (id > -1 && item.getTypeId() != id) continue;
+            if (data > -1 && item.getData().getData() != data) continue;
 
-	@Override
-	public ItemStack getLeggings() {
-		return new CraftItemStack(realInv.armorItemInSlot(1));
-	}
+            count += item.getAmount();
+            setItem(i, null);
+        }
 
-	@Override
-	public ItemStack getBoots() {
-		return new CraftItemStack(realInv.armorItemInSlot(0));
-	}
+        for (ItemStack item : armor) {
+            if (item == null) continue;
+            if (id > -1 && item.getTypeId() != id) continue;
+            if (data > -1 && item.getData().getData() != data) continue;
 
-	@Override
-	public void setArmorContents(ItemStack[] items) {
-		
-		for (int i = 0; i < 4; i++) {
-			realInv.armorInventory[i] = ((CraftItemStack) items[i]).getHandle();
-		}
-		
-	}
+            count += item.getAmount();
+            setItem(armorSlot++, null);
+        }
+        return count;
+    }
 
-	private net.minecraft.item.ItemStack getItemStackOrNull(CraftItemStack stack) {
-		return stack == null ? null : stack.getHandle();
-	}
-	
-	@Override
-	public void setHelmet(ItemStack helmet) {
-		realInv.armorInventory[3] = ((CraftItemStack) helmet).getHandle();
-		
-	}
-
-	@Override
-	public void setChestplate(ItemStack chestplate) {
-		realInv.armorInventory[2] = ((CraftItemStack) chestplate).getHandle();		
-	}
-
-	@Override
-	public void setLeggings(ItemStack leggings) {
-		realInv.armorInventory[1] = ((CraftItemStack) leggings).getHandle();		
-	}
-
-	@Override
-	public void setBoots(ItemStack boots) {
-		realInv.armorInventory[0] = ((CraftItemStack) boots).getHandle();		
-	}
-
-	@Override
-	public ItemStack getItemInHand() {
-		return new CraftItemStack(realInv.getCurrentItem());
-	}
-
-	@Override
-	public void setItemInHand(ItemStack stack) {
-		realInv.setInventorySlotContents(getHeldItemSlot(), CraftItemStack.createNMSItemStack(stack));		
-	}
-	
-	@Override
+    @Override
 	public HumanEntity getHolder() {
 		return (HumanEntity) CraftEntity.getEntity((CraftServer) Bukkit.getServer(), (Entity) this.player);
 	}
 
-	@Override
-	public int getHeldItemSlot() {
-		return realInv.currentItem;
-	}
+    public float getItemInHandDropChance() {
+        return 1;
+    }
 
-	@Override
-	public int clear(int id, int data) {
-		return realInv.clearInventory(id, data);
-	}
+    public void setItemInHandDropChance(float chance) {
+        throw new UnsupportedOperationException();
+    }
 
-	
-	@Override
-	public HashMap<Integer,ItemStack> addItem(ItemStack... items) {
-		HashMap<Integer,ItemStack> leftover = new HashMap<Integer, ItemStack>();
-		
-		InventoryPlayer inv = (InventoryPlayer)getInventory();
-		int count = 0;
-		for (ItemStack i : items ) {
-			net.minecraft.item.ItemStack internal = CraftItemStack.createNMSItemStack(i);
-			if (!inv.addItemStackToInventory(internal)) {
-				int origsize = internal.stackSize;
-				internal.stackSize--;
-				
-				while (!inv.addItemStackToInventory(internal)) {
-					internal.stackSize--;
-					if (internal.stackSize == 0) {
-						break;
-					}
-				}
-				
-				leftover.put(count, new CraftItemStack(internal.itemID, origsize - internal.stackSize, (short) internal.getItemDamage()));
-				 
-			}
-		count++;	
-		}
-		return leftover;
-		
-	}
+    public float getHelmetDropChance() {
+        return 1;
+    }
 
+    public void setHelmetDropChance(float chance) {
+        throw new UnsupportedOperationException();
+    }
+
+    public float getChestplateDropChance() {
+        return 1;
+    }
+
+    public void setChestplateDropChance(float chance) {
+        throw new UnsupportedOperationException();
+    }
+
+    public float getLeggingsDropChance() {
+        return 1;
+    }
+
+    public void setLeggingsDropChance(float chance) {
+        throw new UnsupportedOperationException();
+    }
+
+    public float getBootsDropChance() {
+        return 1;
+    }
+
+    public void setBootsDropChance(float chance) {
+        throw new UnsupportedOperationException();
+    }
 }

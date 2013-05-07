@@ -440,11 +440,12 @@ public class CraftWorld implements World {
 
 	public org.bukkit.entity.Item dropItem(Location loc, ItemStack item) {
 		Validate.notNull(item, "Cannot drop a Null item.");
-		Validate.isTrue(item.getTypeId() != 0, "Cannot drop AIR.");
-		CraftItemStack clone = new CraftItemStack(item);
-		EntityItem entity = new EntityItem(world, loc.getX(), loc.getY(), loc.getZ(), clone.getHandle());
-		entity.delayBeforeCanPickup = 10;
-		world.spawnEntityInWorld(entity);
+        Validate.isTrue(item.getTypeId() != 0, "Cannot drop AIR.");
+        net.minecraft.entity.item.EntityItem entity = new net.minecraft.entity.item.EntityItem(world, loc.getX(), loc.getY(), loc.getZ(), CraftItemStack.asNMSCopy(item));
+        entity.delayBeforeCanPickup = 10;
+        world.spawnEntityInWorld(entity);
+        // TODO this is inconsistent with how Entity.getBukkitEntity() works.
+        // However, this entity is not at the moment backed by a server entity class so it may be left.
 		return new CraftItem((CraftServer) Bukkit.getServer(), entity);
 	}
 

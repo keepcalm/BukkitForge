@@ -1,166 +1,142 @@
 package org.bukkit.craftbukkit.v1_5_R2.inventory;
 
-import net.minecraft.entity.EntityLiving;
-
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftLivingEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
 public class CraftEntityEquipment implements EntityEquipment {
+    private static final int WEAPON_SLOT = 0;
+    private static final int HELMET_SLOT = 4;
+    private static final int CHEST_SLOT = 3;
+    private static final int LEG_SLOT = 2;
+    private static final int BOOT_SLOT = 1;
+    private static final int INVENTORY_SLOTS = 5;
 
-	private EntityLiving owner;
-	
-	public CraftEntityEquipment(EntityLiving entity) {
-		owner = entity;
-	}
-	
-	@Override
-	public ItemStack getItemInHand() {
-		return owner.getHeldItem()== null ? null : new CraftItemStack(owner.getHeldItem()) ;
-	}
+    private final CraftLivingEntity entity;
 
-	@Override
-	public void setItemInHand(ItemStack stack) {
-		if (stack == null)  {
-			owner.setCurrentItemOrArmor(0, null);
-			return;
-		}
-		owner.setCurrentItemOrArmor(0, CraftItemStack.createNMSItemStack(stack));
-	}
+    public CraftEntityEquipment(CraftLivingEntity entity) {
+        this.entity = entity;
+    }
 
-	@Override
-	public ItemStack getHelmet() {
-		return owner.getCurrentItemOrArmor(1) == null ? null : new CraftItemStack(owner.getCurrentItemOrArmor(1));
-	}
+    public ItemStack getItemInHand() {
+        return getEquipment(WEAPON_SLOT);
+    }
 
-	@Override
-	public void setHelmet(ItemStack helmet) {
-		if (helmet != null)
-			owner.setCurrentItemOrArmor(1, CraftItemStack.createNMSItemStack(helmet));
-		else
-			owner.setCurrentItemOrArmor(1, null);
-	}
+    public void setItemInHand(ItemStack stack) {
+        setEquipment(WEAPON_SLOT, stack);
+    }
 
-	@Override
-	public ItemStack getChestplate() {
-		return owner.getCurrentItemOrArmor(2) == null ? null : new CraftItemStack(owner.getCurrentItemOrArmor(2));
-	}
+    public ItemStack getHelmet() {
+        return getEquipment(HELMET_SLOT);
+    }
 
-	@Override
-	public void setChestplate(ItemStack chestplate) {
-		if (chestplate != null) owner.setCurrentItemOrArmor(2, CraftItemStack.createNMSItemStack(chestplate));
-		else owner.setCurrentItemOrArmor(2, null);
-	}
+    public void setHelmet(ItemStack helmet) {
+        setEquipment(HELMET_SLOT, helmet);
+    }
 
-	@Override
-	public ItemStack getLeggings() {
-		return owner.getCurrentItemOrArmor(3) == null ? null : new CraftItemStack(owner.getCurrentItemOrArmor(3));
-	}
+    public ItemStack getChestplate() {
+        return getEquipment(CHEST_SLOT);
+    }
 
-	@Override
-	public void setLeggings(ItemStack leggings) {
-		if (leggings != null) owner.setCurrentItemOrArmor(3, CraftItemStack.createNMSItemStack(leggings));
-		else owner.setCurrentItemOrArmor(3, null);
-	}
+    public void setChestplate(ItemStack chestplate) {
+        setEquipment(CHEST_SLOT, chestplate);
+    }
 
-	@Override
-	public ItemStack getBoots() {
-		return owner.getCurrentItemOrArmor(4) == null ? null : new CraftItemStack(owner.getCurrentItemOrArmor(4));
-	}
+    public ItemStack getLeggings() {
+        return getEquipment(LEG_SLOT);
+    }
 
-	@Override
-	public void setBoots(ItemStack boots) {
-		if (boots != null) owner.setCurrentItemOrArmor(4, CraftItemStack.createNMSItemStack(boots));
-		else owner.setCurrentItemOrArmor(4, null);
-	}
+    public void setLeggings(ItemStack leggings) {
+        setEquipment(LEG_SLOT, leggings);
+    }
 
-	@Override
-	public ItemStack[] getArmorContents() {
-		return new ItemStack[] { getHelmet(), getChestplate(), getLeggings(), getBoots() };
-	}
+    public ItemStack getBoots() {
+        return getEquipment(BOOT_SLOT);
+    }
 
-	@Override
-	public void setArmorContents(ItemStack[] items) {
-		setHelmet(items[0]);
-		setChestplate(items[1]);
-		setLeggings(items[2]);
-		setBoots(items[3]);
-	}
+    public void setBoots(ItemStack boots) {
+        setEquipment(BOOT_SLOT, boots);
+    }
 
-	@Override
-	public void clear() {
-		setItemInHand(null);
-		setHelmet(null);
-		setChestplate(null);
-		setLeggings(null);
-		setBoots(null);
-	}
+    public ItemStack[] getArmorContents() {
+        ItemStack[] armor = new ItemStack[INVENTORY_SLOTS - 1];
+        for(int slot = WEAPON_SLOT + 1; slot < INVENTORY_SLOTS; slot++) {
+            armor[slot - 1] = getEquipment(slot);
+        }
+        return armor;
+    }
 
-	@Override
-	public float getItemInHandDropChance() {
-		// TODO Auto-generated method stub
-		return 0.1F;
-	}
+    public void setArmorContents(ItemStack[] items) {
+        for(int slot = WEAPON_SLOT + 1; slot < INVENTORY_SLOTS; slot++) {
+            ItemStack equipment = items != null && slot <= items.length ? items[slot - 1] : null;
+            setEquipment(slot, equipment);
+        }
+    }
 
-	@Override
-	public void setItemInHandDropChance(float chance) {
-		// TODO Auto-generated method stub
+    private ItemStack getEquipment(int slot) {
+        return CraftItemStack.asBukkitCopy(entity.getHandle().getCurrentItemOrArmor(slot));
+    }
 
-	}
+    private void setEquipment(int slot, ItemStack stack) {
+        entity.getHandle().setCurrentItemOrArmor(slot, CraftItemStack.asNMSCopy(stack));
+    }
 
-	@Override
-	public float getHelmetDropChance() {
-		// TODO Auto-generated method stub
-		return 0.1F;
-	}
+    public void clear() {
+        for(int i = 0; i < INVENTORY_SLOTS; i++) {
+            setEquipment(i, null);
+        }
+    }
 
-	@Override
-	public void setHelmetDropChance(float chance) {
-		// TODO Auto-generated method stub
+    public Entity getHolder() {
+        return entity;
+    }
 
-	}
+    public float getItemInHandDropChance() {
+       return getDropChance(WEAPON_SLOT);
+    }
 
-	@Override
-	public float getChestplateDropChance() {
-		// TODO Auto-generated method stub
-		return 0.1F;
-	}
+    public void setItemInHandDropChance(float chance) {
+        setDropChance(WEAPON_SLOT, chance);
+    }
 
-	@Override
-	public void setChestplateDropChance(float chance) {
-		// TODO Auto-generated method stub
+    public float getHelmetDropChance() {
+        return getDropChance(HELMET_SLOT);
+    }
 
-	}
+    public void setHelmetDropChance(float chance) {
+        setDropChance(HELMET_SLOT, chance);
+    }
 
-	@Override
-	public float getLeggingsDropChance() {
-		// TODO Auto-generated method stub
-		return 0.1F;
-	}
+    public float getChestplateDropChance() {
+        return getDropChance(CHEST_SLOT);
+    }
 
-	@Override
-	public void setLeggingsDropChance(float chance) {
-		// TODO Auto-generated method stub
+    public void setChestplateDropChance(float chance) {
+        setDropChance(CHEST_SLOT, chance);
+    }
 
-	}
+    public float getLeggingsDropChance() {
+        return getDropChance(LEG_SLOT);
+    }
 
-	@Override
-	public float getBootsDropChance() {
-		// TODO Auto-generated method stub
-		return 0.1F;
-	}
+    public void setLeggingsDropChance(float chance) {
+        setDropChance(LEG_SLOT, chance);
+    }
 
-	@Override
-	public void setBootsDropChance(float chance) {
-		// TODO Auto-generated method stub
+    public float getBootsDropChance() {
+        return getDropChance(BOOT_SLOT);
+    }
 
-	}
+    public void setBootsDropChance(float chance) {
+        setDropChance(BOOT_SLOT, chance);
+    }
 
-	@Override
-	public Entity getHolder() {
-		return CraftEntity.getEntity(CraftServer.instance(), owner);
-	}
+    private void setDropChance(int slot, float chance) {
+        entity.getHandle().equipmentDropChances[slot] = chance - 0.1F;
+    }
 
+    private float getDropChance(int slot) {
+        return entity.getHandle().equipmentDropChances[slot] + 0.1F;
+    }
 }

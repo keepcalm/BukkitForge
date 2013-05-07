@@ -1,17 +1,23 @@
 package keepcalm.mods.bukkit.asm;
 
+import java.io.File;
 import java.util.Map;
 
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
+import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
-public class BukkitASMLoader implements IFMLLoadingPlugin {
-	//public static final boolean isObfuscated = ClassLoader.getSystemClassLoader().getSystemResourceAsStream("net/minecraft/src") == null;
+public class BukkitASMLoader implements IFMLLoadingPlugin{
+	
+	public static RelaunchClassLoader cl;
+    public static File minecraftDir;
 	
 	@Override
 	public String[] getASMTransformerClass() {
 
-        System.out.println( "Bukkitforge call to getASMTransformer ..." ); // Don't use log so that it doesnt preload Minecraft classes
+        System.out.println( "Bukkitforge call to getASMTransformer ..." );
 
 		try {
 			Class.forName("keepcalm.mods.events.asm.BlockBreakEventAdder");
@@ -32,6 +38,7 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 		}
 		
 	}
+	
 	@Override
 	public String[] getLibraryRequestClass() {
 		return new String[] {"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitCommonsLangDownload",
@@ -48,17 +55,19 @@ public class BukkitASMLoader implements IFMLLoadingPlugin {
 				"keepcalm.mods.bukkit.asm.libraryHandlers.JoptSimpleDownload",
 				"keepcalm.mods.bukkit.asm.libraryHandlers.BukkitMySQLDownload"}; 
 	}
+	
 	@Override
 	public String getModContainerClass() {
 		return null;
 	}
+	
 	@Override
 	public String getSetupClass() {
 		return null;
 	}
+	
 	@Override
-	public void injectData(Map<String, Object> data) {
-		
-		
-	}
+	public void injectData(Map<String, Object> data)
+    {
+    }
 }
