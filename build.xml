@@ -104,6 +104,7 @@
 		
 		<delete file="${mcpsrc.dir}/net/minecraft/entity/EntityLiving.java" />
 		<delete file="${mcpsrc.dir}/net/minecraft/entity/item/EntityMinecartContainer.java" />
+		<delete file="${mcpsrc.dir}/net/minecraft/entity/player/EntityPlayer.java" />
 		<delete file="${mcpsrc.dir}/net/minecraft/entity/player/InventoryPlayer.java" />
 		
 		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityBeacon.java" />
