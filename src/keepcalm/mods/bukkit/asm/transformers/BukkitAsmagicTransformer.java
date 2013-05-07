@@ -17,6 +17,7 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityMinecartContainer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
 import net.minecraft.tileentity.*;
@@ -50,6 +51,7 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
     	addClassNameAndAlias(classes, "net.minecraft.block.Block", "apa", Block.class);
     	
     	addClassNameAndAlias(classes, "net.minecraft.entity.EntityLiving", "ng", EntityLiving.class);
+    	addClassNameAndAlias(classes, "net.minecraft.entity.player.EntityPlayer", "sq", EntityPlayer.class);
     	addClassNameAndAlias(classes, "net.minecraft.entity.player.InventoryPlayer", "so", InventoryPlayer.class);
     	addClassNameAndAlias(classes, "net.minecraft.entity.item.EntityMinecartContainer", "rk", EntityMinecartContainer.class);
     	
