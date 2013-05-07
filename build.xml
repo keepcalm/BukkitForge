@@ -142,13 +142,9 @@
             <fileset dir="${src.dir}/tst" />
         </copy>
 		
-		<copy todir="${mcpsrc.dir}/net" >
-			<fileset dir="${src.dir}/net">
-				<patternset>
-					<include name="*.java" />
-				</patternset>
-			</fileset>
-		</copy>
+		<copy todir="${mcpsrc.dir}/net">
+            <fileset dir="${src.dir}/net" />
+        </copy>
 
 		<!-- Recompile -->
 		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
