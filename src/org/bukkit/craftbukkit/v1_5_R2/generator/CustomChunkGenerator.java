@@ -307,5 +307,10 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
 		this.scatteredGen.generate(this, this.world, arg0, arg1, (byte[])null);
 		this.villageGen.generate(this, this.world, arg0, arg1, (byte[])null);
 	}
+
+
+
+	@Override
+	public void func_104112_b() {}
 	
 }

@@ -165,7 +165,7 @@ public class InventoryBasic implements IInventory
         return true;
     }
     
- // MCPC+ start - stubs for non-abstract vanilla class
+    // MCPC+ start - stubs for non-abstract vanilla class
     @Override
     public ItemStack[] getContents() {
         // TODO Auto-generated method stub

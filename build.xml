@@ -9,17 +9,17 @@
 	<property name="src.dir" value="src" />
 
 
-	<property name="forge.version" value="1.5.1-7.7.1.676" />
+	<property name="forge.version" value="1.5.2-7.8.0.688" />
 
 	<property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
-	<property name="mcp.version" value="744" />
+	<property name="mcp.version" value="751" />
 	<property name="forge.dir" value="${build.dir}/forge" />
 	<property name="mcp.dir" value="${forge.dir}/mcp" />
 	<property name="mcpsrc.dir" value="${mcp.dir}/src/minecraft" />
 	<property name="package.meta-inf" value="META-INF" />
 	<property name="package.at" value="bukkit_at.cfg" />
 	<property name="package.configs" value="${src.dir}/configurations" />
-	<property name="build.ver" value="1.5.1" />
+	<property name="build.ver" value="1.5.2" />
 	<property name="package.dir" value="porting" />
 	<!--<property name="files.minecraft.dir" value="jars" />-->
 	<property name="dist.dir" value="${build.dir}/dist" />
@@ -30,7 +30,7 @@
 
 	<property file="${forge.dir}/forgeversion.properties" />
 	<condition property="forge.already.installed">
-		<equals arg1="${forge.build.number}" arg2="676" />
+		<equals arg1="${forge.build.number}" arg2="688" />
 	</condition>
 
 	<mkdir dir="${download.dir}"/>

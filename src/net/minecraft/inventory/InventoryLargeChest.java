@@ -31,7 +31,6 @@ public class InventoryLargeChest implements IInventory
         this.upperChest.setMaxStackSize(size);
         this.lowerChest.setMaxStackSize(size);
     }
-    // CraftBukkit end
 
     public InventoryLargeChest(String par1Str, IInventory par2IInventory, IInventory par3IInventory)
     {

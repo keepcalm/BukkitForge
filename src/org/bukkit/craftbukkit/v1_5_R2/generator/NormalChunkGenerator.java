@@ -133,4 +133,8 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
 	public void recreateStructures(int arg0, int arg1) {
 		this.provider.recreateStructures(arg0, arg1);
 	}
+
+	@Override
+	public void func_104112_b() {}
+	
 }

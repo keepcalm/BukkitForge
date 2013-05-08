@@ -68,7 +68,7 @@ public abstract class EntityLiving extends Entity
     private static final float[] armorEnchantmentProbability = new float[] {0.0F, 0.0F, 0.25F, 0.5F};
 
     /** Probability to get armor */
-    private static final float[] armorProbability = new float[] {0.0F, 0.0F, 0.05F, 0.02F};
+    private static final float[] armorProbability = new float[] {0.0F, 0.0F, 0.05F, 0.07F};
 
     /** Probability to pick up loot */
     public static final float[] pickUpLootProability = new float[] {0.0F, 0.1F, 0.15F, 0.45F};
@@ -208,7 +208,9 @@ public abstract class EntityLiving extends Entity
 
     /** Chances for each equipment piece from dropping when this entity dies. */
     public float[] equipmentDropChances = new float[5];
-    private ItemStack[] field_82180_bT = new ItemStack[5];
+
+    /** The equipment this mob was previously wearing, used for syncing. */
+    private ItemStack[] previousEquipment = new ItemStack[5];
 
     /** Whether an arm swing is currently in progress. */
     public boolean isSwingInProgress = false;
@@ -219,7 +221,7 @@ public abstract class EntityLiving extends Entity
 
     /** Whether this entity should NOT despawn. */
     private boolean persistenceRequired = false;
-    protected final CombatTracker field_94063_bt = new CombatTracker(this);
+    public final CombatTracker field_94063_bt = new CombatTracker(this);
 
     /**
      * The number of updates over which the new position and rotation are to be applied to the entity.
@@ -828,10 +830,10 @@ public abstract class EntityLiving extends Entity
             {
                 ItemStack itemstack = this.getCurrentItemOrArmor(i);
 
-                if (!ItemStack.areItemStacksEqual(itemstack, this.field_82180_bT[i]))
+                if (!ItemStack.areItemStacksEqual(itemstack, this.previousEquipment[i]))
                 {
                     ((WorldServer)this.worldObj).getEntityTracker().sendPacketToAllPlayersTrackingEntity(this, new Packet5PlayerInventory(this.entityId, i, itemstack));
-                    this.field_82180_bT[i] = itemstack == null ? null : itemstack.copy();
+                    this.previousEquipment[i] = itemstack == null ? null : itemstack.copy();
                 }
             }
 
@@ -2473,14 +2475,14 @@ public abstract class EntityLiving extends Entity
                 {
                     this.dataWatcher.updateObject(9, Byte.valueOf((byte)0));
                     this.dataWatcher.updateObject(8, Integer.valueOf(0));
-                    this.setHasActivePotion(false);
+                    this.setInvisible(false);
                 }
                 else
                 {
                     i = PotionHelper.calcPotionLiquidColor(this.activePotionsMap.values());
                     this.dataWatcher.updateObject(9, Byte.valueOf((byte)(PotionHelper.func_82817_b(this.activePotionsMap.values()) ? 1 : 0)));
                     this.dataWatcher.updateObject(8, Integer.valueOf(i));
-                    this.setHasActivePotion(this.isPotionActive(Potion.invisibility.id));
+                    this.setInvisible(this.isPotionActive(Potion.invisibility.id));
                 }
             }
 
@@ -2494,7 +2496,7 @@ public abstract class EntityLiving extends Entity
         {
             boolean flag1 = false;
 
-            if (!this.getHasActivePotion())
+            if (!this.isInvisible())
             {
                 flag1 = this.rand.nextBoolean();
             }
@@ -3134,6 +3136,11 @@ public abstract class EntityLiving extends Entity
     public void setCanPickUpLoot(boolean par1)
     {
         this.canPickUpLoot = par1;
+    }
+
+    public boolean func_104002_bU()
+    {
+        return this.persistenceRequired;
     }
 
     /***
