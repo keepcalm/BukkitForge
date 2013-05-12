@@ -1,13 +1,9 @@
 package org.bukkit.craftbukkit.v1_5_R2.inventory;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
@@ -43,7 +39,7 @@ class CraftMetaBook extends CraftMetaItem implements BookMeta {
         pages.addAll(bookMeta.pages);
     }
 
-    CraftMetaBook(NBTTagCompound tag) {
+    CraftMetaBook(net.minecraft.nbt.NBTTagCompound tag) {
         super(tag);
 
         if (tag.hasKey(BOOK_TITLE.NBT)) {
@@ -55,11 +51,11 @@ class CraftMetaBook extends CraftMetaItem implements BookMeta {
         }
 
         if (tag.hasKey(BOOK_PAGES.NBT)) {
-            NBTTagList pages = tag.getTagList(BOOK_PAGES.NBT);
+            net.minecraft.nbt.NBTTagList pages = tag.getTagList(BOOK_PAGES.NBT);
             String[] pageArray = new String[pages.tagCount()];
 
             for (int i = 0; i < pages.tagCount(); i++) {
-                String page = ((NBTTagString) pages.tagAt(i)).data;
+                String page = ((net.minecraft.nbt.NBTTagString) pages.tagAt(i)).data;
                 pageArray[i] = page;
             }
 
@@ -74,12 +70,12 @@ class CraftMetaBook extends CraftMetaItem implements BookMeta {
 
         setTitle(SerializableMeta.getString(map, BOOK_TITLE.BUKKIT, true));
 
-        Collection<?> pages = SerializableMeta.getObject(Collection.class, map, BOOK_PAGES.BUKKIT, true);
+        Iterable<?> pages = SerializableMeta.getObject(Iterable.class, map, BOOK_PAGES.BUKKIT, true);
         CraftMetaItem.safelyAdd(pages, this.pages, MAX_PAGE_LENGTH);
     }
 
     @Override
-    void applyToItem(NBTTagCompound itemData) {
+    void applyToItem(net.minecraft.nbt.NBTTagCompound itemData) {
         super.applyToItem(itemData);
 
         if (hasTitle()) {
@@ -259,10 +255,5 @@ class CraftMetaBook extends CraftMetaItem implements BookMeta {
         }
 
         return builder;
-    }
-
-    @Override
-    SerializableMeta.Deserializers deserializer() {
-        return SerializableMeta.Deserializers.BOOK;
     }
 }

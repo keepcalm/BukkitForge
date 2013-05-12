@@ -293,6 +293,17 @@ public interface Inventory extends Iterable<ItemStack> {
     public void clear();
 
     /**
+     * Gets a list of players viewing. Note that a player is considered to be viewing their own
+     * inventory and internal crafting screen even when said inventory is not open. They will normally
+     * be considered to be viewing their inventory even when they have a different inventory screen open,
+     * but it's possible for customized inventory screens to exclude the viewer's inventory, so this should
+     * never be assumed to be non-empty.
+     *
+     * @return A list of HumanEntities who are viewing this Inventory.
+     */
+    public List<HumanEntity> getViewers();
+
+    /**
      * Returns the title of this inventory.
      *
      * @return A String with the title.
@@ -306,6 +317,13 @@ public interface Inventory extends Iterable<ItemStack> {
      */
     public InventoryType getType();
 
+    /**
+     * Gets the block or entity belonging to the open inventory
+     *
+     * @return The holder of the inventory; null if it has no holder.
+     */
+    public InventoryHolder getHolder();
+
     public ListIterator<ItemStack> iterator();
 
     /**
@@ -317,16 +335,4 @@ public interface Inventory extends Iterable<ItemStack> {
      * @return An iterator.
      */
     public ListIterator<ItemStack> iterator(int index);
-
-	public InventoryHolder getHolder();
-	
-	/**
-     * Get a list of players viewing. Note that a player is considered to be viewing their own
-     * inventory and internal crafting screen even when said inventory is not open. They will normally
-     * be considered to be viewing their inventory even when they have a different inventory screen open,
-     * but it's possible for customized inventory screens to exclude the viewer's inventory, so this should
-     * never be assumed to be non-empty.
-     * @return A list of players.
-     */
-    public List<HumanEntity> getViewers();
 }

@@ -231,6 +231,8 @@
 		<copy todir="${mcp.dir}/lib" >
 			<fileset dir="lib" >
 				<patternset includes="*.jar" />
+				<patternset exclude="SpecialSource-1.5.jar" />
+				<patternset exclude="SpecialSource-1.3-SNAPSHOT.jar" />
 			</fileset>
 
 		</copy>

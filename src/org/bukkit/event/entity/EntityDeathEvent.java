@@ -1,7 +1,6 @@
 package org.bukkit.event.entity;
 
 import java.util.List;
-
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +30,7 @@ public class EntityDeathEvent extends EntityEvent {
 
     /**
      * Gets how much EXP should be dropped from this death.
-     * <p />
+     * <p>
      * This does not indicate how much EXP should be taken from the entity in question,
      * merely how much should be created after its death.
      *
@@ -43,7 +42,7 @@ public class EntityDeathEvent extends EntityEvent {
 
     /**
      * Sets how much EXP should be dropped from this death.
-     * <p />
+     * <p>
      * This does not indicate how much EXP should be taken from the entity in question,
      * merely how much should be created after its death.
      *

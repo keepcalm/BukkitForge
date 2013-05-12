@@ -3,6 +3,7 @@ package org.bukkit.craftbukkit.v1_5_R2.entity;
 import net.minecraft.entity.item.EntityTNTPrimed;
 
 import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;
 //import org.bukkit.craftbukkit.CraftServer;
@@ -53,6 +54,11 @@ public class CraftTNTPrimed extends CraftEntity implements TNTPrimed {
 
     public EntityType getType() {
         return EntityType.PRIMED_TNT;
+    }
+
+	@Override
+	public Entity getSource() {
+        return null;
     }
 
 }

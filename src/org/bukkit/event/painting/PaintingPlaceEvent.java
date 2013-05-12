@@ -10,7 +10,9 @@ import org.bukkit.event.HandlerList;
 
 /**
  * Triggered when a painting is created in the world
+ * @deprecated Use {@link org.bukkit.event.hanging.HangingPlaceEvent} instead.
  */
+@Deprecated
 @Warning(reason="This event has been replaced by HangingPlaceEvent")
 public class PaintingPlaceEvent extends PaintingEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();

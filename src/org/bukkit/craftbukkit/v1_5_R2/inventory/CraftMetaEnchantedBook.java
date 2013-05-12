@@ -3,12 +3,10 @@ package org.bukkit.craftbukkit.v1_5_R2.inventory;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.nbt.NBTTagCompound;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftMetaItem.SerializableMeta;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftMetaItem.SerializableMeta.Deserializers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
@@ -35,7 +33,7 @@ class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorage
         }
     }
 
-    CraftMetaEnchantedBook(NBTTagCompound tag) {
+    CraftMetaEnchantedBook(net.minecraft.nbt.NBTTagCompound tag) {
         super(tag);
 
         if (!tag.hasKey(STORED_ENCHANTMENTS.NBT)) {
@@ -52,7 +50,7 @@ class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorage
     }
 
     @Override
-    void applyToItem(NBTTagCompound itemTag) {
+    void applyToItem(net.minecraft.nbt.NBTTagCompound itemTag) {
         super.applyToItem(itemTag);
 
         applyEnchantments(enchantments, itemTag, STORED_ENCHANTMENTS);
@@ -107,8 +105,8 @@ class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorage
     public CraftMetaEnchantedBook clone() {
         CraftMetaEnchantedBook meta = (CraftMetaEnchantedBook) super.clone();
 
-        if (hasStoredEnchants()) {
-            meta.enchantments = new HashMap<Enchantment, Integer>(enchantments);
+        if (this.enchantments != null) {
+            meta.enchantments = new HashMap<Enchantment, Integer>(this.enchantments);
         }
 
         return meta;
@@ -123,17 +121,12 @@ class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorage
         return builder;
     }
 
-    @Override
-    Deserializers deserializer() {
-        return Deserializers.ENCHANTED;
-    }
-
     boolean isEnchantedEmpty() {
         return !hasStoredEnchants();
     }
 
     public boolean hasStoredEnchant(Enchantment ench) {
-        return hasStoredEnchants() ? enchantments.containsKey(ench) : false;
+        return hasStoredEnchants() && enchantments.containsKey(ench);
     }
 
     public int getStoredEnchantLevel(Enchantment ench) {
@@ -161,10 +154,14 @@ class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorage
     }
 
     public boolean removeStoredEnchant(Enchantment ench) {
-        return hasStoredEnchants() ? enchantments.remove(ench) != null : false;
+        return hasStoredEnchants() && enchantments.remove(ench) != null;
     }
 
     public boolean hasStoredEnchants() {
         return !(enchantments == null || enchantments.isEmpty());
+    }
+
+    public boolean hasConflictingStoredEnchant(Enchantment ench) {
+        return checkConflictingEnchants(enchantments, ench);
     }
 }

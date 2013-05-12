@@ -1,5 +1,7 @@
 package org.bukkit.help;
 
+import org.bukkit.help.HelpTopic;
+
 import java.util.Comparator;
 
 /**

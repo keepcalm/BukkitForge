@@ -4,8 +4,6 @@ import static org.bukkit.craftbukkit.v1_5_R2.inventory.CraftItemFactory.DEFAULT_
 
 import java.util.Map;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -31,10 +29,10 @@ class CraftMetaLeatherArmor extends CraftMetaItem implements LeatherArmorMeta {
         this.color = armorMeta.color;
     }
 
-    CraftMetaLeatherArmor(NBTTagCompound tag) {
+    CraftMetaLeatherArmor(net.minecraft.nbt.NBTTagCompound tag) {
         super(tag);
         if (tag.hasKey(DISPLAY.NBT)) {
-            NBTTagCompound display = tag.getCompoundTag(DISPLAY.NBT);
+            net.minecraft.nbt.NBTTagCompound display = tag.getCompoundTag(DISPLAY.NBT);
             if (display.hasKey(COLOR.NBT)) {
                 color = Color.fromRGB(display.getInteger(COLOR.NBT));
             }
@@ -46,11 +44,12 @@ class CraftMetaLeatherArmor extends CraftMetaItem implements LeatherArmorMeta {
         setColor(SerializableMeta.getObject(Color.class, map, COLOR.BUKKIT, true));
     }
 
-    void applyToItem(NBTTagCompound itemTag) {
+    @Override
+    void applyToItem(net.minecraft.nbt.NBTTagCompound itemTag) {
         super.applyToItem(itemTag);
 
         if (hasColor()) {
-            setDisplayTag(itemTag, COLOR.NBT, new NBTTagInt(COLOR.NBT, color.asRGB()));
+            setDisplayTag(itemTag, COLOR.NBT, new net.minecraft.nbt.NBTTagInt(COLOR.NBT, color.asRGB()));
         }
     }
 
@@ -63,6 +62,7 @@ class CraftMetaLeatherArmor extends CraftMetaItem implements LeatherArmorMeta {
         return !(hasColor());
     }
 
+    @Override
     boolean applicableTo(Material type) {
         switch(type) {
             case LEATHER_HELMET:
@@ -104,11 +104,6 @@ class CraftMetaLeatherArmor extends CraftMetaItem implements LeatherArmorMeta {
     }
 
     @Override
-    SerializableMeta.Deserializers deserializer() {
-        return SerializableMeta.Deserializers.LEATHER_ARMOR;
-    }
-
-    @Override
     boolean equalsCommon(CraftMetaItem meta) {
         if (!super.equalsCommon(meta)) {
             return false;
@@ -126,6 +121,7 @@ class CraftMetaLeatherArmor extends CraftMetaItem implements LeatherArmorMeta {
         return super.notUncommon(meta) && (meta instanceof CraftMetaLeatherArmor || isLeatherArmorEmpty());
     }
 
+    @Override
     int applyHash() {
         final int original;
         int hash = original = super.applyHash();

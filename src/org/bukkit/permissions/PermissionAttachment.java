@@ -2,7 +2,6 @@ package org.bukkit.permissions;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -63,7 +62,7 @@ public class PermissionAttachment {
 
     /**
      * Gets a copy of all set permissions and values contained within this attachment.
-     * <p />
+     * <p>
      * This map may be modified but will not affect the attachment, as it is a copy.
      *
      * @return Copy of all permissions and values expressed by this attachment
@@ -91,12 +90,11 @@ public class PermissionAttachment {
      */
     public void setPermission(Permission perm, boolean value) {
         setPermission(perm.getName(), value);
-        permissible.recalculatePermissions();
     }
 
     /**
      * Removes the specified permission from this attachment.
-     * <p />
+     * <p>
      * If the permission does not exist in this attachment, nothing will happen.
      *
      * @param name Name of the permission to remove
@@ -108,14 +106,13 @@ public class PermissionAttachment {
 
     /**
      * Removes the specified permission from this attachment.
-     * <p />
+     * <p>
      * If the permission does not exist in this attachment, nothing will happen.
      *
      * @param perm Permission to remove
      */
     public void unsetPermission(Permission perm) {
         unsetPermission(perm.getName());
-        permissible.recalculatePermissions();
     }
 
     /**

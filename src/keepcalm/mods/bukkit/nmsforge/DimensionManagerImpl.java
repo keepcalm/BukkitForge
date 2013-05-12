@@ -138,11 +138,11 @@ public class DimensionManagerImpl {
         if (world != null) {
             worlds.put(Integer.valueOf(id), world);
             MinecraftServer.getServer().worldTickTimes.put(Integer.valueOf(id), new long[100]);
-            FMLLog.info("Loading dimension %d (%s) (%s)", new Object[]{Integer.valueOf(id), world.getWorldInfo().getWorldName(), world.getMinecraftServer()});
+            //FMLLog.info("Loading dimension %d (%s) (%s)", new Object[]{Integer.valueOf(id), world.getWorldInfo().getWorldName(), world.getMinecraftServer()});
         } else {
             worlds.remove(Integer.valueOf(id));
             MinecraftServer.getServer().worldTickTimes.remove(Integer.valueOf(id));
-            FMLLog.info("Unloading dimension %d", new Object[] { Integer.valueOf(id) });
+            //FMLLog.info("Unloading dimension %d", new Object[] { Integer.valueOf(id) });
         }
 
         ArrayList tmp = new ArrayList();

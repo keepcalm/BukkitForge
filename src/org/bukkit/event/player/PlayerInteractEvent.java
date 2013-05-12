@@ -1,13 +1,13 @@
 package org.bukkit.event.player;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.Action;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * Called when a player interacts with an object or air.
@@ -54,7 +54,7 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
     /**
      * Sets the cancellation state of this event. A canceled event will not
      * be executed in the server, but will still pass to other plugins
-     * <p />
+     * <p>
      * Canceling this event will prevent use of food (player won't lose the
      * food item), prevent bows/snowballs/eggs from firing, etc. (player won't
      * lose the ammo)

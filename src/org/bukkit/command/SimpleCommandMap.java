@@ -1,8 +1,8 @@
 package org.bukkit.command;
 
+import static org.bukkit.util.Java15Compat.Arrays_copyOfRange;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,44 +15,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Server;
-import org.bukkit.command.defaults.BanCommand;
-import org.bukkit.command.defaults.BanIpCommand;
-import org.bukkit.command.defaults.BanListCommand;
-import org.bukkit.command.defaults.ClearCommand;
-import org.bukkit.command.defaults.DefaultGameModeCommand;
-import org.bukkit.command.defaults.DeopCommand;
-import org.bukkit.command.defaults.DifficultyCommand;
-import org.bukkit.command.defaults.EnchantCommand;
-import org.bukkit.command.defaults.ExpCommand;
-import org.bukkit.command.defaults.GameModeCommand;
-import org.bukkit.command.defaults.GameRuleCommand;
-import org.bukkit.command.defaults.GiveCommand;
-import org.bukkit.command.defaults.HelpCommand;
-import org.bukkit.command.defaults.KickCommand;
-import org.bukkit.command.defaults.KillCommand;
-import org.bukkit.command.defaults.ListCommand;
-import org.bukkit.command.defaults.MeCommand;
-import org.bukkit.command.defaults.OpCommand;
-import org.bukkit.command.defaults.PardonCommand;
-import org.bukkit.command.defaults.PardonIpCommand;
-import org.bukkit.command.defaults.PluginsCommand;
-import org.bukkit.command.defaults.ReloadCommand;
-import org.bukkit.command.defaults.SaveCommand;
-import org.bukkit.command.defaults.SaveOffCommand;
-import org.bukkit.command.defaults.SaveOnCommand;
-import org.bukkit.command.defaults.SayCommand;
-import org.bukkit.command.defaults.SeedCommand;
-import org.bukkit.command.defaults.SpawnpointCommand;
-import org.bukkit.command.defaults.StopCommand;
-import org.bukkit.command.defaults.TeleportCommand;
-import org.bukkit.command.defaults.TellCommand;
-import org.bukkit.command.defaults.TimeCommand;
-import org.bukkit.command.defaults.TimingsCommand;
-import org.bukkit.command.defaults.ToggleDownfallCommand;
-import org.bukkit.command.defaults.VanillaCommand;
-import org.bukkit.command.defaults.VersionCommand;
-import org.bukkit.command.defaults.WeatherCommand;
-import org.bukkit.command.defaults.WhitelistCommand;
+import org.bukkit.command.defaults.*;
 import org.bukkit.util.StringUtil;
 
 public class SimpleCommandMap implements CommandMap {
@@ -92,6 +55,8 @@ public class SimpleCommandMap implements CommandMap {
         fallbackCommands.add(new ClearCommand());
         fallbackCommands.add(new GameRuleCommand());
         fallbackCommands.add(new EnchantCommand());
+        fallbackCommands.add(new TestForCommand());
+        fallbackCommands.add(new EffectCommand());
     }
 
     public SimpleCommandMap(final Server server) {
@@ -220,7 +185,7 @@ public class SimpleCommandMap implements CommandMap {
 
         try {
             // Note: we don't return the result of target.execute as thats success / failure, we return handled (true) or not handled (false)
-            target.execute(sender, sentCommandLabel, Arrays.copyOfRange(args, 1, args.length));
+            target.execute(sender, sentCommandLabel, Arrays_copyOfRange(args, 1, args.length));
         } catch (CommandException ex) {
             throw ex;
         } catch (Throwable ex) {

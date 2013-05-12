@@ -1,11 +1,13 @@
 package org.bukkit.help;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.command.defaults.VanillaCommand;
+import org.bukkit.help.HelpTopic;
 
 /**
  * Lacking an alternative, the help system will create instances of GenericCommandHelpTopic for each command in the

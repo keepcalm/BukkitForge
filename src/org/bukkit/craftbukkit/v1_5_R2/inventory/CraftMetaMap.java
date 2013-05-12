@@ -2,7 +2,6 @@ package org.bukkit.craftbukkit.v1_5_R2.inventory;
 
 import java.util.Map;
 
-import net.minecraft.nbt.NBTTagCompound;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
@@ -31,7 +30,7 @@ class CraftMetaMap extends CraftMetaItem implements MapMeta {
         this.scaling = map.scaling;
     }
 
-    CraftMetaMap(NBTTagCompound tag) {
+    CraftMetaMap(net.minecraft.nbt.NBTTagCompound tag) {
         super(tag);
 
         if (tag.hasKey(MAP_SCALING.NBT)) {
@@ -42,13 +41,14 @@ class CraftMetaMap extends CraftMetaItem implements MapMeta {
     CraftMetaMap(Map<String, Object> map) {
         super(map);
 
-        if (map.containsKey(MAP_SCALING.BUKKIT)) {
-            this.scaling = SerializableMeta.getBoolean(map, MAP_SCALING.BUKKIT) ? SCALING_TRUE : SCALING_FALSE;
+        Boolean scaling = SerializableMeta.getObject(Boolean.class, map, MAP_SCALING.BUKKIT, true);
+        if (scaling != null) {
+            setScaling(scaling);
         }
     }
 
     @Override
-    void applyToItem(NBTTagCompound tag) {
+    void applyToItem(net.minecraft.nbt.NBTTagCompound tag) {
         super.applyToItem(tag);
 
         if (hasScaling()) {
@@ -126,14 +126,9 @@ class CraftMetaMap extends CraftMetaItem implements MapMeta {
         super.serialize(builder);
 
         if (hasScaling()) {
-            builder.put(MAP_SCALING.BUKKIT, scaling);
+            builder.put(MAP_SCALING.BUKKIT, isScaling());
         }
 
         return builder;
-    }
-
-    @Override
-    SerializableMeta.Deserializers deserializer() {
-        return SerializableMeta.Deserializers.MAP;
     }
 }

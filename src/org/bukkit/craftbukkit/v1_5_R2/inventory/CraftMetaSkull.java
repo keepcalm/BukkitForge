@@ -2,7 +2,6 @@ package org.bukkit.craftbukkit.v1_5_R2.inventory;
 
 import java.util.Map;
 
-import net.minecraft.nbt.NBTTagCompound;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
@@ -28,7 +27,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
         this.player = skullMeta.player;
     }
 
-    CraftMetaSkull(NBTTagCompound tag) {
+    CraftMetaSkull(net.minecraft.nbt.NBTTagCompound tag) {
         super(tag);
 
         if (tag.hasKey(SKULL_OWNER.NBT)) {
@@ -42,7 +41,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
     }
 
     @Override
-    void applyToItem(NBTTagCompound tag) {
+    void applyToItem(net.minecraft.nbt.NBTTagCompound tag) {
         super.applyToItem(tag);
 
         if (hasOwner()) {
@@ -125,10 +124,5 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
             return builder.put(SKULL_OWNER.BUKKIT, this.player);
         }
         return builder;
-    }
-
-    @Override
-    SerializableMeta.Deserializers deserializer() {
-        return SerializableMeta.Deserializers.SKULL;
     }
 }

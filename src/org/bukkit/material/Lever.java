@@ -1,7 +1,7 @@
 package org.bukkit.material;
 
-import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.Material;
 
 /**
  * Represents a lever
@@ -98,8 +98,6 @@ public class Lever extends SimpleAttachableMaterialData implements Redstone {
             case WEST:
                 data |= 0x6;
                 break;
-            default:
-                break;
             }
         } else if (attach == BlockFace.UP) {
             switch (face) {
@@ -111,8 +109,6 @@ public class Lever extends SimpleAttachableMaterialData implements Redstone {
             case EAST:
             case WEST:
                 data |= 0x0;
-                break;
-            default:
                 break;
             }
         } else {
@@ -131,8 +127,6 @@ public class Lever extends SimpleAttachableMaterialData implements Redstone {
 
             case NORTH:
                 data |= 0x4;
-                break;
-            default:
                 break;
             }
         }

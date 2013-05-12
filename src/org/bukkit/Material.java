@@ -1,5 +1,8 @@
 package org.bukkit;
 
+import java.lang.reflect.Constructor;
+import java.util.Map;
+// MCPC+ start
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -7,8 +10,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
+import net.minecraftforge.common.EnumHelper;
+// MCPC+ end
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.map.MapView;
@@ -23,7 +26,6 @@ import org.bukkit.material.Command;
 import org.bukkit.material.Crops;
 import org.bukkit.material.DetectorRail;
 import org.bukkit.material.Diode;
-import org.bukkit.material.DirectionalContainer;
 import org.bukkit.material.Dispenser;
 import org.bukkit.material.Door;
 import org.bukkit.material.Dye;
@@ -64,8 +66,7 @@ import org.bukkit.material.Wool;
 import org.bukkit.potion.Potion;
 import org.bukkit.util.Java15Compat;
 
-import com.avaje.ebean.enhance.asm.Opcodes;
-import com.google.common.collect.Maps;
+import guava10.com.google.common.collect.Maps; // MCPC+ - guava10
 
 /**
  * An enum of all material ids accepted by the official server + client
@@ -229,7 +230,7 @@ public enum Material {
     QUARTZ_BLOCK(155),
     QUARTZ_STAIRS(156, Stairs.class),
     ACTIVATOR_RAIL(157),
-    DROPPER(158, DirectionalContainer.class),
+    DROPPER(158),
     // ----- Item Separator -----
     IRON_SPADE(256, 1, 250),
     IRON_PICKAXE(257, 1, 250),
@@ -406,16 +407,18 @@ public enum Material {
 
     private final int id;
     private final Constructor<? extends MaterialData> ctor;
-    private static Material[] byId = new Material[39000];
-    private final static Map<String, Material> BY_NAME = Maps.newHashMap();
+    private static Material[] byId = new Material[383];
+    private static Map<String, Material> BY_NAME = Maps.newHashMap(); // MCPC+ - remove final
     private final int maxStack;
     private final short durability;
-    private static boolean isSetup;
+    // MCPC+ start
     private static Object reflectionFactory;
     private static Method newConstructorAccessor;
     private static Method newInstance;
     private static Method newFieldAccessor;
     private static Method fieldAccessorSet;
+    private static boolean isSetup;
+    // MCPC+ end
 
     private Material(final int id) {
         this(id, 64);
@@ -608,7 +611,168 @@ public enum Material {
         return result;
     }
 
+    /* ===============================  MCPC+ START ============================= */
+    public static void addMaterial(int id)
+    {
+      addMaterial(id, "X" + String.valueOf(id));
+    }
+
+    public static void addMaterial(int id, String name) {
+      if (byId[id] == null) {
+        Material material = (Material) EnumHelper.addEnum(Material.class, name, new Class[]{Integer.TYPE}, new Object[]{Integer.valueOf(id)});
+        String material_name = name.toUpperCase().trim();
+        material_name = material_name.replaceAll("[^A-Za-z0-9]", "_");
+
+        byId[id] = material;
+        BY_NAME.put(material_name, material);
+      }
+    }
+
+    public static void setMaterialName(int id, String name) {
+      String material_name = name.toUpperCase().trim();
+      material_name = material_name.replaceAll("[^A-Za-z0-9]", "_");
+
+      if (byId[id] == null)
+      {
+        addMaterial(id, material_name);
+      } 
+      else // replace existing enum
+      {
+          /* TODO: find out how to do this with Forge's EnumHelper (addEnum?) - used for enabling descriptive (vs numeric) Material names
+          Material material = getMaterial(id);
+          BY_NAME.remove(material);
+          Material newMaterial = EnumHelper.addEnum(Material.class, material_name, material.ordinal(), new Class[] { Integer.TYPE }, new Object[] { Integer.valueOf(id) });
+          if (newMaterial == null)
+              System.out.println("Error replacing Material " + name + " with id " + id);
+          else {
+              byId[id] = newMaterial;
+              BY_NAME.put(material_name, newMaterial);
+          }
+          */
+      }
+    }
+    
+    private static void setup()
+    {
+      if (isSetup)
+      {
+        return;
+      }
+      try {
+        Method getReflectionFactory = Class.forName("sun.reflect.ReflectionFactory").getDeclaredMethod("getReflectionFactory", new Class[0]);
+        reflectionFactory = getReflectionFactory.invoke(null, new Object[0]);
+        newConstructorAccessor = Class.forName("sun.reflect.ReflectionFactory").getDeclaredMethod("newConstructorAccessor", new Class[] { Constructor.class });
+        newInstance = Class.forName("sun.reflect.ConstructorAccessor").getDeclaredMethod("newInstance", new Class[] { Object[].class });
+        newFieldAccessor = Class.forName("sun.reflect.ReflectionFactory").getDeclaredMethod("newFieldAccessor", new Class[] { Field.class, Boolean.TYPE });
+        fieldAccessorSet = Class.forName("sun.reflect.FieldAccessor").getDeclaredMethod("set", new Class[] { Object.class, Object.class });
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+      isSetup = true;
+    }
+
+    private static Object getConstructorAccessor(Class<?> enumClass, Class<?>[] additionalParameterTypes) throws Exception {
+      Class[] parameterTypes = null;
+
+      parameterTypes = new Class[additionalParameterTypes.length + 2];
+      parameterTypes[0] = String.class;
+      parameterTypes[1] = Integer.TYPE;
+      System.arraycopy(additionalParameterTypes, 0, parameterTypes, 2, additionalParameterTypes.length);
+
+      return newConstructorAccessor.invoke(reflectionFactory, new Object[] { enumClass.getDeclaredConstructor(parameterTypes) });
+    }
+
+    private static <T extends Enum<?>> T makeEnum(Class<T> enumClass, String value, int ordinal, Class<?>[] additionalTypes, Object[] additionalValues) throws Exception {
+      Object[] parms = null;
+
+      parms = new Object[additionalValues.length + 2];
+      parms[0] = value;
+      parms[1] = Integer.valueOf(ordinal);
+      System.arraycopy(additionalValues, 0, parms, 2, additionalValues.length);
+
+      return (T)enumClass.cast(newInstance.invoke(getConstructorAccessor(enumClass, additionalTypes), new Object[] { parms }));
+    }
+
+    private static void setFailsafeFieldValue(Field field, Object target, Object value) throws Exception {
+      field.setAccessible(true);
+      Field modifiersField = Field.class.getDeclaredField("modifiers");
+      modifiersField.setAccessible(true);
+      modifiersField.setInt(field, field.getModifiers() & 0xFFFFFFEF);
+      Object fieldAccessor = newFieldAccessor.invoke(reflectionFactory, new Object[] { field, Boolean.valueOf(false) });
+      fieldAccessorSet.invoke(fieldAccessor, new Object[] { target, value });
+    }
+
+    private static void blankField(Class<?> enumClass, String fieldName) throws Exception {
+      for (Field field : Class.class.getDeclaredFields())
+        if (field.getName().contains(fieldName)) {
+          field.setAccessible(true);
+          setFailsafeFieldValue(field, enumClass, null);
+          break;
+        }
+    }
+
+    private static void cleanEnumCache(Class<?> enumClass) throws Exception
+    {
+      blankField(enumClass, "enumConstantDirectory");
+      blankField(enumClass, "enumConstants");
+    }
+    
+    public static <T extends Enum<?>> T replaceEnum(Class<T> enumType, String enumName, int ordinal,  Class<?>[] paramTypes, Object[] paramValues)
+    {
+      if (!isSetup) setup();
+      Field valuesField = null;
+      Field[] fields = enumType.getDeclaredFields();
+      int flags = 4122;
+      String valueType = String.format("[L%s;", new Object[] { enumType.getName() });
+
+      for (Field field : fields) {
+        if (((field.getModifiers() & flags) != flags) || (!field.getType().getName().equals(valueType))) {
+          continue;
+        }
+        valuesField = field;
+        break;
+      }
+
+      valuesField.setAccessible(true);
+      try
+      {
+        Enum[] previousValues = (Enum[])(Enum[])valuesField.get(enumType);
+        Enum[] newValues = new Enum[previousValues.length];
+        Enum newValue = null;
+        for (Enum enumValue : previousValues)
+        {
+            if (enumValue.ordinal() == ordinal)
+            {
+               newValue = makeEnum(enumType, enumName, ordinal, paramTypes, paramValues);
+               newValues[enumValue.ordinal()] =  newValue;
+            }
+            else newValues[enumValue.ordinal()] = enumValue;
+        }
+        List values = new ArrayList(Arrays.asList(newValues));
+
+        setFailsafeFieldValue(valuesField, null, values.toArray((Enum[])(Enum[])Array.newInstance(enumType, 0)));
+        cleanEnumCache(enumType);
+        return (T) newValue;
+      } catch (Exception e) {
+        e.printStackTrace();
+        throw new RuntimeException(e.getMessage(), e);
+      }
+    }
+    /* ===============================  MCPC+ END============================= */
+
     static {
+        // MCPC+ start
+    	byId = new Material[32000];
+    	BY_NAME = Maps.newHashMap();
+
+    	reflectionFactory = null;
+    	newConstructorAccessor = null;
+    	newInstance = null;
+    	newFieldAccessor = null;
+    	fieldAccessorSet = null;
+    	isSetup = false;
+    	// MCPC+ end
         for (Material material : values()) {
             if (byId.length > material.id) {
                 byId[material.id] = material;
@@ -983,152 +1147,5 @@ public enum Material {
             default:
                 return false;
         }
-    }
-    
-    public static void addMaterial(int id)
-    {
-      addMaterial(id, "X" + String.valueOf(id), false);
-    }
-    
-    public static void addMaterial(int id, String name)
-    {
-      addMaterial(id, name, false);
-    }
-
-    public static void addMaterial(int id, String name, boolean xNameAlso) {
-      if (byId[id] == null) {
-        Material material = (Material)addEnum(Material.class, name, new Class[] { Integer.TYPE }, new Object[] { Integer.valueOf(id) });
-
-        byId[id] = material;
-        BY_NAME.put(name, material);
-
-        String material_name = name.toUpperCase().trim();
-        material_name = material_name.replaceAll("\\s+", "_").replaceAll("\\W", "");
-        BY_NAME.put(material_name, material);
-        
-        if (xNameAlso)
-        {
-            BY_NAME.put("X" + String.valueOf(id), material);
-        }
-      }
-    }
-
-    public static void setMaterialName(int id, String name) {
-      String material_name = name.toUpperCase().trim();
-      material_name = material_name.replaceAll("\\s+", "_").replaceAll("\\W", "");
-
-      if (byId[id] == null) {
-        addMaterial(id, material_name, false);
-      } else {
-        Material material = getMaterial(id);
-        BY_NAME.put(name, material);
-        BY_NAME.put(material_name, material);
-      }
-    }
-    
-    private static void setup()
-    {
-      if (isSetup)
-      {
-        return;
-      }
-      try {
-        Method getReflectionFactory = Class.forName("sun.reflect.ReflectionFactory").getDeclaredMethod("getReflectionFactory", new Class[0]);
-        reflectionFactory = getReflectionFactory.invoke(null, new Object[0]);
-        newConstructorAccessor = Class.forName("sun.reflect.ReflectionFactory").getDeclaredMethod("newConstructorAccessor", new Class[] { Constructor.class });
-        newInstance = Class.forName("sun.reflect.ConstructorAccessor").getDeclaredMethod("newInstance", new Class[] { Object[].class });
-        newFieldAccessor = Class.forName("sun.reflect.ReflectionFactory").getDeclaredMethod("newFieldAccessor", new Class[] { Field.class, Boolean.TYPE });
-        fieldAccessorSet = Class.forName("sun.reflect.FieldAccessor").getDeclaredMethod("set", new Class[] { Object.class, Object.class });
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-
-      isSetup = true;
-    }
-
-    private static Object getConstructorAccessor(Class<?> enumClass, Class<?>[] additionalParameterTypes) throws Exception {
-      Class<?>[] parameterTypes = null;
-
-      parameterTypes = new Class[additionalParameterTypes.length + 2];
-      parameterTypes[0] = String.class;
-      parameterTypes[1] = Integer.TYPE;
-      System.arraycopy(additionalParameterTypes, 0, parameterTypes, 2, additionalParameterTypes.length);
-
-      return newConstructorAccessor.invoke(reflectionFactory, new Object[] { enumClass.getDeclaredConstructor(parameterTypes) });
-    }
-
-    private static <T extends Enum<?>> T makeEnum(Class<T> enumClass, String value, int ordinal, Class<?>[] additionalTypes, Object[] additionalValues) throws Exception {
-      Object[] parms = null;
-
-      parms = new Object[additionalValues.length + 2];
-      parms[0] = value;
-      parms[1] = Integer.valueOf(ordinal);
-      System.arraycopy(additionalValues, 0, parms, 2, additionalValues.length);
-
-      return (T)enumClass.cast(newInstance.invoke(getConstructorAccessor(enumClass, additionalTypes), new Object[] { parms }));
-    }
-
-    private static void setFailsafeFieldValue(Field field, Object target, Object value) throws Exception {
-      field.setAccessible(true);
-      Field modifiersField = Field.class.getDeclaredField("modifiers");
-      modifiersField.setAccessible(true);
-      modifiersField.setInt(field, field.getModifiers() & 0xFFFFFFEF);
-      Object fieldAccessor = newFieldAccessor.invoke(reflectionFactory, new Object[] { field, Boolean.valueOf(false) });
-      fieldAccessorSet.invoke(fieldAccessor, new Object[] { target, value });
-    }
-
-    private static void blankField(Class<?> enumClass, String fieldName) throws Exception {
-      for (Field field : Class.class.getDeclaredFields())
-        if (field.getName().contains(fieldName)) {
-          field.setAccessible(true);
-          setFailsafeFieldValue(field, enumClass, null);
-          break;
-        }
-    }
-
-    private static void cleanEnumCache(Class<?> enumClass) throws Exception
-    {
-      blankField(enumClass, "enumConstantDirectory");
-      blankField(enumClass, "enumConstants");
-    }
-    
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T extends Enum<?>> T addEnum(Class<T> enumType, String enumName, Class<?>[] paramTypes, Object[] paramValues)
-    {
-      if (!isSetup) setup();
-      Field valuesField = null;
-      Field[] fields = enumType.getDeclaredFields();
-      String valueType = String.format("[L%s;", new Object[] { enumType.getName() });
-      
-      for (Field field : fields) {
-        if (!field.getName().equals("$VALUES") && !field.getName().equals("ENUM$VALUES"))
-        	continue;
-    	if (!field.getType().getName().equals(valueType))
-    		continue;
-        valuesField = field;
-        break;
-      }
-
-      if(valuesField == null)
-      {
-    	  System.out.println("[WARNING] addEnum not working due to valuesField not being able to be found!");
-    	  return null;
-      }
-      
-      valuesField.setAccessible(true);
-      try
-      {
-        Enum[] previousValues = (Enum[])(Enum[])valuesField.get(enumType);
-        List values = new ArrayList(Arrays.asList(previousValues));
-        Enum newValue = makeEnum(enumType, enumName, values.size(), paramTypes, paramValues);
-        values.add(newValue);
-        setFailsafeFieldValue(valuesField, null, values.toArray((Enum[])(Enum[])Array.newInstance(enumType, 0)));
-        cleanEnumCache(enumType);
-
-        return (T) newValue;
-      } catch (Exception e) {
-        e.printStackTrace();
-        throw new RuntimeException(e.getMessage(), e);
-      }
     }
 }

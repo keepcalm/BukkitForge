@@ -1,7 +1,7 @@
 package org.bukkit.material;
 
-import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.Material;
 
 /**
  * Represents Ladder data
@@ -73,8 +73,6 @@ public class Ladder extends SimpleAttachableMaterialData {
 
         case WEST:
             data = 0x5;
-            break;
-        default:
             break;
         }
 

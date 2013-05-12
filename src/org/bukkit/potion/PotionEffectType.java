@@ -115,14 +115,6 @@ public abstract class PotionEffectType {
         this.id = id;
     }
 
-    /**
-     * Creates a PotionEffect from this PotionEffectType, applying duration modifiers and checks.
-     *
-     * @see PotionBrewer#createEffect(PotionEffectType, int, int)
-     * @param duration time in ticks
-     * @param amplifier the effect's amplifier
-     * @return a resulting potion effect
-     */
     public PotionEffect createEffect(int duration, int amplifier) {
         return Potion.getBrewer().createEffect(this, duration, amplifier);
     }
@@ -182,7 +174,8 @@ public abstract class PotionEffectType {
         return "PotionEffectType[" + id + ", " + getName() + "]";
     }
 
-    private static final PotionEffectType[] byId = new PotionEffectType[21];
+    // MCPC - change byId size to 128 to make room for custom potions
+    private static final PotionEffectType[] byId = new PotionEffectType[128];
     private static final Map<String, PotionEffectType> byName = new HashMap<String, PotionEffectType>();
     // will break on updates.
     private static boolean acceptingNew = true;
@@ -218,13 +211,14 @@ public abstract class PotionEffectType {
      * @param type PotionType to register
      */
     public static void registerPotionEffectType(PotionEffectType type) {
-        if (byId[type.id] != null || byName.containsKey(type.getName().toLowerCase())) {
+        // MCPC+ start - allow vanilla to replace potions, Fixes issue #1
+        /*if (byId[type.id] != null || byName.containsKey(type.getName().toLowerCase())) {
             throw new IllegalArgumentException("Cannot set already-set type");
         } else if (!acceptingNew) {
             throw new IllegalStateException(
                     "No longer accepting new potion effect types (can only be done by the server implementation)");
-        }
-
+        }*/
+        // MCPC+ end
         byId[type.id] = type;
         byName.put(type.getName().toLowerCase(), type);
     }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+
 import org.bukkit.Material;
 import org.bukkit.material.MaterialData;
 
@@ -31,7 +32,9 @@ public class ShapedRecipe implements Recipe {
 
     /**
      * Set the shape of this recipe to the specified rows. Each character represents a different
-     * ingredient; exactly what each character represents is set separately.
+     * ingredient; exactly what each character represents is set separately. The first row supplied
+     * corresponds with the upper most part of the recipe on the workbench e.g. if all three 
+     * rows are supplies the first string represents the top row on the workbench.
      *
      * @param shape The rows of the recipe (up to 3 rows).
      * @return The changed recipe, so you can chain calls.
@@ -93,6 +96,12 @@ public class ShapedRecipe implements Recipe {
      */
     public ShapedRecipe setIngredient(char key, Material ingredient, int raw) {
         Validate.isTrue(ingredients.containsKey(key), "Symbol does not appear in the shape:", key);
+
+        // -1 is the old wildcard, map to Short.MAX_VALUE as the new one
+        if (raw == -1) {
+            raw = Short.MAX_VALUE;
+        }
+
         ingredients.put(key, new ItemStack(ingredient, 1, (short) raw));
         return this;
     }

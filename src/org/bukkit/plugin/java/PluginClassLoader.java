@@ -16,6 +16,7 @@ import java.net.URLClassLoader;
 import java.security.CodeSigner;
 import java.security.CodeSource;
 import java.util.*;
+import java.util.concurrent.*; // MCPC+ - Threadsafe classloading
 
 /**
  * A ClassLoader for plugins, to allow shared classes across multiple plugins
@@ -23,13 +24,13 @@ import java.util.*;
 public class PluginClassLoader extends URLClassLoader {
     private String nbtTest = "cd";
     private final JavaPluginLoader loader;
-    private final Map<String, Class<?>> classes = new HashMap<String, Class<?>>();
+    private final ConcurrentMap<String, Class<?>> classes = new ConcurrentHashMap<String, Class<?>>(); // MCPC+ - Threadsafe classloading
     // MCPC+ start
     private JarRemapper remapper;     // class remapper for this plugin, or null
     private RemapperPreprocessor remapperPreprocessor; // secondary; for inheritance & remapping reflection
     private boolean debug;            // classloader debugging
 
-    private static HashMap<Integer,JarMapping> jarMappings = new HashMap<Integer, JarMapping>();
+    private static ConcurrentMap<Integer,JarMapping> jarMappings = new ConcurrentHashMap<Integer, JarMapping>();
     private static final int F_USE_GUAVA10      = 1 << 1;
     private static final int F_GLOBAL_INHERIT   = 1 << 2;
     private static final int F_REMAP_OBCPRE     = 1 << 3;
@@ -40,12 +41,13 @@ public class PluginClassLoader extends URLClassLoader {
     private static final int F_REMAP_NMS151     = 1 << 8;
     private static final int F_REMAP_OBC147     = 1 << 9;
     private static final int F_REMAP_OBC150     = 1 << 10;
+    private static final int F_REMAP_NMS152     = 1 << 11;
+    private static final int F_REMAP_OBC151     = 1 << 12;
+    private static final int F_REMAP_OBC152     = 1 << 13;
     private static final int F_REMAP_NMSPRE_MASK= 0x0fff0000;  // "unversioned" NMS plugin version
 
-    public final static String current = "v1_5_R2";
-
     // This trick bypasses Maven Shade's package rewriting when using String literals [same trick in jline]
-    private final static String org_bukkit_craftbukkit = new String(new char[] {'o','r','g','/','b','u','k','k','i','t','/','c','r','a','f','t','b','u','k','k','i','t'});
+    private static final String org_bukkit_craftbukkit = new String(new char[] {'o','r','g','/','b','u','k','k','i','t','/','c','r','a','f','t','b','u','k','k','i','t'});
     // MCPC+ end
 
     public PluginClassLoader(final JavaPluginLoader loader, final URL[] urls, final ClassLoader parent, PluginDescriptionFile pluginDescriptionFile) { // MCPC+ - add PluginDescriptionFile
@@ -62,11 +64,14 @@ public class PluginClassLoader extends URLClassLoader {
         boolean useCustomClassLoader = config.getBoolean("mcpc.plugin-settings.default.custom-class-loader", true);
         debug = config.getBoolean("mcpc.plugin-settings.default.debug", false);
         boolean useGuava10 = config.getBoolean("mcpc.plugin-settings.default.use-guava10", true);
+        boolean remapNMS152 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_5_R3", true);
         boolean remapNMS151 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_5_R2", true);
         boolean remapNMS150 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_5_R1", true);
         boolean remapNMS147 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_4_R1", true);
         boolean remapNMS146 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_4_6", true);
         String remapNMSPre = config.getString("mcpc.plugin-settings.default.remap-nms-pre", "false");
+        boolean remapOBC152 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_5_R3", false);
+        boolean remapOBC151 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_5_R2", false);
         boolean remapOBC150 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_5_R1", true);
         boolean remapOBC147 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_4_R1", false);
         boolean remapOBC146 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_4_6", false);
@@ -74,16 +79,21 @@ public class PluginClassLoader extends URLClassLoader {
         boolean globalInherit = config.getBoolean("mcpc.plugin-settings.default.global-inheritance", true);
         boolean pluginInherit = config.getBoolean("mcpc.plugin-settings.default.plugin-inheritance", true);
         boolean reflectFields = config.getBoolean("mcpc.plugin-settings.default.remap-reflect-field", true);
+        boolean reflectClass = config.getBoolean("mcpc.plugin-settings.default.remap-reflect-class", true);
+        boolean allowFuture = config.getBoolean("mcpc.plugin-settings.default.remap-allow-future", false);
 
         // plugin-specific overrides
         useCustomClassLoader = config.getBoolean("mcpc.plugin-settings."+pluginName+".custom-class-loader", useCustomClassLoader);
         debug = config.getBoolean("mcpc.plugin-settings."+pluginName+".debug", debug);
         useGuava10 = config.getBoolean("mcpc.plugin-settings."+pluginName+".use-guava10", useGuava10);
+        remapNMS152 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_5_R3", remapNMS152);
         remapNMS151 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_5_R2", remapNMS151);
         remapNMS150 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_5_R1", remapNMS150);
         remapNMS147 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_4_R1", remapNMS147);
         remapNMS146 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_4_6", remapNMS146);
         remapNMSPre = config.getString("mcpc.plugin-settings."+pluginName+".remap-nms-pre", remapNMSPre);
+        remapOBC152 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_5_R3", remapOBC152);
+        remapOBC151 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_5_R2", remapOBC151);
         remapOBC150 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_5_R1", remapOBC150);
         remapOBC147 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_4_R1", remapOBC147);
         remapOBC146 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_4_6", remapOBC146);
@@ -91,6 +101,7 @@ public class PluginClassLoader extends URLClassLoader {
         globalInherit = config.getBoolean("mcpc.plugin-settings."+pluginName+".global-inheritance", globalInherit);
         pluginInherit = config.getBoolean("mcpc.plugin-settings."+pluginName+".plugin-inheritance", pluginInherit);
         reflectFields = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-reflect-field", reflectFields);
+        reflectClass = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-reflect-class", reflectClass);
 
         if (debug) {
             System.out.println("PluginClassLoader debugging enabled for "+pluginName);
@@ -103,12 +114,14 @@ public class PluginClassLoader extends URLClassLoader {
 
         int flags = 0;
         if (useGuava10) flags |= F_USE_GUAVA10;
+        if (remapNMS152) flags |= F_REMAP_NMS152;
         if (remapNMS151) flags |= F_REMAP_NMS151;
         if (remapNMS150) flags |= F_REMAP_NMS150;
         if (remapNMS147) flags |= F_REMAP_NMS147;
         if (remapNMS146) flags |= F_REMAP_NMS146;
         if (!remapNMSPre.equals("false")) {
-            if      (remapNMSPre.equals("1.5.1")) flags |= 0x01510000;
+            if      (remapNMSPre.equals("1.5.2")) flags |= 0x01520000;
+            else if (remapNMSPre.equals("1.5.1")) flags |= 0x01510000;
             else if (remapNMSPre.equals("1.5.0")) flags |= 0x01500000;
             else if (remapNMSPre.equals("1.5"))   flags |= 0x01500000;
             else if (remapNMSPre.equals("1.4.7")) flags |= 0x01470000;
@@ -123,6 +136,8 @@ public class PluginClassLoader extends URLClassLoader {
                 System.out.println("Unsupported nms-remap-pre version '"+remapNMSPre+"', disabling");
             }
         }
+        if (remapOBC152) flags |= F_REMAP_OBC152;
+        if (remapOBC151) flags |= F_REMAP_OBC151;
         if (remapOBC150) flags |= F_REMAP_OBC150;
         if (remapOBC147) flags |= F_REMAP_OBC147;
         if (remapOBC146) flags |= F_REMAP_OBC146;
@@ -143,14 +158,27 @@ public class PluginClassLoader extends URLClassLoader {
 
         remapper = new JarRemapper(jarMapping);
 
-        if (pluginInherit || reflectFields) {
+        if (pluginInherit || reflectFields || reflectClass) {
             remapperPreprocessor = new RemapperPreprocessor(
                     pluginInherit ? loader.getGlobalInheritanceMap() : null,
-                    reflectFields ? jarMapping : null);
+                    (reflectFields || reflectClass) ? jarMapping : null);
+
+            remapperPreprocessor.setRemapReflectField(reflectFields);
+            remapperPreprocessor.setRemapReflectClass(reflectClass);
             remapperPreprocessor.debug = debug;
         } else {
             remapperPreprocessor = null;
         }
+    }
+
+    /**
+     * Get the "native" obfuscation version, from our Maven shading version.
+     */
+    public static String getNativeVersion() {
+        // see https://github.com/mbax/VanishNoPacket/blob/master/src/main/java/org/kitteh/vanish/compat/NMSManager.java
+        final String packageName = org.bukkit.craftbukkit.v1_5_R2.CraftServer.class.getPackage().getName();
+
+        return packageName.substring(packageName.lastIndexOf('.')  + 1);
     }
 
     /**
@@ -173,20 +201,20 @@ public class PluginClassLoader extends URLClassLoader {
                 null, false);
 
         // resolve naming conflict in FML/CB
-        jarMapping.methods.put("net/minecraft/server/"+obfVersion+"/PlayerConnection/getPlayer ()Lorg/bukkit/craftbukkit/"+current+"/entity/CraftPlayer;", "getPlayerB");
+        jarMapping.methods.put("net/minecraft/server/"+obfVersion+"/PlayerConnection/getPlayer ()Lorg/bukkit/craftbukkit/"+getNativeVersion()+"/entity/CraftPlayer;", "getPlayerB");
 
         // remap bouncycastle to Forge's included copy, not the vanilla obfuscated copy (not in MCPC+), see #133
         jarMapping.packages.put("net/minecraft/"+obfVersion+"/org/bouncycastle", "org/bouncycastle");
     }
 
     private JarMapping getJarMapping(int flags) {
-        JarMapping jarMapping;
+        JarMapping jarMapping = jarMappings.get(flags);
 
-        if (jarMappings.containsKey(flags)) {
+        if (jarMapping != null) {
             if (debug) {
                 System.out.println("Mapping reused for "+Integer.toHexString(flags));
             }
-            return jarMappings.get(flags);
+            return jarMapping;
         }
 
         jarMapping = new JarMapping();
@@ -197,6 +225,10 @@ public class PluginClassLoader extends URLClassLoader {
                 // To resolve this conflict, remap plugin usages to Guava 10 in a separate package
                 // Most plugins should keep this enabled, unless they want a newer Guava
                 jarMapping.packages.put("com/google/common", "guava10/com/google/common");
+            }
+
+            if ((flags & F_REMAP_NMS152) != 0) {
+                loadNmsMappings(jarMapping, "v1_5_R3");
             }
 
             if ((flags & F_REMAP_NMS151) != 0) {
@@ -216,18 +248,26 @@ public class PluginClassLoader extends URLClassLoader {
                 loadNmsMappings(jarMapping, "v1_4_6");
             }
 
+            if ((flags & F_REMAP_OBC152) != 0) {
+                jarMapping.packages.put(org_bukkit_craftbukkit+"/v1_5_R3", org_bukkit_craftbukkit+"/"+getNativeVersion());
+            }
+
+            if ((flags & F_REMAP_OBC151) != 0) {
+                jarMapping.packages.put(org_bukkit_craftbukkit+"/v1_5_R2", org_bukkit_craftbukkit+"/"+getNativeVersion());
+            }
+
             if ((flags & F_REMAP_OBC150) != 0) {
-                jarMapping.packages.put(org_bukkit_craftbukkit+"/v1_5_R1", org_bukkit_craftbukkit+"/"+current);
+                jarMapping.packages.put(org_bukkit_craftbukkit+"/v1_5_R1", org_bukkit_craftbukkit+"/"+getNativeVersion());
             }
 
             if ((flags & F_REMAP_OBC147) != 0) {
-                jarMapping.packages.put(org_bukkit_craftbukkit+"/v1_4_R1", org_bukkit_craftbukkit+"/"+current);
+                jarMapping.packages.put(org_bukkit_craftbukkit+"/v1_4_R1", org_bukkit_craftbukkit+"/"+getNativeVersion());
             }
 
             if ((flags & F_REMAP_OBC146) != 0) {
                 // Remap OBC v1_4_6  to v1_4_R1 (or current) for 1.4.6 plugin compatibility
                 // Note this should only be mapped statically - since plugins MAY use reflection to determine the OBC version
-                jarMapping.packages.put(org_bukkit_craftbukkit+"/v1_4_6", org_bukkit_craftbukkit+"/"+current);
+                jarMapping.packages.put(org_bukkit_craftbukkit+"/v1_4_6", org_bukkit_craftbukkit+"/"+getNativeVersion());
             }
 
             if ((flags & F_REMAP_OBCPRE) != 0) {
@@ -237,7 +277,7 @@ public class PluginClassLoader extends URLClassLoader {
 
                 // then map unversioned to current version
                 jarMapping.packages.put(org_bukkit_craftbukkit+"/libs/org/objectweb/asm", "org/objectweb/asm"); // ?
-                jarMapping.packages.put(org_bukkit_craftbukkit, org_bukkit_craftbukkit+"/"+current);
+                jarMapping.packages.put(org_bukkit_craftbukkit, org_bukkit_craftbukkit+"/"+getNativeVersion());
             }
 
             if ((flags & F_REMAP_NMSPRE_MASK) != 0) {
@@ -265,8 +305,8 @@ public class PluginClassLoader extends URLClassLoader {
 
             System.out.println("Mapping loaded "+jarMapping.packages.size()+" packages, "+jarMapping.classes.size()+" classes, "+jarMapping.fields.size()+" fields, "+jarMapping.methods.size()+" methods, flags "+Integer.toHexString(flags));
 
-            jarMappings.put(flags, jarMapping);
-            return jarMapping;
+            JarMapping currentJarMapping = jarMappings.putIfAbsent(flags, jarMapping);
+            return currentJarMapping == null ? jarMapping : currentJarMapping;
         } catch (IOException ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);
@@ -291,29 +331,38 @@ public class PluginClassLoader extends URLClassLoader {
             }
             throw new ClassNotFoundException(name);
         }
-        Class<?> result = classes.get(name);
-
-        if (result == null) {
-            if (checkGlobal) {
-                result = loader.getClassByName(name);
-            }
+        // MCPC+ start - custom loader, if enabled, threadsafety
+        Class<?> result;
+        synchronized (name.intern()) {
+            result = classes.get(name);
 
             if (result == null) {
-                // MCPC+ start - custom loader, if enabled
-                if (remapper == null) {
-                    result = super.findClass(name);
-                } else {
-                    result = remappedFindClass(name);
+                if (checkGlobal) {
+                    result = loader.getClassByName(name);
                 }
-                // MCPC+ end
+
+                if (result == null) {
+                    if (remapper == null) {
+                        result = super.findClass(name);
+                    } else {
+                        result = remappedFindClass(name);
+                    }
+
+                    if (result != null) {
+                        loader.setClass(name, result);
+                    }
+                }
 
                 if (result != null) {
-                    loader.setClass(name, result);
+                    Class<?> old = classes.putIfAbsent(name, result);
+                    if (old != null && old != result) {
+                        System.err.println("Defined class " + name + " twice as different classes, " + result + " and " + old);
+                        result = old;
+                    }
                 }
             }
-
-            classes.put(name, result);
         }
+        // MCPC+ end
 
         return result;
     }

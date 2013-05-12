@@ -3,9 +3,9 @@ package org.bukkit.event.inventory;
 
 import java.util.List;
 
+import org.bukkit.event.HandlerList;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 
@@ -27,6 +27,15 @@ public class InventoryEvent extends Event {
      */
     public Inventory getInventory() {
         return transaction.getTopInventory();
+    }
+
+    /**
+     * Gets the list of players viewing the primary (upper) inventory involved in this event
+     *
+     * @return A list of people viewing.
+     */
+    public List<HumanEntity> getViewers() {
+        return transaction.getTopInventory().getViewers();
     }
 
     /**

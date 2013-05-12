@@ -6,7 +6,9 @@ import java.util.Map;
 
 /**
  * Represents a type of creature.
+ * @deprecated Use EntityType instead.
  */
+@Deprecated
 public enum CreatureType {
     // These strings MUST match the strings in nms.EntityTypes and are case sensitive.
     CREEPER("Creeper", Creeper.class, 50),
@@ -78,6 +80,7 @@ public enum CreatureType {
         return ID_MAP.get((short) id);
     }
 
+    @Deprecated
     public EntityType toEntityType() {
         return EntityType.fromName(getName());
     }

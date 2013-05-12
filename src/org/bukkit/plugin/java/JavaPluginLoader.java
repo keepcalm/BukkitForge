@@ -446,12 +446,12 @@ public class JavaPluginLoader implements PluginLoader {
     public InheritanceMap getGlobalInheritanceMap() {
         if (globalInheritanceMap == null) {
             Map<String, String> relocationsCurrent = new HashMap<String, String>();
-            relocationsCurrent.put("net.minecraft.server", "net.minecraft.server."+PluginClassLoader.current);
+            relocationsCurrent.put("net.minecraft.server", "net.minecraft.server."+PluginClassLoader.getNativeVersion());
             JarMapping currentMappings = new JarMapping();
 
             try {
                 currentMappings.loadMappings(
-                        new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.current+"/cb2numpkg.srg"))),
+                        new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.getNativeVersion()+"/cb2numpkg.srg"))),
                         new MavenShade(relocationsCurrent),
                         null, false);
             } catch (IOException ex) {
@@ -462,7 +462,7 @@ public class JavaPluginLoader implements PluginLoader {
             BiMap<String, String> inverseClassMap = HashBiMap.create(currentMappings.classes).inverse();
             globalInheritanceMap = new InheritanceMap();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.current+"/nms.inheritmap")));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.getNativeVersion()+"/nms.inheritmap")));
 
             try {
                 globalInheritanceMap.load(reader, inverseClassMap);

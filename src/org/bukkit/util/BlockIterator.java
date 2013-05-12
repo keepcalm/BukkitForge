@@ -1,16 +1,15 @@
 package org.bukkit.util;
 
-import static org.bukkit.util.NumberConversions.floor;
-import static org.bukkit.util.NumberConversions.round;
+import static org.bukkit.util.NumberConversions.*;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * This class performs ray tracing and iterates along blocks on a line

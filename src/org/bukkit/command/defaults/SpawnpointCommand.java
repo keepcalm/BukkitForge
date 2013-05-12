@@ -1,7 +1,6 @@
 package org.bukkit.command.defaults;
 
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,7 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 public class SpawnpointCommand extends VanillaCommand {
 
@@ -48,9 +47,15 @@ public class SpawnpointCommand extends VanillaCommand {
         if (args.length == 4) {
             if (world != null) {
                 int pos = 1;
-                int x = getInteger(sender, args[pos++], MIN_COORD, MAX_COORD);
-                int y = getInteger(sender, args[pos++], 0, world.getMaxHeight());
-                int z = getInteger(sender, args[pos], MIN_COORD, MAX_COORD);
+                final int x, y, z;
+                try {
+                    x = getInteger(sender, args[pos++], MIN_COORD, MAX_COORD, true);
+                    y = getInteger(sender, args[pos++], 0, world.getMaxHeight());
+                    z = getInteger(sender, args[pos], MIN_COORD, MAX_COORD, true);
+                } catch(NumberFormatException ex) {
+                    sender.sendMessage(ex.getMessage());
+                    return true;
+                }
 
                 player.setBedSpawnLocation(new Location(world, x, y, z), true);
                 Command.broadcastCommandMessage(sender, "Set " + player.getDisplayName() + "'s spawnpoint to " + x + ", " + y + ", " + z);

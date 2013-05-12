@@ -5,16 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftMetaItem.SerializableMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftMetaItem.SerializableMeta;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap.Builder;
@@ -40,17 +38,17 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
         }
     }
 
-    CraftMetaPotion(NBTTagCompound tag) {
+    CraftMetaPotion(net.minecraft.nbt.NBTTagCompound tag) {
         super(tag);
 
         if (tag.hasKey(POTION_EFFECTS.NBT)) {
-            NBTTagList list = tag.getTagList(POTION_EFFECTS.NBT);
+            net.minecraft.nbt.NBTTagList list = tag.getTagList(POTION_EFFECTS.NBT);
             int length = list.tagCount();
             if (length > 0) {
                 customEffects = new ArrayList<PotionEffect>(length);
 
                 for (int i = 0; i < length; i++) {
-                    NBTTagCompound effect = (NBTTagCompound) list.tagAt(i);
+                    net.minecraft.nbt.NBTTagCompound effect = (net.minecraft.nbt.NBTTagCompound) list.tagAt(i);
                     PotionEffectType type = PotionEffectType.getById(effect.getByte(ID.NBT));
                     int amp = effect.getByte(AMPLIFIER.NBT);
                     int duration = effect.getInteger(DURATION.NBT);
@@ -64,7 +62,7 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
     CraftMetaPotion(Map<String, Object> map) {
         super(map);
 
-        List<?> rawEffectList = SerializableMeta.getObject(List.class, map, POTION_EFFECTS.BUKKIT, true);
+        Iterable<?> rawEffectList = SerializableMeta.getObject(Iterable.class, map, POTION_EFFECTS.BUKKIT, true);
         if (rawEffectList == null) {
             return;
         }
@@ -78,14 +76,14 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
     }
 
     @Override
-    void applyToItem(NBTTagCompound tag) {
+    void applyToItem(net.minecraft.nbt.NBTTagCompound tag) {
         super.applyToItem(tag);
         if (hasCustomEffects()) {
-            NBTTagList effectList = new NBTTagList();
+            net.minecraft.nbt.NBTTagList effectList = new net.minecraft.nbt.NBTTagList();
             tag.setTag(POTION_EFFECTS.NBT, effectList);
 
             for (PotionEffect effect : customEffects) {
-                NBTTagCompound effectData = new NBTTagCompound();
+                net.minecraft.nbt.NBTTagCompound effectData = new net.minecraft.nbt.NBTTagCompound();
                 effectData.setByte(ID.NBT, (byte) effect.getType().getId());
                 effectData.setByte(AMPLIFIER.NBT, (byte) effect.getAmplifier());
                 effectData.setInteger(DURATION.NBT, effect.getDuration());
@@ -117,8 +115,8 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
     @Override
     public CraftMetaPotion clone() {
         CraftMetaPotion clone = (CraftMetaPotion) super.clone();
-        if (hasCustomEffects()) {
-            clone.customEffects = new ArrayList<PotionEffect>(customEffects);
+        if (this.customEffects != null) {
+            clone.customEffects = new ArrayList<PotionEffect>(this.customEffects);
         }
         return clone;
     }
@@ -251,10 +249,5 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
         }
 
         return builder;
-    }
-
-    @Override
-    SerializableMeta.Deserializers deserializer() {
-        return SerializableMeta.Deserializers.POTION;
     }
 }

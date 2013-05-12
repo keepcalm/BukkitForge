@@ -1,9 +1,6 @@
 package org.bukkit.command.defaults;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,7 +10,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ClearCommand extends VanillaCommand {
     private static List<String> materials;
@@ -63,6 +62,8 @@ public class ClearCommand extends VanillaCommand {
             int count = player.getInventory().clear(id, data);
 
             Command.broadcastCommandMessage(sender, "Cleared the inventory of " + player.getDisplayName() + ", removing " + count + " items");
+        } else if (args.length == 0) {
+            sender.sendMessage(ChatColor.RED + "Please provide a player!");
         } else {
             sender.sendMessage(ChatColor.RED + "Can't find player " + args[0]);
         }

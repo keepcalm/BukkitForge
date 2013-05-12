@@ -6,7 +6,7 @@ public class SpecialSourceDownload implements ILibrarySet {
 
 	@Override
 	public String[] getLibraries() {
-		return new String[] {"SpecialSource-1.5.jar"};
+		return new String[] {"SpecialSource-1.6.jar"};
 	}
 
 	@Override

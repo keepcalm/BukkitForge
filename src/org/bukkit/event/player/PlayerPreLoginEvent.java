@@ -8,8 +8,9 @@ import org.bukkit.event.HandlerList;
 
 /**
  * Stores details for players attempting to log in
- * 
+ * @deprecated This event causes synchronization from the login thread; {@link AsyncPlayerPreLoginEvent} is preferred to keep the secondary threads asynchronous.
  */
+@Deprecated
 @Warning(reason="This event causes a login thread to synchronize with the main thread")
 public class PlayerPreLoginEvent extends Event {
     private static final HandlerList handlers = new HandlerList();

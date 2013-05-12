@@ -487,4 +487,9 @@ public class CraftEntity implements org.bukkit.entity.Entity {
 	public EntityType getType() {
 		return EntityType.UNKNOWN;
 	}
+
+	@Override
+	public boolean isOnGround() {
+        return entity.onGround;
+    }
 }
