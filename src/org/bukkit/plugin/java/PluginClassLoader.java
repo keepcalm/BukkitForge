@@ -102,6 +102,7 @@ public class PluginClassLoader extends URLClassLoader {
         pluginInherit = config.getBoolean("mcpc.plugin-settings."+pluginName+".plugin-inheritance", pluginInherit);
         reflectFields = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-reflect-field", reflectFields);
         reflectClass = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-reflect-class", reflectClass);
+        allowFuture = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-allow-future", allowFuture);
 
         if (debug) {
             System.out.println("PluginClassLoader debugging enabled for "+pluginName);

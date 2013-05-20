@@ -66,7 +66,7 @@ import cpw.mods.fml.relauncher.Side;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
-@Mod(modid="BukkitForge",name="BukkitForge",version="Unknown",certificateFingerprint="")
+@Mod(modid="BukkitForge",name="BukkitForge",version="@VERSION@",certificateFingerprint="")
 @NetworkMod(clientSideRequired=false,serverSideRequired=false,connectionHandler=ConnectionHandler.class,serverPacketHandlerSpec=@SidedPacketHandler(channels={},packetHandler=ForgePacketHandler.class))
 public class BukkitContainer {
 	public static Properties users;

@@ -11,7 +11,7 @@ public class SpecialSourceDownload implements ILibrarySet {
 
 	@Override
 	public String[] getHashes() {
-		return new String[] {"60f76cfe1c1e5818480ff11514b863566a95db10"};
+		return new String[] {"4a3a07f9553a0131c6cabb352cfa663c1c48153e"};
 	}
 
 	@Override
