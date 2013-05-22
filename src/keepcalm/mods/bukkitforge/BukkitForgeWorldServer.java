@@ -7,8 +7,8 @@ import net.minecraft.world.WorldSettings;
 import net.minecraft.world.storage.DerivedWorldInfo;
 import net.minecraft.world.storage.ISaveHandler;
 import org.bukkit.WorldCreator;
-import org.bukkit.craftbukkit.v1_5_R2.generator.CustomChunkGenerator;
-import org.bukkit.craftbukkit.v1_5_R2.generator.NormalChunkGenerator;
+import org.bukkit.craftbukkit.generator.CustomChunkGenerator;
+import org.bukkit.craftbukkit.generator.NormalChunkGenerator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +19,7 @@ import org.bukkit.craftbukkit.v1_5_R2.generator.NormalChunkGenerator;
  */
 public class BukkitForgeWorldServer extends WorldServer {
     public BukkitForgeWorldServer(MinecraftServer par1MinecraftServer, ISaveHandler par2ISaveHandler, String par3Str, int par4, Profiler par6Profiler, WorldCreator creator, WorldServer baseWorld) {
-        super(par1MinecraftServer, par2ISaveHandler, par3Str, par4, new WorldSettings(baseWorld.getWorldInfo()), par6Profiler, null);
+        super(par1MinecraftServer, par2ISaveHandler, par3Str, par4, new WorldSettings(baseWorld.getWorldInfo()), par6Profiler);
 
         super.chunkProvider = new CustomChunkGenerator( this, creator.seed(), creator.generator() );
 

@@ -52,9 +52,9 @@ public class BlockBreakEventAdder implements IClassTransformer
          */
         obfStrings = new HashMap();
         /* net.minecraft.src.ItemInWorldManager */
-        obfStrings.put("className", "jd");
+        obfStrings.put("className", "ir");
         /* net/minecraft/src/ItemInWorldManager */
-        obfStrings.put("javaClassName", "jd");
+        obfStrings.put("javaClassName", "ir");
         /* removeBlock */
         obfStrings.put("targetMethodName", "d");
         /* theWorld */
@@ -62,17 +62,17 @@ public class BlockBreakEventAdder implements IClassTransformer
         /* thisPlayerMP */
         obfStrings.put("entityPlayerFieldName", "b");
         /* net/minecraft/src/World */
-        obfStrings.put("worldJavaClassName", "aab");
+        obfStrings.put("worldJavaClassName", "yc");
         /* net/minecraft/src/World.getBlockMetadata() */
         obfStrings.put("getBlockMetadataMethodName", "h");
         /* net/minecraft/src/Block */
-        obfStrings.put("blockJavaClassName", "apa");
+        obfStrings.put("blockJavaClassName", "amq");
         /* net/minecraft/src/Block.blocksList[] */
-        obfStrings.put("blocksListFieldName", "r");
+        obfStrings.put("blocksListFieldName", "p");
         /* net/minecraft/src/EntityPlayer */
-        obfStrings.put("entityPlayerJavaClassName", "sq");
+        obfStrings.put("entityPlayerJavaClassName", "qx");
         /* net/minecraft/src/EntityPlayerMP */
-        obfStrings.put("entityPlayerMPJavaClassName", "jc");
+        obfStrings.put("entityPlayerMPJavaClassName", "iq");
         
         /*
          * create a HashMap to store the MCP names of classes, methods, and fields used in the transformation
@@ -92,7 +92,7 @@ public class BlockBreakEventAdder implements IClassTransformer
     }
     
     @Override
-    public byte[] transform(String name, String transformedName, byte[] bytes)
+    public byte[] transform(String name, byte[] bytes)
     {
         // System.out.println("transforming: "+name);
         if (name.equals(obfStrings.get("className")))

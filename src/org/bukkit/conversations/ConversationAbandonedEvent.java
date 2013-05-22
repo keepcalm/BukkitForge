@@ -7,7 +7,8 @@ import java.util.EventObject;
  */
 public class ConversationAbandonedEvent extends EventObject {
 
-    private ConversationContext context;
+	private static final long serialVersionUID = -630162356398027517L;
+	private ConversationContext context;
     private ConversationCanceller canceller;
 
     public ConversationAbandonedEvent(Conversation conversation) {

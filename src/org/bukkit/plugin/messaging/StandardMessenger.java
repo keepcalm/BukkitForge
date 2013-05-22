@@ -5,16 +5,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import keepcalm.mods.bukkit.forgeHandler.ForgePacketHandler;
-
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
-
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 /**
  * Standard implementation to {@link Messenger}
@@ -188,8 +183,6 @@ public class StandardMessenger implements Messenger {
         }
 
         addToOutgoing(plugin, channel);
-        NetworkRegistry.instance().registerChannel(ForgePacketHandler.instance(), channel);
-        NetworkRegistry.instance().registerChannel(ForgePacketHandler.instance(), channel, Side.SERVER);
     }
 
     public void unregisterOutgoingPluginChannel(Plugin plugin, String channel) {
@@ -224,8 +217,7 @@ public class StandardMessenger implements Messenger {
         PluginMessageListenerRegistration result = new PluginMessageListenerRegistration(this, plugin, channel, listener);
 
         addToIncoming(result);
-        NetworkRegistry.instance().registerChannel(ForgePacketHandler.instance(), channel);
-        NetworkRegistry.instance().registerChannel(ForgePacketHandler.instance(), channel, Side.SERVER);
+
         return result;
     }
 

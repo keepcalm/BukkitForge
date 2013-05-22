@@ -20,14 +20,14 @@ public class CommandHandlerImpl implements ICommandManager {
         /** The set of ICommand objects currently loaded. */
         private final Set commandSet = new HashSet();
 
-        public int executeCommand(ICommandSender par1ICommandSender, String par2Str)
+        public void executeCommand(ICommandSender par1ICommandSender, String par2Str)
         {
             if( par1ICommandSender instanceof EntityPlayer)
             {
                 PlayerCommandPreprocessEvent bev = BukkitEventRouters.Player.PlayerCommandPreprocess.callEvent(false, null, BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) par1ICommandSender), par2Str);
                 if(bev.isCancelled())
                 {
-                    return 0;
+                    return;
                 }
 
 
@@ -60,7 +60,7 @@ public class CommandHandlerImpl implements ICommandManager {
                         {
                             throw event.exception;
                         }
-                        return 0;
+                        return;
                     }
 
                     if (var6 > -1)
@@ -110,7 +110,6 @@ public class CommandHandlerImpl implements ICommandManager {
                 par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString("commands.generic.exception", new Object[0]));
                 var17.printStackTrace();
             }
-			return 0;
         }
 
         /**
@@ -239,7 +238,7 @@ public class CommandHandlerImpl implements ICommandManager {
             {
                 for (int var3 = 0; var3 < par2ArrayOfStr.length; ++var3)
                 {
-                    if (par1ICommand.isUsernameIndex(par2ArrayOfStr, var3) && PlayerSelector.matchesMultiplePlayers(par2ArrayOfStr[var3]))
+                    if (par1ICommand.isUsernameIndex(var3) && PlayerSelector.matchesMultiplePlayers(par2ArrayOfStr[var3]))
                     {
                         return var3;
                     }

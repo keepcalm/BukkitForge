@@ -6,8 +6,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R2.command.FakeConsoleSender;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.command.FakeConsoleSender;
 
 /**
  * Only registered on IntegratedServers
@@ -24,7 +24,7 @@ public class CraftCommandConsole extends CraftCommandBase {
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender var1) {
 		// only server owner
-		return CraftServer.instance().getHandle().getServerOwner().equalsIgnoreCase(var1.getCommandSenderName()) || var1.getCommandSenderName().equalsIgnoreCase("alexbegt");
+		return CraftServer.instance().getHandle().getServerOwner().equalsIgnoreCase(var1.getCommandSenderName());
 	}
 	
 	@Override

@@ -10,14 +10,14 @@ import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_5_R2.CraftChunk;
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R2.block.CraftBlock;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryCrafting;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryView;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.CraftChunk;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.block.CraftBlock;
+import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.inventory.CraftInventoryCrafting;
+import org.bukkit.craftbukkit.inventory.CraftInventoryView;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -123,10 +123,14 @@ public class ToBukkit {
             dc = EntityDamageEvent.DamageCause.CONTACT;
         else if (ds == DamageSource.drown)
             dc = EntityDamageEvent.DamageCause.DROWNING;
+        else if (ds == DamageSource.explosion)
+            dc = EntityDamageEvent.DamageCause.BLOCK_EXPLOSION;
         else if (ds == DamageSource.fall)
             dc = EntityDamageEvent.DamageCause.FALL;
         else if (ds == DamageSource.fallingBlock)
             dc = EntityDamageEvent.DamageCause.FALL;
+        else if (ds == DamageSource.explosion2)
+            dc = EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;
         else if (ds == DamageSource.generic)
             dc = EntityDamageEvent.DamageCause.CUSTOM;
         else if (ds == DamageSource.inFire)

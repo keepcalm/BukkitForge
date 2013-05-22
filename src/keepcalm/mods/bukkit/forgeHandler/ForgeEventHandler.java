@@ -65,19 +65,19 @@ import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_5_R2.CraftChunk;
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R2.block.CraftBlock;
-import org.bukkit.craftbukkit.v1_5_R2.block.CraftBlockFake;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftCreeper;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftItem;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftLightningStrike;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftSheep;
-import org.bukkit.craftbukkit.v1_5_R2.event.CraftEventFactory;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.CraftChunk;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.block.CraftBlock;
+import org.bukkit.craftbukkit.block.CraftBlockFake;
+import org.bukkit.craftbukkit.entity.CraftCreeper;
+import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftItem;
+import org.bukkit.craftbukkit.entity.CraftLightningStrike;
+import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.entity.CraftSheep;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockCanBuildEvent;
@@ -292,7 +292,7 @@ public class ForgeEventHandler {
 
 				AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 				final boolean canBuild;
-				if (aabb.isVecInside(Vec3.fakePool.getVecFromPool(blockX, blockY, blockZ))) {
+				if (aabb.isVecInside(Vec3.vec3dPool.getVecFromPool(blockX, blockY, blockZ))) {
 					canBuild = false;
 				} else {
 					canBuild = true;
@@ -522,7 +522,7 @@ public class ForgeEventHandler {
 			CraftChunk chunk = new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z));
 			ChunkCoordinates spawn = ev.world.getSpawnPoint();
 			int spawnRadius = CraftServer.instance().getSpawnRadius();
-			boolean canBuild = AxisAlignedBB.getAABBPool().getAABB(spawn.posX, spawn.posY, spawn.posZ, spawn.posX + spawnRadius, spawn.posY + spawnRadius, spawn.posZ + spawnRadius).isVecInside(Vec3.createVectorHelper(ev.x, ev.y, ev.z));
+			boolean canBuild = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(spawn.posX, spawn.posY, spawn.posZ, spawn.posX + spawnRadius, spawn.posY + spawnRadius, spawn.posZ + spawnRadius).isVecInside(Vec3.createVectorHelper(ev.x, ev.y, ev.z));
 			CraftBlock bblock = new CraftBlock(chunk, ev.x, ev.y, ev.z);
 			BlockCanBuildEvent bukkitEv = new BlockCanBuildEvent(bblock, block.getBlockID(), canBuild);
 
@@ -575,7 +575,7 @@ public class ForgeEventHandler {
 		if (bev.getInstaBreak()) {
 			Block blck = Block.blocksList[ev.blockID];
 			blck.dropBlockAsItem(ev.world, ev.blockX, ev.blockY, ev.blockZ, ev.world.getBlockMetadata(ev.blockX, ev.blockY, ev.blockZ), 0);
-			ev.world.setBlockMetadataWithNotify(ev.blockX, ev.blockY, ev.blockZ, 0, 0);
+			ev.world.setBlockAndMetadata(ev.blockX, ev.blockY, ev.blockZ, 0, 0);
 			//Block.blocksList[ev.blockID].breakBlock(ev.world, ev.blockX, ev.blockY, ev.blockZ, ev.blockID, ev.world.getBlockMetadata(ev.blockX, ev.blockY, ev.blockZ));
 			return;
 		}

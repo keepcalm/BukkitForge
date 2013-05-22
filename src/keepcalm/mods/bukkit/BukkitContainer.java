@@ -32,9 +32,9 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R2.scheduler.CraftScheduler;
-import org.bukkit.craftbukkit.v1_5_R2.utils.Versioning;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.scheduler.CraftScheduler;
+import org.bukkit.craftbukkit.utils.Versioning;
 
 import com.google.common.base.Joiner;
 import com.google.common.eventbus.EventBus;
@@ -66,7 +66,7 @@ import cpw.mods.fml.relauncher.Side;
 //import net.minecraftforge.event.EventBus;
 //import net.minecraftforge.event.EventBus;
 
-@Mod(modid="BukkitForge",name="BukkitForge",version="@VERSION@",certificateFingerprint="")
+@Mod(modid="BukkitForge",name="BukkitForge",version="Unknown",certificateFingerprint="")
 @NetworkMod(clientSideRequired=false,serverSideRequired=false,connectionHandler=ConnectionHandler.class,serverPacketHandlerSpec=@SidedPacketHandler(channels={},packetHandler=ForgePacketHandler.class))
 public class BukkitContainer {
 	public static Properties users;
@@ -123,7 +123,7 @@ public class BukkitContainer {
 			isDediServer = true;
 			if (MinecraftServer.getServer() != null && MinecraftServer.getServer().getGuiEnabled()) {
 				isGuiEnabled = true;
-				MinecraftServer.getServer().getLogAgent().getServerLogger().severe("BukkitForge plugins may misbehave when using the gui! Run the server with 'nogui'!");
+				ServerGUI.logger.severe("BukkitForge plugins may misbehave when using the gui! Run the server with 'nogui'!");
 			}
 		}
 		else
@@ -138,10 +138,10 @@ public class BukkitContainer {
 	}
 	@PreInit
 	public void preInit(FMLPreInitializationEvent ev) {
-		bukkitLogger = Logger.getLogger("BukkitForge");
-		//bukkitLogger.setParent(FMLCommonHandler.instance().getFMLLogger());
+		bukkitLogger = ev.getModLog();
+		bukkitLogger.setParent(FMLCommonHandler.instance().getFMLLogger());
 		try {
-			bukkitLogger.addHandler(new FileHandler("serverBF.log"));
+			bukkitLogger.addHandler(new FileHandler("server.log"));
 		} catch (SecurityException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
@@ -173,15 +173,15 @@ public class BukkitContainer {
 		
 		Property build = config.get(Configuration.CATEGORY_GENERAL, "bukkitVersionString", "git-Bukkit-1.4.5-R1.0-b3000jnks (Really: BukkitForge for MC " + Loader.instance().getMinecraftModContainer().getDisplayVersion() + ")");
 		build.comment = "The CraftBukkit version to pretend to be";
-		BukkitContainer.CRAFT_VERSION = build.getString();
+		BukkitContainer.CRAFT_VERSION = build.value;
 		
 		Property plugins = config.get(Configuration.CATEGORY_GENERAL, "pluginsToLoad", "");
 		plugins.comment = "Comma-separated list of plugins which are in the classpath to load. Only developers need use this option.";
-		BukkitContainer.pluginsInPath = plugins.getString().isEmpty() ? new String[] {} : plugins.getString().split(",");
+		BukkitContainer.pluginsInPath = plugins.value.isEmpty() ? new String[] {} : plugins.value.split(",");
 		
 		Property kickMsg = config.get(Configuration.CATEGORY_GENERAL, "kickMessage", "Patience, my padawan! BukkitForge is still loading.\nTry again in a few moments...");
 		kickMsg.comment = "Message to kick players with if they try to join before BukkitForge is loaded. \n makes a new line";
-		BukkitContainer.LOADING_KICK_MESSAGE = kickMsg.getString();
+		BukkitContainer.LOADING_KICK_MESSAGE = kickMsg.value;
 		
 		Property debug = config.get("consoleConfig", "debug", false);
 		debug.comment = "Print debug messages";
@@ -193,16 +193,16 @@ public class BukkitContainer {
 
 		Property pluginDir = config.get(Configuration.CATEGORY_GENERAL, "pluginDir", "plugins");
 		pluginDir.comment = "The folder to look for plugins in.";
-		this.pluginFolder = pluginDir.getString();
+		this.pluginFolder = pluginDir.value;
 
 		Property suuid = config.get("dontTouchThis", "serverUUID", this.genUUID());
-		bukkitLogger.info("Set UUID to " + suuid.getString());
+		bukkitLogger.info("Set UUID to " + suuid.value);
 		suuid.comment = "The UUID of the server. Don't touch this or it might break your plugins.";
-		BukkitContainer.serverUUID = suuid.getString();
+		BukkitContainer.serverUUID = suuid.value;
 		
 		Property modActionName = config.get(Configuration.CATEGORY_GENERAL, "modActionUserName", "[Mod]");
 		modActionName.comment = "The name of the player to use when passing events from mods (such as block breaks) to plugins";
-		BukkitContainer.MOD_USERNAME = modActionName.getString();
+		BukkitContainer.MOD_USERNAME = modActionName.value;
 		
 		config.addCustomCategoryComment("updatechecking", "Update-related stuff");
 		
@@ -302,7 +302,6 @@ public class BukkitContainer {
 
 	@Init
 	public void init(FMLInitializationEvent ev) {
-		bukkitLogger.info("Loading!");
 		ItemInWorldManager.class.desiredAssertionStatus();
 		FMLCommonHandler.instance().registerCrashCallable(new BukkitCrashCallable());
 		

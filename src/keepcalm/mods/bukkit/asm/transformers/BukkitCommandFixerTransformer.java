@@ -10,7 +10,7 @@ public class BukkitCommandFixerTransformer implements IClassTransformer {
 	private HashMap<String,String> names = ObfuscationHelper.getRelevantMappings();
 	
 	@Override
-	public byte[] transform(String name, String transformedName, byte[] bytes) {
+	public byte[] transform(String name, byte[] bytes) {
 		
 		if (name.equals(names.get("commandHandler_className"))) {
 			

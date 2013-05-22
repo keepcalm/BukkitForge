@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.StopCommand;
-import org.bukkit.craftbukkit.v1_5_R2.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.CraftConsoleCommandSender;
 
 /**
  * Shuts down the server in a bukkit-friendly way.
@@ -37,6 +37,7 @@ public class CraftCommandStop extends CommandBase {
 	
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
+		BukkitContainer.bServer.shutdown();
 		(new CommandServerStop()).processCommand(var1, var2);
 	}
 

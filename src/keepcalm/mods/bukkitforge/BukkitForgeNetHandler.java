@@ -35,12 +35,12 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R2.TextWrapper;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_5_R2.event.CraftEventFactory;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryView;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.TextWrapper;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.craftbukkit.inventory.CraftInventoryView;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -419,7 +419,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                     if (!this.playerEntity.isPlayerSleeping() && (var13 > 1.65D || var13 < 0.1D))
                     {
                         this.kickPlayerFromServer("Illegal stance");
-                        this.mcServer.getLogAgent().logWarning(this.playerEntity.username + " had an illegal stance: " + var13);
+                        logger.warning(this.playerEntity.username + " had an illegal stance: " + var13);
                         return;
                     }
 
@@ -458,8 +458,8 @@ public class BukkitForgeNetHandler extends NetServerHandler {
 
                 if (var19 > 100.0D && this.hasMoved && (!this.mcServer.isSinglePlayer() || !this.mcServer.getServerOwner().equals(this.playerEntity.username)))   // CraftBukkit - Added this.checkMovement condition to solve this check being triggered by teleports
                 {
+                    logger.warning(this.playerEntity.username + " moved too quickly! " + var13 + "," + var15 + "," + var17 + " (" + d8 + ", " + d9 + ", " + d10 + ")");
                     this.setPlayerLocation(this.lastPosX, this.lastPosY, this.lastPosZ, this.playerEntity.rotationYaw, this.playerEntity.rotationPitch);
-                    this.mcServer.getLogAgent().logWarning(this.playerEntity.username + " moved too quickly! " + var13 + "," + var15 + "," + var17 + " (" + d8 + ", " + d9 + ", " + d10 + ")");
                     return;
                 }
 
@@ -495,7 +495,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                 if (var19 > 0.0625D && !this.playerEntity.isPlayerSleeping() && !this.playerEntity.theItemInWorldManager.isCreative())
                 {
                     var27 = true;
-                    this.mcServer.getLogAgent().logWarning(this.playerEntity.username + " moved wrongly!");
+                    logger.warning(this.playerEntity.username + " moved wrongly!");
                 }
 
                 if (!this.hasMoved) //Fixes "Moved Too Fast" kick when being teleported while moving
@@ -514,7 +514,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
 
                 AxisAlignedBB var29 = this.playerEntity.boundingBox.copy().expand((double) var21, (double) var21, (double) var21).addCoord(0.0D, -0.55D, 0.0D);
 
-                if (!this.mcServer.isFlightAllowed() && !this.playerEntity.capabilities.allowFlying && !var2.checkBlockCollision(var29))   // CraftBukkit - check abilities instead of creative mode
+                if (!this.mcServer.isFlightAllowed() && !this.playerEntity.capabilities.allowFlying && !var2.isAABBNonEmpty(var29))   // CraftBukkit - check abilities instead of creative mode
                 {
                     if (var25 >= -0.03125D)
                     {
@@ -522,7 +522,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
 
                         if (this.ticksForFloatKick > 80)
                         {
-                        	this.mcServer.getLogAgent().logWarning(this.playerEntity.username + " was kicked for floating too long!");
+                            logger.warning(this.playerEntity.username + " was kicked for floating too long!");
                             this.kickPlayerFromServer("Flying is not enabled on this server");
                             return;
                         }
@@ -628,7 +628,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
 
                 if (this.dropCount >= 20)
                 {
-                	this.mcServer.getLogAgent().logWarning(this.playerEntity.username + " dropped their items too quickly!");
+                    logger.warning(this.playerEntity.username + " dropped their items too quickly!");
                     this.kickPlayerFromServer("You dropped your items too quickly (Hacking?)");
                     return;
                 }
@@ -918,8 +918,8 @@ public class BukkitForgeNetHandler extends NetServerHandler {
         {
             return;    // CraftBukkit - rarely it would send a playerLoggedOut line twice
         }
-        
-        this.mcServer.getLogAgent().logInfo(this.playerEntity.username + " lost connection: " + par1Str);
+
+        logger.info(this.playerEntity.username + " lost connection: " + par1Str);
         // CraftBukkit start - we need to handle custom quit messages
         /*String quitMessage = this.mcServer.getConfigurationManager().disconnect(this.playerEntity);
 
@@ -933,7 +933,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
 
         if (this.mcServer.isSinglePlayer() && this.playerEntity.username.equals(this.mcServer.getServerOwner()))
         {
-        	this.mcServer.getLogAgent().logInfo("Stopping singleplayer server as player logged out");
+            logger.info("Stopping singleplayer server as player logged out");
             this.mcServer.initiateShutdown();
         }
     }
@@ -948,8 +948,8 @@ public class BukkitForgeNetHandler extends NetServerHandler {
         {
             return;    // CraftBukkit
         }
-        
-        this.mcServer.getLogAgent().logWarning(this.getClass() + " wasn\'t prepared to deal with a " + par1Packet.getClass());
+
+        logger.warning(this.getClass() + " wasn\'t prepared to deal with a " + par1Packet.getClass());
         this.kickPlayerFromServer("Protocol error, unexpected packet");
     }
 
@@ -1017,7 +1017,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
         }
         else
         {
-        	this.mcServer.getLogAgent().logWarning(this.playerEntity.username + " tried to set an invalid carried item");
+            logger.warning(this.playerEntity.username + " tried to set an invalid carried item");
             this.kickPlayerFromServer("Nope!"); // CraftBukkit
         }
     }
@@ -1184,7 +1184,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
         {
             if (s.length() == 0)
             {
-            	this.mcServer.getLogAgent().logWarning(this.playerEntity.username + " tried to send an empty message");
+                logger.warning(this.playerEntity.username + " tried to send an empty message");
                 return;
             }
 
@@ -1831,7 +1831,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
 
                 if (var7 != null)
                 {
-                    var7.setAgeToCreativeDespawnTime();
+                    var7.func_70288_d();
                 }
             }
         }
@@ -1917,7 +1917,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                 TileEntitySign var7 = (TileEntitySign)var3;
                 // CraftBukkit start
                 Player player = this.server.getPlayer( ToBukkit.player(this.playerEntity).getName());
-                SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.v1_5_R2.block.CraftBlock) player.getWorld().getBlockAt(var8, var9, var6), this.server.getPlayer(ToBukkit.player(this.playerEntity).getName()), par1Packet130UpdateSign.signLines);
+                SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(var8, var9, var6), this.server.getPlayer(ToBukkit.player(this.playerEntity).getName()), par1Packet130UpdateSign.signLines);
                 this.server.getPluginManager().callEvent(event);
 
                 if (!event.isCancelled())
@@ -2050,7 +2050,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
             catch (Exception exception)
             {
                 // CraftBukkit start
-            	this.mcServer.getLogAgent().logSevereException(this.playerEntity.username + " sent invalid MC|BEdit data", exception);
+                logger.log(Level.WARNING, this.playerEntity.username + " sent invalid MC|BEdit data", exception);
                 this.kickPlayerFromServer("Invalid book data!");
                 // CraftBukkit end
             }
@@ -2080,7 +2080,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
             catch (Exception exception1)
             {
                 // CraftBukkit start
-            	this.mcServer.getLogAgent().logSevereException(this.playerEntity.username + " sent invalid MC|BSign data", exception1);
+                logger.log(Level.WARNING, this.playerEntity.username + " sent invalid MC|BSign data", exception1);
                 this.kickPlayerFromServer("Invalid book data!");
                 // CraftBukkit end
             }
@@ -2105,7 +2105,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                 catch (Exception exception2)
                 {
                     // CraftBukkit start
-                	this.mcServer.getLogAgent().logSevereException(this.playerEntity.username + " sent invalid MC|TrSel data", exception2);
+                    logger.log(Level.WARNING, this.playerEntity.username + " sent invalid MC|TrSel data", exception2);
                     this.kickPlayerFromServer("Invalid trade data!");
                     // CraftBukkit end
                 }
@@ -2141,7 +2141,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                         catch (Exception exception3)
                         {
                             // CraftBukkit start
-                        	this.mcServer.getLogAgent().logSevereException(this.playerEntity.username + " sent invalid MC|AdvCdm data", exception3);
+                            logger.log(Level.WARNING, this.playerEntity.username + " sent invalid MC|AdvCdm data", exception3);
                             this.kickPlayerFromServer("Invalid CommandBlock data!");
                             // CraftBukkit end
                         }
@@ -2167,15 +2167,15 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                             {
                                 slot.decrStackSize(1);
                                 TileEntityBeacon tileentitybeacon = containerbeacon.getBeacon();
-                                tileentitybeacon.setPrimaryEffect(i);
-                                tileentitybeacon.setSecondaryEffect(j);
+                                tileentitybeacon.func_82128_d(i);
+                                tileentitybeacon.func_82127_e(j);
                                 tileentitybeacon.onInventoryChanged();
                             }
                         }
                         catch (Exception exception4)
                         {
                             // CraftBukkit start
-                        	this.mcServer.getLogAgent().logSevereException(this.playerEntity.username + " sent invalid MC|Beacon data", exception4);
+                            logger.log(Level.WARNING, this.playerEntity.username + " sent invalid MC|Beacon data", exception4);
                             this.kickPlayerFromServer("Invalid beacon data!");
                             // CraftBukkit end
                         }

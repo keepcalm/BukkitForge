@@ -1,6 +1,5 @@
 package org.bukkit.inventory;
 
-import com.google.common.collect.ImmutableMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -12,6 +11,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Represents a stack of items
@@ -148,7 +149,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
 
     /**
      * Sets the type of this item
-     * <p>
+     * <p />
      * Note that in doing so you will reset the MaterialData for this stack
      *
      * @param type New type to set the items in this stack to
@@ -170,7 +171,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
 
     /**
      * Sets the type id of this item
-     * <p>
+     * <p />
      * Note that in doing so you will reset the MaterialData for this stack
      *
      * @param type New type id to set the items in this stack to
@@ -381,7 +382,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
 
     /**
      * Adds the specified enchantments to this item stack.
-     * <p>
+     * <p />
      * This method is the same as calling {@link #addEnchantment(org.bukkit.enchantments.Enchantment, int)}
      * for each element of the map.
      *
@@ -400,7 +401,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
 
     /**
      * Adds the specified {@link Enchantment} to this item stack.
-     * <p>
+     * <p />
      * If this item stack already contained the given enchantment (at any level), it will be replaced.
      *
      * @param ench Enchantment to add
@@ -421,7 +422,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
 
     /**
      * Adds the specified enchantments to this item stack in an unsafe manner.
-     * <p>
+     * <p />
      * This method is the same as calling {@link #addUnsafeEnchantment(org.bukkit.enchantments.Enchantment, int)}
      * for each element of the map.
      *
@@ -436,9 +437,9 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
 
     /**
      * Adds the specified {@link Enchantment} to this item stack.
-     * <p>
+     * <p />
      * If this item stack already contained the given enchantment (at any level), it will be replaced.
-     * <p>
+     * <p />
      * This method is unsafe and will ignore level restrictions or item type. Use at your own
      * discretion.
      *

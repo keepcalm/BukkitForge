@@ -38,7 +38,7 @@ public class BlockEventHelpers implements IClassTransformer {
 	
 
 	@Override
-	public byte[] transform(String name, String transformedName, byte[] bytes) {
+	public byte[] transform(String name, byte[] bytes) {
 		if (name.equalsIgnoreCase(names.get("itemStack_className"))) {
 			return transformItemStack(bytes, names);
 		}
@@ -405,7 +405,7 @@ public class BlockEventHelpers implements IClassTransformer {
 						int ifloc = index;
 						while (m.instructions.get(index).getOpcode() != Opcodes.IF_ICMPEQ) index--;
 						System.out.println("Found IF_ICMPEQ at index " + index + " to R, which is at " + ifloc + ". Inserting function call after this...");
-						int loc = 232;
+						int loc = index + 1;
 						System.out.println("Will insert code at: " + loc);
 						// after, not at the same location
 						LabelNode lmmnode = new LabelNode(new Label());
@@ -447,6 +447,7 @@ public class BlockEventHelpers implements IClassTransformer {
 
 						System.out.println("Found first occurance of misbehaving segment, ignoring...");
 					}
+
 				}
 
 

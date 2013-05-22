@@ -28,7 +28,7 @@ public class PlayerPortalEvent extends PlayerTeleportEvent {
     }
 
     public boolean useTravelAgent() {
-        return useTravelAgent && travelAgent != null;
+        return useTravelAgent;
     }
 
     public TravelAgent getPortalTravelAgent() {

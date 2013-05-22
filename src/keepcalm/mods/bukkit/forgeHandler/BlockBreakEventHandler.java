@@ -7,8 +7,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.ForgeSubscribe;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_5_R2.CraftChunk;
-import org.bukkit.craftbukkit.v1_5_R2.block.CraftBlock;
+import org.bukkit.craftbukkit.CraftChunk;
+import org.bukkit.craftbukkit.block.CraftBlock;
 
 
 /**

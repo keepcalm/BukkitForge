@@ -14,7 +14,7 @@ import org.bukkit.event.inventory.InventoryType;
 public abstract class InventoryView {
     public final static int OUTSIDE = -999;
     /**
-     * Represents various extra properties of certain inventory windows.
+     * Represents various extra properties of certai inventory windows.
      */
     public enum Property {
         /**
@@ -88,7 +88,7 @@ public abstract class InventoryView {
 
     /**
      * Sets one item in this inventory view by its raw slot ID.
-     * <p>
+     * <p />
      * Note: If slot ID -999 is chosen, it may be expected that the item is
      * dropped on the ground. This is not required behaviour, however.
      * @param slot The ID as returned by InventoryClickEvent.getRawSlot()
@@ -107,7 +107,7 @@ public abstract class InventoryView {
     }
 
     /**
-     * Gets one item in this inventory view by its raw slot ID.
+     * Sets one item in this inventory view by its raw slot ID.
      * @param slot The ID as returned by InventoryClickEvent.getRawSlot()
      * @return The item currently in the slot.
      */

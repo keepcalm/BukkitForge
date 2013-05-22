@@ -3,8 +3,6 @@ package org.bukkit;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.Validate;
-
 import com.google.common.collect.Maps;
 
 /**
@@ -157,7 +155,7 @@ public enum ChatColor {
      * Gets the color represented by the specified color code
      *
      * @param code Code to check
-     * @return Associative {@link org.bukkit.ChatColor} with the given code, or null if it doesn't exist
+     * @return Associative {@link cpw.mods.fml.common.ChatColor} with the given code, or null if it doesn't exist
      */
     public static ChatColor getByChar(char code) {
         return BY_CHAR.get(code);
@@ -167,11 +165,16 @@ public enum ChatColor {
      * Gets the color represented by the specified color code
      *
      * @param code Code to check
-     * @return Associative {@link org.bukkit.ChatColor} with the given code, or null if it doesn't exist
+     * @return Associative {@link cpw.mods.fml.common.ChatColor} with the given code, or null if it doesn't exist
      */
     public static ChatColor getByChar(String code) {
-        Validate.notNull(code, "Code cannot be null");
-        Validate.isTrue(code.length() > 0, "Code must have at least one char");
+        if (code == null) {
+	       	throw new RuntimeException("Code cannot be null");
+	}
+        
+        if (!(code.length() > 0)) {
+        	throw new RuntimeException("Code must have at least one char");
+        }
 
         return BY_CHAR.get(code.charAt(0));
     }
@@ -193,10 +196,10 @@ public enum ChatColor {
     /**
      * Translates a string using an alternate color code character into a string that uses the internal
      * ChatColor.COLOR_CODE color code character. The alternate color code character will only be replaced
-     * if it is immediately followed by 0-9, A-F, a-f, K-O, k-o, R or r.
-     *
+     * if it is immediately followed by 0-9, A-F, or a-f.
+     * 
      * @param altColorChar The alternate color code character to replace. Ex: &
-     * @param textToTranslate Text containing the alternate color code character.
+     * @param textToTranslate Text containing the alternate color code character. 
      * @return Text containing the ChatColor.COLOR_CODE color code character.
      */
     public static String translateAlternateColorCodes(char altColorChar, String textToTranslate) {

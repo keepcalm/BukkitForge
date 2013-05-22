@@ -1,6 +1,7 @@
 package org.bukkit.generator;
 
 import java.util.Random;
+
 import org.bukkit.Chunk;
 import org.bukkit.World;
 
@@ -11,7 +12,7 @@ import org.bukkit.World;
 public abstract class BlockPopulator {
     /**
      * Populates an area of blocks at or around the given chunk.
-     * <p>
+     * <p />
      * The chunks on each side of the specified chunk must already exist; that is,
      * there must be one north, east, south and west of the specified chunk.
      * The "corner" chunks may not exist, in which scenario the populator should

@@ -6,7 +6,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_5_R2.command.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.command.CraftConsoleCommandSender;
 /**
  * A command to fix compatibility issues with plugins like MultiVerse - which i __suspect__ use 
  * aliases.

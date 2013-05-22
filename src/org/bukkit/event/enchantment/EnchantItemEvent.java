@@ -65,7 +65,6 @@ public class EnchantItemEvent extends InventoryEvent implements Cancellable {
 
     /**
      * Get cost in exp levels of the enchantment
-     *
      * @return experience level cost
      */
     public int getExpLevelCost() {
@@ -74,7 +73,6 @@ public class EnchantItemEvent extends InventoryEvent implements Cancellable {
 
     /**
      * Set cost in exp levels of the enchantment
-     *
      * @param level - cost in levels
      */
     public void setExpLevelCost(int level) {
@@ -93,7 +91,6 @@ public class EnchantItemEvent extends InventoryEvent implements Cancellable {
 
     /**
      * Which button was pressed to initiate the enchanting.
-     *
      * @return The button index (0, 1, or 2).
      */
     public int whichButton() {

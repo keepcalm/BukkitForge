@@ -13,11 +13,11 @@ import net.minecraft.server.dedicated.DedicatedServer;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.CraftConsoleCommandSender;
 import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
-import org.bukkit.craftbukkit.v1_5_R2.CraftConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 import com.google.common.base.Joiner;
 /**
@@ -93,7 +93,7 @@ public class CommandExecutor2CommandBase extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
-		//BukkitContainer.bukkitLogger.info(var1.getCommandSenderName() + " issued server command: " + name + Joiner.on(' ').join(var2));
+		BukkitContainer.bukkitLogger.info(var1.getCommandSenderName() + " issued server command: " + name + Joiner.on(' ').join(var2));
 		try {
 			CommandSender sender;
 			if (var1 instanceof EntityPlayerMP) {

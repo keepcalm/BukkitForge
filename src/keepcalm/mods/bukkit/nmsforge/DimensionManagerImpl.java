@@ -14,7 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.world.WorldLoadEvent;
 
 import java.io.File;
@@ -138,11 +138,11 @@ public class DimensionManagerImpl {
         if (world != null) {
             worlds.put(Integer.valueOf(id), world);
             MinecraftServer.getServer().worldTickTimes.put(Integer.valueOf(id), new long[100]);
-            //FMLLog.info("Loading dimension %d (%s) (%s)", new Object[]{Integer.valueOf(id), world.getWorldInfo().getWorldName(), world.getMinecraftServer()});
+            FMLLog.info("Loading dimension %d (%s) (%s)", new Object[]{Integer.valueOf(id), world.getWorldInfo().getWorldName(), world.getMinecraftServer()});
         } else {
             worlds.remove(Integer.valueOf(id));
             MinecraftServer.getServer().worldTickTimes.remove(Integer.valueOf(id));
-            //FMLLog.info("Unloading dimension %d", new Object[] { Integer.valueOf(id) });
+            FMLLog.info("Unloading dimension %d", new Object[] { Integer.valueOf(id) });
         }
 
         ArrayList tmp = new ArrayList();
@@ -179,7 +179,7 @@ public class DimensionManagerImpl {
         ISaveHandler savehandler = overworld.getSaveHandler();
         WorldSettings worldSettings = new WorldSettings(overworld.getWorldInfo());
 
-        WorldServer world = dim == 0 ? overworld : new WorldServerMulti(mcServer, savehandler, overworld.getWorldInfo().getWorldName(), dim, worldSettings, overworld, mcServer.theProfiler, null);
+        WorldServer world = dim == 0 ? overworld : new WorldServerMulti(mcServer, savehandler, overworld.getWorldInfo().getWorldName(), dim, worldSettings, overworld, mcServer.theProfiler);
         world.addWorldAccess(new WorldManager(mcServer, world));
 
         MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(world));
@@ -337,7 +337,7 @@ public class DimensionManagerImpl {
     {
         if (getWorld(0) != null)
         {
-            return ((SaveHandler)getWorld(0).getSaveHandler()).getWorldDirectory();
+            return ((SaveHandler)getWorld(0).getSaveHandler()).getSaveDirectory();
         }
 
         return null;

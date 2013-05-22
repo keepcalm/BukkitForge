@@ -43,26 +43,6 @@ public class TrapDoor extends SimpleAttachableMaterialData implements Openable {
         setData(data);
     }
 
-    /**
-     * Test if trapdoor is inverted
-     * @return true if inverted (top half), false if normal (bottom half)
-     */
-    public boolean isInverted() {
-        return ((getData() & 0x8) != 0);
-    }
-
-    /**
-     * Set trapdoor inverted state
-     * @param inv - true if inverted (top half), false if normal (bottom half)
-     */
-    public void setInverted(boolean inv) {
-        int dat = getData() & 0x7;
-        if (inv) {
-            dat |= 0x8;
-        }
-        setData((byte) dat);
-    }
-
     public BlockFace getAttachedFace() {
         byte data = (byte) (getData() & 0x3);
 
@@ -85,7 +65,7 @@ public class TrapDoor extends SimpleAttachableMaterialData implements Openable {
     }
 
     public void setFacingDirection(BlockFace face) {
-        byte data = (byte) (getData() & 0xC);
+        byte data = (byte) (getData() & 0x4);
 
         switch (face) {
             case SOUTH:
@@ -97,6 +77,8 @@ public class TrapDoor extends SimpleAttachableMaterialData implements Openable {
             case EAST:
                 data |= 0x3;
                 break;
+            default:
+                break;
         }
 
         setData(data);
@@ -104,7 +86,7 @@ public class TrapDoor extends SimpleAttachableMaterialData implements Openable {
 
     @Override
     public String toString() {
-        return (isOpen() ? "OPEN " : "CLOSED ") + super.toString() + " with hinges set " + getAttachedFace() + (isInverted() ? " inverted" : "");
+        return (isOpen() ? "OPEN " : "CLOSED ") + super.toString() + " with hinges set " + getAttachedFace();
     }
 
     @Override

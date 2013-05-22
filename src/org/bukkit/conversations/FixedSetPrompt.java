@@ -1,9 +1,9 @@
 package org.bukkit.conversations;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * FixedSetPrompt is the base class for any prompt that requires a fixed set response from the user.
@@ -22,7 +22,7 @@ public abstract class FixedSetPrompt extends ValidatingPrompt {
         this.fixedSet = Arrays.asList(fixedSet);
     }
 
-    private FixedSetPrompt() {}
+    //private FixedSetPrompt() {}
 
     @Override
     protected boolean isInputValid(ConversationContext context, String input) {
@@ -31,8 +31,8 @@ public abstract class FixedSetPrompt extends ValidatingPrompt {
 
     /**
      * Utility function to create a formatted string containing all the options declared in the constructor.
-     * 
-     * @return the options formatted like "[bar, cheese, panda]" if bar, cheese, and panda were the options used
+     * The result is formatted like "[bar, cheese, panda]"
+     * @return
      */
     protected String formatFixedSet() {
         return "[" + StringUtils.join(fixedSet, ", ") + "]";

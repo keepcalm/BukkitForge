@@ -33,7 +33,7 @@ public class BukkitAPIHelperTransformer implements IClassTransformer, Opcodes {
 	private static final String itemInitDesc = "(I)V";
 	
 	@Override
-	public byte[] transform(String name, String transformedName, byte[] bytes) {
+	public byte[] transform(String name, byte[] bytes) {
 		
 		if (name.equals(names.get("item_className"))) {
 			System.out.println("Transforming " + name + "...");
@@ -73,5 +73,7 @@ public class BukkitAPIHelperTransformer implements IClassTransformer, Opcodes {
 		cn.accept(cw);
 		return cw.toByteArray();
 	}
+
+	
 	
 }

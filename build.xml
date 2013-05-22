@@ -9,18 +9,18 @@
 	<property name="src.dir" value="src" />
 
 
-	<property name="forge.version" value="1.5.2-7.8.0.705" />
+	<property name="forge.version" value="1.4.7-6.6.0.504" />
 
 	<property name="forge.url" value="http://files.minecraftforge.net/minecraftforge/minecraftforge-src-${forge.version}.zip" />
-	<property name="mcp.version" value="751" />
+	<property name="mcp.version" value="723" />
 	<property name="forge.dir" value="${build.dir}/forge" />
 	<property name="mcp.dir" value="${forge.dir}/mcp" />
 	<property name="mcpsrc.dir" value="${mcp.dir}/src/minecraft" />
 	<property name="package.meta-inf" value="META-INF" />
 	<property name="package.at" value="bukkit_at.cfg" />
 	<property name="package.configs" value="${src.dir}/configurations" />
-	<property name="build.ver" value="1.5.2" />
-	<property name="package.dir" value="porting" />
+	<property name="build.ver" value="1.4.7" />
+	<property name="package.srgs" value="porting" />
 	<!--<property name="files.minecraft.dir" value="jars" />-->
 	<property name="dist.dir" value="${build.dir}/dist" />
 
@@ -30,7 +30,7 @@
 
 	<property file="${forge.dir}/forgeversion.properties" />
 	<condition property="forge.already.installed">
-		<equals arg1="${forge.build.number}" arg2="705" />
+		<equals arg1="${forge.build.number}" arg2="504" />
 	</condition>
 
 	<mkdir dir="${download.dir}"/>
@@ -67,9 +67,11 @@
 					<include name="*.properties" />
 				</patternset>
 			</fileset>
-		</copy>
-		<copy todir="${classes.dir}/mappings" >
-			<fileset dir="${package.dir}/mappings" />
+			<fileset dir="${package.srgs}">
+				<patternset>
+					<include name="*.csrg" />
+				</patternset>
+			</fileset>
 		</copy>
 		<manifest file="MANIFEST.MF" >
 			<attribute name="FMLCorePlugin" value="keepcalm.mods.bukkit.asm.BukkitASMLoader" />
@@ -88,32 +90,9 @@
 	 
 	    <!--Deleting sources so that they don't come back to haunt you-->
         <delete dir="${mcpsrc.dir}/keepcalm" />
-		<delete dir="${mcpsrc.dir}/au" />
         <delete dir="${mcpsrc.dir}/org" />
         <delete dir="${mcpsrc.dir}/javax" />
 		<delete dir="${mcpsrc.dir}/com" />
-		
-		<delete file="${mcpsrc.dir}/net/minecraft/block/Block.java" />
-		
-		<delete file="${mcpsrc.dir}/net/minecraft/inventory/IInventory.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/inventory/InventoryBasic.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/inventory/InventoryCrafting.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/inventory/InventoryCraftResult.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/inventory/InventoryLargeChest.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/inventory/InventoryMerchant.java" />
-		
-		<delete file="${mcpsrc.dir}/net/minecraft/entity/EntityLiving.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/entity/item/EntityMinecartContainer.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/entity/player/EntityPlayer.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/entity/player/InventoryPlayer.java" />
-		
-		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityBeacon.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityBrewingStand.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityChest.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityDispenser.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityFurnace.java" />
-		<delete file="${mcpsrc.dir}/net/minecraft/tileentity/TileEntityHopper.java" />
-		
 		<!-- Copy source -->
 		<!--<mkdir dir="${mcpsrc.dir}/net" />
 				<copy todir="${mcpsrc.dir}/net">
@@ -122,32 +101,21 @@
 		<mkdir dir="${mcpsrc.dir}/keepcalm" />
 		<mkdir dir="${mcpsrc.dir}/keepcalm/mods" />
 		<mkdir dir="${mcpsrc.dir}/com" />
-		<mkdir dir="${mcpsrc.dir}/javax" />
-		<mkdir dir="${mcpsrc.dir}/au" />
         <copy todir="${mcpsrc.dir}/com">
             <fileset dir="${src.dir}/com"/>
         </copy>
 		<copy todir="${mcpsrc.dir}/keepcalm">
 			<fileset dir="${src.dir}/keepcalm"/>
 		</copy>
-		<copy todir="${mcpsrc.dir}/javax">
+		<copy todir="${mcpsrc.dir}">
 			<fileset dir="${src.dir}/javax" />
 		</copy>
 		<copy todir="${mcpsrc.dir}/org">
 			<fileset dir="${src.dir}/org" />
 		</copy>
-		<copy todir="${mcpsrc.dir}/au">
-			<fileset dir="${src.dir}/au" />
-		</copy>
         <copy todir="${mcpsrc.dir}/tst">
             <fileset dir="${src.dir}/tst" />
         </copy>
-		
-		<copy todir="${mcpsrc.dir}/net">
-            <fileset dir="${src.dir}/net" />
-        </copy>
-		
-		<replace dir="${mcpsrc.dir}" token="@VERSION@" value="${build.ver}.${build.number}" />
 
 		<!-- Recompile -->
 		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows" failonerror="true">
@@ -233,8 +201,6 @@
 		<copy todir="${mcp.dir}/lib" >
 			<fileset dir="lib" >
 				<patternset includes="*.jar" />
-				<patternset excludes="SpecialSource-1.5.jar" />
-				<patternset excludes="SpecialSource-1.3-SNAPSHOT.jar" />
 			</fileset>
 
 		</copy>

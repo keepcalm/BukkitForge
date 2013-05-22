@@ -1,6 +1,8 @@
 package org.bukkit.configuration;
 
-import static org.bukkit.util.NumberConversions.*;
+import static org.bukkit.util.NumberConversions.toDouble;
+import static org.bukkit.util.NumberConversions.toInt;
+import static org.bukkit.util.NumberConversions.toLong;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -27,7 +29,7 @@ public class MemorySection implements ConfigurationSection {
 
     /**
      * Creates an empty MemorySection for use as a root {@link Configuration} section.
-     * <p>
+     * <p />
      * Note that calling this without being yourself a {@link Configuration} will throw an
      * exception!
      *
@@ -746,7 +748,7 @@ public class MemorySection implements ConfigurationSection {
 
     /**
      * Creates a full path to the given {@link ConfigurationSection} from its root {@link Configuration}.
-     * <p>
+     * <p />
      * You may use this method for any given {@link ConfigurationSection}, not only {@link MemorySection}.
      *
      * @param section Section to create a path for.
@@ -759,7 +761,7 @@ public class MemorySection implements ConfigurationSection {
 
     /**
      * Creates a relative path to the given {@link ConfigurationSection} from the given relative section.
-     * <p>
+     * <p />
      * You may use this method for any given {@link ConfigurationSection}, not only {@link MemorySection}.
      *
      * @param section Section to create a path for.

@@ -1,7 +1,7 @@
 package org.bukkit.material;
 
-import org.bukkit.block.BlockFace;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 
 /**
  * Represents a button
@@ -93,6 +93,9 @@ public class Button extends SimpleAttachableMaterialData implements Redstone {
 
         case NORTH:
             data |= 0x4;
+            break;
+            
+        default:
             break;
         }
 

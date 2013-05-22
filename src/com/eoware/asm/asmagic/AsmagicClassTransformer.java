@@ -117,7 +117,7 @@ public class AsmagicClassTransformer {
         return null;
     }
 
-    protected FieldNode scrubField(ClassNode cnOrig, ClassNode cnRepl, FieldNode fnRepl) {
+    protected Object scrubField(ClassNode cnOrig, ClassNode cnRepl, FieldNode fnRepl) {
         if( fnRepl.desc.equals( cnRepl.name ) )
         {
             fnRepl.desc = fnRepl.desc.replace(cnRepl.name, cnOrig.name);

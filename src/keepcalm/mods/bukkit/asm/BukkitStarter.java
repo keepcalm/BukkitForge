@@ -17,7 +17,7 @@ import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.CraftServer;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 
@@ -36,7 +36,6 @@ public class BukkitStarter implements Runnable {
 			scm.registerCommand(new CraftCommandMods());
 			//scm.registerCommand(new CommandPermsDebug());
 			scm.registerCommand(new CommandBukkitForge());
-			scm.registerCommand(new CraftCommandConsole());
 			if (!(server instanceof DedicatedServer)) {
 				scm.registerCommand(new CraftCommandConsole());
 				scm.registerCommand(new CommandServerOp());

@@ -1,9 +1,8 @@
 package org.bukkit.entity;
 
+import org.bukkit.inventory.InventoryHolder;
+
 /**
- * @deprecated This class has been moved into a sub package; {@link
- * org.bukkit.entity.minecart.StorageMinecart} should be used instead.
- * @see org.bukkit.entity.minecart.StorageMinecart
+ * Represents a storage minecart.
  */
-@Deprecated
-public interface StorageMinecart extends org.bukkit.entity.minecart.StorageMinecart {}
+public interface StorageMinecart extends Minecart, InventoryHolder {}
