@@ -306,7 +306,7 @@ public class ForgeEventHandler {
 				
 				Bukkit.getPluginManager().callEvent(can);
 
-				final CraftBlock placedBlock = new CraftBlockFake(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), blockX, blockY, blockZ, itemInHand.getTypeId(), itemInHand.getDurability());
+				final CraftBlock placedBlock = new CraftBlockFake(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(blockX, blockZ)), blockX, blockY, blockZ, itemInHand.getTypeId(), itemInHand.getDurability());
 
                 BlockPlaceEvent bev = new BlockPlaceEvent(placedBlock, beforeBlock.getState(), placedBlock, itemInHand, thePlayer, can.isBuildable());
 				
@@ -327,7 +327,7 @@ public class ForgeEventHandler {
 					fp = (EntityPlayerMP) ev.entityPlayer;
 				}
 
-				BlockIgniteEvent bev = new BlockIgniteEvent(new CraftBlock(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), IgniteCause.FLINT_AND_STEEL, BukkitForgePlayerCache.getCraftPlayer(fp));
+				BlockIgniteEvent bev = new BlockIgniteEvent(new CraftBlock(new CraftChunk(ev.entity.worldObj.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), IgniteCause.FLINT_AND_STEEL, BukkitForgePlayerCache.getCraftPlayer(fp));
 				bev.setCancelled(ev.isCanceled());
 				Bukkit.getPluginManager().callEvent(bev);
 				ev.setCanceled(bev.isCancelled());
@@ -590,7 +590,7 @@ public class ForgeEventHandler {
 		if (!ready || isClient)
 			return;
 		
-		/*BlockBreakEvent bev = new BlockBreakEvent(new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.y)), ev.x, ev.y, ev.z), BukkitForgePlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER));
+		/*BlockBreakEvent bev = new BlockBreakEvent(new CraftBlock(new CraftChunk(ev.world.getChunkFromBlockCoords(ev.x, ev.z)), ev.x, ev.y, ev.z), BukkitForgePlayerCache.getCraftPlayer(BukkitContainer.MOD_PLAYER));
 		bev.setCancelled(ev.isCanceled());
 		Bukkit.getPluginManager().callEvent(bev);
 		
@@ -813,7 +813,7 @@ public class ForgeEventHandler {
     
     @ForgeSubscribe(receiveCanceled = true)
     public void populateChunks(PopulateChunkEvent.Post event) {
-    	//ChunkPopulateEvent e = new ChunkPopulateEvent(new CraftChunk(event.world.getChunkFromBlockCoords(event.chunkX, event.chunkZ)));
+    	//ChunkPopulateEvent e = new ChunkPopulateEvent(new CraftChunk(event.world.getChunkFromChunkCoords(event.chunkX, event.chunkZ)));
 
         // Chunk event eventually turns into exception due to bad bukkit chunk code
         //        Bukkit.getPluginManager().callEvent(e);
