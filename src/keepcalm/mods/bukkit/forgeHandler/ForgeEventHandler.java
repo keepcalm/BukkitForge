@@ -383,19 +383,6 @@ public class ForgeEventHandler {
 	}
 
 	@ForgeSubscribe(receiveCanceled = true)
-	public void interactEvent(PlayerInteractEvent ev) {
-		if (!ready || isClient)
-			return;
-
-        org.bukkit.event.player.PlayerInteractEvent bev = BukkitEventRouters.Player.PlayerInteract.callEvent(ev.isCanceled(), ToBukkitEvent.PlayerInteract(ev));
-
-		if (bev.isCancelled()) {
-			ev.setCanceled(true);
-			ev.setResult(Result.DENY);
-		}
-	}
-
-	@ForgeSubscribe(receiveCanceled = true)
 	public void playerGoToSleep(PlayerSleepInBedEvent ev) {
 		if (!ready || isClient)
 			return;
