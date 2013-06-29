@@ -10,7 +10,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_5_R2.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.v1_5_R3.CraftConsoleCommandSender;
 
 
 /**

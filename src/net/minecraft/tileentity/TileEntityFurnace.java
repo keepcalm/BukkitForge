@@ -405,7 +405,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
 
             if (item instanceof ItemTool && ((ItemTool) item).getToolMaterialName().equals("WOOD")) return 200;
             if (item instanceof ItemSword && ((ItemSword) item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item instanceof ItemHoe && ((ItemHoe) item).func_77842_f().equals("WOOD")) return 200;
+            if (item instanceof ItemHoe && ((ItemHoe) item).getMaterialName().equals("WOOD")) return 200;
             if (i == Item.stick.itemID) return 100;
             if (i == Item.coal.itemID) return 1600;
             if (i == Item.bucketLava.itemID) return 20000;
@@ -444,19 +444,28 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
     }
 
     /**
-     * Get the size of the side inventory.
+     * Returns an array containing the indices of the slots that can be accessed by automation on the given side of this
+     * block.
      */
-    public int[] getSizeInventorySide(int par1)
+    public int[] getAccessibleSlotsFromSide(int par1)
     {
         return par1 == 0 ? field_102011_e : (par1 == 1 ? field_102010_d : field_102009_f);
     }
 
-    public boolean func_102007_a(int par1, ItemStack par2ItemStack, int par3)
+    /**
+     * Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item,
+     * side
+     */
+    public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3)
     {
         return this.isStackValidForSlot(par1, par2ItemStack);
     }
 
-    public boolean func_102008_b(int par1, ItemStack par2ItemStack, int par3)
+    /**
+     * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item,
+     * side
+     */
+    public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3)
     {
         return par3 != 0 || par1 != 1 || par2ItemStack.itemID == Item.bucketEmpty.itemID;
     }

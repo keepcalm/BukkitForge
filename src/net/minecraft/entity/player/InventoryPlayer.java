@@ -40,8 +40,13 @@ public class InventoryPlayer implements IInventory
      * it and reset the value.
      */
     public boolean inventoryChanged = false;
+
+    public InventoryPlayer(EntityPlayer par1EntityPlayer)
+    {
+        this.player = par1EntityPlayer;
+    }
     
-    // CraftBukkit start
+   // CraftBukkit start
     private int maxStack = MAX_STACK;
 
     public ItemStack[] getContents()
@@ -59,11 +64,6 @@ public class InventoryPlayer implements IInventory
         maxStack = size;
     }
     // CraftBukkit end
-
-    public InventoryPlayer(EntityPlayer par1EntityPlayer)
-    {
-        this.player = par1EntityPlayer;
-    }
 
     /**
      * Returns the item stack currently held by the player.

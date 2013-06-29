@@ -25,6 +25,29 @@ settings:
     connection-throttle: 4000
     query-plugins: true
     deprecated-verbose: default
+mcpc:
+    plugin-settings:
+        default:
+            debug: false
+            custom-class-loader: true
+            use-guava10: true
+            remap-nms-v1_5_R3: true
+            remap-nms-v1_5_R2: true
+            remap-nms-v1_5_R1: true
+            remap-nms-v1_4_R1: true
+            remap-nms-v1_4_6: true
+            remap-obc-v1_5_R3: false
+            remap-obc-v1_5_R2: false
+            remap-obc-v1_5_R1: true
+            remap-obc-v1_4_R1: false
+            remap-obc-v1_4_6: false
+            remap-obc-pre: false
+            remap-nms-pre: 'false'
+            global-inheritance: true
+            plugin-inheritance: true
+            remap-reflect-field: true
+            remap-reflect-class: true
+            remap-allow-future: false
 spawn-limits:
     monsters: 70
     animals: 15

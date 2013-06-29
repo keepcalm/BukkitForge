@@ -19,7 +19,7 @@ import keepcalm.mods.bukkit.ToBukkit;
 import keepcalm.mods.bukkit.forgeHandler.ForgePacketHandler;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_5_R3.entity.CraftPlayer;
 
 public class NetworkRegistry_BukkitForge {
 

@@ -1492,11 +1492,18 @@ public class Block
      * @param x X Position
      * @param y Y position
      * @param z Z position
+     * @param entity The entity trying to use the ladder, CAN be null.
      * @return True if the block should act like a ladder
-     */
+    */
+    public boolean isLadder(World world, int x, int y, int z, EntityLiving entity)
+    {
+    	return isLadder(world, x, y, z);
+    }
+    
+    @Deprecated //See EntityLiving sensitive version above
     public boolean isLadder(World world, int x, int y, int z)
     {
-        return false;
+    	return false;
     }
 
     /**

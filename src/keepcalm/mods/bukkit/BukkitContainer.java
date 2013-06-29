@@ -32,9 +32,9 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R2.scheduler.CraftScheduler;
-import org.bukkit.craftbukkit.v1_5_R2.utils.Versioning;
+import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R3.scheduler.CraftScheduler;
+import org.bukkit.craftbukkit.v1_5_R3.utils.Versioning;
 
 import com.google.common.base.Joiner;
 import com.google.common.eventbus.EventBus;

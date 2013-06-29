@@ -67,7 +67,7 @@ public interface IInventory
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
     boolean isStackValidForSlot(int i, ItemStack itemstack);
-
+    
     // CraftBukkit start
     ItemStack[] getContents();
 

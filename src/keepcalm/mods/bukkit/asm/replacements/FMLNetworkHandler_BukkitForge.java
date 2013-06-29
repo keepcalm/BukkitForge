@@ -8,7 +8,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetServerHandler;
 import net.minecraft.server.MinecraftServer;
 
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class FMLNetworkHandler_BukkitForge {
 

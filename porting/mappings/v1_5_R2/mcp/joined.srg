@@ -466,8 +466,59 @@ CL: asp org/bouncycastle/jce/provider/BouncyCastleProvider
 CL: asq org/bouncycastle/jce/provider/BouncyCastleProviderAction
 CL: asr org/bouncycastle/jce/provider/BouncyCastleProviderConfiguration
 CL: ass org/bouncycastle/util/Strings
+CL: ast argo/format/CompactJsonFormatter
+CL: asu argo/format/CompactJsonFormatter_JsonNodeType
+CL: asv argo/format/JsonEscapedString
+CL: asw argo/format/JsonFormatter
+CL: asx argo/jdom/ChainedFunctor
+CL: asy argo/jdom/Functor
+CL: asz argo/jdom/JdomParser
 CL: at net/minecraft/src/NumberInvalidException
+CL: ata argo/jdom/JsonArray
+CL: atb argo/jdom/JsonArray_NodeList
+CL: atc argo/jdom/JsonArrayNodeBuilder
+CL: atd argo/jdom/JsonConstants
+CL: ate argo/jdom/JsonFieldBuilder
+CL: atf argo/jdom/JsonListenerToJdomAdapter
+CL: atg argo/jdom/JsonListenerToJdomAdapter_Array
+CL: ath argo/jdom/JsonListenerToJdomAdapter_Object
+CL: ati argo/jdom/JsonListenerToJdomAdapter_Field
+CL: atj argo/jdom/JsonListenerToJdomAdapter_NodeContainer
+CL: atk argo/jdom/JsonNode
+CL: atl argo/jdom/JsonNodeBuilder
+CL: atm argo/jdom/JsonNodeBuilders
+CL: atn argo/jdom/JsonNodeBuilders_Null
+CL: ato argo/jdom/JsonNodeBuilders_True
+CL: atp argo/jdom/JsonNodeBuilders_False
+CL: atq argo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException
+CL: atr argo/jdom/JsonNodeDoesNotMatchJsonNodeSelectorException
+CL: ats argo/jdom/JsonNodeDoesNotMatchPathElementsException
+CL: att argo/jdom/JsonNodeFactories
+CL: atu argo/jdom/JsonNodeSelector
+CL: atv argo/jdom/JsonNodeSelectors
+CL: atw argo/jdom/JsonNodeSelectors_String
+CL: atx argo/jdom/JsonNodeSelectors_Object
+CL: aty argo/jdom/JsonNodeSelectors_Field
+CL: atz argo/jdom/JsonNodeSelectors_Element
 CL: au net/minecraft/src/SyntaxErrorException
+CL: aua argo/jdom/JsonNodeSelectors_Number
+CL: aub argo/jdom/JsonNodeSelectors_Boolean
+CL: auc argo/jdom/JsonNodeSelectors_Array
+CL: aud argo/jdom/JsonNodeType
+CL: aue argo/jdom/JsonNumberNode
+CL: auf argo/jdom/JsonNumberNodeBuilder
+CL: aug argo/jdom/JsonObject
+CL: auh argo/jdom/JsonObjectNodeBuilder
+CL: aui argo/jdom/JsonObjectNodeBuilder_List
+CL: auj argo/jdom/JsonRootNode
+CL: auk argo/jdom/JsonStringNode
+CL: aul argo/jdom/JsonStringNodeBuilder
+CL: aum argo/jdom/LeafFunctor
+CL: aun argo/saj/InvalidSyntaxException
+CL: auo argo/saj/JsonListener
+CL: aup argo/saj/PositionTrackingPushbackReader
+CL: auq argo/saj/SajParser
+CL: aur argo/saj/ThingWithPosition
 CL: aus net/minecraft/src/ThreadDownloadResources
 CL: aut net/minecraft/src/ActiveRenderInfo
 CL: auv net/minecraft/src/PanelCrashReport
@@ -3034,6 +3085,55 @@ FD: asr/c org/bouncycastle/jce/provider/BouncyCastleProviderConfiguration/field_
 FD: asr/d org/bouncycastle/jce/provider/BouncyCastleProviderConfiguration/field_74832_d
 FD: asr/e org/bouncycastle/jce/provider/BouncyCastleProviderConfiguration/field_74833_e
 FD: asr/f org/bouncycastle/jce/provider/BouncyCastleProviderConfiguration/field_74831_f
+FD: asu/a argo/format/CompactJsonFormatter_JsonNodeType/field_74790_a
+FD: asv/a argo/format/JsonEscapedString/field_74791_a
+FD: asx/a argo/jdom/ChainedFunctor/field_74632_a
+FD: asx/b argo/jdom/ChainedFunctor/field_74631_b
+FD: ata/a argo/jdom/JsonArray/field_74619_a
+FD: atb/a argo/jdom/JsonArray_NodeList/field_74730_a
+FD: atc/a argo/jdom/JsonArrayNodeBuilder/field_74605_a
+FD: atd/a argo/jdom/JsonConstants/field_74625_a
+FD: atd/b argo/jdom/JsonConstants/field_74623_b
+FD: atd/c argo/jdom/JsonConstants/field_74624_c
+FD: atd/d argo/jdom/JsonConstants/field_74622_d
+FD: ate/a argo/jdom/JsonFieldBuilder/field_74729_a
+FD: ate/b argo/jdom/JsonFieldBuilder/field_74728_b
+FD: atf/a argo/jdom/JsonListenerToJdomAdapter/field_74663_a
+FD: atf/b argo/jdom/JsonListenerToJdomAdapter/field_74662_b
+FD: atg/a argo/jdom/JsonListenerToJdomAdapter_Array/field_74722_a
+FD: atg/b argo/jdom/JsonListenerToJdomAdapter_Array/field_74721_b
+FD: ath/a argo/jdom/JsonListenerToJdomAdapter_Object/field_74720_a
+FD: ath/b argo/jdom/JsonListenerToJdomAdapter_Object/field_74719_b
+FD: ati/a argo/jdom/JsonListenerToJdomAdapter_Field/field_74718_a
+FD: ati/b argo/jdom/JsonListenerToJdomAdapter_Field/field_74717_b
+FD: atq/a argo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException/field_74703_a
+FD: atq/b argo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException/field_74702_b
+FD: ats/a argo/jdom/JsonNodeDoesNotMatchPathElementsException/field_74707_a
+FD: atu/a argo/jdom/JsonNodeSelector/field_74689_a
+FD: aty/a argo/jdom/JsonNodeSelectors_Field/field_74643_a
+FD: atz/a argo/jdom/JsonNodeSelectors_Element/field_74636_a
+FD: aud/a argo/jdom/JsonNodeType/OBJECT
+FD: aud/b argo/jdom/JsonNodeType/ARRAY
+FD: aud/c argo/jdom/JsonNodeType/STRING
+FD: aud/d argo/jdom/JsonNodeType/NUMBER
+FD: aud/e argo/jdom/JsonNodeType/TRUE
+FD: aud/f argo/jdom/JsonNodeType/FALSE
+FD: aud/g argo/jdom/JsonNodeType/NULL
+FD: aud/h argo/jdom/JsonNodeType/$VALUES
+FD: aue/a argo/jdom/JsonNumberNode/field_74621_a
+FD: aue/b argo/jdom/JsonNumberNode/field_74620_b
+FD: auf/a argo/jdom/JsonNumberNodeBuilder/field_74602_a
+FD: aug/a argo/jdom/JsonObject/field_74617_a
+FD: auh/a argo/jdom/JsonObjectNodeBuilder/field_74609_a
+FD: aui/a argo/jdom/JsonObjectNodeBuilder_List/field_74598_a
+FD: auk/a argo/jdom/JsonStringNode/field_74627_a
+FD: aul/a argo/jdom/JsonStringNodeBuilder/field_74601_a
+FD: aun/a argo/saj/InvalidSyntaxException/field_74665_a
+FD: aun/b argo/saj/InvalidSyntaxException/field_74664_b
+FD: aup/a argo/saj/PositionTrackingPushbackReader/field_74571_a
+FD: aup/b argo/saj/PositionTrackingPushbackReader/field_74569_b
+FD: aup/c argo/saj/PositionTrackingPushbackReader/field_74570_c
+FD: aup/d argo/saj/PositionTrackingPushbackReader/field_74568_d
 FD: aus/a net/minecraft/src/ThreadDownloadResources/field_74579_a
 FD: aus/b net/minecraft/src/ThreadDownloadResources/field_74577_b
 FD: aus/c net/minecraft/src/ThreadDownloadResources/field_74578_c
@@ -10629,6 +10729,233 @@ MD: asp/a (Ljava/lang/String;[Ljava/lang/String;)V org/bouncycastle/jce/provider
 MD: asp/b ()V org/bouncycastle/jce/provider/BouncyCastleProvider/func_74820_b ()V
 MD: asq/run ()Ljava/lang/Object; org/bouncycastle/jce/provider/BouncyCastleProviderAction/run ()Ljava/lang/Object;
 MD: ass/a (Ljava/lang/String;)Ljava/lang/String; org/bouncycastle/util/Strings/func_74830_a (Ljava/lang/String;)Ljava/lang/String;
+MD: ast/a (Latk;Ljava/io/Writer;)V argo/format/CompactJsonFormatter/func_74786_a (Largo/jdom/JsonNode;Ljava/io/Writer;)V
+MD: ast/a (Lauj;)Ljava/lang/String; argo/format/CompactJsonFormatter/func_74785_a (Largo/jdom/JsonRootNode;)Ljava/lang/String;
+MD: ast/a (Lauj;Ljava/io/Writer;)V argo/format/CompactJsonFormatter/func_74787_a (Largo/jdom/JsonRootNode;Ljava/io/Writer;)V
+MD: asv/toString ()Ljava/lang/String; argo/format/JsonEscapedString/toString ()Ljava/lang/String;
+MD: asw/a (Lauj;)Ljava/lang/String; argo/format/JsonFormatter/func_74785_a (Largo/jdom/JsonRootNode;)Ljava/lang/String;
+MD: asx/a ()Ljava/lang/String; argo/jdom/ChainedFunctor/func_74628_a ()Ljava/lang/String;
+MD: asx/a (Ljava/lang/Object;)Z argo/jdom/ChainedFunctor/func_74630_a (Ljava/lang/Object;)Z
+MD: asx/b (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/ChainedFunctor/func_74629_b (Ljava/lang/Object;)Ljava/lang/Object;
+MD: asx/toString ()Ljava/lang/String; argo/jdom/ChainedFunctor/toString ()Ljava/lang/String;
+MD: asy/a ()Ljava/lang/String; argo/jdom/Functor/func_74628_a ()Ljava/lang/String;
+MD: asy/a (Ljava/lang/Object;)Z argo/jdom/Functor/func_74630_a (Ljava/lang/Object;)Z
+MD: asy/b (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/Functor/func_74629_b (Ljava/lang/Object;)Ljava/lang/Object;
+MD: asz/a (Ljava/io/Reader;)Lauj; argo/jdom/JdomParser/func_74788_a (Ljava/io/Reader;)Largo/jdom/JsonRootNode;
+MD: asz/a (Ljava/lang/String;)Lauj; argo/jdom/JdomParser/parse (Ljava/lang/String;)Largo/jdom/JsonRootNode;
+MD: ata/a ()Laud; argo/jdom/JsonArray/func_74616_a ()Largo/jdom/JsonNodeType;
+MD: ata/a (Ljava/lang/Iterable;)Ljava/util/List; argo/jdom/JsonArray/func_74618_a (Ljava/lang/Iterable;)Ljava/util/List;
+MD: ata/b ()Ljava/util/List; argo/jdom/JsonArray/func_74610_b ()Ljava/util/List;
+MD: ata/c ()Ljava/lang/String; argo/jdom/JsonArray/getText ()Ljava/lang/String;
+MD: ata/d ()Ljava/util/Map; argo/jdom/JsonArray/getFields ()Ljava/util/Map;
+MD: ata/equals (Ljava/lang/Object;)Z argo/jdom/JsonArray/equals (Ljava/lang/Object;)Z
+MD: ata/hashCode ()I argo/jdom/JsonArray/hashCode ()I
+MD: ata/toString ()Ljava/lang/String; argo/jdom/JsonArray/toString ()Ljava/lang/String;
+MD: atc/a ()Lauj; argo/jdom/JsonArrayNodeBuilder/func_74604_a ()Largo/jdom/JsonRootNode;
+MD: atc/a (Latl;)Latc; argo/jdom/JsonArrayNodeBuilder/func_74603_a (Largo/jdom/JsonNodeBuilder;)Largo/jdom/JsonArrayNodeBuilder;
+MD: atc/b ()Latk; argo/jdom/JsonArrayNodeBuilder/func_74599_b ()Largo/jdom/JsonNode;
+MD: atd/a ()Laud; argo/jdom/JsonConstants/func_74616_a ()Largo/jdom/JsonNodeType;
+MD: atd/b ()Ljava/util/List; argo/jdom/JsonConstants/func_74610_b ()Ljava/util/List;
+MD: atd/c ()Ljava/lang/String; argo/jdom/JsonConstants/getText ()Ljava/lang/String;
+MD: atd/d ()Ljava/util/Map; argo/jdom/JsonConstants/getFields ()Ljava/util/Map;
+MD: ate/a ()Late; argo/jdom/JsonFieldBuilder/func_74727_a ()Largo/jdom/JsonFieldBuilder;
+MD: ate/a (Latl;)Late; argo/jdom/JsonFieldBuilder/func_74726_a (Largo/jdom/JsonNodeBuilder;)Largo/jdom/JsonFieldBuilder;
+MD: ate/b ()Lauk; argo/jdom/JsonFieldBuilder/func_74724_b ()Largo/jdom/JsonStringNode;
+MD: ate/b (Latl;)Late; argo/jdom/JsonFieldBuilder/func_74723_b (Largo/jdom/JsonNodeBuilder;)Largo/jdom/JsonFieldBuilder;
+MD: ate/c ()Latk; argo/jdom/JsonFieldBuilder/func_74725_c ()Largo/jdom/JsonNode;
+MD: atf/a ()Lauj; argo/jdom/JsonListenerToJdomAdapter/func_74660_a ()Largo/jdom/JsonRootNode;
+MD: atf/a (Latl;)V argo/jdom/JsonListenerToJdomAdapter/func_74661_a (Largo/jdom/JsonNodeBuilder;)V
+MD: atf/a (Ljava/lang/String;)V argo/jdom/JsonListenerToJdomAdapter/func_74648_a (Ljava/lang/String;)V
+MD: atf/b ()V argo/jdom/JsonListenerToJdomAdapter/func_74656_b ()V
+MD: atf/b (Latl;)V argo/jdom/JsonListenerToJdomAdapter/func_74659_b (Largo/jdom/JsonNodeBuilder;)V
+MD: atf/b (Ljava/lang/String;)V argo/jdom/JsonListenerToJdomAdapter/func_74650_b (Ljava/lang/String;)V
+MD: atf/c ()V argo/jdom/JsonListenerToJdomAdapter/func_74657_c ()V
+MD: atf/c (Ljava/lang/String;)V argo/jdom/JsonListenerToJdomAdapter/func_74647_c (Ljava/lang/String;)V
+MD: atf/d ()V argo/jdom/JsonListenerToJdomAdapter/func_74652_d ()V
+MD: atf/e ()V argo/jdom/JsonListenerToJdomAdapter/func_74655_e ()V
+MD: atf/f ()V argo/jdom/JsonListenerToJdomAdapter/func_74651_f ()V
+MD: atf/g ()V argo/jdom/JsonListenerToJdomAdapter/func_74653_g ()V
+MD: atf/h ()V argo/jdom/JsonListenerToJdomAdapter/func_74658_h ()V
+MD: atf/i ()V argo/jdom/JsonListenerToJdomAdapter/func_74654_i ()V
+MD: atf/j ()V argo/jdom/JsonListenerToJdomAdapter/func_74649_j ()V
+MD: atf/k ()V argo/jdom/JsonListenerToJdomAdapter/func_74646_k ()V
+MD: atg/a (Late;)V argo/jdom/JsonListenerToJdomAdapter_Array/func_74716_a (Largo/jdom/JsonFieldBuilder;)V
+MD: atg/a (Latl;)V argo/jdom/JsonListenerToJdomAdapter_Array/func_74715_a (Largo/jdom/JsonNodeBuilder;)V
+MD: ath/a (Late;)V argo/jdom/JsonListenerToJdomAdapter_Object/func_74716_a (Largo/jdom/JsonFieldBuilder;)V
+MD: ath/a (Latl;)V argo/jdom/JsonListenerToJdomAdapter_Object/func_74715_a (Largo/jdom/JsonNodeBuilder;)V
+MD: ati/a (Late;)V argo/jdom/JsonListenerToJdomAdapter_Field/func_74716_a (Largo/jdom/JsonFieldBuilder;)V
+MD: ati/a (Latl;)V argo/jdom/JsonListenerToJdomAdapter_Field/func_74715_a (Largo/jdom/JsonNodeBuilder;)V
+MD: atj/a (Late;)V argo/jdom/JsonListenerToJdomAdapter_NodeContainer/func_74716_a (Largo/jdom/JsonFieldBuilder;)V
+MD: atj/a (Latl;)V argo/jdom/JsonListenerToJdomAdapter_NodeContainer/func_74715_a (Largo/jdom/JsonNodeBuilder;)V
+MD: atk/a ()Laud; argo/jdom/JsonNode/func_74616_a ()Largo/jdom/JsonNodeType;
+MD: atk/a (Latu;Latk;[Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/JsonNode/func_74613_a (Largo/jdom/JsonNodeSelector;Largo/jdom/JsonNode;[Ljava/lang/Object;)Ljava/lang/Object;
+MD: atk/a ([Ljava/lang/Object;)Ljava/lang/Boolean; argo/jdom/JsonNode/getBooleanValue ([Ljava/lang/Object;)Ljava/lang/Boolean;
+MD: atk/b ()Ljava/util/List; argo/jdom/JsonNode/func_74610_b ()Ljava/util/List;
+MD: atk/b ([Ljava/lang/Object;)Ljava/lang/String; argo/jdom/JsonNode/getStringValue ([Ljava/lang/Object;)Ljava/lang/String;
+MD: atk/c ()Ljava/lang/String; argo/jdom/JsonNode/getText ()Ljava/lang/String;
+MD: atk/c ([Ljava/lang/Object;)Ljava/lang/String; argo/jdom/JsonNode/getNumberValue ([Ljava/lang/Object;)Ljava/lang/String;
+MD: atk/d ()Ljava/util/Map; argo/jdom/JsonNode/getFields ()Ljava/util/Map;
+MD: atk/d ([Ljava/lang/Object;)Z argo/jdom/JsonNode/isArrayNode ([Ljava/lang/Object;)Z
+MD: atk/e ([Ljava/lang/Object;)Ljava/util/List; argo/jdom/JsonNode/getArrayNode ([Ljava/lang/Object;)Ljava/util/List;
+MD: atl/b ()Latk; argo/jdom/JsonNodeBuilder/func_74599_b ()Largo/jdom/JsonNode;
+MD: atm/a ()Latl; argo/jdom/JsonNodeBuilders/func_74714_a ()Largo/jdom/JsonNodeBuilder;
+MD: atm/a (Ljava/lang/String;)Latl; argo/jdom/JsonNodeBuilders/func_74712_a (Ljava/lang/String;)Largo/jdom/JsonNodeBuilder;
+MD: atm/b ()Latl; argo/jdom/JsonNodeBuilders/func_74713_b ()Largo/jdom/JsonNodeBuilder;
+MD: atm/b (Ljava/lang/String;)Laul; argo/jdom/JsonNodeBuilders/func_74710_b (Ljava/lang/String;)Largo/jdom/JsonStringNodeBuilder;
+MD: atm/c ()Latl; argo/jdom/JsonNodeBuilders/func_74709_c ()Largo/jdom/JsonNodeBuilder;
+MD: atm/d ()Lauh; argo/jdom/JsonNodeBuilders/func_74711_d ()Largo/jdom/JsonObjectNodeBuilder;
+MD: atm/e ()Latc; argo/jdom/JsonNodeBuilders/func_74708_e ()Largo/jdom/JsonArrayNodeBuilder;
+MD: atn/b ()Latk; argo/jdom/JsonNodeBuilders_Null/func_74599_b ()Largo/jdom/JsonNode;
+MD: ato/b ()Latk; argo/jdom/JsonNodeBuilders_True/func_74599_b ()Largo/jdom/JsonNode;
+MD: atp/b ()Latk; argo/jdom/JsonNodeBuilders_False/func_74599_b ()Largo/jdom/JsonNode;
+MD: atq/a (Lasy;)Latr; argo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException/func_74701_a (Largo/jdom/Functor;)Largo/jdom/JsonNodeDoesNotMatchJsonNodeSelectorException;
+MD: atq/a (Latq;Latu;)Latr; argo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException/func_74699_a (Largo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException;Largo/jdom/JsonNodeSelector;)Largo/jdom/JsonNodeDoesNotMatchJsonNodeSelectorException;
+MD: atq/a (Ljava/util/List;)Ljava/lang/String; argo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException/func_74700_a (Ljava/util/List;)Ljava/lang/String;
+MD: atq/b (Latq;Latu;)Latr; argo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException/func_74698_b (Largo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException;Largo/jdom/JsonNodeSelector;)Largo/jdom/JsonNodeDoesNotMatchJsonNodeSelectorException;
+MD: atq/toString ()Ljava/lang/String; argo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException/toString ()Ljava/lang/String;
+MD: ats/a (Latq;[Ljava/lang/Object;Lauj;)Lats; argo/jdom/JsonNodeDoesNotMatchPathElementsException/func_74704_a (Largo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException;[Ljava/lang/Object;Largo/jdom/JsonRootNode;)Largo/jdom/JsonNodeDoesNotMatchPathElementsException;
+MD: ats/a ([Ljava/lang/Object;)Ljava/lang/String; argo/jdom/JsonNodeDoesNotMatchPathElementsException/func_74705_a ([Ljava/lang/Object;)Ljava/lang/String;
+MD: ats/b (Latq;[Ljava/lang/Object;Lauj;)Ljava/lang/String; argo/jdom/JsonNodeDoesNotMatchPathElementsException/func_74706_b (Largo/jdom/JsonNodeDoesNotMatchChainedJsonNodeSelectorException;[Ljava/lang/Object;Largo/jdom/JsonRootNode;)Ljava/lang/String;
+MD: att/a ()Latk; argo/jdom/JsonNodeFactories/func_74696_a ()Largo/jdom/JsonNode;
+MD: att/a (Ljava/lang/Iterable;)Lauj; argo/jdom/JsonNodeFactories/func_74690_a (Ljava/lang/Iterable;)Largo/jdom/JsonRootNode;
+MD: att/a (Ljava/lang/String;)Lauk; argo/jdom/JsonNodeFactories/func_74697_a (Ljava/lang/String;)Largo/jdom/JsonStringNode;
+MD: att/a (Ljava/util/Map;)Lauj; argo/jdom/JsonNodeFactories/func_74692_a (Ljava/util/Map;)Largo/jdom/JsonRootNode;
+MD: att/a ([Latk;)Lauj; argo/jdom/JsonNodeFactories/func_74695_a ([Largo/jdom/JsonNode;)Largo/jdom/JsonRootNode;
+MD: att/b ()Latk; argo/jdom/JsonNodeFactories/func_74693_b ()Largo/jdom/JsonNode;
+MD: att/b (Ljava/lang/String;)Latk; argo/jdom/JsonNodeFactories/func_74691_b (Ljava/lang/String;)Largo/jdom/JsonNode;
+MD: att/c ()Latk; argo/jdom/JsonNodeFactories/func_74694_c ()Largo/jdom/JsonNode;
+MD: atu/a ()Ljava/lang/String; argo/jdom/JsonNodeSelector/func_74685_a ()Ljava/lang/String;
+MD: atu/a (Latu;)Latu; argo/jdom/JsonNodeSelector/func_74686_a (Largo/jdom/JsonNodeSelector;)Largo/jdom/JsonNodeSelector;
+MD: atu/a (Ljava/lang/Object;)Z argo/jdom/JsonNodeSelector/func_74688_a (Ljava/lang/Object;)Z
+MD: atu/b (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/JsonNodeSelector/func_74687_b (Ljava/lang/Object;)Ljava/lang/Object;
+MD: atu/toString ()Ljava/lang/String; argo/jdom/JsonNodeSelector/toString ()Ljava/lang/String;
+MD: atv/a (I)Latu; argo/jdom/JsonNodeSelectors/func_74678_a (I)Largo/jdom/JsonNodeSelector;
+MD: atv/a (Latu;Latu;)Latu; argo/jdom/JsonNodeSelectors/func_74676_a (Largo/jdom/JsonNodeSelector;Largo/jdom/JsonNodeSelector;)Largo/jdom/JsonNodeSelector;
+MD: atv/a (Lauk;)Latu; argo/jdom/JsonNodeSelectors/func_74680_a (Largo/jdom/JsonStringNode;)Largo/jdom/JsonNodeSelector;
+MD: atv/a (Ljava/lang/String;)Latu; argo/jdom/JsonNodeSelectors/func_74675_a (Ljava/lang/String;)Largo/jdom/JsonNodeSelector;
+MD: atv/a ([Ljava/lang/Object;)Latu; argo/jdom/JsonNodeSelectors/func_74682_a ([Ljava/lang/Object;)Largo/jdom/JsonNodeSelector;
+MD: atv/a ([Ljava/lang/Object;Latu;)Latu; argo/jdom/JsonNodeSelectors/func_74677_a ([Ljava/lang/Object;Largo/jdom/JsonNodeSelector;)Largo/jdom/JsonNodeSelector;
+MD: atv/b (I)Latu; argo/jdom/JsonNodeSelectors/func_74679_b (I)Largo/jdom/JsonNodeSelector;
+MD: atv/b (Ljava/lang/String;)Latu; argo/jdom/JsonNodeSelectors/func_74684_b (Ljava/lang/String;)Largo/jdom/JsonNodeSelector;
+MD: atv/b ([Ljava/lang/Object;)Latu; argo/jdom/JsonNodeSelectors/func_98316_b ([Ljava/lang/Object;)Largo/jdom/JsonNodeSelector;
+MD: atv/c ([Ljava/lang/Object;)Latu; argo/jdom/JsonNodeSelectors/func_98315_c ([Ljava/lang/Object;)Largo/jdom/JsonNodeSelector;
+MD: atv/d ([Ljava/lang/Object;)Latu; argo/jdom/JsonNodeSelectors/func_74683_b ([Ljava/lang/Object;)Largo/jdom/JsonNodeSelector;
+MD: atv/e ([Ljava/lang/Object;)Latu; argo/jdom/JsonNodeSelectors/func_74681_c ([Ljava/lang/Object;)Largo/jdom/JsonNodeSelector;
+MD: atw/a ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_String/func_74628_a ()Ljava/lang/String;
+MD: atw/a (Latk;)Z argo/jdom/JsonNodeSelectors_String/func_74645_a (Largo/jdom/JsonNode;)Z
+MD: atw/a (Ljava/lang/Object;)Z argo/jdom/JsonNodeSelectors_String/func_74630_a (Ljava/lang/Object;)Z
+MD: atw/b (Latk;)Ljava/lang/String; argo/jdom/JsonNodeSelectors_String/func_74644_b (Largo/jdom/JsonNode;)Ljava/lang/String;
+MD: atw/c (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/JsonNodeSelectors_String/func_74633_c (Ljava/lang/Object;)Ljava/lang/Object;
+MD: atw/toString ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_String/toString ()Ljava/lang/String;
+MD: atx/a ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Object/func_74628_a ()Ljava/lang/String;
+MD: atx/a (Latk;)Z argo/jdom/JsonNodeSelectors_Object/func_74640_a (Largo/jdom/JsonNode;)Z
+MD: atx/a (Ljava/lang/Object;)Z argo/jdom/JsonNodeSelectors_Object/func_74630_a (Ljava/lang/Object;)Z
+MD: atx/b (Latk;)Ljava/util/Map; argo/jdom/JsonNodeSelectors_Object/func_74639_b (Largo/jdom/JsonNode;)Ljava/util/Map;
+MD: atx/c (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/JsonNodeSelectors_Object/func_74633_c (Ljava/lang/Object;)Ljava/lang/Object;
+MD: atx/toString ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Object/toString ()Ljava/lang/String;
+MD: aty/a ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Field/func_74628_a ()Ljava/lang/String;
+MD: aty/a (Ljava/lang/Object;)Z argo/jdom/JsonNodeSelectors_Field/func_74630_a (Ljava/lang/Object;)Z
+MD: aty/a (Ljava/util/Map;)Z argo/jdom/JsonNodeSelectors_Field/func_74641_a (Ljava/util/Map;)Z
+MD: aty/b (Ljava/util/Map;)Latk; argo/jdom/JsonNodeSelectors_Field/func_74642_b (Ljava/util/Map;)Largo/jdom/JsonNode;
+MD: aty/c (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/JsonNodeSelectors_Field/func_74633_c (Ljava/lang/Object;)Ljava/lang/Object;
+MD: aty/toString ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Field/toString ()Ljava/lang/String;
+MD: atz/a ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Element/func_74628_a ()Ljava/lang/String;
+MD: atz/a (Ljava/lang/Object;)Z argo/jdom/JsonNodeSelectors_Element/func_74630_a (Ljava/lang/Object;)Z
+MD: atz/a (Ljava/util/List;)Z argo/jdom/JsonNodeSelectors_Element/func_74634_a (Ljava/util/List;)Z
+MD: atz/b (Ljava/util/List;)Latk; argo/jdom/JsonNodeSelectors_Element/func_74635_b (Ljava/util/List;)Largo/jdom/JsonNode;
+MD: atz/c (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/JsonNodeSelectors_Element/func_74633_c (Ljava/lang/Object;)Ljava/lang/Object;
+MD: atz/toString ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Element/toString ()Ljava/lang/String;
+MD: aua/a ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Number/func_74628_a ()Ljava/lang/String;
+MD: aua/a (Latk;)Z argo/jdom/JsonNodeSelectors_Number/func_98314_a (Largo/jdom/JsonNode;)Z
+MD: aua/a (Ljava/lang/Object;)Z argo/jdom/JsonNodeSelectors_Number/func_74630_a (Ljava/lang/Object;)Z
+MD: aua/b (Latk;)Ljava/lang/String; argo/jdom/JsonNodeSelectors_Number/func_98313_b (Largo/jdom/JsonNode;)Ljava/lang/String;
+MD: aua/c (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/JsonNodeSelectors_Number/func_74633_c (Ljava/lang/Object;)Ljava/lang/Object;
+MD: aua/toString ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Number/toString ()Ljava/lang/String;
+MD: aub/a ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Boolean/func_74628_a ()Ljava/lang/String;
+MD: aub/a (Latk;)Z argo/jdom/JsonNodeSelectors_Boolean/func_98312_a (Largo/jdom/JsonNode;)Z
+MD: aub/a (Ljava/lang/Object;)Z argo/jdom/JsonNodeSelectors_Boolean/func_74630_a (Ljava/lang/Object;)Z
+MD: aub/b (Latk;)Ljava/lang/Boolean; argo/jdom/JsonNodeSelectors_Boolean/func_98311_b (Largo/jdom/JsonNode;)Ljava/lang/Boolean;
+MD: aub/c (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/JsonNodeSelectors_Boolean/func_74633_c (Ljava/lang/Object;)Ljava/lang/Object;
+MD: aub/toString ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Boolean/toString ()Ljava/lang/String;
+MD: auc/a ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Array/func_74628_a ()Ljava/lang/String;
+MD: auc/a (Latk;)Z argo/jdom/JsonNodeSelectors_Array/func_74638_a (Largo/jdom/JsonNode;)Z
+MD: auc/a (Ljava/lang/Object;)Z argo/jdom/JsonNodeSelectors_Array/func_74630_a (Ljava/lang/Object;)Z
+MD: auc/b (Latk;)Ljava/util/List; argo/jdom/JsonNodeSelectors_Array/func_74637_b (Largo/jdom/JsonNode;)Ljava/util/List;
+MD: auc/c (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/JsonNodeSelectors_Array/func_74633_c (Ljava/lang/Object;)Ljava/lang/Object;
+MD: auc/toString ()Ljava/lang/String; argo/jdom/JsonNodeSelectors_Array/toString ()Ljava/lang/String;
+MD: aud/valueOf (Ljava/lang/String;)Laud; argo/jdom/JsonNodeType/valueOf (Ljava/lang/String;)Largo/jdom/JsonNodeType;
+MD: aud/values ()[Laud; argo/jdom/JsonNodeType/values ()[Largo/jdom/JsonNodeType;
+MD: aue/a ()Laud; argo/jdom/JsonNumberNode/func_74616_a ()Largo/jdom/JsonNodeType;
+MD: aue/b ()Ljava/util/List; argo/jdom/JsonNumberNode/func_74610_b ()Ljava/util/List;
+MD: aue/c ()Ljava/lang/String; argo/jdom/JsonNumberNode/getText ()Ljava/lang/String;
+MD: aue/d ()Ljava/util/Map; argo/jdom/JsonNumberNode/getFields ()Ljava/util/Map;
+MD: aue/equals (Ljava/lang/Object;)Z argo/jdom/JsonNumberNode/equals (Ljava/lang/Object;)Z
+MD: aue/hashCode ()I argo/jdom/JsonNumberNode/hashCode ()I
+MD: aue/toString ()Ljava/lang/String; argo/jdom/JsonNumberNode/toString ()Ljava/lang/String;
+MD: auf/b ()Latk; argo/jdom/JsonNumberNodeBuilder/func_74599_b ()Largo/jdom/JsonNode;
+MD: aug/a ()Laud; argo/jdom/JsonObject/func_74616_a ()Largo/jdom/JsonNodeType;
+MD: aug/b ()Ljava/util/List; argo/jdom/JsonObject/func_74610_b ()Ljava/util/List;
+MD: aug/c ()Ljava/lang/String; argo/jdom/JsonObject/getText ()Ljava/lang/String;
+MD: aug/d ()Ljava/util/Map; argo/jdom/JsonObject/getFields ()Ljava/util/Map;
+MD: aug/equals (Ljava/lang/Object;)Z argo/jdom/JsonObject/equals (Ljava/lang/Object;)Z
+MD: aug/hashCode ()I argo/jdom/JsonObject/hashCode ()I
+MD: aug/toString ()Ljava/lang/String; argo/jdom/JsonObject/toString ()Ljava/lang/String;
+MD: auh/a ()Lauj; argo/jdom/JsonObjectNodeBuilder/func_74606_a ()Largo/jdom/JsonRootNode;
+MD: auh/a (Late;)Lauh; argo/jdom/JsonObjectNodeBuilder/func_74608_a (Largo/jdom/JsonFieldBuilder;)Largo/jdom/JsonObjectNodeBuilder;
+MD: auh/a (Lauh;)Ljava/util/List; argo/jdom/JsonObjectNodeBuilder/func_74607_a (Largo/jdom/JsonObjectNodeBuilder;)Ljava/util/List;
+MD: auh/b ()Latk; argo/jdom/JsonObjectNodeBuilder/func_74599_b ()Largo/jdom/JsonNode;
+MD: auk/a ()Laud; argo/jdom/JsonStringNode/func_74616_a ()Largo/jdom/JsonNodeType;
+MD: auk/a (Lauk;)I argo/jdom/JsonStringNode/func_74626_a (Largo/jdom/JsonStringNode;)I
+MD: auk/b ()Ljava/util/List; argo/jdom/JsonStringNode/func_74610_b ()Ljava/util/List;
+MD: auk/c ()Ljava/lang/String; argo/jdom/JsonStringNode/getText ()Ljava/lang/String;
+MD: auk/compareTo (Ljava/lang/Object;)I argo/jdom/JsonStringNode/compareTo (Ljava/lang/Object;)I
+MD: auk/d ()Ljava/util/Map; argo/jdom/JsonStringNode/getFields ()Ljava/util/Map;
+MD: auk/equals (Ljava/lang/Object;)Z argo/jdom/JsonStringNode/equals (Ljava/lang/Object;)Z
+MD: auk/hashCode ()I argo/jdom/JsonStringNode/hashCode ()I
+MD: auk/toString ()Ljava/lang/String; argo/jdom/JsonStringNode/toString ()Ljava/lang/String;
+MD: aul/a ()Lauk; argo/jdom/JsonStringNodeBuilder/func_74600_a ()Largo/jdom/JsonStringNode;
+MD: aul/b ()Latk; argo/jdom/JsonStringNodeBuilder/func_74599_b ()Largo/jdom/JsonNode;
+MD: aum/b (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/LeafFunctor/func_74629_b (Ljava/lang/Object;)Ljava/lang/Object;
+MD: aum/c (Ljava/lang/Object;)Ljava/lang/Object; argo/jdom/LeafFunctor/func_74633_c (Ljava/lang/Object;)Ljava/lang/Object;
+MD: auo/a (Ljava/lang/String;)V argo/saj/JsonListener/func_74648_a (Ljava/lang/String;)V
+MD: auo/b ()V argo/saj/JsonListener/func_74656_b ()V
+MD: auo/b (Ljava/lang/String;)V argo/saj/JsonListener/func_74650_b (Ljava/lang/String;)V
+MD: auo/c ()V argo/saj/JsonListener/func_74657_c ()V
+MD: auo/c (Ljava/lang/String;)V argo/saj/JsonListener/func_74647_c (Ljava/lang/String;)V
+MD: auo/d ()V argo/saj/JsonListener/func_74652_d ()V
+MD: auo/e ()V argo/saj/JsonListener/func_74655_e ()V
+MD: auo/f ()V argo/saj/JsonListener/func_74651_f ()V
+MD: auo/g ()V argo/saj/JsonListener/func_74653_g ()V
+MD: auo/h ()V argo/saj/JsonListener/func_74658_h ()V
+MD: auo/i ()V argo/saj/JsonListener/func_74654_i ()V
+MD: auo/j ()V argo/saj/JsonListener/func_74649_j ()V
+MD: auo/k ()V argo/saj/JsonListener/func_74646_k ()V
+MD: aup/a ()I argo/saj/PositionTrackingPushbackReader/func_74564_a ()I
+MD: aup/a (C)V argo/saj/PositionTrackingPushbackReader/func_74567_a (C)V
+MD: aup/a (I)V argo/saj/PositionTrackingPushbackReader/func_74563_a (I)V
+MD: aup/a ([C)V argo/saj/PositionTrackingPushbackReader/func_74566_a ([C)V
+MD: aup/b ()I argo/saj/PositionTrackingPushbackReader/func_74562_b ()I
+MD: aup/b ([C)I argo/saj/PositionTrackingPushbackReader/func_74565_b ([C)I
+MD: aup/c ()I argo/saj/PositionTrackingPushbackReader/func_74561_c ()I
+MD: auq/a (Laup;)Ljava/lang/String; argo/saj/SajParser/func_74549_a (Largo/saj/PositionTrackingPushbackReader;)Ljava/lang/String;
+MD: auq/a (Laup;Lauo;)V argo/saj/SajParser/func_74559_a (Largo/saj/PositionTrackingPushbackReader;Largo/saj/JsonListener;)V
+MD: auq/a (Ljava/io/Reader;Lauo;)V argo/saj/SajParser/func_74552_a (Ljava/io/Reader;Largo/saj/JsonListener;)V
+MD: auq/b (Laup;)Ljava/lang/String; argo/saj/SajParser/func_74557_b (Largo/saj/PositionTrackingPushbackReader;)Ljava/lang/String;
+MD: auq/b (Laup;Lauo;)V argo/saj/SajParser/func_74555_b (Largo/saj/PositionTrackingPushbackReader;Largo/saj/JsonListener;)V
+MD: auq/c (Laup;)C argo/saj/SajParser/func_74560_c (Largo/saj/PositionTrackingPushbackReader;)C
+MD: auq/c (Laup;Lauo;)V argo/saj/SajParser/func_74558_c (Largo/saj/PositionTrackingPushbackReader;Largo/saj/JsonListener;)V
+MD: auq/d (Laup;)C argo/saj/SajParser/func_74554_d (Largo/saj/PositionTrackingPushbackReader;)C
+MD: auq/d (Laup;Lauo;)V argo/saj/SajParser/func_74545_d (Largo/saj/PositionTrackingPushbackReader;Largo/saj/JsonListener;)V
+MD: auq/e (Laup;)Ljava/lang/String; argo/saj/SajParser/func_74551_e (Largo/saj/PositionTrackingPushbackReader;)Ljava/lang/String;
+MD: auq/f (Laup;)Ljava/lang/String; argo/saj/SajParser/func_74556_f (Largo/saj/PositionTrackingPushbackReader;)Ljava/lang/String;
+MD: auq/g (Laup;)Ljava/lang/String; argo/saj/SajParser/func_74546_g (Largo/saj/PositionTrackingPushbackReader;)Ljava/lang/String;
+MD: auq/h (Laup;)Ljava/lang/String; argo/saj/SajParser/func_74547_h (Largo/saj/PositionTrackingPushbackReader;)Ljava/lang/String;
+MD: auq/i (Laup;)Ljava/lang/String; argo/saj/SajParser/func_74548_i (Largo/saj/PositionTrackingPushbackReader;)Ljava/lang/String;
+MD: auq/j (Laup;)C argo/saj/SajParser/func_74544_j (Largo/saj/PositionTrackingPushbackReader;)C
+MD: auq/k (Laup;)I argo/saj/SajParser/func_74550_k (Largo/saj/PositionTrackingPushbackReader;)I
+MD: auq/l (Laup;)I argo/saj/SajParser/func_74553_l (Largo/saj/PositionTrackingPushbackReader;)I
+MD: aur/b ()I argo/saj/ThingWithPosition/func_74562_b ()I
+MD: aur/c ()I argo/saj/ThingWithPosition/func_74561_c ()I
 MD: aus/a ()V net/minecraft/src/ThreadDownloadResources/func_74573_a ()V
 MD: aus/a (Ljava/io/File;Ljava/lang/String;)V net/minecraft/src/ThreadDownloadResources/func_74576_a (Ljava/io/File;Ljava/lang/String;)V
 MD: aus/a (Ljava/net/URL;Ljava/io/File;J)V net/minecraft/src/ThreadDownloadResources/func_74572_a (Ljava/net/URL;Ljava/io/File;J)V
@@ -11646,11 +11973,11 @@ MD: bbb/f ()Lbay; net/minecraft/src/RequestPost/func_96359_e ()Lnet/minecraft/sr
 MD: bbb/g ()Lbbb; net/minecraft/src/RequestPost/func_96372_f ()Lnet/minecraft/src/RequestPost;
 MD: bbc/f ()Lbay; net/minecraft/src/RequestPut/func_96359_e ()Lnet/minecraft/src/Request;
 MD: bbc/g ()Lbbc; net/minecraft/src/RequestPut/func_96368_f ()Lnet/minecraft/src/RequestPut;
-MD: bbd/a (Largo/jdom/JsonNode;)Lbbd; net/minecraft/src/Location/func_98167_a (Largo/jdom/JsonNode;)Lnet/minecraft/src/Location;
-MD: bbd/a (Largo/jdom/JsonNode;Ljava/lang/String;)Lbbd; net/minecraft/src/Location/func_98168_a (Largo/jdom/JsonNode;Ljava/lang/String;)Lnet/minecraft/src/Location;
+MD: bbd/a (Latk;)Lbbd; net/minecraft/src/Location/func_98167_a (Largo/jdom/JsonNode;)Lnet/minecraft/src/Location;
+MD: bbd/a (Latk;Ljava/lang/String;)Lbbd; net/minecraft/src/Location/func_98168_a (Largo/jdom/JsonNode;Ljava/lang/String;)Lnet/minecraft/src/Location;
 MD: bbe/a (Ljava/lang/String;)Lbbe; net/minecraft/src/Locations/func_98174_a (Ljava/lang/String;)Lnet/minecraft/src/Locations;
 MD: bbf/a ()Ljava/lang/String; net/minecraft/src/McoServer/func_96397_a ()Ljava/lang/String;
-MD: bbf/a (Largo/jdom/JsonNode;)Lbbf; net/minecraft/src/McoServer/func_98163_a (Largo/jdom/JsonNode;)Lnet/minecraft/src/McoServer;
+MD: bbf/a (Latk;)Lbbf; net/minecraft/src/McoServer/func_98163_a (Largo/jdom/JsonNode;)Lnet/minecraft/src/McoServer;
 MD: bbf/a (Lbbf;)V net/minecraft/src/McoServer/func_96401_a (Lnet/minecraft/src/McoServer;)V
 MD: bbf/a (Ljava/lang/String;)V net/minecraft/src/McoServer/func_96399_a (Ljava/lang/String;)V
 MD: bbf/a (Ljava/util/List;)Ljava/util/List; net/minecraft/src/McoServer/func_98164_a (Ljava/util/List;)Ljava/util/List;

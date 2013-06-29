@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 
 public abstract class EntityMinecartContainer extends EntityMinecart implements IInventory
 {
-    private ItemStack[] minecartContainerItems = new ItemStack[27];
+    private ItemStack[] minecartContainerItems = new ItemStack[36];
 
     /**
      * When set to true, the minecart will drop all items when setDead() is called. When false (such as when travelling
@@ -34,7 +34,6 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
         maxStack = size;
     }
     // CraftBukkit end
-
 
     public EntityMinecartContainer(World par1World)
     {
@@ -314,7 +313,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
 
     protected void applyDrag()
     {
-        int i = 15 - Container.func_94526_b(this);
+        int i = 15 - Container.calcRedstoneFromInventory(this);
         float f = 0.98F + (float)i * 0.001F;
         this.motionX *= (double)f;
         this.motionY *= 0.0D;

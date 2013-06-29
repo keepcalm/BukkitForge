@@ -8,8 +8,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R2.scheduler.CraftScheduler;
+import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R3.scheduler.CraftScheduler;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import cpw.mods.fml.common.ITickHandler;

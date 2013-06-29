@@ -15,9 +15,9 @@ import net.minecraft.item.crafting.IRecipe;
 import org.bukkit.Bukkit;
 import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 
-import org.bukkit.craftbukkit.v1_5_R2.inventory.BukkitRecipe;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryCrafting;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryView;
+import org.bukkit.craftbukkit.v1_5_R3.inventory.BukkitRecipe;
+import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventoryCrafting;
+import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventoryView;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.InventoryView;

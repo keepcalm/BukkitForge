@@ -7,8 +7,8 @@ import net.minecraft.world.WorldSettings;
 import net.minecraft.world.storage.DerivedWorldInfo;
 import net.minecraft.world.storage.ISaveHandler;
 import org.bukkit.WorldCreator;
-import org.bukkit.craftbukkit.v1_5_R2.generator.CustomChunkGenerator;
-import org.bukkit.craftbukkit.v1_5_R2.generator.NormalChunkGenerator;
+import org.bukkit.craftbukkit.v1_5_R3.generator.CustomChunkGenerator;
+import org.bukkit.craftbukkit.v1_5_R3.generator.NormalChunkGenerator;
 
 /**
  * Created with IntelliJ IDEA.

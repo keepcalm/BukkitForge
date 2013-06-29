@@ -3,7 +3,7 @@ package keepcalm.mods.bukkit.forgeHandler;
 
 import keepcalm.mods.bukkit.BukkitContainer;
 
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.plugin.Plugin;
 
 import cpw.mods.fml.common.ICrashCallable;

@@ -30,7 +30,7 @@ import org.bukkit.Warning.WarningState;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
@@ -366,7 +366,7 @@ public class JavaPluginLoader implements PluginLoader {
                     }
                 }
             };
-            if (useTimings) {
+            if (true) { // Spigot - TRL handles useTimings check now
                 eventSet.add(new TimedRegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));
             } else {
                 eventSet.add(new RegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));
@@ -446,12 +446,12 @@ public class JavaPluginLoader implements PluginLoader {
     public InheritanceMap getGlobalInheritanceMap() {
         if (globalInheritanceMap == null) {
             Map<String, String> relocationsCurrent = new HashMap<String, String>();
-            relocationsCurrent.put("net.minecraft.server", "net.minecraft.server."+PluginClassLoader.current);
+            relocationsCurrent.put("net.minecraft.server", "net.minecraft.server."+PluginClassLoader.getNativeVersion());
             JarMapping currentMappings = new JarMapping();
 
             try {
                 currentMappings.loadMappings(
-                        new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.current+"/cb2numpkg.srg"))),
+                        new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.getNativeVersion()+"/cb2numpkg.srg"))),
                         new MavenShade(relocationsCurrent),
                         null, false);
             } catch (IOException ex) {
@@ -462,7 +462,7 @@ public class JavaPluginLoader implements PluginLoader {
             BiMap<String, String> inverseClassMap = HashBiMap.create(currentMappings.classes).inverse();
             globalInheritanceMap = new InheritanceMap();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.current+"/nms.inheritmap")));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("mappings/"+PluginClassLoader.getNativeVersion()+"/nms.inheritmap")));
 
             try {
                 globalInheritanceMap.load(reader, inverseClassMap);

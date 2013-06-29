@@ -16,7 +16,6 @@ public class InventoryCrafting implements IInventory
      */
     public Container eventHandler;
     
-    // CraftBukkit start
     public IInventory resultInventory;
     private EntityPlayer owner;
     private int maxStack = MAX_STACK;
