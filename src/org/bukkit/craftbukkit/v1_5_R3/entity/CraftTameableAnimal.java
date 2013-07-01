@@ -6,7 +6,7 @@ import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Tameable;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftTameableAnimal extends CraftAnimals implements Tameable, Creature {
     public CraftTameableAnimal(CraftServer server, EntityTameable entity) {

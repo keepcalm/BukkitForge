@@ -27,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BlockVector;
-//import org.bukkit.craftbukkit.CraftChunk;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftChunk;
 
 public class CraftBlock implements Block {
 	private final CraftChunk chunk;

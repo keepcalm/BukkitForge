@@ -1,7 +1,7 @@
 package org.bukkit.craftbukkit.v1_5_R3.entity;
 
 //import net.minecraft.src.EntityEnderSignal;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import net.minecraft.entity.Entity;
 
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;

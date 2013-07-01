@@ -6,7 +6,7 @@ import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.EnderDragonPart;
 import org.bukkit.entity.Entity;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftEnderDragonPart extends CraftComplexPart implements EnderDragonPart {
     public CraftEnderDragonPart(CraftServer server, EntityDragonPart entity) {

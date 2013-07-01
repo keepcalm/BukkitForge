@@ -10,7 +10,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 import org.bukkit.material.MaterialData;
-//import org.bukkit.craftbukkit.CraftWorld;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 
 public class StructureGrowDelegate implements BlockChangeDelegate {
     private final CraftWorld world;

@@ -13,7 +13,7 @@ import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
 //import jline.Terminal;
 //import jline.console.ConsoleReader;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class ColouredConsoleSender extends CraftConsoleCommandSender {
     //private final ConsoleReader reader;

@@ -5,7 +5,7 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LightningStrike;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftLightningStrike extends CraftEntity implements LightningStrike {
     public CraftLightningStrike(final CraftServer server, final EntityLightningBolt entity) {

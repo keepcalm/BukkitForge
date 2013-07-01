@@ -6,7 +6,7 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftVillager extends CraftAgeable implements Villager {
     public CraftVillager(CraftServer server, EntityVillager entity) {

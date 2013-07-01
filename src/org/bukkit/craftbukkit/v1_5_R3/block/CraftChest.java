@@ -9,9 +9,9 @@ import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventory;
 import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventoryDoubleChest;
 import org.bukkit.inventory.Inventory;
-//import org.bukkit.craftbukkit.CraftWorld;
-//import org.bukkit.craftbukkit.inventory.CraftInventory;
-//import org.bukkit.craftbukkit.inventory.CraftInventoryDoubleChest;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
+//import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventory;
+//import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventoryDoubleChest;
 
 public class CraftChest extends CraftBlockState implements Chest {
     private final CraftWorld world;

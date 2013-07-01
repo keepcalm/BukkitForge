@@ -7,7 +7,7 @@ import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreeperPowerEvent;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftCreeper extends CraftMonster implements Creeper {
 

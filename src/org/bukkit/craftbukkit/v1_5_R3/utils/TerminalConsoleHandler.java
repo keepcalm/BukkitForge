@@ -2,7 +2,7 @@ package org.bukkit.craftbukkit.v1_5_R3.utils;
 
 import java.util.logging.ConsoleHandler;
 //import jline.console.ConsoleReader;
-//import org.bukkit.craftbukkit.Main;
+//import org.bukkit.craftbukkit.v1_5_R3.Main;
 
 /**
  * @deprecated

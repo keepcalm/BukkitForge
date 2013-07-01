@@ -7,7 +7,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.EntityType;
-//import org.bukkit.craftbukkit.CraftWorld;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 
 public class CraftCreatureSpawner extends CraftBlockState implements CreatureSpawner {
     private final CraftWorld world;

@@ -10,8 +10,8 @@ import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventoryBrewer;
 import org.bukkit.inventory.BrewerInventory;
-//import org.bukkit.craftbukkit.CraftWorld;
-//import org.bukkit.craftbukkit.inventory.CraftInventoryBrewer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
+//import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventoryBrewer;
 
 public class CraftBrewingStand extends CraftBlockState implements BrewingStand {
     private final CraftWorld world;

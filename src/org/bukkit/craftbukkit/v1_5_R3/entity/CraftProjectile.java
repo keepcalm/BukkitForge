@@ -6,7 +6,7 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public abstract class CraftProjectile extends AbstractProjectile implements Projectile {
     public CraftProjectile(CraftServer server, net.minecraft.entity.Entity entity) {

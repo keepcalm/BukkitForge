@@ -12,9 +12,9 @@ import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Painting;
-//import org.bukkit.craftbukkit.CraftArt;
-//import org.bukkit.craftbukkit.CraftServer;
-//import org.bukkit.craftbukkit.CraftWorld;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftArt;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 
 public class CraftPainting extends CraftEntity implements Painting {
 

@@ -6,7 +6,7 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ocelot;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftOcelot extends CraftTameableAnimal implements Ocelot {
     public CraftOcelot(CraftServer server, EntityOcelot wolf) {

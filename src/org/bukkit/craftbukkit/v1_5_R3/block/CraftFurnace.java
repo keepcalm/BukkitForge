@@ -10,8 +10,8 @@ import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventoryFurnace;
 import org.bukkit.inventory.FurnaceInventory;
-//import org.bukkit.craftbukkit.CraftWorld;
-//import org.bukkit.craftbukkit.inventory.CraftInventoryFurnace;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
+//import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventoryFurnace;
 
 public class CraftFurnace extends CraftBlockState implements Furnace {
     private final CraftWorld world;

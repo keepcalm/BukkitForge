@@ -5,7 +5,7 @@ import net.minecraft.entity.item.EntityBoat;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftBoat extends CraftVehicle implements Boat {
 	private double speed = 0.2;

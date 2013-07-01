@@ -4,7 +4,7 @@ import net.minecraft.entity.passive.EntityWaterMob;
 
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.WaterMob;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftWaterMob extends CraftCreature implements WaterMob {
 

@@ -5,7 +5,7 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.PigZombie;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftPigZombie extends CraftZombie implements PigZombie {
 

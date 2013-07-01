@@ -3,7 +3,7 @@ package org.bukkit.craftbukkit.v1_5_R3.entity;
 
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.Vehicle;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public abstract class CraftVehicle extends CraftEntity implements Vehicle {
     public CraftVehicle(CraftServer server, net.minecraft.entity.Entity entity) {

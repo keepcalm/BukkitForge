@@ -5,7 +5,7 @@ import net.minecraft.entity.effect.EntityWeatherEffect;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Weather;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftWeather extends CraftEntity implements Weather {
     public CraftWeather(final CraftServer server, final EntityWeatherEffect entity) {

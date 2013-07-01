@@ -23,7 +23,7 @@ import org.bukkit.craftbukkit.v1_5_R3.block.CraftBlock;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 //import net.minecraft.src.ChunkSection;
-//import org.bukkit.craftbukkit.block.CraftBlock;
+//import org.bukkit.craftbukkit.v1_5_R3.block.CraftBlock;
 
 public class CustomChunkGenerator extends InternalChunkGenerator {
     private final ChunkGenerator generator;

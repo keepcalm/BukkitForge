@@ -1,6 +1,6 @@
 package org.bukkit.craftbukkit.v1_5_R3.inventory;
 
-//import org.bukkit.craftbukkit.entity.CraftPlayer;
+//import org.bukkit.craftbukkit.v1_5_R3.entity.CraftPlayer;
 import java.util.List;
 
 import keepcalm.mods.bukkit.BukkitContainer;

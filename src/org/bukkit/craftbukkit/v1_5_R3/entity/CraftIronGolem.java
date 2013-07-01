@@ -5,7 +5,7 @@ import net.minecraft.entity.monster.EntityIronGolem;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftIronGolem extends CraftGolem implements IronGolem {
 	private boolean playerCreated = false;

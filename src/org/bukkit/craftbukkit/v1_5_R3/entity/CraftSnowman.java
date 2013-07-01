@@ -5,7 +5,7 @@ import net.minecraft.entity.monster.EntitySnowman;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Snowman;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftSnowman extends CraftGolem implements Snowman {
     public CraftSnowman(CraftServer server, EntitySnowman entity) {

@@ -9,8 +9,8 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventory;
 import org.bukkit.inventory.Inventory;
-//import org.bukkit.craftbukkit.CraftWorld;
-//import org.bukkit.craftbukkit.inventory.CraftInventory;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
+//import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventory;
 
 public class CraftDispenser extends CraftBlockState implements Dispenser {
     private final CraftWorld world;

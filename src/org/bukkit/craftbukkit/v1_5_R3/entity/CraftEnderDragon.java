@@ -13,7 +13,7 @@ import org.bukkit.entity.EntityType;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
 //import net.minecraft.src.EntityDragon;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftEnderDragon extends CraftComplexLivingEntity implements EnderDragon {
     public CraftEnderDragon(CraftServer server, EntityDragon entity) {

@@ -6,7 +6,7 @@ import net.minecraft.entity.EntityLiving;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftCreature extends CraftLivingEntity implements Creature {
     public CraftCreature(CraftServer server, EntityCreature entity) {

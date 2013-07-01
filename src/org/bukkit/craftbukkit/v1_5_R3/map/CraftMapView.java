@@ -14,8 +14,8 @@ import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_5_R3.entity.CraftPlayer;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
-//import org.bukkit.craftbukkit.CraftWorld;
-//import org.bukkit.craftbukkit.entity.CraftPlayer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
+//import org.bukkit.craftbukkit.v1_5_R3.entity.CraftPlayer;
 
 public final class CraftMapView implements MapView {
 

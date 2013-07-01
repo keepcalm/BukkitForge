@@ -5,7 +5,7 @@ import net.minecraft.entity.projectile.EntityEgg;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.EntityType;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftEgg extends CraftProjectile implements Egg {
     public CraftEgg(CraftServer server, EntityEgg entity) {

@@ -4,7 +4,7 @@ package org.bukkit.craftbukkit.v1_5_R3.entity;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.Projectile;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public abstract class AbstractProjectile extends CraftEntity implements Projectile {
 

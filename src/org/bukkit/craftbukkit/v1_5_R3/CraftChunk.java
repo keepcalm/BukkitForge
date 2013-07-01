@@ -27,7 +27,7 @@ import org.bukkit.craftbukkit.v1_5_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_5_R3.generator.NormalChunkGenerator;
 import org.bukkit.entity.Entity;
 //import net.minecraft.src.Chunk;
-//import org.bukkit.craftbukkit.block.CraftBlock;
+//import org.bukkit.craftbukkit.v1_5_R3.block.CraftBlock;
 
 import com.google.common.base.FinalizableReference;
 

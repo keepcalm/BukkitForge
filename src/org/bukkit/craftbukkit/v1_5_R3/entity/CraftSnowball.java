@@ -5,7 +5,7 @@ import net.minecraft.entity.projectile.EntitySnowball;
 import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Snowball;
-//import org.bukkit.craftbukkit.CraftServer;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
 
 public class CraftSnowball extends CraftProjectile implements Snowball {
     public CraftSnowball(CraftServer server, EntitySnowball entity) {

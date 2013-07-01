@@ -13,7 +13,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 import org.bukkit.generator.BlockPopulator;
-//import org.bukkit.craftbukkit.CraftWorld;
+//import org.bukkit.craftbukkit.v1_5_R3.CraftWorld;
 
 public class NormalChunkGenerator extends InternalChunkGenerator {
     public final IChunkProvider provider;
