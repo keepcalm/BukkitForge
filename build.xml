@@ -228,11 +228,12 @@
 		<chmod file="${mcp.dir}/runtime/bin/jad-osx" perm="+x" />
 
 		<!-- Copy libraries -->
+		<delete file="${mcp.dir}/lib/SpecialSource-1.5.jar" />
 				<copy todir="${mcp.dir}/lib" >
 			<fileset dir="lib" >
 				<patternset includes="*.jar" />
 				<patternset excludes="SpecialSource-1.3-SNAPSHOT.jar" />
-				<patternset excludes="SpecialSource-1.6.jar" />
+				<patternset excludes="SpecialSource-1.5.jar" />
 			</fileset>
 
 		</copy>
