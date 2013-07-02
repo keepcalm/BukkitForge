@@ -6,12 +6,12 @@ public class SpecialSourceDownload implements ILibrarySet {
 
 	@Override
 	public String[] getLibraries() {
-		return new String[] {"SpecialSource-1.5.jar"};
+		return new String[] {"SpecialSource-1.6.jar"};
 	}
 
 	@Override
 	public String[] getHashes() {
-		return new String[] {"e0ffc9bb99ff8f2e12539a867a16751928d83d14"};
+		return new String[] {"4a3a07f9553a0131c6cabb352cfa663c1c48153e"};
 	}
 
 	@Override
