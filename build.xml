@@ -92,6 +92,12 @@
         <delete dir="${mcpsrc.dir}/org" />
         <delete dir="${mcpsrc.dir}/javax" />
 		<delete dir="${mcpsrc.dir}/com" />
+		<delete file="${mcp.dir}/lib/SpecialSource-1.5.jar" />
+		
+		<copy todir="${mcp.dir}/lib" >
+		<fileset dir="lib" >
+			<patternset includes="SpecialSource-1.6.jar" />
+		</fileset>
 		
 		<delete file="${mcpsrc.dir}/net/minecraft/block/Block.java" />
 		
