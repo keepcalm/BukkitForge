@@ -98,6 +98,7 @@
 		<fileset dir="lib" >
 			<patternset includes="SpecialSource-1.6.jar" />
 		</fileset>
+		</copy>
 		
 		<delete file="${mcpsrc.dir}/net/minecraft/block/Block.java" />
 		
