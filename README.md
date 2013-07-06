@@ -1,6 +1,9 @@
 BukkitForge - a Minecraft mod that ports the Bukkit plugin API to minecraft.
 ===================================
 
+Please note that this mod is not able to be merged into MineTweak.
+
+If they try to merge this into MineTweaks. They Will Fail, They don't have alexbegt.
  
 This is very WIP. Since i started doing this, i was mostly aiming for a server that didn't crash.
 It can load plugins, commands work, lots of things work, permissions *should* work, etc.
@@ -8,7 +11,7 @@ It can load plugins, commands work, lots of things work, permissions *should* wo
 Most of this mod is a fairly straight port from Craftbukkit, but I've had to modify parts
 (and i anticipate modifiying more).
 
-This is ported to 1.5.1.
+This is ported to 1.5.2.
 
 See a list of working plugins [here](https://github.com/keepcalm/BukkitForge/wiki/Working-plugins-page).
 
@@ -42,7 +45,7 @@ GETTING IT WORKING IN MCP:
 
 1. Download the MCP and Extract it.
 2. Download Forge
-3. Extract the minecraftforge-src-1.4.7-VersionHere.zip into your MCP folder and you will get a folder called Forge. If you see a install.cmd/install.sh your at the right place.
+3. Extract the minecraftforge-src-1.5.2-VersionHere.zip into your MCP folder and you will get a folder called Forge. If you see a install.cmd/install.sh your at the right place.
 4. Make a folder called accesstransformers inside the Forge Folder. You will need to make this.
 5. Put the bukkit_at.cfg into the Folder Accesstransformer inside forge.
 6. Copy Everything from the Lib Folder into the Lib Folder in MCP.
