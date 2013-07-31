@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 import keepcalm.mods.events.asm.transformers.events.ObfuscationHelper;
 
+import net.minecraft.launchwrapper.IClassTransformer;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -15,8 +17,6 @@ import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
-
-import cpw.mods.fml.relauncher.IClassTransformer;
 
 /**
  * 
@@ -31,17 +31,6 @@ public class BukkitAPIHelperTransformer implements IClassTransformer, Opcodes {
 	private static HashMap<String,String> names = ObfuscationHelper.getRelevantMappings();
 	
 	private static final String itemInitDesc = "(I)V";
-	
-	@Override
-	public byte[] transform(String name, String transformedName, byte[] bytes) {
-		
-		if (name.equals(names.get("item_className"))) {
-			System.out.println("Transforming " + name + "...");
-			return transformItem(bytes);
-		}
-		
-		return bytes;
-	}
 	
 	private byte[] transformItem(byte[] bytes) {
 		ClassReader cr = new ClassReader(bytes);
@@ -72,6 +61,17 @@ public class BukkitAPIHelperTransformer implements IClassTransformer, Opcodes {
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		cn.accept(cw);
 		return cw.toByteArray();
+	}
+
+	@Override
+	public byte[] transform(String name, String arg1, byte[] bytes) {
+		
+		if (name.equals(names.get("item_className"))) {
+			System.out.println("Transforming " + name + "...");
+			return transformItem(bytes);
+		}
+		
+		return bytes;
 	}
 	
 }

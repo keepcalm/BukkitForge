@@ -229,7 +229,7 @@ public class TileEntityHopper extends TileEntity implements Hopper
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
@@ -258,7 +258,8 @@ public class TileEntityHopper extends TileEntity implements Hopper
         {
             if (!this.isCoolingDown() && BlockHopper.getIsBlockNotPoweredFromMetadata(this.getBlockMetadata()))
             {
-                boolean flag = this.insertItemToInventory() | suckItemsIntoHopper(this);
+                boolean flag = this.insertItemToInventory();
+                flag = suckItemsIntoHopper(this) || flag;
 
                 if (flag)
                 {
@@ -411,39 +412,42 @@ public class TileEntityHopper extends TileEntity implements Hopper
     /**
      * Inserts a stack into an inventory. Args: Inventory, stack, side. Returns leftover items.
      */
-    public static ItemStack insertStack(IInventory par1IInventory, ItemStack par2ItemStack, int par3)
+    public static ItemStack insertStack(IInventory par0IInventory, ItemStack par1ItemStack, int par2)
     {
-        if (par1IInventory instanceof ISidedInventory && par3 > -1)
+        if (par0IInventory instanceof ISidedInventory && par2 > -1)
         {
-            ISidedInventory isidedinventory = (ISidedInventory)par1IInventory;
-            int[] aint = isidedinventory.getAccessibleSlotsFromSide(par3);
+            ISidedInventory isidedinventory = (ISidedInventory)par0IInventory;
+            int[] aint = isidedinventory.getAccessibleSlotsFromSide(par2);
 
-            for (int j = 0; j < aint.length && par2ItemStack != null && par2ItemStack.stackSize > 0; ++j)
+            for (int j = 0; j < aint.length && par1ItemStack != null && par1ItemStack.stackSize > 0; ++j)
             {
-                par2ItemStack = func_102014_c(par1IInventory, par2ItemStack, aint[j], par3);
+                par1ItemStack = func_102014_c(par0IInventory, par1ItemStack, aint[j], par2);
             }
         }
         else
         {
-            int k = par1IInventory.getSizeInventory();
+            int k = par0IInventory.getSizeInventory();
 
-            for (int l = 0; l < k && par2ItemStack != null && par2ItemStack.stackSize > 0; ++l)
+            for (int l = 0; l < k && par1ItemStack != null && par1ItemStack.stackSize > 0; ++l)
             {
-                par2ItemStack = func_102014_c(par1IInventory, par2ItemStack, l, par3);
+                par1ItemStack = func_102014_c(par0IInventory, par1ItemStack, l, par2);
             }
         }
 
-        if (par2ItemStack != null && par2ItemStack.stackSize == 0)
+        if (par1ItemStack != null && par1ItemStack.stackSize == 0)
         {
-            par2ItemStack = null;
+            par1ItemStack = null;
         }
 
-        return par2ItemStack;
+        return par1ItemStack;
     }
 
-    private static boolean func_102015_a(IInventory par0IInventory, ItemStack par1ItemStack, int par2, int par3)
+    /**
+     * Args: inventory, item, slot, side
+     */
+    private static boolean canInsertItemToInventory(IInventory par0IInventory, ItemStack par1ItemStack, int par2, int par3)
     {
-        return !par0IInventory.isStackValidForSlot(par2, par1ItemStack) ? false : !(par0IInventory instanceof ISidedInventory) || ((ISidedInventory)par0IInventory).canInsertItem(par2, par1ItemStack, par3);
+        return !par0IInventory.isItemValidForSlot(par2, par1ItemStack) ? false : !(par0IInventory instanceof ISidedInventory) || ((ISidedInventory)par0IInventory).canInsertItem(par2, par1ItemStack, par3);
     }
 
     private static boolean canExtractItemFromInventory(IInventory par0IInventory, ItemStack par1ItemStack, int par2, int par3)
@@ -455,7 +459,7 @@ public class TileEntityHopper extends TileEntity implements Hopper
     {
         ItemStack itemstack1 = par0IInventory.getStackInSlot(par2);
 
-        if (func_102015_a(par0IInventory, par1ItemStack, par2, par3))
+        if (canInsertItemToInventory(par0IInventory, par1ItemStack, par2, par3))
         {
             boolean flag = false;
 
@@ -479,6 +483,7 @@ public class TileEntityHopper extends TileEntity implements Hopper
                 if (par0IInventory instanceof TileEntityHopper)
                 {
                     ((TileEntityHopper)par0IInventory).setTransferCooldown(8);
+                    par0IInventory.onInventoryChanged();
                 }
 
                 par0IInventory.onInventoryChanged();
@@ -552,9 +557,9 @@ public class TileEntityHopper extends TileEntity implements Hopper
         return iinventory;
     }
 
-    private static boolean areItemStacksEqualItem(ItemStack par1ItemStack, ItemStack par2ItemStack)
+    private static boolean areItemStacksEqualItem(ItemStack par0ItemStack, ItemStack par1ItemStack)
     {
-        return par1ItemStack.itemID != par2ItemStack.itemID ? false : (par1ItemStack.getItemDamage() != par2ItemStack.getItemDamage() ? false : (par1ItemStack.stackSize > par1ItemStack.getMaxStackSize() ? false : ItemStack.areItemStackTagsEqual(par1ItemStack, par2ItemStack)));
+        return par0ItemStack.itemID != par1ItemStack.itemID ? false : (par0ItemStack.getItemDamage() != par1ItemStack.getItemDamage() ? false : (par0ItemStack.stackSize > par0ItemStack.getMaxStackSize() ? false : ItemStack.areItemStackTagsEqual(par0ItemStack, par1ItemStack)));
     }
 
     /**

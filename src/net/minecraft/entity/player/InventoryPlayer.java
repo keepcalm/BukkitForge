@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.entity.Entity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -25,7 +24,7 @@ public class InventoryPlayer implements IInventory
     public ItemStack[] armorInventory = new ItemStack[4];
 
     /** The index of the currently held item (0-8). */
-    public int currentItem = 0;
+    public int currentItem;
     @SideOnly(Side.CLIENT)
 
     /** The current ItemStack. */
@@ -39,14 +38,14 @@ public class InventoryPlayer implements IInventory
      * Set true whenever the inventory changes. Nothing sets it false so you will have to write your own code to check
      * it and reset the value.
      */
-    public boolean inventoryChanged = false;
+    public boolean inventoryChanged;
 
     public InventoryPlayer(EntityPlayer par1EntityPlayer)
     {
         this.player = par1EntityPlayer;
     }
     
-   // CraftBukkit start
+    // CraftBukkit start
     private int maxStack = MAX_STACK;
 
     public ItemStack[] getContents()
@@ -242,6 +241,22 @@ public class InventoryPlayer implements IInventory
             }
         }
 
+        if (this.itemStack != null)
+        {
+            if (par1 > -1 && this.itemStack.itemID != par1)
+            {
+                return k;
+            }
+
+            if (par2 > -1 && this.itemStack.getItemDamage() != par2)
+            {
+                return k;
+            }
+
+            k += this.itemStack.stackSize;
+            this.setItemStack((ItemStack)null);
+        }
+
         return k;
     }
 
@@ -250,19 +265,23 @@ public class InventoryPlayer implements IInventory
     {
         if (par1Item != null)
         {
-            int j = this.getInventorySlotContainItemAndDamage(par1Item.itemID, par2);
-
-            if (j >= 0)
-            {
-                this.mainInventory[j] = this.mainInventory[this.currentItem];
-            }
-
             if (this.currentItemStack != null && this.currentItemStack.isItemEnchantable() && this.getInventorySlotContainItemAndDamage(this.currentItemStack.itemID, this.currentItemStack.getItemDamageForDisplay()) == this.currentItem)
             {
                 return;
             }
 
-            this.mainInventory[this.currentItem] = new ItemStack(Item.itemsList[par1Item.itemID], 1, par2);
+            int j = this.getInventorySlotContainItemAndDamage(par1Item.itemID, par2);
+
+            if (j >= 0)
+            {
+                int k = this.mainInventory[j].stackSize;
+                this.mainInventory[j] = this.mainInventory[this.currentItem];
+                this.mainInventory[this.currentItem] = new ItemStack(Item.itemsList[par1Item.itemID], k, par2);
+            }
+            else
+            {
+                this.mainInventory[this.currentItem] = new ItemStack(Item.itemsList[par1Item.itemID], 1, par2);
+            }
         }
     }
 
@@ -406,6 +425,10 @@ public class InventoryPlayer implements IInventory
     public boolean addItemStackToInventory(ItemStack par1ItemStack)
     {
         if (par1ItemStack == null)
+        {
+            return false;
+        }
+        else if (par1ItemStack.stackSize == 0)
         {
             return false;
         }
@@ -681,15 +704,6 @@ public class InventoryPlayer implements IInventory
     }
 
     /**
-     * Return damage vs an entity done by the current held weapon, or 1 if nothing is held
-     */
-    public int getDamageVsEntity(Entity par1Entity)
-    {
-        ItemStack itemstack = this.getStackInSlot(this.currentItem);
-        return itemstack != null ? itemstack.getDamageVsEntity(par1Entity) : 1;
-    }
-
-    /**
      * Returns whether the current item (tool) can harvest from the specified block (actually get a result).
      */
     public boolean canHarvestBlock(Block par1Block)
@@ -735,24 +749,24 @@ public class InventoryPlayer implements IInventory
     /**
      * Damages armor in each slot by the specified amount.
      */
-    public void damageArmor(int par1)
+    public void damageArmor(float par1)
     {
-        par1 /= 4;
+        par1 /= 4.0F;
 
-        if (par1 < 1)
+        if (par1 < 1.0F)
         {
-            par1 = 1;
+            par1 = 1.0F;
         }
 
-        for (int j = 0; j < this.armorInventory.length; ++j)
+        for (int i = 0; i < this.armorInventory.length; ++i)
         {
-            if (this.armorInventory[j] != null && this.armorInventory[j].getItem() instanceof ItemArmor)
+            if (this.armorInventory[i] != null && this.armorInventory[i].getItem() instanceof ItemArmor)
             {
-                this.armorInventory[j].damageItem(par1, this.player);
+                this.armorInventory[i].damageItem((int)par1, this.player);
 
-                if (this.armorInventory[j].stackSize == 0)
+                if (this.armorInventory[i].stackSize == 0)
                 {
-                    this.armorInventory[j] = null;
+                    this.armorInventory[i] = null;
                 }
             }
         }
@@ -843,7 +857,7 @@ public class InventoryPlayer implements IInventory
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }

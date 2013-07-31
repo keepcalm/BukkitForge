@@ -7,6 +7,7 @@ import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.EnderDragonPart;
 import org.bukkit.entity.Entity;
 //import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
+import org.bukkit.util.NumberConversions;
 
 public class CraftEnderDragonPart extends CraftComplexPart implements EnderDragonPart {
     public CraftEnderDragonPart(CraftServer server, EntityDragonPart entity) {
@@ -29,37 +30,31 @@ public class CraftEnderDragonPart extends CraftComplexPart implements EnderDrago
     }
 
 	@Override
-	public void damage(int amount) {
-		getParent().damage(amount);
-	}
+	public void damage(double amount) {
+        getParent().damage(amount);
+    }
 
-	@Override
-	public void damage(int amount, Entity source) {
-		getParent().damage(amount, source);
-	}
+    public void damage(double amount, Entity source) {
+        getParent().damage(amount, source);
+    }
 
-	@Override
-	public int getHealth() {
-		return getParent().getHealth();
-	}
+	public double getHealth() {
+        return getParent().getHealth();
+    }
 
-	@Override
-	public void setHealth(int health) {
-		getParent().setHealth(health);
-	}
+    public void setHealth(double health) {
+        getParent().setHealth(health);
+    }
 
-	@Override
-	public int getMaxHealth() {
-		return getParent().getMaxHealth();
-	}
+    public double getMaxHealth() {
+        return getParent().getMaxHealth();
+    }
 
-	@Override
-	public void setMaxHealth(int health) {
-		getParent().setMaxHealth(health);
-	}
+    public void setMaxHealth(double health) {
+        getParent().setMaxHealth(health);
+    }
 
-	@Override
-	public void resetMaxHealth() {
-		getParent().resetMaxHealth();
-	}
+    public void resetMaxHealth() {
+        getParent().resetMaxHealth();
+    }
 }

@@ -42,6 +42,11 @@ public class CraftCommandConsole extends CraftCommandBase {
 			
 		}
 	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return null;
+	}
 	
 	
 	

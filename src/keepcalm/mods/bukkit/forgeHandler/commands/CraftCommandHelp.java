@@ -6,6 +6,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.MathHelper;
 
 import org.bukkit.ChatColor;
@@ -38,13 +39,13 @@ public class CraftCommandHelp extends CommandBase {
 		int totalPages = MathHelper.ceiling_float_int(total / entries_per_page);
 		if (var2.length == 0) {
 			int i = 0;
-			var1.sendChatToPlayer("Page " + ChatColor.YELLOW + "1" + ChatColor.RESET + " of " + ChatColor.YELLOW + totalPages);
+			var1.sendChatToPlayer(ChatMessageComponent.func_111066_d("Page " + ChatColor.YELLOW + "1" + ChatColor.RESET + " of " + ChatColor.YELLOW + totalPages));
 			for (HelpTopic h : hm.getHelpTopics()) {
 				if (i == entries_per_page) {
-					var1.sendChatToPlayer("Type " + ChatColor.GREEN + "/bhelp 2" + ChatColor.RESET + " to see the next page!");
+					var1.sendChatToPlayer(ChatMessageComponent.func_111066_d("Type " + ChatColor.GREEN + "/bhelp 2" + ChatColor.RESET + " to see the next page!"));
 				}
 				if (h.canSee(pcs)) {
-					var1.sendChatToPlayer(h.getShortText());
+					var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(h.getShortText()));
 					i++;
 				}
 			}
@@ -65,7 +66,7 @@ public class CraftCommandHelp extends CommandBase {
 					if (i > helpTopicEnd)
 						break;
 					if (x.canSee(pcs)) {
-						var1.sendChatToPlayer(x.getShortText());
+						var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(x.getShortText()));
 						i++;
 					}
 					
@@ -74,11 +75,11 @@ public class CraftCommandHelp extends CommandBase {
 			catch (NumberFormatException e) {
 				if (hm.getHelpTopic(ht) == null) {
 					// fallback
-					var1.sendChatToPlayer(ChatColor.RED + "No such bukkit command registered, trying vanilla /help command!");
+					var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(ChatColor.RED + "No such bukkit command registered, trying vanilla /help command!"));
 					MinecraftServer.getServer().getCommandManager().executeCommand(var1, "/help " + ht);
 				}
 				else {
-					var1.sendChatToPlayer(hm.getHelpTopic(ht).getFullText(pcs));
+					var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(hm.getHelpTopic(ht).getFullText(pcs)));
 				}
 			}
 			

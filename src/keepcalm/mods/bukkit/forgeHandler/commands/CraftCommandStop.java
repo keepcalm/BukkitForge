@@ -40,4 +40,9 @@ public class CraftCommandStop extends CommandBase {
 		(new CommandServerStop()).processCommand(var1, var2);
 	}
 
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return null;
+	}
+
 }

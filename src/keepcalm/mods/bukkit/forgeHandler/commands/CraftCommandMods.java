@@ -2,6 +2,7 @@ package keepcalm.mods.bukkit.forgeHandler.commands;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatMessageComponent;
 
 import org.bukkit.ChatColor;
 
@@ -22,11 +23,16 @@ public class CraftCommandMods extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender var1, String[] var2) {
-		var1.sendChatToPlayer(ChatColor.YELLOW + "Installed Mods: ");
+		var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(ChatColor.YELLOW + "Installed Mods: "));
 		for (ModContainer i : Loader.instance().getIndexedModList().values()) {
-			var1.sendChatToPlayer(ChatColor.GREEN + i.getName() + ChatColor.RESET + ", version " + ChatColor.YELLOW + i.getDisplayVersion() + ChatColor.RESET );
+			var1.sendChatToPlayer(ChatMessageComponent.func_111066_d(ChatColor.GREEN + i.getName() + ChatColor.RESET + ", version " + ChatColor.YELLOW + i.getDisplayVersion() + ChatColor.RESET ));
 			
 		}
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return null;
 	}
 
 }

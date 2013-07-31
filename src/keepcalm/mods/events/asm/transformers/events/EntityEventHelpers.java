@@ -3,6 +3,8 @@ package keepcalm.mods.events.asm.transformers.events;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import net.minecraft.launchwrapper.IClassTransformer;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -17,8 +19,6 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import cpw.mods.fml.relauncher.IClassTransformer;
-
 public class EntityEventHelpers implements IClassTransformer {
 
 	private final HashMap<String,String> names;
@@ -29,7 +29,7 @@ public class EntityEventHelpers implements IClassTransformer {
 	}
 	
 	@Override
-	public byte[] transform(String name, String transformedName, byte[] bytes) {
+	public byte[] transform(String name, String arg1, byte[] bytes) {
 		
 		if (name.equalsIgnoreCase(names.get("entitySheep_className"))) {
 			return transformEntitySheep(bytes);

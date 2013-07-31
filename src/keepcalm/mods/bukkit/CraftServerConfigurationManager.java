@@ -105,7 +105,7 @@ public class CraftServerConfigurationManager {
         playerLoggedIn(par2EntityPlayerMP);
         var6.setPlayerLocation(par2EntityPlayerMP.posX, par2EntityPlayerMP.posY, par2EntityPlayerMP.posZ, par2EntityPlayerMP.rotationYaw, par2EntityPlayerMP.rotationPitch);
         mcServer.getNetworkThread().addPlayer(var6);
-        var6.sendPacketToPlayer(new Packet4UpdateTime(var4.getTotalWorldTime(), var4.getWorldTime()));
+        var6.sendPacketToPlayer(new Packet4UpdateTime(var4.getTotalWorldTime(), var4.getWorldTime(), true));
 
         if (mcServer.getTexturePack().length() > 0)
         {
@@ -665,7 +665,7 @@ public class CraftServerConfigurationManager {
 
     public void updateTimeAndWeatherForPlayer(EntityPlayerMP par1EntityPlayerMP, WorldServer par2WorldServer)
     {
-        par1EntityPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet4UpdateTime(par2WorldServer.getTotalWorldTime(), par2WorldServer.getWorldTime()));
+        par1EntityPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet4UpdateTime(par2WorldServer.getTotalWorldTime(), par2WorldServer.getWorldTime(), true));
 
         if (par2WorldServer.isRaining())
         {

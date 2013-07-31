@@ -12,6 +12,7 @@ import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.ChatMessageComponent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -122,7 +123,7 @@ public class ConnectionHandler implements IConnectionHandler {
 		}
 		else {
 			// logging in events on single player are presently broken, TODO
-			dude.sendChatToPlayer(ChatColor.GREEN + "BukkitForge is loading, hold on a sec...");
+			dude.sendChatToPlayer(ChatMessageComponent.func_111066_d(ChatColor.GREEN + "BukkitForge is loading, hold on a sec..."));
 			return;
 			/*
 			try {

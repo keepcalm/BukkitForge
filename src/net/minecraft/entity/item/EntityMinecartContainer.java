@@ -173,7 +173,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
@@ -294,10 +294,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
         }
     }
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
-    public boolean interact(EntityPlayer par1EntityPlayer)
+    public boolean func_130002_c(EntityPlayer par1EntityPlayer)
     {
         if(MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer))) 
         {

@@ -133,10 +133,10 @@ public class CraftEntityEquipment implements EntityEquipment {
     }
 
     private void setDropChance(int slot, float chance) {
-        entity.getHandle().equipmentDropChances[slot] = chance - 0.1F;
+    	((net.minecraft.entity.EntityLiving) entity.getHandle()).equipmentDropChances[slot] = chance - 0.1F;
     }
 
     private float getDropChance(int slot) {
-        return entity.getHandle().equipmentDropChances[slot] + 0.1F;
+    	return ((net.minecraft.entity.EntityLiving) entity.getHandle()).equipmentDropChances[slot] + 0.1F;
     }
 }

@@ -7,11 +7,9 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
-import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 public class BukkitASMLoader implements IFMLLoadingPlugin{
 	
-	public static RelaunchClassLoader cl;
     public static File minecraftDir;
 	
 	@Override

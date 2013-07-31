@@ -1,5 +1,6 @@
 package net.minecraft.inventory;
 
+import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -10,7 +11,7 @@ public class InventoryBasic implements IInventory
     private int slotsCount;
     private ItemStack[] inventoryContents;
     private List field_70480_d;
-    public boolean field_94051_e;
+    private boolean field_94051_e;
 
     public InventoryBasic(String par1Str, boolean par2, int par3)
     {
@@ -18,6 +19,21 @@ public class InventoryBasic implements IInventory
         this.field_94051_e = par2;
         this.slotsCount = par3;
         this.inventoryContents = new ItemStack[par3];
+    }
+
+    public void func_110134_a(IInvBasic par1IInvBasic)
+    {
+        if (this.field_70480_d == null)
+        {
+            this.field_70480_d = new ArrayList();
+        }
+
+        this.field_70480_d.add(par1IInvBasic);
+    }
+
+    public void func_110132_b(IInvBasic par1IInvBasic)
+    {
+        this.field_70480_d.remove(par1IInvBasic);
     }
 
     /**
@@ -122,6 +138,12 @@ public class InventoryBasic implements IInventory
         return this.field_94051_e;
     }
 
+    public void func_110133_a(String par1Str)
+    {
+        this.field_94051_e = true;
+        this.inventoryTitle = par1Str;
+    }
+
     /**
      * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
      * this more of a set than a get?*
@@ -160,7 +182,7 @@ public class InventoryBasic implements IInventory
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }

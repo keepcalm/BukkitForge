@@ -30,6 +30,7 @@ import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -197,7 +198,7 @@ public class ForgeEventHandler {
 		
 		EntityDeathEvent bev = new EntityDeathEvent(e, stacks);
 		
-		bev.setDroppedExp(ev.entityLiving.experienceValue);
+		bev.setDroppedExp(ev.entityLiving.getExpReward());
 		Bukkit.getPluginManager().callEvent(bev);
 	}
 	
@@ -243,7 +244,7 @@ public class ForgeEventHandler {
 	public void playerVEntity(AttackEntityEvent ev) {
 		if (!ready || isClient)
 			return;
-		CraftEventFactory.callEntityDamageEvent(ev.entityPlayer, ev.target, DamageCause.ENTITY_ATTACK, ev.entityPlayer.inventory.getDamageVsEntity(ev.target));
+		CraftEventFactory.callEntityDamageEvent(ev.entityPlayer, ev.target, DamageCause.ENTITY_ATTACK, 1F);
 	}
 	
 /*	@ForgeSubscribe(receiveCanceled = true)
@@ -448,7 +449,7 @@ public class ForgeEventHandler {
 			ev1.getMessage()
 		});
 		
-		ev.line = newLine;
+		ev.component = ChatMessageComponent.func_111066_d(newLine);
 		
 		ev.setCanceled(ev1.isCancelled() || bev.isCancelled());
 		

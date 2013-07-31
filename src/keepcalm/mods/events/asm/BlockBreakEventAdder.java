@@ -11,6 +11,8 @@ import static org.objectweb.asm.Opcodes.ISTORE;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import net.minecraft.launchwrapper.IClassTransformer;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -25,8 +27,6 @@ import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
-
-import cpw.mods.fml.relauncher.IClassTransformer;
 
 /**
  * 
@@ -92,7 +92,7 @@ public class BlockBreakEventAdder implements IClassTransformer
     }
     
     @Override
-    public byte[] transform(String name, String transformedName, byte[] bytes)
+    public byte[] transform(String name, String arg1, byte[] bytes)
     {
         // System.out.println("transforming: "+name);
         if (name.equals(obfStrings.get("className")))

@@ -73,8 +73,8 @@ public class PlayerTracker implements IPlayerTracker {
 		Runnable run = new Runnable() {
 			@Override
 			public void run() {
-				ChunkCoordinates j = player.getHomePosition();
-				PlayerRespawnEvent c = new PlayerRespawnEvent(BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) player), new Location(CraftServer.instance().getWorld(player.worldObj.provider.dimensionId), j.posX, j.posY, j.posZ), player.hasHome());
+				ChunkCoordinates j = player.getBedLocation();
+				PlayerRespawnEvent c = new PlayerRespawnEvent(BukkitForgePlayerCache.getCraftPlayer((EntityPlayerMP) player), new Location(CraftServer.instance().getWorld(player.worldObj.provider.dimensionId), j.posX, j.posY, j.posZ), true);
 				Bukkit.getPluginManager().callEvent(c);
 			}
 		};

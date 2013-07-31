@@ -1,5 +1,7 @@
 package net.minecraft.tileentity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import java.util.Iterator;
 import java.util.List;
 import net.minecraft.block.Block;
@@ -18,7 +20,7 @@ public class TileEntityChest extends TileEntity implements IInventory
     private ItemStack[] chestContents = new ItemStack[36];
 
     /** Determines if the check for adjacent chests has taken place. */
-    public boolean adjacentChestChecked = false;
+    public boolean adjacentChestChecked;
 
     /** Contains the chest tile located adjacent to this one (if any) */
     public TileEntityChest adjacentChestZNeg;
@@ -43,7 +45,7 @@ public class TileEntityChest extends TileEntity implements IInventory
 
     /** Server sync counter (once per 20 ticks) */
     private int ticksSinceSync;
-    private int field_94046_i = -1;
+    private int field_94046_i;
     private String field_94045_s;
     
     private int maxStack = MAX_STACK;
@@ -56,6 +58,17 @@ public class TileEntityChest extends TileEntity implements IInventory
     public void setMaxStackSize(int size)
     {
         maxStack = size;
+    }
+
+    public TileEntityChest()
+    {
+        this.field_94046_i = -1;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public TileEntityChest(int par1)
+    {
+        this.field_94046_i = par1;
     }
 
     /**
@@ -160,7 +173,10 @@ public class TileEntityChest extends TileEntity implements IInventory
         return this.field_94045_s != null && this.field_94045_s.length() > 0;
     }
 
-    public void func_94043_a(String par1Str)
+    /**
+     * Sets the custom display name to use when opening a GUI for this specific TileEntityChest.
+     */
+    public void setChestGuiName(String par1Str)
     {
         this.field_94045_s = par1Str;
     }
@@ -490,7 +506,7 @@ public class TileEntityChest extends TileEntity implements IInventory
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }

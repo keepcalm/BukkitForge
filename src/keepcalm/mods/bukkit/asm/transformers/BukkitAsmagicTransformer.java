@@ -1,7 +1,5 @@
 package keepcalm.mods.bukkit.asm.transformers;
 
-import cpw.mods.fml.relauncher.FMLRelauncher;
-import cpw.mods.fml.relauncher.IClassTransformer;
 import com.eoware.asm.asmagic.AsmagicClassTransformer;
 
 import keepcalm.mods.bukkit.asm.BukkitASMLoader;
@@ -16,10 +14,12 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecartContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
+import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.tileentity.*;
 
 public class BukkitAsmagicTransformer implements IClassTransformer {
@@ -48,26 +48,25 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
     
     public void addClasses(HashMap classes) {
     	
-    	addClassNameAndAlias(classes, "net.minecraft.block.Block", "apa", Block.class);
+    	addClassNameAndAlias(classes, "net.minecraft.block.Block", "apw", Block.class);
     	
-    	addClassNameAndAlias(classes, "net.minecraft.entity.EntityLiving", "ng", EntityLiving.class);
-    	addClassNameAndAlias(classes, "net.minecraft.entity.player.EntityPlayer", "sq", EntityPlayer.class);
-    	addClassNameAndAlias(classes, "net.minecraft.entity.player.InventoryPlayer", "so", InventoryPlayer.class);
-    	addClassNameAndAlias(classes, "net.minecraft.entity.item.EntityMinecartContainer", "rk", EntityMinecartContainer.class);
+    	addClassNameAndAlias(classes, "net.minecraft.entity.EntityLivingBase", "oe", EntityLivingBase.class);
+    	addClassNameAndAlias(classes, "net.minecraft.entity.player.InventoryPlayer", "uc", InventoryPlayer.class);
+    	addClassNameAndAlias(classes, "net.minecraft.entity.item.EntityMinecartContainer", "su", EntityMinecartContainer.class);
     	
-    	addClassNameAndAlias(classes, "net.minecraft.inventory.IInventory", "lt", IInventory.class);
-    	addClassNameAndAlias(classes, "net.minecraft.inventory.InventoryBasic", "lz", InventoryBasic.class);
-    	addClassNameAndAlias(classes, "net.minecraft.inventory.InventoryCrafting", "tr", InventoryCrafting.class);
-    	addClassNameAndAlias(classes, "net.minecraft.inventory.InventoryCraftResult", "uj", InventoryCraftResult.class);
-    	addClassNameAndAlias(classes, "net.minecraft.inventory.InventoryLargeChest", "ls", InventoryLargeChest.class);
-    	addClassNameAndAlias(classes, "net.minecraft.inventory.InventoryMerchant", "uc", InventoryMerchant.class);
+    	addClassNameAndAlias(classes, "net.minecraft.inventory.IInventory", "mn", IInventory.class);
+    	addClassNameAndAlias(classes, "net.minecraft.inventory.InventoryBasic", "mt", InventoryBasic.class);
+    	addClassNameAndAlias(classes, "net.minecraft.inventory.InventoryCrafting", "vj", InventoryCrafting.class);
+    	addClassNameAndAlias(classes, "net.minecraft.inventory.InventoryCraftResult", "wb", InventoryCraftResult.class);
+    	addClassNameAndAlias(classes, "net.minecraft.inventory.InventoryLargeChest", "mm", InventoryLargeChest.class);
+    	addClassNameAndAlias(classes, "net.minecraft.inventory.InventoryMerchant", "vx", InventoryMerchant.class);
     	
-    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityBeacon", "apw", TileEntityBeacon.class);
-    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityBrewingStand", "apx", TileEntityBrewingStand.class);
-    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityChest", "apy", TileEntityChest.class);
-    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityDispenser", "aqc", TileEntityDispenser.class);
-    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityFurnace", "aqg", TileEntityFurnace.class);
-    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityHopper", "aqi", TileEntityHopper.class);
+    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityBeacon", "art", TileEntityBeacon.class);
+    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityBrewingStand", "aru", TileEntityBrewingStand.class);
+    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityChest", "arv", TileEntityChest.class);
+    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityDispenser", "arz", TileEntityDispenser.class);
+    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityFurnace", "asd", TileEntityFurnace.class);
+    	addClassNameAndAlias(classes, "net.minecraft.tileentity.TileEntityHopper", "asf", TileEntityHopper.class);
     	
     }
 
@@ -96,7 +95,7 @@ public class BukkitAsmagicTransformer implements IClassTransformer {
     }
 
     @Override
-    public byte[] transform(String s, String transformedName, byte[] bytes) {
+    public byte[] transform(String s, String arg1, byte[] bytes) {
 
         if( s.contains("Asmagic") ) return bytes;
 

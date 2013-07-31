@@ -19,7 +19,7 @@ public class MiscForgeHelpers {
 		Vec3 vec3d = Vec3.createVectorHelper(player.posX, (player.posY + 1.6200000000000001D) - (double)player.yOffset, player.posZ);
 		Vec3 vec3d1 = player.getLook(1.0F);
 		Vec3 vec3d2 = vec3d.addVector(vec3d1.xCoord * reach, vec3d1.yCoord * reach, vec3d1.zCoord * reach);
-        MovingObjectPosition hit = player.worldObj.rayTraceBlocks(vec3d, vec3d2);
+        MovingObjectPosition hit = player.worldObj.clip(vec3d, vec3d2);
         if(hit == null || hit.typeOfHit != EnumMovingObjectType.TILE)
         {
         	return null;

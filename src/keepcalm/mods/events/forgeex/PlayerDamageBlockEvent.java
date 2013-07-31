@@ -44,7 +44,7 @@ public class PlayerDamageBlockEvent extends PlayerEvent {
 	
 	@Override
 	public String toString() {
-		return String.format("PlayerDamageBlockEvent{x=%s, y=%s, z=%s, dim=%s, id=%s, damageLeft=%s, damageTaken=%s}", new Object[] {blockX, blockY, blockZ, world.getWorldInfo().getDimension(), blockID, damageRemaining, damageTaken});
+		return String.format("PlayerDamageBlockEvent{x=%s, y=%s, z=%s, dim=%s, id=%s, damageLeft=%s, damageTaken=%s}", new Object[] {blockX, blockY, blockZ, world.getWorldInfo().getVanillaDimension(), blockID, damageRemaining, damageTaken});
 	}
 
 }

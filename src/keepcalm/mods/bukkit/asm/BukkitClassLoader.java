@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import net.minecraft.launchwrapper.LaunchClassLoader;
+
 import com.google.common.primitives.Bytes;
 
-import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 /**
  * Redirects plugin access from guava 12 to guava 10
@@ -20,7 +21,7 @@ import cpw.mods.fml.relauncher.RelaunchClassLoader;
  * @author keepcalm
  *
  */
-public class BukkitClassLoader extends RelaunchClassLoader {
+public class BukkitClassLoader extends LaunchClassLoader {
 	private ClassLoader realClassLoader;
 	
 	private Map<String,Class<?>> guava10Classes = new HashMap<String, Class<?>>();

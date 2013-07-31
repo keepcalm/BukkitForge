@@ -19,7 +19,7 @@ public abstract class CraftMinecart extends CraftVehicle implements Minecart {
         getHandle().setDamage(damage);
     }
 
-    public int getDamage() {
+    public double getDamage() {
         return getHandle().getDamage();
     }
 

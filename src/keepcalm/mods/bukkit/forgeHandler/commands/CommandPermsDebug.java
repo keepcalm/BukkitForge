@@ -14,6 +14,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ChatMessageComponent;
 
 public class CommandPermsDebug extends CommandBase {
 
@@ -57,7 +58,7 @@ public class CommandPermsDebug extends CommandBase {
 					try {
 						buf.write("    " +i + " : " + x.getPermissions().get(i));
 					} catch (IOException e) {
-						var1.sendChatToPlayer("Failed to write a line, consult log for info.");
+						var1.sendChatToPlayer(ChatMessageComponent.func_111066_d("Failed to write a line, consult log for info."));
 						e.printStackTrace();
 					}
 				}
@@ -71,6 +72,11 @@ public class CommandPermsDebug extends CommandBase {
 			}
 		}
 		
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		return null;
 	}
 
 }

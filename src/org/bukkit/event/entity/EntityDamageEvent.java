@@ -3,17 +3,23 @@ package org.bukkit.event.entity;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+import org.bukkit.util.NumberConversions;
 
 /**
  * Stores data for damage events
  */
 public class EntityDamageEvent extends EntityEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-    private int damage;
+    private double damage;
     private boolean cancelled;
     private final DamageCause cause;
 
+    @Deprecated
     public EntityDamageEvent(final Entity damagee, final DamageCause cause, final int damage) {
+        this(damagee, cause, (double) damage);
+    }
+
+    public EntityDamageEvent(final Entity damagee, final DamageCause cause, final double damage) {
         super(damagee);
         this.cause = cause;
         this.damage = damage;
@@ -28,21 +34,41 @@ public class EntityDamageEvent extends EntityEvent implements Cancellable {
     }
 
     /**
-     * Gets the amount of damage caused by the Block
+     * Gets the amount of damage caused by the event
      *
-     * @return The amount of damage caused by the Block
+     * @return The amount of damage caused by the event
      */
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 
     /**
-     * Sets the amount of damage caused by the Block
-     *
-     * @param damage The amount of damage caused by the Block
+     * This method exists for legacy reasons to provide backwards
+     * compatibility. It will not exist at runtime and should not be used
+     * under any circumstances.
      */
-    public void setDamage(int damage) {
+    @Deprecated
+    public int _INVALID_getDamage() {
+        return NumberConversions.ceil(getDamage());
+    }
+
+    /**
+     * Sets the amount of damage caused by the event
+     *
+     * @param damage The amount of damage caused by the event
+     */
+    public void setDamage(double damage) {
         this.damage = damage;
+    }
+
+    /**
+     * This method exists for legacy reasons to provide backwards
+     * compatibility. It will not exist at runtime and should not be used
+     * under any circumstances.
+     */
+    @Deprecated
+    public void _INVALID_setDamage(int damage) {
+        setDamage(damage);
     }
 
     /**
@@ -70,127 +96,133 @@ public class EntityDamageEvent extends EntityEvent implements Cancellable {
 
         /**
          * Damage caused when an entity contacts a block such as a Cactus.
-         * <p />
+         * <p>
          * Damage: 1 (Cactus)
          */
         CONTACT,
         /**
          * Damage caused when an entity attacks another entity.
-         * <p />
+         * <p>
          * Damage: variable
          */
         ENTITY_ATTACK,
         /**
          * Damage caused when attacked by a projectile.
-         * <p />
+         * <p>
          * Damage: variable
          */
         PROJECTILE,
         /**
          * Damage caused by being put in a block
-         * <p />
+         * <p>
          * Damage: 1
          */
         SUFFOCATION,
         /**
          * Damage caused when an entity falls a distance greater than 3 blocks
-         * <p />
+         * <p>
          * Damage: fall height - 3.0
          */
         FALL,
         /**
          * Damage caused by direct exposure to fire
-         * <p />
+         * <p>
          * Damage: 1
          */
         FIRE,
         /**
          * Damage caused due to burns caused by fire
-         * <p />
+         * <p>
          * Damage: 1
          */
         FIRE_TICK,
         /**
          * Damage caused due to a snowman melting
-         * <p />
+         * <p>
          * Damage: 1
          */
         MELTING,
         /**
          * Damage caused by direct exposure to lava
-         * <p />
+         * <p>
          * Damage: 4
          */
         LAVA,
         /**
          * Damage caused by running out of air while in water
-         * <p />
+         * <p>
          * Damage: 2
          */
         DROWNING,
         /**
          * Damage caused by being in the area when a block explodes.
-         * <p />
+         * <p>
          * Damage: variable
          */
         BLOCK_EXPLOSION,
         /**
          * Damage caused by being in the area when an entity, such as a Creeper, explodes.
-         * <p />
+         * <p>
          * Damage: variable
          */
         ENTITY_EXPLOSION,
         /**
          * Damage caused by falling into the void
-         * <p />
+         * <p>
          * Damage: 4 for players
          */
         VOID,
         /**
          * Damage caused by being struck by lightning
-         * <p />
+         * <p>
          * Damage: 5
          */
         LIGHTNING,
         /**
          * Damage caused by committing suicide using the command "/kill"
-         * <p />
+         * <p>
          * Damage: 1000
          */
         SUICIDE,
         /**
          * Damage caused by starving due to having an empty hunger bar
-         * <p />
+         * <p>
          * Damage: 1
          */
         STARVATION,
         /**
          * Damage caused due to an ongoing poison effect
-         * <p />
+         * <p>
          * Damage: 1
          */
         POISON,
         /**
          * Damage caused by being hit by a damage potion or spell
-         * <p />
+         * <p>
          * Damage: variable
          */
         MAGIC,
         /**
-         *
+         * Damage caused by Wither potion effect
          */
         WITHER,
         /**
          * Damage caused by being hit by a falling block which deals damage
-         * <p />
+         * <p>
          * <b>Note:</b> Not every block deals damage
-         * <p />
+         * <p>
          * Damage: variable
          */
         FALLING_BLOCK,
         /**
+         * Damage caused in retaliation to another attack by the Thorns enchantment.
+         * <p>
+         * Damage: 1-4 (Thorns)
+         */
+        THORNS,
+        /**
          * Custom damage.
-         * <p />
+         * <p>
          * Damage: variable
          */
         CUSTOM

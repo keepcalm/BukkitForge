@@ -51,10 +51,10 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity  
 	private boolean op;
 	private GameMode mode;
 
-	public CraftHumanEntity(CraftServer server, EntityLiving entity) {
+	public CraftHumanEntity(CraftServer server, EntityPlayer entity) {
 		super(server, entity);
-		this.inventory = new CraftInventoryPlayer(((EntityPlayer) entity).inventory);
-		this.enderChest = new CraftInventory(((EntityPlayer) entity).getInventoryEnderChest());
+		this.inventory = new CraftInventoryPlayer(entity.inventory);
+		this.enderChest = new CraftInventory(entity.getInventoryEnderChest());
 	}
 	public String getName() {
 		return getHandle().username;
@@ -164,9 +164,9 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity  
 	}
 
 	@Override
-	public EntityPlayer getHandle() {
-		return (EntityPlayer) entity;
-	}
+	public net.minecraft.entity.player.EntityPlayer getHandle() {
+        return (net.minecraft.entity.player.EntityPlayer) entity;
+    }
 
 	public void setHandle(final EntityPlayer entity) {
 		super.setHandle(entity);

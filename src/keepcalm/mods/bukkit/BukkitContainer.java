@@ -27,7 +27,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemInWorldManager;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.gui.ServerGUI;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
@@ -123,7 +122,7 @@ public class BukkitContainer {
 			isDediServer = true;
 			if (MinecraftServer.getServer() != null && MinecraftServer.getServer().getGuiEnabled()) {
 				isGuiEnabled = true;
-				MinecraftServer.getServer().getLogAgent().getServerLogger().severe("BukkitForge plugins may misbehave when using the gui! Run the server with 'nogui'!");
+				MinecraftServer.getServer().getLogAgent().func_120013_a().severe("BukkitForge plugins may misbehave when using the gui! Run the server with 'nogui'!");
 			}
 		}
 		else
@@ -271,8 +270,6 @@ public class BukkitContainer {
 				}
 			}
 		}
-
-        Packet3Chat.maxChatLength = 32767;
 		
 		BukkitContainer.users = new Properties();
 		if (propsFile == null) return;

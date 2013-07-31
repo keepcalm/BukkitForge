@@ -357,7 +357,7 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return par1 == 3 ? Item.itemsList[par2ItemStack.itemID].isPotionIngredient() : par2ItemStack.getItem() instanceof ItemPotion || par2ItemStack.itemID == Item.glassBottle.itemID;
     }
@@ -401,7 +401,7 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
      */
     public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3)
     {
-        return this.isStackValidForSlot(par1, par2ItemStack);
+        return this.isItemValidForSlot(par1, par2ItemStack);
     }
 
     /**

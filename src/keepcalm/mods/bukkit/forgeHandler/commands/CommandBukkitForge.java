@@ -8,6 +8,7 @@ import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ChatMessageComponent;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_5_R3.CraftConsoleCommandSender;
@@ -97,8 +98,8 @@ public class CommandBukkitForge extends CraftCommandBase {
 		}
 		
 		if (var2[0].equalsIgnoreCase("help")) {
-			var1.sendChatToPlayer("Commands:");
-			var1.sendChatToPlayer("/bukkitforge debug <on|off>");
+			var1.sendChatToPlayer(ChatMessageComponent.func_111066_d("Commands:"));
+			var1.sendChatToPlayer(ChatMessageComponent.func_111066_d("/bukkitforge debug <on|off>"));
 		}
 		else if (var2[0].equalsIgnoreCase("debug")) {
 			if (var2.length < 2) {
@@ -109,7 +110,7 @@ public class CommandBukkitForge extends CraftCommandBase {
 				throw new WrongUsageException(var2[1] + " is not a valid state!");
 			}
 			BukkitContainer.DEBUG = onOrOff.getState();
-			var1.sendChatToPlayer("Debug turned " + var2[1]);
+			var1.sendChatToPlayer(ChatMessageComponent.func_111066_d("Debug turned " + var2[1]));
 		}
 		
 	}

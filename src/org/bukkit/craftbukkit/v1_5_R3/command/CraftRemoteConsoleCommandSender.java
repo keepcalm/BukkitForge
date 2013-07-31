@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit.v1_5_R3.command;
 
 import net.minecraft.network.rcon.RConConsoleSource;
+import net.minecraft.util.ChatMessageComponent;
 
 import org.bukkit.command.RemoteConsoleCommandSender;
 
@@ -10,7 +11,7 @@ public class CraftRemoteConsoleCommandSender extends ServerCommandSender impleme
     }
 
     public void sendMessage(String message) {
-        RConConsoleSource.consoleBuffer.sendChatToPlayer(message + "\n"); // Send a newline after each message, to preserve formatting.
+        RConConsoleSource.consoleBuffer.sendChatToPlayer(ChatMessageComponent.func_111066_d(message + "\n")); // Send a newline after each message, to preserve formatting.
     }
     
     public void sendMessage(String[] messages) {

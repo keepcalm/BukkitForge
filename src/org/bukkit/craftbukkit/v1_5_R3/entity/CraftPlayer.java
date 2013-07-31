@@ -273,7 +273,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 	}
 
 	public Location getCompassTarget() {
-		return new Location(CraftServer.instance().getWorld(getHandle().worldObj.provider.dimensionId), getHandle().getHomePosition().posX, getHandle().getHomePosition().posY, getHandle().getHomePosition().posZ);
+		return new Location(CraftServer.instance().getWorld(getHandle().worldObj.provider.dimensionId), getHandle().getBedLocation().posX, getHandle().getBedLocation().posY, getHandle().getBedLocation().posZ);
 	}
 
 	public void chat(String msg) {
@@ -439,7 +439,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
             if (BukkitContainer.DEBUG)
                 System.out.println("interdim TP" + fromWorld + " > " + toWorld + " ( to dimension " + toWorld.getHandle().provider.dimensionId);
 			if (getHandle().openContainer != getHandle().inventoryContainer)
-				getHandle().closeInventory();
+				getHandle().closeContainer();
 			
 			entity.mcServer.getConfigurationManager().transferPlayerToDimension(entity, toWorld.getHandle().provider.dimensionId, new CraftTeleporter(toWorld.getHandle()));
 			entity.onUpdate();
@@ -670,8 +670,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 
 	public Location getBedSpawnLocation() {
 		World world = ((CraftServer)getServer()).getWorld(0);
-		if ((world != null) && (getHandle().getHomePosition() != null)) {
-			return new Location(world, getHandle().getHomePosition().posX, getHandle().getHomePosition().posY, getHandle().getHomePosition().posZ);
+		if ((world != null) && (getHandle().getBedLocation() != null)) {
+			return new Location(world, getHandle().getBedLocation().posX, getHandle().getBedLocation().posY, getHandle().getBedLocation().posZ);
 		}
 		return null;
 	}
@@ -783,7 +783,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 
 			if (data.hasKey("newExp")) {
 				EntityPlayerMP handle = getHandle();
-				handle.experienceValue = data.getInteger("newExp");
+				handle.experience = data.getInteger("newExp");
 				handle.experienceTotal = data.getInteger("newTotalExp");
 				handle.experienceLevel = data.getInteger("newLevel");
 				//handle.exp = data.getInteger("expToDrop");
@@ -799,7 +799,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player, CommandSend
 
 		NBTTagCompound data = nbttagcompound.getCompoundTag("bukkit");
 		EntityPlayerMP handle = getHandle();
-		data.setInteger("newExp", handle.experienceValue);
+		data.setInteger("newExp", (int) handle.experience);
 		data.setInteger("newTotalExp", handle.experienceTotal);
 		data.setInteger("newLevel", handle.experienceLevel);
 		//data.setInt("expToDrop", handle.expToDrop);

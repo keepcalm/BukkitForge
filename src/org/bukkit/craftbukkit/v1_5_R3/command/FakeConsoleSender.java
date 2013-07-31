@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit.v1_5_R3.command;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ChatMessageComponent;
 
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
@@ -50,7 +51,7 @@ public class FakeConsoleSender extends ServerCommandSender implements ConsoleCom
 
 	@Override
 	public void setOp(boolean value) {
-		thePlayer.sendChatToPlayer("Console got deopped (not really :P)");
+		thePlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d("Console got deopped (not really :P)"));
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class FakeConsoleSender extends ServerCommandSender implements ConsoleCom
 
 	@Override
 	public void sendRawMessage(String message) {
-		thePlayer.sendChatToPlayer(message);
+		thePlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d(message));
 	}
 
 

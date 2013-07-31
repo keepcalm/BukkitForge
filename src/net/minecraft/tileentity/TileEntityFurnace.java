@@ -20,11 +20,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ForgeDummyContainer;
 
-public class TileEntityFurnace extends TileEntity implements ISidedInventory, net.minecraftforge.common.ISidedInventory
+public class TileEntityFurnace extends TileEntity implements ISidedInventory
 {
-    private static final int[] field_102010_d = new int[] {0};
-    private static final int[] field_102011_e = new int[] {2, 1};
-    private static final int[] field_102009_f = new int[] {1};
+    private static final int[] slots_top = new int[] {0};
+    private static final int[] slots_bottom = new int[] {2, 1};
+    private static final int[] slots_sides = new int[] {1};
 
     /**
      * The ItemStacks that hold the items currently being used in the furnace
@@ -32,15 +32,15 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
     private ItemStack[] furnaceItemStacks = new ItemStack[3];
 
     /** The number of ticks that the furnace will keep burning */
-    public int furnaceBurnTime = 0;
+    public int furnaceBurnTime;
 
     /**
      * The number of ticks that a fresh copy of the currently-burning item would keep the furnace burning for
      */
-    public int currentItemBurnTime = 0;
+    public int currentItemBurnTime;
 
     /** The number of ticks that the current item has been cooking for */
-    public int furnaceCookTime = 0;
+    public int furnaceCookTime;
     private String field_94130_e;
     
     private int maxStack = MAX_STACK;
@@ -153,7 +153,10 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
         return this.field_94130_e != null && this.field_94130_e.length() > 0;
     }
 
-    public void func_94129_a(String par1Str)
+    /**
+     * Sets the custom display name to use when opening a GUI linked to this tile entity.
+     */
+    public void setGuiDisplayName(String par1Str)
     {
         this.field_94130_e = par1Str;
     }
@@ -401,6 +404,11 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
                 {
                     return 300;
                 }
+
+                if (block == Block.field_111034_cE)
+                {
+                    return 16000;
+                }
             }
 
             if (item instanceof ItemTool && ((ItemTool) item).getToolMaterialName().equals("WOOD")) return 200;
@@ -438,7 +446,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return par1 == 2 ? false : (par1 == 1 ? isItemFuel(par2ItemStack) : true);
     }
@@ -449,7 +457,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
      */
     public int[] getAccessibleSlotsFromSide(int par1)
     {
-        return par1 == 0 ? field_102011_e : (par1 == 1 ? field_102010_d : field_102009_f);
+        return par1 == 0 ? slots_bottom : (par1 == 1 ? slots_top : slots_sides);
     }
 
     /**
@@ -458,7 +466,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
      */
     public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3)
     {
-        return this.isStackValidForSlot(par1, par2ItemStack);
+        return this.isItemValidForSlot(par1, par2ItemStack);
     }
 
     /**
@@ -468,51 +476,5 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory, ne
     public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3)
     {
         return par3 != 0 || par1 != 1 || par2ItemStack.itemID == Item.bucketEmpty.itemID;
-    }
-
-    /***********************************************************************************
-     * This function is here for compatibilities sake, Modders should Check for
-     * Sided before ContainerWorldly, Vanilla Minecraft does not follow the sided standard
-     * that Modding has for a while.
-     *
-     * In vanilla:
-     *
-     *   Top: Ores
-     *   Sides: Fuel
-     *   Bottom: Output
-     *
-     * Standard Modding:
-     *   Top: Ores
-     *   Sides: Output
-     *   Bottom: Fuel
-     *
-     * The Modding one is designed after the GUI, the vanilla one is designed because its
-     * intended use is for the hopper, which logically would take things in from the top.
-     *
-     * This will possibly be removed in future updates, and make vanilla the definitive
-     * standard.
-     */
-
-    @Override
-    public int getStartInventorySide(ForgeDirection side)
-    {
-        if (ForgeDummyContainer.legacyFurnaceSides)
-        {
-            if (side == ForgeDirection.DOWN) return 1;
-            if (side == ForgeDirection.UP) return 0;
-            return 2;
-        }
-        else
-        {
-            if (side == ForgeDirection.DOWN) return 2;
-            if (side == ForgeDirection.UP) return 0;
-            return 1;
-        }
-    }
-
-    @Override
-    public int getSizeInventorySide(ForgeDirection side)
-    {
-        return 1;
     }
 }

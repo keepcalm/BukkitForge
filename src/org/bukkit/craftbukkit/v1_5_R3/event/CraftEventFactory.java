@@ -429,7 +429,7 @@ public class CraftEventFactory {
 
     public static PlayerDeathEvent callPlayerDeathEvent(EntityPlayer victim, List<org.bukkit.inventory.ItemStack> drops, String deathMessage) {
         CraftPlayer entity = (CraftPlayer) getBukkitEntity(victim);
-        PlayerDeathEvent event = new PlayerDeathEvent(entity, drops, victim.experienceValue, 0, deathMessage);
+        PlayerDeathEvent event = new PlayerDeathEvent(entity, drops, victim.getExpReward(), 0, deathMessage);
         org.bukkit.World world = entity.getWorld();
         Bukkit.getServer().getPluginManager().callEvent(event);
 
@@ -465,12 +465,12 @@ public class CraftEventFactory {
     /**
      * EntityDamage(ByEntityEvent)
      */
-    public static EntityDamageEvent callEntityDamageEvent(Entity damager, Entity damagee, DamageCause cause, int damage) {
+    public static EntityDamageEvent callEntityDamageEvent(Entity damager, Entity damagee, DamageCause cause, float ammount) {
         EntityDamageEvent event;
         if (damager != null) {
-            event = new EntityDamageByEntityEvent(getBukkitEntity(damager), getBukkitEntity(damagee), cause, damage);
+            event = new EntityDamageByEntityEvent(getBukkitEntity(damager), getBukkitEntity(damagee), cause, ammount);
         } else {
-            event = new EntityDamageEvent(getBukkitEntity(damagee), cause, damage);
+            event = new EntityDamageEvent(getBukkitEntity(damagee), cause, ammount);
         }
         callEvent(event);
 

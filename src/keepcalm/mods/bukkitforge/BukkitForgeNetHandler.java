@@ -365,7 +365,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
 
                     if (this.playerEntity.ridingEntity != null)
                     {
-                        var2.uncheckedUpdateEntity(this.playerEntity.ridingEntity, true);
+                        var2.updateEntityWithOptionalForce(this.playerEntity.ridingEntity, true);
                     }
 
                     if (this.playerEntity.ridingEntity != null)
@@ -1204,7 +1204,8 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                 Player player = this.getPlayerB();
                 AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(async, player, s, new LazyPlayerSet());
                 this.server.getPluginManager().callEvent(event);
-                ServerChatEvent forgeEvent = new ServerChatEvent(this.playerEntity, s, "<" + this.playerEntity.username + "> " + s);
+                ChatMessageComponent chatmessagecomponent = ChatMessageComponent.func_111082_b("<" + this.playerEntity.username + "> " + s);
+                ServerChatEvent forgeEvent = new ServerChatEvent(this.playerEntity, s, chatmessagecomponent);
                 if (MinecraftForge.EVENT_BUS.post(forgeEvent))
                 {
                     return;
@@ -1233,7 +1234,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                             {
                                 for (Object pplayer : mcServer.getConfigurationManager().playerEntityList)
                                 {
-                                    ((EntityPlayerMP) pplayer).sendChatToPlayer(message);
+                                    ((EntityPlayerMP) pplayer).addChatMessage(message);
                                 }
                             }
                             else
@@ -1285,7 +1286,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                     {
                         for (Object recipient : mcServer.getConfigurationManager().playerEntityList)
                         {
-                            ((EntityPlayerMP) recipient).sendChatToPlayer(s);
+                            ((EntityPlayerMP) recipient).addChatMessage(s);
                         }
                     }
                     else
@@ -1373,7 +1374,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
             float f8 = f3 * f5;
             double d3 = 5.0D;
             Vec3 vec3d1 = vec3d.addVector((double) f7 * d3, (double) f6 * d3, (double) f8 * d3);
-            MovingObjectPosition movingobjectposition = this.playerEntity.worldObj.rayTraceBlocks_do(vec3d, vec3d1, true);
+            MovingObjectPosition movingobjectposition = this.playerEntity.worldObj.clip(vec3d, vec3d1, true);
 
             if (movingobjectposition == null || movingobjectposition.typeOfHit != EnumMovingObjectType.TILE)
             {
@@ -1557,7 +1558,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
             }
             else
             {
-                if (this.playerEntity.getHealth() > 0)
+                if (this.playerEntity.func_110143_aJ() > 0)
                 {
                     return;
                 }
@@ -1606,7 +1607,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
             // do nothing
         }
         // MCPC+ end
-        this.playerEntity.closeInventory();
+        this.playerEntity.closeContainer();
     }
 
     public void handleWindowClick(Packet102WindowClick par1Packet102WindowClick)
@@ -2118,7 +2119,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                 {
                     if (!this.mcServer.isCommandBlockEnabled())
                     {
-                        this.playerEntity.sendChatToPlayer(this.playerEntity.translateString("advMode.notEnabled", new Object[0]));
+                    	this.playerEntity.sendChatToPlayer(ChatMessageComponent.func_111077_e("advMode.notEnabled"));
                     }
                     else if (this.playerEntity.canCommandSenderUseCommand(2, "") && this.playerEntity.capabilities.isCreativeMode)
                     {
@@ -2135,7 +2136,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                             {
                                 ((TileEntityCommandBlock) tileentity).setCommand(s);
                                 this.playerEntity.worldObj.markBlockForUpdate(i, j, k);
-                                this.playerEntity.sendChatToPlayer("Command set: " + s);
+                                this.playerEntity.sendChatToPlayer(ChatMessageComponent.func_111082_b("advMode.setCommand.success", new Object[] {s}));
                             }
                         }
                         catch (Exception exception3)
@@ -2148,7 +2149,7 @@ public class BukkitForgeNetHandler extends NetServerHandler {
                     }
                     else
                     {
-                        this.playerEntity.sendChatToPlayer(this.playerEntity.translateString("advMode.notAllowed", new Object[0]));
+                    	this.playerEntity.sendChatToPlayer(ChatMessageComponent.func_111077_e("advMode.notAllowed"));
                     }
                 }
                 else if ("MC|Beacon".equals(packet250custompayload.channel))

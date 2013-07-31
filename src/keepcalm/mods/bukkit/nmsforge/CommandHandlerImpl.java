@@ -8,6 +8,8 @@ import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
 import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.EnumChatFormatting;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
@@ -81,7 +83,7 @@ public class CommandHandlerImpl implements ICommandManager {
                             }
                             catch (PlayerNotFoundException var14)
                             {
-                                par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString(var14.getMessage(), var14.getErrorOjbects()));
+                                par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111082_b("\u00a7c" + var14.getMessage(), var14.getErrorOjbects()));
                             }
                         }
 
@@ -94,20 +96,20 @@ public class CommandHandlerImpl implements ICommandManager {
                 }
                 else
                 {
-                    par1ICommandSender.sendChatToPlayer("\u00a7cYou do not have permission to use this command.");
+                    par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111082_b("\u00a7cYou do not have permission to use this command."));
                 }
             }
             catch (WrongUsageException var15)
             {
-                par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString("commands.generic.usage", new Object[] {par1ICommandSender.translateString(var15.getMessage(), var15.getErrorOjbects())}));
+                par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111082_b("\u00a7c" + "commands.generic.usage", new Object[] {ChatMessageComponent.func_111082_b(var15.getMessage(), var15.getErrorOjbects())}).func_111059_a(EnumChatFormatting.RED));
             }
             catch (CommandException var16)
             {
-                par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString(var16.getMessage(), var16.getErrorOjbects()));
+                par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111082_b("\u00a7c" + var16.getMessage(), var16.getErrorOjbects()).func_111059_a(EnumChatFormatting.RED));
             }
             catch (Throwable var17)
             {
-                par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString("commands.generic.exception", new Object[0]));
+                par1ICommandSender.sendChatToPlayer(ChatMessageComponent.func_111077_e("commands.generic.exception").func_111059_a(EnumChatFormatting.RED));
                 var17.printStackTrace();
             }
 			return 0;

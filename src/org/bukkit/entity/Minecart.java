@@ -19,7 +19,7 @@ public interface Minecart extends Vehicle {
      *
      * @return The damage
      */
-    public int getDamage();
+    public double getDamage();
 
     /**
      * Gets the maximum speed of a minecart. The speed is unrelated to the velocity.

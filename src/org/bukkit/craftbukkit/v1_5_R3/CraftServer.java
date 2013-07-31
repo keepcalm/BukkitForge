@@ -37,7 +37,7 @@ import net.minecraft.server.ConvertingProgressUpdate;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.PropertyManager;
-import net.minecraft.server.gui.GuiLogOutputHandler;
+import net.minecraft.server.gui.TextAreaLogHandler;
 import net.minecraft.server.management.BanEntry;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.ChunkCoordinates;
@@ -232,7 +232,7 @@ public class CraftServer implements Server {
 		if (!theServer.isDedicatedServer()) {
 			EntityPlayer player = theServer.getConfigurationManager().getPlayerForUsername(theServer.getServerOwner());
 			if (player != null) {
-				player.sendChatToPlayer(ChatColor.GREEN + "CraftForge has finished loading! You may now enjoy a (relatively) lag-free game!");
+				player.addChatMessage(ChatColor.GREEN + "CraftForge has finished loading! You may now enjoy a (relatively) lag-free game!");
 				theServer.getCommandManager().executeCommand(player, "/plugins");
 				(new PlayerTracker()).onPlayerLogin(player);
 			}
@@ -1123,11 +1123,11 @@ public class CraftServer implements Server {
 					));
 		}
 		getPluginManager().disablePlugins();
-		Logger logger = this.theServer.getLogAgent().getServerLogger();
+		Logger logger = this.theServer.getLogAgent().func_120013_a();
 		Handler[] handlers = logger.getHandlers();
 		for(int h = 0; h < handlers.length; h++)
 		{
-			if(handlers[h] instanceof GuiLogOutputHandler)
+			if(handlers[h] instanceof TextAreaLogHandler)
 				logger.removeHandler(handlers[h]);
 		}
 		this.theServer.getNetworkThread().stopListening();

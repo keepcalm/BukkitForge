@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
+import net.minecraft.launchwrapper.IClassTransformer;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -21,8 +23,6 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import com.google.common.collect.Maps;
 
-import cpw.mods.fml.relauncher.IClassTransformer;
-
 public class BlockEventHelpers implements IClassTransformer {
 
 	private HashMap<String,String> names;
@@ -38,7 +38,7 @@ public class BlockEventHelpers implements IClassTransformer {
 	
 
 	@Override
-	public byte[] transform(String name, String transformedName, byte[] bytes) {
+	public byte[] transform(String name, String arg1, byte[] bytes) {
 		if (name.equalsIgnoreCase(names.get("itemStack_className"))) {
 			return transformItemStack(bytes, names);
 		}
