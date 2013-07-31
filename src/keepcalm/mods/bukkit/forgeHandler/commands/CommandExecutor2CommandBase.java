@@ -14,10 +14,10 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import keepcalm.mods.bukkitforge.BukkitForgePlayerCache;
-import org.bukkit.craftbukkit.v1_5_R3.CraftConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_5_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_6_R2.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.v1_6_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_6_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_6_R2.entity.CraftPlayer;
 
 import com.google.common.base.Joiner;
 /**

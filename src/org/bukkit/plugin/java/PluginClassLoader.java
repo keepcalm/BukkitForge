@@ -6,7 +6,7 @@ import org.bouncycastle.util.io.Streams;
 import net.md_5.specialsource.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_6_R2.CraftServer;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.io.*;
@@ -70,7 +70,7 @@ public class PluginClassLoader extends URLClassLoader {
         boolean useGuava10 = config.getBoolean("mcpc.plugin-settings.default.use-guava10", true);
         boolean remapNMS162 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_6_R2", true);
         boolean remapNMS161 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_6_R1", true);
-        boolean remapNMS152 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_5_R3", true);
+        boolean remapNMS152 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_6_R2", true);
         boolean remapNMS151 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_5_R2", true);
         boolean remapNMS150 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_5_R1", true);
         boolean remapNMS147 = config.getBoolean("mcpc.plugin-settings.default.remap-nms-v1_4_R1", true);
@@ -78,7 +78,7 @@ public class PluginClassLoader extends URLClassLoader {
         String remapNMSPre = config.getString("mcpc.plugin-settings.default.remap-nms-pre", "false");
         boolean remapOBC162 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_6_R2", false);
         boolean remapOBC161 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_6_R1", false);
-        boolean remapOBC152 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_5_R3", true);
+        boolean remapOBC152 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_6_R2", true);
         boolean remapOBC151 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_5_R2", true);
         boolean remapOBC150 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_5_R1", true);
         boolean remapOBC147 = config.getBoolean("mcpc.plugin-settings.default.remap-obc-v1_4_R1", false);
@@ -96,7 +96,7 @@ public class PluginClassLoader extends URLClassLoader {
         useGuava10 = config.getBoolean("mcpc.plugin-settings."+pluginName+".use-guava10", useGuava10);
         remapNMS162 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_6_R2", remapNMS162);
         remapNMS161 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_6_R1", remapNMS161);
-        remapNMS152 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_5_R3", remapNMS152);
+        remapNMS152 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_6_R2", remapNMS152);
         remapNMS151 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_5_R2", remapNMS151);
         remapNMS150 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_5_R1", remapNMS150);
         remapNMS147 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-nms-v1_4_R1", remapNMS147);
@@ -104,7 +104,7 @@ public class PluginClassLoader extends URLClassLoader {
         remapNMSPre = config.getString("mcpc.plugin-settings."+pluginName+".remap-nms-pre", remapNMSPre);
         remapOBC162 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_6_R2", remapOBC162);
         remapOBC161 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_6_R1", remapOBC161);
-        remapOBC152 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_5_R3", remapOBC152);
+        remapOBC152 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_6_R2", remapOBC152);
         remapOBC151 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_5_R2", remapOBC151);
         remapOBC150 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_5_R1", remapOBC150);
         remapOBC147 = config.getBoolean("mcpc.plugin-settings."+pluginName+".remap-obc-v1_4_R1", remapOBC147);
@@ -202,7 +202,7 @@ public class PluginClassLoader extends URLClassLoader {
      */
     public static String getNativeVersion() {
         // see https://github.com/mbax/VanishNoPacket/blob/master/src/main/java/org/kitteh/vanish/compat/NMSManager.java
-        final String packageName = org.bukkit.craftbukkit.v1_5_R3.CraftServer.class.getPackage().getName();
+        final String packageName = org.bukkit.craftbukkit.v1_6_R2.CraftServer.class.getPackage().getName();
 
         return packageName.substring(packageName.lastIndexOf('.')  + 1);
     }
@@ -262,7 +262,7 @@ public class PluginClassLoader extends URLClassLoader {
             }
 
             if ((flags & F_REMAP_NMS152) != 0) {
-                loadNmsMappings(jarMapping, "v1_5_R3");
+                loadNmsMappings(jarMapping, "v1_6_R2");
             }
 
             if ((flags & F_REMAP_NMS151) != 0) {
@@ -291,7 +291,7 @@ public class PluginClassLoader extends URLClassLoader {
             }
 
             if ((flags & F_REMAP_OBC152) != 0) {
-                jarMapping.packages.put(org_bukkit_craftbukkit+"/v1_5_R3", org_bukkit_craftbukkit+"/"+getNativeVersion());
+                jarMapping.packages.put(org_bukkit_craftbukkit+"/v1_6_R2", org_bukkit_craftbukkit+"/"+getNativeVersion());
             }
 
             if ((flags & F_REMAP_OBC151) != 0) {

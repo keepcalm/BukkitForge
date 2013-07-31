@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatMessageComponent;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_5_R3.CraftConsoleCommandSender;
+import org.bukkit.craftbukkit.v1_6_R2.CraftConsoleCommandSender;
 
 
 /**
