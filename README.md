@@ -1,10 +1,6 @@
 BukkitForge - a Minecraft mod that ports the Bukkit plugin API to minecraft.
 ===================================
 
-Please note that this mod is not able to be merged into MineTweak.
-
-If they try to merge this into MineTweaks. They Will Fail, They don't have alexbegt.
- 
 This is very WIP. Since i started doing this, i was mostly aiming for a server that didn't crash.
 It can load plugins, commands work, lots of things work, permissions *should* work, etc.
 
